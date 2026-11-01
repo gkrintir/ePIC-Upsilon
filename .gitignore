@@ -1,0 +1,38 @@
+# Local environments and user paths
+.venv/
+.env
+.env.*
+!.env.example
+configs/local.json
+configs/plots.local.json
+# Generated runtime copies and results stay outside the source tree
+workspaces/
+work/
+results/
+figures/
+**/results/generated/
+**/cache/
+# Large detector data and job products
+*.root
+*.log
+!analysis/reference_replay/verified_results/logs/*.log
+*.tar
+*.tar.gz
+*.zip
+*.condor.log
+# Python/ROOT build and notebook caches
+__pycache__/
+*.py[cod]
+*.so
+*.d
+*.pcm
+.ipynb_checkpoints/
+.pytest_cache/
+.coverage
+htmlcov/
+# Editor state
+*.bak
+*~
+.vscode/
+.idea/
+.DS_Store
