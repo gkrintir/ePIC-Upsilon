@@ -1,0 +1,5 @@
+t_low,t_high,t_center,dNdt_GeVminus2,err_low,err_high,source
+0.0,0.20121278941565598,0.10060639470782799,71.8723005398763,0.0,0.0,"DESY-11-186 Fig. 4 black dotted exclusive Upsilon(1S)->mu+mu- component, parsed from EPS step histogram"
+0.20121278941565598,0.4492833517089306,0.32524807056229327,30.28168664345803,0.0,0.0,"DESY-11-186 Fig. 4 black dotted exclusive Upsilon(1S)->mu+mu- component, parsed from EPS step histogram"
+0.4492833517089306,1.0005512679162072,0.7249173098125689,8.023694121426647,0.0,0.0,"DESY-11-186 Fig. 4 black dotted exclusive Upsilon(1S)->mu+mu- component, parsed from EPS step histogram"
+1.0005512679162072,5.0,3.0002756339581036,0.21662422367626696,0.0,0.0,"DESY-11-186 Fig. 4 black dotted exclusive Upsilon(1S)->mu+mu- component, parsed from EPS step histogram"

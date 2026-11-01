@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "description": "Independent proton-tagged 9x130 reoptimization; default 1 fb^-1. Restricted 0-1 GeV^2 slope measurements, not recovery of the legacy 0-5 spectrum.",
+  "tree": "UpsilonTree",
+  "electron_energy": 9.0,
+  "proton_energy": 130.0,
+  "target_lumi_invfb": 1.0,
+  "w_range": [
+    20.0,
+    70.0
+  ],
+  "truth_mass_window": 0.2,
+  "reco_mass_window_sigma": 3.0,
+  "sigma_epz_center": 18.0,
+  "sigma_epz_halfwidth": 1.8,
+  "train_fraction": 0.5,
+  "seed": 12345,
+  "hash_inputs": false,
+  "common_binning": false,
+  "states": {
+    "1S": {
+      "state": "1S",
+      "visible_xsec_fb": 119.685,
+      "br_ee": 0.0238,
+      "q2_max": 1.0,
+      "mass": 9.4603,
+      "sigma": 0.053,
+      "expected_source_lumi_invfb": 10.0,
+      "category": "new electron ID"
+    },
+    "2S": {
+      "state": "2S",
+      "visible_xsec_fb": 29.297,
+      "br_ee": 0.0191,
+      "q2_max": 0.01,
+      "mass": 10.02326,
+      "sigma": 0.056,
+      "expected_source_lumi_invfb": 10.0,
+      "category": "standard electron ID"
+    },
+    "3S": {
+      "state": "3S",
+      "visible_xsec_fb": 23.447,
+      "br_ee": 0.0218,
+      "q2_max": 0.01,
+      "mass": 10.3552,
+      "sigma": 0.059,
+      "expected_source_lumi_invfb": 10.0,
+      "category": "standard electron ID"
+    }
+  },
+  "optimization": {
+    "candidate_edges": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      1.0
+    ],
+    "fit_range": [
+      0.0,
+      1.0
+    ],
+    "reco_control_max": 5.0,
+    "min_bins": 3,
+    "max_bins": 5,
+    "min_expected_reco": 5.0,
+    "min_purity": 0.4,
+    "min_selected_stability": 0.4,
+    "min_effective_mc": 100,
+    "max_condition_number": 20.0,
+    "fine_truth_step": 0.02
+  },
+  "observables": {
+    "pt2": {
+      "label": "pT2",
+      "truth_definition": "true_pT squared",
+      "reco_definition": "reco_pT squared"
+    },
+    "abs_t_via_pt2": {
+      "label": "absolute t via pT2",
+      "truth_definition": "positive stored true_t",
+      "reco_definition": "reco_pT squared"
+    },
+    "w": {
+      "label": "W",
+      "truth_definition": "true_W",
+      "reco_definition": "reco_W",
+      "inference_kind": "spectrum",
+      "fit_range": [
+        20.0,
+        70.0
+      ],
+      "candidate_edges": [
+        20,
+        25,
+        30,
+        35,
+        40,
+        45,
+        50,
+        55,
+        60,
+        65,
+        70
+      ],
+      "min_bins": 2,
+      "max_bins": 5,
+      "reco_control_min": null,
+      "reco_control_max": null,
+      "fine_truth_step": 1.0,
+      "cross_section_convention": "flux_bin_averaged_gamma_p",
+      "selection_scope": "Conditional on truth and reco W in 20-70 GeV; no claim of out-of-W fiducial feed-in validation"
+    },
+    "y": {
+      "label": "Upsilon rapidity",
+      "truth_definition": "true_y (meson rapidity)",
+      "reco_definition": "reco_y (meson rapidity)",
+      "inference_kind": "spectrum",
+      "fit_range": [
+        -1.0,
+        3.0
+      ],
+      "candidate_edges": [
+        -1.0,
+        -0.5,
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.25,
+        1.5,
+        1.75,
+        2.0,
+        2.25,
+        2.5,
+        2.75,
+        3.0
+      ],
+      "min_bins": 2,
+      "max_bins": 5,
+      "reco_control_min": -2.0,
+      "reco_control_max": 4.0,
+      "fine_truth_step": 0.05,
+      "cross_section_convention": "inclusive_ep",
+      "legacy_flux_normalized_companion": true,
+      "selection_scope": "Retains the prior differential-study truth rapidity range -1 to 3; sparse high-y tails may merge with adjacent bins"
+    }
+  },
+  "inference": {
+    "seed": 20261023,
+    "coverage": 0.6826894921370859,
+    "n_toys": 1000,
+    "n_coverage_toys": 1000,
+    "n_response_bootstrap": 200,
+    "n_model_toys": 500,
+    "min_toys_for_validation": 400,
+    "model_tail_probability_min": 0.01,
+    "coverage_slopes": [
+      1.0,
+      2.5,
+      4.0,
+      6.0
+    ],
+    "max_slope": 40.0,
+    "b_limit_max": 1000.0,
+    "min_coverage": 0.65,
+    "max_failure_fraction": 0.01,
+    "max_abs_standardized_bias": 0.3,
+    "max_boundary_fraction": 0.2,
+    "spectrum_coverage_tilts": [
+      -1.0,
+      0.0,
+      1.0
+    ]
+  },
+  "validation": {
+    "max_fine_cell_shift_fraction": 0.2,
+    "max_feed_in_shift_fraction": 0.5
+  },
+  "shape_stress_tilts": [
+    -1.0,
+    1.0
+  ],
+  "feed_in_stress_scales": [
+    0.5,
+    1.5
+  ],
+  "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+  "default_observables": [
+    "pt2",
+    "abs_t_via_pt2"
+  ],
+  "report_schema_version": 2,
+  "stress_test_modes": [
+    "shape_only",
+    "tail_only",
+    "combined"
+  ],
+  "measurement_scope": "Slope observables fit truth 0-1 GeV^2 with reconstructed control up to5. Outside-range truth is modeled as fixed feed-in and stressed; the unsupported truth tail 1-5 is not measured. pt2 targets true_pT squared; abs_t_via_pt2 targets true_t using reco_pT squared."
+}

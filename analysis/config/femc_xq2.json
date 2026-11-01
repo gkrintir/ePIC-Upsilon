@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "production_family": "Jul26 fEMC nominal/remove scenarios with matched electron-ID settings; production provenance must be checked externally",
+  "input_pattern": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon{state}/{energy}/hiAcc/{directory}/merged_Upsilon_final.root",
+  "directories": {
+    "nominal": "output",
+    "remove_inner": "output_remove_inner",
+    "remove_outer": "output_remove_outer"
+  },
+  "tree": "UpsilonTree",
+  "electron_energy": 9.0,
+  "lumi_invfb": 10.0,
+  "selection_scope": "analysis",
+  "min_nominal_mc": 25,
+  "truth_mass_window": 0.2,
+  "q2_edges": null,
+  "xb_edges": null,
+  "xv_edges": [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.8, 1.0],
+  "beams": {
+    "9x130": {"proton_energy": 130.0, "w_min": 20.0, "w_max": 70.0},
+    "9x275": {"proton_energy": 275.0, "w_min": 20.0, "w_max": 100.0}
+  },
+  "states": {
+    "1S": {"q2_max": 1.0, "visible_xsec_fb": {"9x130": 119.685, "9x275": 210.136}},
+    "2S": {"q2_max": 0.01, "visible_xsec_fb": {"9x130": 29.297, "9x275": 53.133}},
+    "3S": {"q2_max": 0.01, "visible_xsec_fb": {"9x130": 23.447, "9x275": 42.969}}
+  },
+  "normalization_source": "Visible dielectron reference rates reproduced with eSTARlight 939b11a24499398392d959db81c7502aeec91046 and Upsilon_Sim_Cards f62965a1612fc734dbab18e141f4809740d6b234; does not authenticate production generator revision"
+}

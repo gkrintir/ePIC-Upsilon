@@ -1,0 +1,3 @@
+-r requirements.txt
+# Optional interactive environment for inspecting the archived notebooks.
+jupyterlab>=4,<5

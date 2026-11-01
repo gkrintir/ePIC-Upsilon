@@ -1,0 +1,7 @@
+# Versions used for the byte-exact archived PNG reruns documented in
+# docs/UPLOADED_ROOT_CROSSCHECK.md. PyROOT/ROOT 6.40.00 must be supplied by the
+# surrounding CERN ROOT, LCG, or SWAN environment.
+-r requirements-notebooks.txt
+numpy==2.3.5
+matplotlib==3.10.8
+uproot==5.7.6

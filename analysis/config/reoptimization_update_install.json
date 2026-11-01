@@ -1,0 +1,27 @@
+{
+  "package": "Ypsilon_Reoptimization_Update",
+  "version": "1.1.0",
+  "installed_utc": "2026-10-24T00:17:34.107285+00:00",
+  "previous_version": "1.0.2",
+  "installed_sha256": {
+    "config/reoptimization_9x275.json": "88e455231a3ea031b337bb4bc0a49ec1c55fa6342af89663754e53abffa862e8",
+    "scripts/reoptimization/__init__.py": "8ccc0c8a2cf50bf4ceb01cb38c48266cd87dd39a22d56870196e6bae30fdbe43",
+    "scripts/reoptimization/data.py": "e1add5e52d35f14dc95ed46d7f3491c0b1ba8fb2c55c932fbc474c59e5fa46e6",
+    "scripts/reoptimization/inference.py": "66bbb89643e281598f7305bc7f2d3884614e61afc102022ecfa0a19ca97c8bcd",
+    "scripts/reoptimization/reporting.py": "834602b0aa02a7f765da123370c05bfe76f893e400d54b42bbf01556d96eaec4",
+    "scripts/reoptimization/response.py": "c9ef374364e3802d45e4e9d1ec2ad0d837413285044933498dc3ebb0655dfe83",
+    "tests/test_reoptimization_data.py": "1526d8330a8c9331ad1a380f187d8d24073d667ad029d01618db6d8a9efe86ef",
+    "tests/test_reoptimization_inference.py": "e3f1c67d3a94eed8f9ed98c4ee6bb87ae3cf8d1aea17b9e9eb4975adfc9dfb21",
+    "tests/test_reoptimization_install.py": "6c1fdebfa0f997911de4500bac7e2fa646955de616d4f5c9fabe4cd656c5efa8",
+    "tests/test_reoptimization_reporting.py": "ecb3be853ac73457873f66f22568fb5c40202215eb871ce846f8cbceee7e0e4e",
+    "tests/test_reoptimization_response.py": "92030c3754dcd647a3aedae10eeca9807335f2af85004b1a195bf93742e2f4de",
+    "tests/test_reoptimization_runner.py": "f237901cc77194eeccdb82742dd0d24ba6e5faff5ce8a177a3840e6be2ae568a",
+    "workflow/run_reoptimization.py": "bb878ac0dcaac35fff259efc0e2380645b8b81f630e92990a4a3a61fe8ae85fe",
+    "config/reoptimization_9x275_wy.json": "858bf4a16b86b5251ef9dd6ce99b0ad14abbc512f174d4a2727e08a713006677",
+    "scripts/reoptimization/stress.py": "848f2470aa5b21e3ef2fc18e7b0083d6f6311e847fa1065e25b6ce5bde9fd0dc",
+    "tests/test_reoptimization_spectrum.py": "a96af830c8521b2e9ad1c6f1875181889b1bdede84dc981c7b553d5911ccd2ea",
+    "tests/test_reoptimization_stress.py": "12723cb0cb5e73122e8c244037d9f2b200b4974c1d60682473bd68396e8d6ee0",
+    "tests/test_reoptimization_wy_response.py": "5a1627641f4b34b7a37a6e7f3b6318106e952448c6e9886a95911be456b64e27",
+    "workflow/refresh_reoptimization_report.py": "9a197203d2dd81f584deee018575cd5e5aabb24ab71301ab8b8773598db6f52b"
+  }
+}

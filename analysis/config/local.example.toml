@@ -1,0 +1,29 @@
+# Copy this file to config/local.toml and adjust the paths for the active SWAN
+# or local environment. The pipeline deliberately has no implicit EOS defaults.
+
+[executables]
+python = "python3"
+
+[inputs]
+# Updated tuples used by the canonical analysis tasks.
+low_root = "/eos/user/g/gkrintir/merged_elecs_test_10t100_10x100.root"
+high_root = "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix2.root"
+
+# Legacy tuples required for byte-exact recovery of several archived figures.
+low_legacy_root = "/eos/user/g/gkrintir/merged_elecs_test_10t100.root"
+high_legacy_root = "/eos/user/g/gkrintir/merged_elecs_test_tuples.root"
+
+ct18_csv = "/eos/user/g/gkrintir/Fig5b_top_plot_CT18NLO.csv"
+estarlight_executable = "/path/to/e_starlight"
+
+# Inputs verified against the archived report-era output families.
+campaign_old_root = "/eos/user/g/gkrintir/merged_elecs_test.root"
+campaign_new_root = "/eos/user/g/gkrintir/merged_elecs_test_.root"
+report_mass_hist_root = "/eos/user/g/gkrintir/merged_elecs_test.root"
+report_mass_tuple_root = "/eos/user/g/gkrintir/merged_elecs_test_10t100_10x100.root"
+report_low_hist_root = "/eos/user/g/gkrintir/merged_elecs_test_10t100.root"
+report_high_hist_root = "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix2.root"
+
+# Bundled reference inputs are project-relative and SHA-256 pinned in
+# pipeline.toml. Keep curated replacements inside data/reference and update the
+# corresponding path and checksum together in a reviewed pipeline change.

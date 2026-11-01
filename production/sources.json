@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "macros/DVMP_Upsilon_Analysis.C",
+      "origin": "Library libfile_df0730b4b37c81918c5dad0b00435ab3, uploaded 2026-10-18",
+      "sha256": "e15891cf7dd8bb36e9b96e6ba82e84d5bad0ab9b1a1f5b73b378b7bbec9d2cb0",
+      "import": "byte-exact",
+      "original_name": "DVMP_Upsilon_Analysis(3).C"
+    },
+    {
+      "path": "macros/ElectronFinder.C",
+      "origin": "Library libfile_571b0f6a12d081919d7d185841798a73, uploaded 2026-10-17",
+      "sha256": "914495b6729016b1eb4f7aa54f260a1e517873e640ec6b92fa1a05adac7aae43",
+      "import": "byte-exact",
+      "original_name": "ElectronFinder(2).C"
+    },
+    {
+      "path": "macros/ePICStyle.C",
+      "origin": "gkrintir/lAger_JPsi_MuMu_Dataset@64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d",
+      "sha256": "7ff17fe62e19a236ec4c6457daac1c84de042185282282f3428f9c662e46c260",
+      "import": "byte-exact",
+      "blob_sha": "1ff8d2c4cf0e6e1a6cfc07e6bbcd49b1c67fdab6",
+      "url": "https://github.com/gkrintir/lAger_JPsi_MuMu_Dataset/blob/64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d/ePICStyle.C",
+      "blob_verified": true
+    },
+    {
+      "path": "macros/ePICStyle.h",
+      "origin": "gkrintir/lAger_JPsi_MuMu_Dataset@64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d",
+      "sha256": "444e7a13edd230e321ba548d79d28c2925ecbfefebea1a3ade6898bbab7604dd",
+      "import": "byte-exact",
+      "blob_sha": "0d33253b7e7bd1daeecaa8c7c32c9e44c124013f",
+      "url": "https://github.com/gkrintir/lAger_JPsi_MuMu_Dataset/blob/64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d/ePICStyle.h",
+      "blob_verified": true
+    },
+    {
+      "path": "download/download_upsilon_fast.py",
+      "origin": "Library libfile_35f5678c074881918e85cccd999cf8b9, modified 2026-10-21",
+      "sha256": "3daab4590140b1ee0b4ceda0dd58963f4192084b68d5012f2601aee60b4afd52",
+      "import": "byte-exact"
+    },
+    {
+      "path": "cards/slight_Upsilon1S_9To130.in",
+      "origin": "eic/Upsilon_Sim_Cards@f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon1S_9To130.in",
+      "sha256": "1f0ac6df71e72bd07aa25cc657e9369da064fcd327b8832016d5c4fce68b23e5",
+      "import": "byte-exact",
+      "blob_sha": "cdca454bddffa84d87993f99233619524aca9db2",
+      "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon1S_9To130.in",
+      "blob_verified": true
+    },
+    {
+      "path": "cards/slight_Upsilon1S_9To275.in",
+      "origin": "eic/Upsilon_Sim_Cards@f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon1S_9To275.in",
+      "sha256": "01ecab2bb4923fe4859f347c121eb3e4b39aa39ab7b2159a9ab1dafb9a49b21f",
+      "import": "byte-exact",
+      "blob_sha": "62a1bbd9e383c634504f57f72431af5a29891732",
+      "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon1S_9To275.in",
+      "blob_verified": true
+    },
+    {
+      "path": "cards/slight_Upsilon2S_9To130.in",
+      "origin": "eic/Upsilon_Sim_Cards@f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon2S_9To130.in",
+      "sha256": "88d520545fa16b88792dcb30a4ca3cf064e7c36d8509a963fc34213d71e4b5b4",
+      "import": "byte-exact",
+      "blob_sha": "e2dc3f5788a35a115e755a622b514fe958193276",
+      "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon2S_9To130.in",
+      "blob_verified": true
+    },
+    {
+      "path": "cards/slight_Upsilon2S_9To275.in",
+      "origin": "eic/Upsilon_Sim_Cards@f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon2S_9To275.in",
+      "sha256": "01c51de6b73f1f9b90c6e6f010c385021a3662c8828597f104ef94c4e2a03d30",
+      "import": "byte-exact",
+      "blob_sha": "e1d40e3013bca58e18bd1abf78cf2f6458d31d75",
+      "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon2S_9To275.in",
+      "blob_verified": true
+    },
+    {
+      "path": "cards/slight_Upsilon3S_9To130.in",
+      "origin": "eic/Upsilon_Sim_Cards@f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon3S_9To130.in",
+      "sha256": "5775b255d31e1af631a54ce249232727d3ea9d43dfdbbe87bb96c0a603385da8",
+      "import": "byte-exact",
+      "blob_sha": "a6af8109f0b069ab7886dd75a416610b915eec0b",
+      "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon3S_9To130.in",
+      "blob_verified": true
+    },
+    {
+      "path": "cards/slight_Upsilon3S_9To275.in",
+      "origin": "eic/Upsilon_Sim_Cards@f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon3S_9To275.in",
+      "sha256": "adf16732aed6c371b33ce156a3edbb10e47b7ccdaea496e7db3b12af9a8d85d5",
+      "import": "byte-exact",
+      "blob_sha": "ecdf1b175a21cc42b6ba394e3981e3c4afe6a454",
+      "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon3S_9To275.in",
+      "blob_verified": true
+    }
+  ],
+  "missing": [
+    "Historical CERN Condor submit description",
+    "Historical worker/environment setup script",
+    "Historical merge script and file manifest",
+    "Actual per-energy producer sources used for EOS production"
+  ],
+  "caveats": [
+    "Recovered producer hardcodes 9x275 and historical per-job raw weights.",
+    "Style dependencies come from the user GitHub repository; exact CERN production copy was not authenticated.",
+    "Existing production ROOT inputs are never regenerated automatically.",
+    "Recovered downloader uses a q2_0to0.01 remote directory for every state; verify against the generated phase space and the official 1S card with MAX_GAMMA_Q2=1."
+  ]
+}

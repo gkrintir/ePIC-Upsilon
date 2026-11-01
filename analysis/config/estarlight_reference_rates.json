@@ -1,0 +1,65 @@
+{
+  "profile": "jul26-estarlight-939b11a",
+  "generator_commit": "939b11a24499398392d959db81c7502aeec91046",
+  "cards_commit": "f62965a1612fc734dbab18e141f4809740d6b234",
+  "scope": "Public reference execution; EOS production executable revision is not authenticated",
+  "branching_fractions_ee": {
+    "1S": 0.0238,
+    "2S": 0.0191,
+    "3S": 0.0218
+  },
+  "q2_max_GeV2": {
+    "1S": 1.0,
+    "2S": 0.01,
+    "3S": 0.01
+  },
+  "visible_cross_sections_fb": {
+    "9x130": {
+      "1S": 119.685,
+      "2S": 29.297,
+      "3S": 23.447
+    },
+    "9x275": {
+      "1S": 210.136,
+      "2S": 53.133,
+      "3S": 42.969
+    }
+  },
+  "beam_diagnostics_visible_fb": {
+    "10x275": {
+      "1S": 225.718,
+      "2S": 57.27,
+      "3S": 46.355
+    },
+    "18x275": {
+      "1S": 327.522,
+      "2S": 84.62,
+      "3S": 68.836
+    }
+  },
+  "historical_18x275": {
+    "visible_cross_sections_fb": {
+      "1S": 327.584,
+      "2S": 84.78,
+      "3S": 68.929
+    },
+    "legacy_analysis_branching_fractions_ee": {
+      "1S": 0.0234,
+      "2S": 0.0191,
+      "3S": 0.0218
+    },
+    "provenance": "Historical analysis targets, not an exact reproduction of original production generator"
+  },
+  "latest_workflow_scope": "Default latest/newID pipelines retain 1S; opt-in run_all_states runs isolated 1S/2S/3S two-energy workflows with state-specific input files and Q2 limits.",
+  "historical_gamma_diagnostics": {
+    "electron_gamma": 35225,
+    "proton_gamma": 293.2,
+    "visible_cross_sections_fb": {
+      "1S": 327.584,
+      "2S": 84.684,
+      "3S": 68.85
+    },
+    "source": "Recorded high-energy beam factors in config/pipeline_w_validation.toml; state-specific July card Q2 limits retained",
+    "comparison": "1S reproduced exactly at printed precision; 2S/3S differ by less than0.12%"
+  }
+}

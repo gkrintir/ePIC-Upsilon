@@ -1,0 +1,15 @@
+file,pass,byte_identical,max_absolute_difference,max_relative_difference
+Wres_1S_18x275_full_W_resolution_summary.csv,True,True,0.0,0.0
+Wres_1S_18x275_full_response_counts_selected.csv,True,True,0.0,0.0
+compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv,True,False,4.547473508864641e-13,1.7821812611179079e-16
+compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv,True,False,1.4551915228366852e-11,3.1729953731315256e-16
+sigma_gp_1S_10x100_fixed.csv,True,False,2.842170943040401e-14,6.571443360977147e-16
+sigma_gp_1S_10x100_fixed_normalization.csv,True,False,9.094947017729282e-13,1.7116541399131148e-16
+sigma_gp_family_18x275_fixed.csv,True,False,8.326672684688674e-17,4.448226164344163e-16
+sigma_gp_family_18x275_fixed_normalization.csv,True,False,0.0,0.0
+sigma_gp_family_18x275_fixed_unfolded.csv,True,False,1.1368683772161603e-13,4.448226164344163e-16
+sigma_gp_family_18x275_fixed_unfolded_normalization.csv,True,False,0.0,0.0
+unfold_1S_18x275_normalization.csv,True,False,1.4551915228366852e-11,3.174174570002309e-16
+unfold_1S_18x275_response_counts.csv,True,True,0.0,0.0
+unfold_1S_18x275_response_prob.csv,True,True,0.0,0.0
+unfold_1S_18x275_unfolded_summary.csv,True,True,0.0,0.0

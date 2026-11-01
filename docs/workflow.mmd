@@ -1,0 +1,10 @@
+flowchart TD
+    A["Reconstructed ePIC events"] --> B["ROOT producer and Condor"]
+    B --> C["Merge job tuples"]
+    E["Existing merged UpsilonTree"] --> D["Normalize and audit"]
+    C --> D
+    D --> F["Full state analysis"]
+    D --> G["Response and bin optimization"]
+    F --> H["Review validation status"]
+    G --> H
+    H --> I["SWAN figures and note exports"]

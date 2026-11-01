@@ -1,0 +1,11 @@
+# Core Python dependencies used by the analysis scripts.  PyROOT is provided by
+# a compatible CERN ROOT/LCG/SWAN environment and is intentionally not installed
+# from PyPI.
+numpy>=1.24,<3
+pandas>=1.5,<3
+matplotlib>=3.7,<4
+mplhep>=0.3.31,<1
+scipy>=1.10,<2
+# Macro-independent ROOT histogram I/O used by the report cross-check tasks.
+uproot>=5,<6
+tomli>=2,<3; python_version < "3.11"

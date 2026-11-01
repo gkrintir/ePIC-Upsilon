@@ -1,0 +1,16 @@
+/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/compare_sigma_gp_two_energies_swan_v4.py:68: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  return float(np.trapz(vals, grid))
+=== Normalization metadata ===
+sample                                                                                    path  entries_all  entries_selected  has_true_Q2  sumw_all_raw  sumw_state_raw  tuple_lumi_invfb  inferred_visible_xsec_fb_raw_state  target_visible_xsec_fb  weight_scale_to_visible  target_inclusive_xsec_pb
+   low     /workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root        44018             43251         True      53444.43       53135.425              10.0                           5313.5425                 104.793                 0.019722                  4.478333
+  high /workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root        58738             23737         True      62555.99       45861.760              10.0                           4586.1760                 327.584                 0.071429                 13.999316
+
+=== Comparison ===
+  W_low  W_high  low_sigma_gp_pb  high_sigma_gp_pb  ratio_low_over_high  low_yield_inclusive_weighted  high_yield_inclusive_weighted
+     20 22.1667          94.4982           39.8693               2.3702                       4676.58                        2768.34
+22.1667 24.3333          117.093           60.8622               1.9239                       4943.35                        3709.45
+24.3333    26.5          87.0541           62.1086              1.40164                       3161.39                        3356.42
+
+Wrote /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv
+Wrote /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv
+Wrote /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.png

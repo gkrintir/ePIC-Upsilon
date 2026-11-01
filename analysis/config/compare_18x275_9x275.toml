@@ -1,0 +1,54 @@
+version = 1
+
+[executables]
+python = "python3"
+
+[inputs]
+# Previous-high reference uses the framework default fix2 sample.
+reference_root = "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix2.root"
+# Assumed 9x275 location; confirm or edit before running. Keep the leading slash.
+candidate_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output/merged_Upsilon_final.root"
+
+[comparison]
+tree = "UpsilonTree"
+state = "1S"
+reference_label = "18x275 GeV"
+candidate_label = "9x275 GeV"
+reference_electron_energy = 18.0
+candidate_electron_energy = 9.0
+bins = 60
+
+[groups]
+compare_beams = ["compare_beam_samples"]
+
+[[task]]
+name = "compare_beam_samples"
+stage = "comparison"
+description = "Compare independently normalized truth/reco shapes and tuple selection fractions"
+script = "scripts/validation/compare_beam_samples.py"
+args = [
+  "--reference-file", "{inputs.reference_root}",
+  "--candidate-file", "{inputs.candidate_root}",
+  "--tree", "{comparison.tree}",
+  "--state", "{comparison.state}",
+  "--reference-label", "{comparison.reference_label}",
+  "--candidate-label", "{comparison.candidate_label}",
+  "--reference-electron-energy", "{comparison.reference_electron_energy}",
+  "--candidate-electron-energy", "{comparison.candidate_electron_energy}",
+  "--bins", "{comparison.bins}",
+  "--out-dir", "{run.dir}/artifacts/beam_comparison",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.reference_root}", "file:{inputs.candidate_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/beam_comparison/truth_shapes.png",
+  "{run.dir}/artifacts/beam_comparison/truth_shapes.pdf",
+  "{run.dir}/artifacts/beam_comparison/reco_shapes.png",
+  "{run.dir}/artifacts/beam_comparison/reco_shapes.pdf",
+  "{run.dir}/artifacts/beam_comparison/selection_summary.csv",
+  "{run.dir}/artifacts/beam_comparison/bin_values.csv",
+  "{run.dir}/artifacts/beam_comparison/comparison_manifest.json",
+]
+fail_patterns = ["Traceback"]

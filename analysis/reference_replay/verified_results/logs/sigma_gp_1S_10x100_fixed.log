@@ -1,0 +1,9 @@
+/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan.py:107: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  return float(np.trapz(vals, grid))
+=== Normalization summary ===
+state normalization_scope  target_visible_xsec_fb  sum_weight_norm_scope_raw  inferred_xsec_norm_scope_fb  weight_scale  br_ee  target_inclusive_xsec_pb_if_visible
+   1S         truth_state                 104.793                  53135.425                    5313.5425      0.019722 0.0234                             4.478333
+
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_1S_10x100_fixed.png
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_1S_10x100_fixed.csv
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_1S_10x100_fixed_normalization.csv

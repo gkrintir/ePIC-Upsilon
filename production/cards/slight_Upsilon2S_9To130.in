@@ -1,0 +1,30 @@
+baseFileName = slight_Upsilon2S_9To130_10
+TARGET_BEAM_Z = 1         # Z of proton
+TARGET_BEAM_A = 1         # A of proton
+
+ELECTRON_BEAM_GAMMA = 17612.6 # 9 GeV electrons
+TARGET_BEAM_GAMMA = 138.6     # 130 GeV protons
+
+W_MAX = -1
+W_MIN = -1
+W_N_BINS = 50
+W_GP_MAX = -1
+W_GP_MIN = -1
+EGA_N_BINS = 400
+CUT_PT = 0
+PT_MIN = 1.0
+PT_MAX = 3.0
+
+PROD_MODE = 12            # Coherent vector meson (narrow)
+PROD_PID = 554011         # 554011 = Upsilon(2S) --> e+e-
+N_EVENTS = 100000
+RND_SEED = 5598165
+
+BREAKUP_MODE = 5          
+OUTPUT_FORMAT = 2         # 0 for Text, 2 for HepMC3
+
+# Photoproduction Kinematics
+MIN_GAMMA_Q2 = 0.0
+MAX_GAMMA_Q2 = 0.01       
+
+QUANTUM_GLAUBER = 1

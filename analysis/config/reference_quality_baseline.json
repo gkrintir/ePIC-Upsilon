@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "known_issue_ids": [
+    "EMPTY_STATE_OUTPUT::diff_gamma_p_family_10x100_W20to26p5_metadata.csv::2S",
+    "EMPTY_STATE_OUTPUT::diff_gamma_p_family_10x100_W20to26p5_metadata.csv::3S",
+    "LOW_ENERGY_OVERLAY_EMPTY::overlay_sigma_gp_1S_10x100_18x275.csv",
+    "METHOD_FILENAME_MISMATCH::unfold_t_1S_10x100_eX_zeusBins_normalization.csv",
+    "METHOD_FILENAME_MISMATCH::unfold_t_1S_10x100_eX_zeusBins_t_unfold_summary.csv",
+    "NO_PLOTTED_BINS::sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC.csv",
+    "TARGET_NORMALIZATION_MISMATCH::sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC_normalization.csv::1S",
+    "W_RANGE_MISMATCH::compare_t_methods_1S_10x100_18x275_W20to26p5_summary.csv",
+    "W_RANGE_MISMATCH::diff_gamma_p_1S_10x100_W20to26p5_bSlope_metadata.csv",
+    "W_RANGE_MISMATCH::diff_gamma_p_family_10x100_W20to26p5_metadata.csv",
+    "W_RANGE_MISMATCH::sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC.csv",
+    "ZERO_EFFICIENCY::hybrid_t_1S_eX_commonW_W20to26p5_high_t_unfold_commonW.csv",
+    "ZERO_EFFICIENCY::hybrid_t_1S_pT2_commonW_W20to26p5_high_t_unfold_commonW.csv",
+    "ZERO_EFFICIENCY::sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC.csv"
+  ],
+  "notes": "Known defects in the committed results/reference CSV snapshot. New error IDs fail the audit; resolved IDs are reported as stale baseline entries."
+}

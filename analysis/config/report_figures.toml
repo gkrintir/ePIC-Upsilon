@@ -1,0 +1,404 @@
+version = 4
+
+# Image-level match labels used below:
+#   exact             same panel pixels/image object, allowing PDF encoding/crop
+#   high-near/source  near visual match or the same retained plotting source
+#   medium-lineage    later descendant or the same histogram/data series
+#   low-analogue      related variable, but materially different selection/sample
+#   missing-producer  no retained code/artifact for the visible panel
+#   external          figure credited to an external source
+#   manual            hand-authored table/composite; no generator identified
+
+[[report]]
+id = "original"
+title = "Y meson photo-production in ePIC"
+pages = 17
+sha256 = "0d37e7140c76d89876f5712684fea414f7c51d617dbc1f373a70ed098e834b0e"
+
+[[report]]
+id = "followup"
+title = "Followup Y meson photo-production in ePIC"
+pages = 11
+sha256 = "da26460441c80cfc15688486c5e83061ac494b2fc12238c8be82c75186180941"
+
+[[report]]
+id = "performance"
+title = "Performance for Y meson photo-production in ePIC"
+pages = 12
+sha256 = "b43fa1960a5fa9849579a7fec47d1c33937f73ea78eeb3e7f9f2ed88a70ab4d6"
+
+[[figure]]
+id = "original_external_dscb_example"
+report = "original"
+page = 2
+panel = "S. Yoo/Berkeley DSCB mass-fit example"
+producer_task = ""
+outputs = []
+canonical_source = ""
+match = "external"
+producer_status = "external source; not produced by this package"
+
+[[figure]]
+id = "original_generated_upsilon_mass"
+report = "original"
+page = 4
+panel = "generated Upsilon mass"
+producer_task = "report_truth_level_dashboard"
+outputs = ["Upsilon_TrueLevel_Overlay_Dashboard.png", "GenLevel_h_Gen_Upsilon_Mass.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 7
+match = "medium-lineage"
+producer_status = "tuple-direct descendant retained; notebook 07 is a later pre-binned renderer"
+
+[[figure]]
+id = "original_generated_upsilon_rapidity_pt"
+report = "original"
+page = 5
+panel = "generated Upsilon rapidity and pT"
+producer_task = "report_truth_level_dashboard"
+outputs = ["Upsilon_TrueLevel_Overlay_Dashboard.png", "GenLevel_h_Gen_Upsilon_y.png", "GenLevel_h_Gen_Upsilon_pT.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 7
+match = "medium-lineage"
+producer_status = "tuple-direct descendants retained; exact report layout is absent"
+
+[[figure]]
+id = "original_generated_w_vs_upsilon_rapidity"
+report = "original"
+page = 6
+panel = "W vs Upsilon rapidity"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["GenLevel_h2_Gen_W_vs_Rapidity_TH2.png"]
+canonical_source = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+match = "medium-lineage"
+producer_status = "exact stored TH2 and exact tuple fill recovered; report layout is not pixel-matched"
+
+[[figure]]
+id = "original_generated_t_vs_w"
+report = "original"
+page = 6
+panel = "generated |t| vs W"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["GenLevel_h2_Gen_t_vs_W_TH2.png", "Upsilon_TrueLevel_Overlay_Dashboard.png"]
+canonical_source = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+match = "medium-lineage"
+producer_status = "exact stored TH2 and tuple fill recovered; dashboard is a later contour view"
+
+[[figure]]
+id = "original_decay_lepton_truth_maps"
+report = "original"
+page = 7
+panel = "decay-lepton pT correlation and eta-vs-pT map"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["GenLevel_h2_Gen_DecayLeps_pT_vs_pT_TH2.png", "GenLevel_h2_Gen_DecayLeps_Eta_vs_pT_TH2.png", "Upsilon_TrueLevel_Overlay_Dashboard.png"]
+canonical_source = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+match = "medium-lineage"
+producer_status = "all generator-level decay-lepton TH2 fills reproduce exactly from the tuple"
+
+[[figure]]
+id = "original_generated_scattered_electron"
+report = "original"
+page = 8
+panel = "generated scattered-electron energy and eta"
+producer_task = "report_truth_level_dashboard"
+outputs = ["Upsilon_TrueLevel_Overlay_Dashboard.png", "GenLevel_h_Gen_ScatElec_E.png", "GenLevel_h_Gen_ScatElec_Eta.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 7
+match = "medium-lineage"
+producer_status = "tuple-direct descendants retained; notebook 07 is a later pre-binned renderer"
+
+[[figure]]
+id = "original_truth_reco_lepton_efficiency_maps"
+report = "original"
+page = 9
+panel = "truth/reco decay-lepton maps and efficiency map"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["GenLevel_h2_Gen_DecayLeps_Eta_vs_pT_TH2.png", "h2_Reco_DecayLeps_Eta_vs_pT_TH2.png", "DecayLepton_Efficiency_Eta_vs_pT_new.png"]
+canonical_source = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+match = "medium-lineage"
+producer_status = "truth and reco maps are exact; ratio candidate has an unresolved empty-bin convention"
+
+[[figure]]
+id = "original_scattered_electron_eta_gen_reco"
+report = "original"
+page = 10
+panel = "generated vs reconstructed scattered-electron eta"
+producer_task = ""
+outputs = ["Upsilon_TrueLevel_Overlay_Dashboard.png", "Upsilon_Inclusive_Dashboard.png", "h_eta_ScatElec.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+match = "low-analogue"
+producer_status = "cells 7 and 0/1 fill truth and reco directly; exact overlay is absent"
+
+[[figure]]
+id = "original_electron_ep_ratio"
+report = "original"
+page = 11
+panel = "electron E/p ratio"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["h_EleID_EpRatio.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "medium-lineage"
+producer_status = "prefilled renderer only; event-to-histogram filling step is not retained"
+
+[[figure]]
+id = "original_invariant_mass"
+report = "original"
+page = 12
+panel = "reconstructed invariant mass"
+producer_task = "report_legacy_inclusive_dashboard"
+outputs = ["Upsilon_Inclusive_Dashboard.png", "h_invMass_Reco_All.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 0
+match = "medium-lineage"
+producer_status = "tuple-direct descendant retained; notebook 07 renders a later pre-binned comparison"
+
+[[figure]]
+id = "original_w_and_rapidity_gen_reco"
+report = "original"
+page = 12
+panel = "generated-vs-reconstructed W and Upsilon rapidity"
+producer_task = ""
+outputs = ["Upsilon_TrueLevel_Overlay_Dashboard.png", "Upsilon_Inclusive_Dashboard.png", "h_Reco_W.png", "h_UpsilonRapidity.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+match = "low-analogue"
+producer_status = "tuple-direct truth and reco ingredients survive; exact overlays are absent"
+
+[[figure]]
+id = "original_w_vs_rapidity_inset"
+report = "original"
+page = 12
+panel = "W-vs-rapidity 2D inset"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["GenLevel_h2_Gen_W_vs_Rapidity_TH2.png"]
+canonical_source = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+match = "medium-lineage"
+producer_status = "exact stored TH2 and tuple fill recovered; inset layout is not pixel-matched"
+
+[[figure]]
+id = "original_mass_resolution_bins"
+report = "original"
+page = 13
+panel = "mass resolution in three rapidity bins"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["RapidityBins_h_MassRes_Bin4.png", "RapidityBins_h_MassRes_Bin2.png", "RapidityBins_h_MassRes_Bin3.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "medium-lineage"
+producer_status = "prefilled renderer only; tuple-level mass-resolution filler is absent"
+
+[[figure]]
+id = "original_mass_fit_without_electron_id"
+report = "original"
+page = 14
+panel = "inclusive mass fit without electron ID"
+producer_task = "report_mass_fit_tuple_direct"
+outputs = ["Fit_Inclusive_Upsilon_DSCB_Nice.png"]
+canonical_source = "notebooks/01_mass_fits_inclusive_and_rapidity.ipynb"
+cell = 1
+match = "low-analogue"
+producer_status = "tuple-direct fit analogue retained; exact no-ID selection is unresolved"
+
+[[figure]]
+id = "original_inclusive_mass_fit_with_electron_id"
+report = "original"
+page = 14
+panel = "inclusive mass fit with electron ID"
+producer_task = "report_mass_fit_scaled_legacy"
+outputs = ["Fit_Inclusive_Upsilon_DSCB.png"]
+canonical_source = "notebooks/01_mass_fits_inclusive_and_rapidity.ipynb"
+cell = 0
+match = "high-near/source"
+producer_status = "near image retained; exact generic-output run state is unresolved"
+
+[[figure]]
+id = "original_rapidity_mass_fits"
+report = "original"
+page = 17
+panel = "mass fits in -1<y<0 and 0<y<1"
+producer_task = "report_mass_fit_rapidity_recovered"
+outputs = ["Fit_Inclusive_Upsilon_RapidityBins.png", "Fit_Inclusive_Upsilon_RapidityBins_raw_visible_decay.png"]
+canonical_source = "notebooks/01_mass_fits_inclusive_and_rapidity.ipynb"
+cell = 2
+match = "medium-lineage"
+producer_status = "same DSCB family; retained composite has different style and normalization"
+
+[[figure]]
+id = "followup_tagger_tracks"
+report = "followup"
+page = 3
+panel = "number of low-Q2 tagger tracks"
+producer_task = "report_legacy_inclusive_dashboard"
+outputs = ["Upsilon_Inclusive_Dashboard.png", "h_nTracks_Tagger.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 0
+match = "medium-lineage"
+producer_status = "tuple-direct descendant retained; notebook 07 renders the later campaign view"
+
+[[figure]]
+id = "followup_track_correlation"
+report = "followup"
+page = 4
+panel = "central-vs-tagger track correlation"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["h2_nTracks_Central_vs_Tagger_TH2.png", "central_tagger_corr_18x275_1S.png"]
+canonical_source = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+match = "medium-lineage"
+producer_status = "all-event raw map is an exact tuple reconstruction; selected 1S view is a descendant"
+
+[[figure]]
+id = "followup_central_tracks"
+report = "followup"
+page = 5
+panel = "number of central tracks"
+producer_task = "report_legacy_inclusive_dashboard"
+outputs = ["Upsilon_Inclusive_Dashboard.png", "h_nTracks_Central.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 0
+match = "medium-lineage"
+producer_status = "tuple-direct descendant retained; notebook 07 renders the later campaign view"
+
+[[figure]]
+id = "followup_tagged_proton_momentum"
+report = "followup"
+page = 6
+panel = "tagged-proton momentum"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["h_Reco_Proton_p.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "medium-lineage"
+producer_status = "prefilled renderer only; event-to-histogram filling step is not retained"
+
+[[figure]]
+id = "followup_reco_t_wbin2"
+report = "followup"
+page = 7
+panel = "reconstructed |t| for 80<W<100 GeV"
+producer_task = ""
+outputs = ["h_Reco_t_Wbin2.png", "reco_t_distributions_1S_twoE_separateW.png"]
+canonical_source = "scripts/plotting/plot_reco_t_estimators_by_energy.py"
+match = "low-analogue"
+producer_status = "tuple-direct script is configurable to W=80-100; notebook 07 renders the stored key"
+
+[[figure]]
+id = "followup_electron_isolation"
+report = "followup"
+page = 8
+panel = "electron-ID isolation fraction"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["h_EleID_IsoFraction.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "medium-lineage"
+producer_status = "prefilled renderer only; event-to-histogram filling step is not retained"
+
+[[figure]]
+id = "followup_generated_w_acceptance"
+report = "followup"
+page = 9
+panel = "generated W in acceptance at lower beam energy"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["GenLevel_h_Gen_W_InAcc.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "low-analogue"
+producer_status = "retained artifact is the nominal-energy range, not the lower-energy report panel"
+
+[[figure]]
+id = "performance_mass_resolution_campaigns"
+report = "performance"
+page = 2
+panel = "mass-resolution campaign comparisons in two rapidity bins"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["RapidityBins_h_MassRes_Bin2.png", "RapidityBins_h_MassRes_Bin3.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "high-near/source"
+producer_status = "uploaded inputs reproduce archived PNGs byte-for-byte; slide panels retain crop or encoding differences"
+
+[[figure]]
+id = "performance_track_multiplicity_campaigns"
+report = "performance"
+page = 3
+panel = "central and low-Q2 tagger track campaign comparisons"
+producer_task = "report_compare_campaign_histograms"
+outputs = ["h_nTracks_Central.png", "h_nTracks_Tagger.png"]
+canonical_source = "scripts/plotting/compare_report_campaign_histograms.py"
+match = "high-near/source"
+producer_status = "uploaded inputs reproduce archived PNGs byte-for-byte; slide panels retain crop or encoding differences"
+
+[[figure]]
+id = "performance_estarlight_afterburner"
+report = "performance"
+page = 4
+panel = "raw eSTARlight vs afterburner pT, rapidity, W, and Q2"
+producer_task = ""
+outputs = []
+canonical_source = ""
+match = "missing-producer"
+producer_status = "no matching source or standalone artifact retained"
+
+[[figure]]
+id = "performance_cross_section_table"
+report = "performance"
+page = 5
+panel = "cross-section and branching-ratio table"
+producer_task = ""
+outputs = []
+canonical_source = ""
+match = "manual"
+producer_status = "values recur in code, but no table generator was identified"
+
+[[figure]]
+id = "performance_cutflow"
+report = "performance"
+page = 6
+panel = "raw ROOT event-selection cutflow"
+producer_task = "report_event_selection_cutflow"
+outputs = ["Upsilon_EventSelection_Cutflow.png", "Upsilon_EventSelection_Cutflow_with_Loss.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 8
+match = "medium-lineage"
+producer_status = "cell 8 reads prefilled h_CutFlow; its event-to-histogram filling step is absent"
+
+[[figure]]
+id = "performance_kinematic_efficiency"
+report = "performance"
+page = 7
+panel = "four 1S kinematic-efficiency panels"
+producer_task = "report_legacy_kinematic_efficiencies"
+outputs = ["Upsilon_1S_Kinematic_Efficiencies-Copy1.png"]
+canonical_source = "notebooks/02_efficiency_and_two_energy_studies.ipynb"
+cell = 0
+match = "exact"
+producer_status = "merged_elecs_test_tuples.root reproduces all three state outputs byte-for-byte"
+
+[[figure]]
+id = "performance_scaled_dashboard"
+report = "performance"
+page = 8
+panel = "4x4 scaled-yield dashboard"
+producer_task = "report_legacy_inclusive_dashboard"
+outputs = ["Upsilon_Inclusive_Dashboard.png"]
+canonical_source = "notebooks/03_event_selection_truth_and_bt_studies.ipynb"
+cell = 0
+match = "medium-lineage"
+producer_status = "same grid and variables, but normalization and several distributions differ"
+
+[[figure]]
+id = "performance_zeus_mass_spectrum"
+report = "performance"
+page = 9
+panel = "ZEUS mass spectrum"
+producer_task = ""
+outputs = []
+canonical_source = ""
+match = "external"
+producer_status = "external ZEUS figure, not produced by this package"
+
+[[figure]]
+id = "performance_gamma_p_family"
+report = "performance"
+page = 10
+panel = "projected gamma-p cross sections for 1S/2S/3S"
+producer_task = "report_gamma_p_family_predecessor"
+outputs = ["Upsilon_Family_GammaP.png"]
+canonical_source = "notebooks/06_gamma_p_cross_section_family.ipynb"
+cell = 0
+match = "high-near/source"
+producer_status = "merged_elecs_test_tuples.root reproduces the retained image byte-for-byte; report styling differs"

@@ -1,0 +1,16 @@
+{
+  "original_file": "Ypsilon_All_States_Update/payload/scripts/validation/plot_latest_sample_performance.py",
+  "source_archive_library_file_id": "libfile_a131c5a85a8c81918d3c4211ef1136cf",
+  "source_sha256": "584a0f982450f176e3f99d3dc0a5f0fb073c00aa6226104c80fd59b26a1ff1ec",
+  "scope": "Exact truth/reconstructed masks and unweighted eligible tuple ratio; not the reoptimization or differential extraction selection",
+  "known_source_limit": "Source payload verified; the current CERN installation and production inputs must be checked when running.",
+  "proton_selection_update": {
+    "default": "required",
+    "producer_source": "DVMP_Upsilon_Analysis(3).C",
+    "producer_source_sha256": "e15891cf7dd8bb36e9b96e6ba82e84d5bad0ab9b1a1f5b73b378b7bbec9d2cb0",
+    "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+    "schema": "0/3/4 must have momentum -999; 1/2 must have positive finite momentum",
+    "legacy_category": "explicit --proton-selection inclusive",
+    "scope": "Additional reconstructed selection only; original truth denominator and normalization unchanged"
+  }
+}

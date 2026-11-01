@@ -1,0 +1,19 @@
+# Defaults for workflow/run_state.py and workflow/run_all_states.py.
+# Each state is processed in a separate run directory with both beam energies.
+# Input rates/branching/Q2 settings come from the validated July state profile.
+[all_states]
+input_pattern = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon{state}/{energy}/hiAcc/{directory}/merged_Upsilon_final.root"
+phase_space_note = "The July 1S card has Q2max=1 GeV^2; 2S/3S have Q2max=0.01 GeV^2. Integrated state ratios therefore do not share a common Q2 acceptance."
+
+# Keep the already validated new-ID 1S files; the new 2S/3S files use output.
+[all_states.input_directories]
+"1S" = "output_newID"
+"2S" = "output"
+"3S" = "output"
+
+[analysis]
+min_eff = 0.05
+stat_mode = "projected"
+projection_lumi_invfb = 10.0
+count_interval = "median_garwood"
+include_efficiency_mc_uncertainty = 0

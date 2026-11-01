@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "energy": "9x275",
+  "tree": "UpsilonTree",
+  "synthetic": false,
+  "settings": {
+    "electron_energy": 9.0,
+    "proton_energy": 275.0,
+    "w_range": [
+      20.0,
+      100.0
+    ],
+    "true_mass_window": 0.2,
+    "q2_split": 0.01,
+    "coverage": 0.6826894921370859,
+    "min_denominator": 50,
+    "pt_edges": [
+      0.0,
+      0.2,
+      0.4,
+      0.6000000000000001,
+      0.8,
+      1.0,
+      1.2000000000000002,
+      1.4000000000000001,
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4000000000000004,
+      2.6,
+      2.8000000000000003,
+      3.0
+    ],
+    "w_edges": [
+      20.0,
+      28.0,
+      36.0,
+      44.0,
+      52.0,
+      60.0,
+      68.0,
+      76.0,
+      84.0,
+      92.0,
+      100.0
+    ],
+    "y_edges": [
+      -1.0,
+      -0.75,
+      -0.5,
+      -0.25,
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0,
+      1.25,
+      1.5,
+      1.75,
+      2.0,
+      2.25,
+      2.5,
+      2.75,
+      3.0
+    ],
+    "q2_edges": [
+      0,
+      1e-06,
+      1e-05,
+      0.0001,
+      0.001,
+      0.01,
+      0.03,
+      0.1,
+      0.3,
+      1
+    ],
+    "tail_edges": [
+      0,
+      1,
+      1.6,
+      2.2,
+      2.6,
+      3
+    ],
+    "strata_w_edges": [
+      20,
+      40,
+      60,
+      80,
+      100
+    ],
+    "strata_y_edges": [
+      -1,
+      0,
+      1,
+      2,
+      3
+    ],
+    "proton_selection": "required"
+  },
+  "samples": [
+    {
+      "key": "1s_newid",
+      "label": "\u03a5(1S), new ID",
+      "state": "1S",
+      "id_mode": "new",
+      "q2_max": 1.0,
+      "path": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root",
+      "reference_efficiency_csv": "results/generated/runs/allstates-projected-L10-v1-1s/artifacts/performance/9x275/selection_efficiency.csv"
+    },
+    {
+      "key": "1s_standard",
+      "label": "\u03a5(1S), standard ID",
+      "state": "1S",
+      "id_mode": "standard",
+      "q2_max": 1.0,
+      "path": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output/merged_Upsilon_final.root"
+    },
+    {
+      "key": "2s_standard",
+      "label": "\u03a5(2S), standard ID",
+      "state": "2S",
+      "id_mode": "standard",
+      "q2_max": 0.01,
+      "path": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon2S/9x275/hiAcc/output/merged_Upsilon_final.root",
+      "reference_efficiency_csv": "results/generated/runs/allstates-projected-L10-v1-2s/artifacts/performance/9x275/selection_efficiency.csv"
+    },
+    {
+      "key": "3s_standard",
+      "label": "\u03a5(3S), standard ID",
+      "state": "3S",
+      "id_mode": "standard",
+      "q2_max": 0.01,
+      "path": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon3S/9x275/hiAcc/output/merged_Upsilon_final.root",
+      "reference_efficiency_csv": "results/generated/runs/allstates-projected-L10-v1-3s/artifacts/performance/9x275/selection_efficiency.csv"
+    }
+  ]
+}

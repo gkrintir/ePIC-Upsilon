@@ -1,0 +1,20 @@
+# Optional explicit normalization overlay for the updated latest/statistics/newID
+# pipelines, including their fEMC scenarios. The latest pipelines already use
+# these defaults. This file selects rates and branching fractions; it does not
+# change the input samples or enable additional Upsilon states.
+# Use a fresh run ID after changing the normalization profile.
+# Keep config/pipeline.toml and the archived note replay on their historical
+# convention; do not apply this overlay to an archived-reproduction run.
+
+[analysis]
+normalization_profile = "jul26-estarlight-939b11a"
+branching_fractions = "1S:0.0238,2S:0.0191,3S:0.0218"
+generator_branching_fraction = 0.0238
+
+[beam.low]
+visible_xsec_1s_fb = 119.685
+normalization_source = "Reproduced eSTARlight 939b11a with Jul26 Upsilon_Sim_Cards f62965a (9x130, Upsilon(1S), Q2 0-1 GeV^2): visible dielectron 119.685 fb; generator B_ee=0.0238"
+
+[beam.high]
+visible_xsec_1s_fb = 210.136
+normalization_source = "Reproduced eSTARlight 939b11a with Jul26 Upsilon_Sim_Cards f62965a (9x275, Upsilon(1S), Q2 0-1 GeV^2): visible dielectron 210.136 fb; generator B_ee=0.0238"

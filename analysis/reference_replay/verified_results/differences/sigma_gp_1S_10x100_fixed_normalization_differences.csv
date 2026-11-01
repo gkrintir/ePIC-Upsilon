@@ -1,0 +1,7 @@
+row,column,archived,rerun,difference,relative_difference,pass
+0,target_visible_xsec_fb,104.793,104.793,0.0,0.0,True
+0,sum_weight_norm_scope_raw,53135.425,53135.425,0.0,0.0,True
+0,inferred_xsec_norm_scope_fb,5313.5425000000005,5313.5425,-9.094947017729282e-13,-1.7116541399131148e-16,True
+0,weight_scale,0.0197218710493046,0.0197218710493046,0.0,0.0,True
+0,br_ee,0.0234,0.0234,0.0,0.0,True
+0,target_inclusive_xsec_pb_if_visible,4.478333333333333,4.478333333333333,0.0,0.0,True

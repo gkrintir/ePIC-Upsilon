@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "description": "Independent training/holdout differential reoptimization at 9x275, 2.5 fb^-1. Signal-only conditional projection.",
+  "tree": "UpsilonTree",
+  "electron_energy": 9.0,
+  "proton_energy": 275.0,
+  "target_lumi_invfb": 2.5,
+  "w_range": [
+    20.0,
+    100.0
+  ],
+  "truth_mass_window": 0.2,
+  "reco_mass_window_sigma": 3.0,
+  "sigma_epz_center": 18.0,
+  "sigma_epz_halfwidth": 1.8,
+  "train_fraction": 0.5,
+  "seed": 12345,
+  "hash_inputs": false,
+  "common_binning": false,
+  "states": {
+    "1S": {
+      "state": "1S",
+      "run": "/afs/cern.ch/work/g/gkrintir/private/Ypsilon-Fit-Framework/results/generated/runs/allstates-projected-L10-v1-1s",
+      "visible_xsec_fb": 210.136,
+      "br_ee": 0.0238,
+      "q2_max": 1.0,
+      "mass": 9.4603,
+      "sigma": 0.053,
+      "expected_source_lumi_invfb": 10.0,
+      "category": "new electron ID"
+    },
+    "2S": {
+      "state": "2S",
+      "run": "/afs/cern.ch/work/g/gkrintir/private/Ypsilon-Fit-Framework/results/generated/runs/allstates-projected-L10-v1-2s",
+      "visible_xsec_fb": 53.133,
+      "br_ee": 0.0191,
+      "q2_max": 0.01,
+      "mass": 10.02326,
+      "sigma": 0.056,
+      "expected_source_lumi_invfb": 10.0,
+      "category": "standard electron ID"
+    },
+    "3S": {
+      "state": "3S",
+      "run": "/afs/cern.ch/work/g/gkrintir/private/Ypsilon-Fit-Framework/results/generated/runs/allstates-projected-L10-v1-3s",
+      "visible_xsec_fb": 42.969,
+      "br_ee": 0.0218,
+      "q2_max": 0.01,
+      "mass": 10.3552,
+      "sigma": 0.059,
+      "expected_source_lumi_invfb": 10.0,
+      "category": "standard electron ID"
+    }
+  },
+  "optimization": {
+    "candidate_edges": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      1.0
+    ],
+    "fit_range": [
+      0.0,
+      1.0
+    ],
+    "reco_control_max": 5.0,
+    "min_bins": 3,
+    "max_bins": 5,
+    "min_expected_reco": 5.0,
+    "min_purity": 0.4,
+    "min_selected_stability": 0.4,
+    "min_effective_mc": 100,
+    "max_condition_number": 20.0,
+    "fine_truth_step": 0.02
+  },
+  "observables": {
+    "pt2": {
+      "label": "pT2",
+      "truth_definition": "true_pT squared",
+      "reco_definition": "reco_pT squared"
+    },
+    "abs_t_via_pt2": {
+      "label": "absolute t via pT2",
+      "truth_definition": "positive stored true_t",
+      "reco_definition": "reco_pT squared"
+    }
+  },
+  "inference": {
+    "seed": 20261023,
+    "coverage": 0.6826894921370859,
+    "n_toys": 1000,
+    "n_coverage_toys": 1000,
+    "n_response_bootstrap": 200,
+    "n_model_toys": 500,
+    "min_toys_for_validation": 400,
+    "model_tail_probability_min": 0.01,
+    "coverage_slopes": [
+      1.0,
+      2.5,
+      4.0,
+      6.0
+    ],
+    "max_slope": 40.0,
+    "b_limit_max": 1000.0,
+    "min_coverage": 0.65,
+    "max_failure_fraction": 0.01,
+    "max_abs_standardized_bias": 0.3,
+    "max_boundary_fraction": 0.2
+  },
+  "validation": {
+    "max_fine_cell_shift_fraction": 0.2,
+    "max_feed_in_shift_fraction": 0.5
+  },
+  "shape_stress_tilts": [
+    -1.0,
+    1.0
+  ],
+  "feed_in_stress_scales": [
+    0.5,
+    1.5
+  ],
+  "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics; response MC variation reported separately. No background or mass-state extraction uncertainty."
+}

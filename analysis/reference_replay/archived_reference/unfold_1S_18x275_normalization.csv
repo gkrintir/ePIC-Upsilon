@@ -1,0 +1,2 @@
+state,sumw_state_raw,inferred_visible_xsec_fb,target_visible_xsec_fb,weight_scale,train_fraction,n_iterations,n_toys,q2_max_flux,q2_cut,background_assumption
+1S,45844.722485935185,4584.472248593518,327.584,0.07145511680226668,0.5,4,300,0.001,0.001,0.0

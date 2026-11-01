@@ -1,0 +1,205 @@
+{
+  "tree": "UpsilonTree",
+  "lumi_invfb": 10.0,
+  "state": "1S",
+  "mass_gev": 9.4603,
+  "true_mass_halfwidth_gev": 0.2,
+  "reco_mass_halfwidth_gev": 0.159,
+  "branching_fraction_ee": 0.0234,
+  "min_reconstruction_ratio": 0.05,
+  "samples": {
+    "old10x100": {
+      "label": "Note input 10x100 GeV",
+      "root": "/eos/user/g/gkrintir/merged_elecs_test_10t100.root",
+      "electron_energy": 10.0,
+      "proton_energy": 100.0,
+      "normalization_mode": "truth_state",
+      "visible_xsec_fb": 104.793,
+      "normalization_source": "Historical framework 10x100 visible dielectron normalization; rescale the truth-state weight sum before Q2, W, or reconstruction cuts.",
+      "native": {
+        "w_min": 20.0,
+        "w_max": 26.5,
+        "n_bins": 10,
+        "q2_event_max": 0.001,
+        "q2_flux_max": 0.001
+      },
+      "branching_fraction_ee": 0.0234
+    },
+    "old18x275": {
+      "label": "Note input 18x275 GeV (fix)",
+      "root": "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix.root",
+      "electron_energy": 18.0,
+      "proton_energy": 275.0,
+      "normalization_mode": "truth_state",
+      "visible_xsec_fb": 327.584,
+      "normalization_source": "Historical framework 18x275 visible dielectron convention; inherited 327.584 fb reproduces that convention, rather than independently verifying its generator normalization.",
+      "native": {
+        "w_min": 20.0,
+        "w_max": 140.0,
+        "n_bins": 14,
+        "q2_event_max": 0.001,
+        "q2_flux_max": 0.001
+      },
+      "branching_fraction_ee": 0.0234
+    },
+    "old10x100_updated": {
+      "label": "Performance input 10x100 GeV (updated)",
+      "root": "/eos/user/g/gkrintir/merged_elecs_test_10t100_10x100.root",
+      "optional": true,
+      "electron_energy": 10.0,
+      "proton_energy": 100.0,
+      "normalization_mode": "truth_state",
+      "visible_xsec_fb": 104.793,
+      "normalization_source": "Historical 10x100 visible dielectron normalization, applied independently to the updated performance tuple's truth-state weight sum before Q2, W, or reconstruction cuts. Comparison with the note input diagnoses the input substitution; equality is not assumed.",
+      "native": {
+        "w_min": 20.0,
+        "w_max": 26.5,
+        "n_bins": 10,
+        "q2_event_max": 0.001,
+        "q2_flux_max": 0.001
+      },
+      "branching_fraction_ee": 0.0234
+    },
+    "old18x275_fix2": {
+      "label": "Performance input 18x275 GeV (fix2)",
+      "root": "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix2.root",
+      "optional": true,
+      "electron_energy": 18.0,
+      "proton_energy": 275.0,
+      "normalization_mode": "truth_state",
+      "visible_xsec_fb": 327.584,
+      "normalization_source": "Historical 18x275 visible dielectron normalization, applied independently to the fix2 performance tuple's truth-state weight sum before Q2, W, or reconstruction cuts. Comparison with the note's fix input diagnoses the input substitution; equality is not assumed.",
+      "native": {
+        "w_min": 20.0,
+        "w_max": 140.0,
+        "n_bins": 14,
+        "q2_event_max": 0.001,
+        "q2_flux_max": 0.001
+      },
+      "branching_fraction_ee": 0.0234
+    },
+    "new9x130": {
+      "label": "July 9x130 GeV",
+      "root": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x130/hiAcc/output/merged_Upsilon_final.root",
+      "electron_energy": 9.0,
+      "proton_energy": 130.0,
+      "normalization_mode": "all_generated",
+      "visible_xsec_fb": 119.685,
+      "normalization_source": "Reproduced eSTARlight 939b11a with Jul26 Upsilon_Sim_Cards f62965a (9x130, Upsilon(1S), Q2 0-1 GeV^2): visible dielectron 119.685 fb; generator B_ee=0.0238; all-generated normalization before analysis cuts",
+      "native": {
+        "w_min": 20.0,
+        "w_max": 70.0,
+        "n_bins": 10,
+        "q2_event_max": 1.0,
+        "q2_flux_max": 1.0
+      },
+      "branching_fraction_ee": 0.0238,
+      "normalization_profile": "jul26-estarlight-939b11a"
+    },
+    "new9x275": {
+      "label": "July 9x275 GeV",
+      "root": "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output/merged_Upsilon_final.root",
+      "electron_energy": 9.0,
+      "proton_energy": 275.0,
+      "normalization_mode": "all_generated",
+      "visible_xsec_fb": 210.136,
+      "normalization_source": "Reproduced eSTARlight 939b11a with Jul26 Upsilon_Sim_Cards f62965a (9x275, Upsilon(1S), Q2 0-1 GeV^2): visible dielectron 210.136 fb; generator B_ee=0.0238; all-generated normalization before analysis cuts",
+      "native": {
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "n_bins": 16,
+        "q2_event_max": 1.0,
+        "q2_flux_max": 1.0
+      },
+      "branching_fraction_ee": 0.0238,
+      "normalization_profile": "jul26-estarlight-939b11a"
+    }
+  },
+  "comparisons": [
+    {
+      "id": "old_old_common",
+      "samples": [
+        "old10x100",
+        "old18x275"
+      ],
+      "w_min": 20.0,
+      "w_max": 26.5,
+      "n_bins": 3,
+      "q2_event_max": 0.001,
+      "q2_flux_max": 0.001
+    },
+    {
+      "id": "old_low_new_low_common",
+      "samples": [
+        "old10x100",
+        "new9x130"
+      ],
+      "w_min": 20.0,
+      "w_max": 26.5,
+      "n_bins": 3,
+      "q2_event_max": 0.001,
+      "q2_flux_max": 0.001
+    },
+    {
+      "id": "old_high_new_high_common",
+      "samples": [
+        "old18x275",
+        "new9x275"
+      ],
+      "w_min": 20.0,
+      "w_max": 100.0,
+      "n_bins": 16,
+      "q2_event_max": 0.001,
+      "q2_flux_max": 0.001
+    },
+    {
+      "id": "new_low_new_high_common",
+      "samples": [
+        "new9x130",
+        "new9x275"
+      ],
+      "w_min": 20.0,
+      "w_max": 65.0,
+      "n_bins": 9,
+      "q2_event_max": 1.0,
+      "q2_flux_max": 1.0
+    },
+    {
+      "id": "old_low_new_low_native_q2",
+      "samples": [
+        "old10x100",
+        "new9x130"
+      ],
+      "w_min": 20.0,
+      "w_max": 26.5,
+      "n_bins": 3,
+      "use_native_q2": true
+    },
+    {
+      "id": "old_low_input_variants",
+      "samples": [
+        "old10x100",
+        "old10x100_updated"
+      ],
+      "optional": true,
+      "w_min": 20.0,
+      "w_max": 26.5,
+      "n_bins": 3,
+      "q2_event_max": 0.001,
+      "q2_flux_max": 0.001
+    },
+    {
+      "id": "old_high_input_variants",
+      "samples": [
+        "old18x275",
+        "old18x275_fix2"
+      ],
+      "optional": true,
+      "w_min": 20.0,
+      "w_max": 100.0,
+      "n_bins": 16,
+      "q2_event_max": 0.001,
+      "q2_flux_max": 0.001
+    }
+  ]
+}

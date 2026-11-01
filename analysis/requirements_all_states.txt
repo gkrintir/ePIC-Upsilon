@@ -1,0 +1,4 @@
+# All-state extension dependencies. Keep the local framework requirements.
+-r requirements.txt
+# Python 3.9/3.10 TOML compatibility on lxplus.
+tomli>=2; python_version < "3.11"

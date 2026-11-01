@@ -1,0 +1,1514 @@
+{
+  "backend": "uproot",
+  "backend_description": "Byte-preserved scripts with explicit uproot I/O adapter; NOT a PyROOT execution",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "package_versions": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "matplotlib": "3.10.8",
+    "uproot": "5.7.7",
+    "Pillow": "12.3.0",
+    "mplhep": "0.4.1"
+  },
+  "mplhep_present": true,
+  "inputs": {
+    "low": {
+      "path": "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+      "sha256": "f714ae48f8903ffc83d34bddcf2cdcb56d409d26e84a430b2e875c35119658b8"
+    },
+    "high": {
+      "path": "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root",
+      "sha256": "d3eab02fc1aa72f3467f36eed31ea2970ce2dc85d545c96cfa81fa680dea7dda"
+    }
+  },
+  "code_sha256": {
+    "run_reference_replay.py": "3eae5e5e7aeff9175752187c27eef38bd1cd4c03c4ec1c0a16b477afeded1491",
+    "uproot_io_adapter.py": "7f072e0ed73b485715c4733b45cd0af84d20671d692f377d32915ed251c43e6b",
+    "atomic_plot_io.py": "ac83bab0276ceb7da0b964e0ee1ea77eb6b56883cca676778b43d29b27a4508c",
+    "frozen_legacy/build_gamma_p_validation_figure_set.py": "24f2411cd4f5e6d876a5ec02a39f144ae61611f465d2534cfd34402592086799",
+    "frozen_legacy/compare_sigma_gp_two_energies_swan_v4.py": "c285473e32de1559feab9fdd6e3f7d0c0632a81971ca6dd4c4248e053ef721cc",
+    "frozen_legacy/extract_sigma_gamma_p_family_fixed_swan.py": "de7ddf666e6cf564c24fb9df0b3f0a9dffda150ad6f00e9e1c9be4e3891cad11",
+    "frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py": "9f2d468f08940f4aadfadfb958f1a4effec87cf7f765825a5be4f3865443f920",
+    "frozen_legacy/study_W_resolution_swan.py": "3943081dfde16cb2fe0b7c92df29b25693f92740a761d8f9fd307fb1f2964def",
+    "frozen_legacy/unfold_sigma_gp_W_swan.py": "5b42f2465fda4aad577d6a2ae5a88f83c5759a3b2b393d8b8582ae4146f23d7f"
+  },
+  "plot_output_io": "Matplotlib PNGs serialize to memory, decode, write/fsync/verify temporary file and atomically replace target. Frozen plotting algorithms unchanged.",
+  "runs": [
+    {
+      "name": "sigma_gp_family_18x275_fixed",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root",
+        "--states",
+        "1S,2S,3S",
+        "--electron-energy",
+        "18",
+        "--proton-energy",
+        "275",
+        "--w-min",
+        "20",
+        "--w-max",
+        "140",
+        "--n-w-bins",
+        "14",
+        "--visible-xsec-1s-fb",
+        "327.584",
+        "--visible-xsec-2s-fb",
+        "84.780",
+        "--visible-xsec-3s-fb",
+        "68.929",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--min-eff",
+        ".05",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_family_18x275_fixed"
+      ],
+      "returncode": 0,
+      "seconds": 2.3505209680006374
+    },
+    {
+      "name": "sigma_gp_family_18x275_fixed_unfolded",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root",
+        "--states",
+        "1S,2S,3S",
+        "--electron-energy",
+        "18",
+        "--proton-energy",
+        "275",
+        "--w-min",
+        "20",
+        "--w-max",
+        "140",
+        "--n-w-bins",
+        "14",
+        "--visible-xsec-1s-fb",
+        "327.584",
+        "--visible-xsec-2s-fb",
+        "84.780",
+        "--visible-xsec-3s-fb",
+        "68.929",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--include-eff-mc-unc",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded"
+      ],
+      "returncode": 0,
+      "seconds": 2.3875734949997423
+    },
+    {
+      "name": "sigma_gp_1S_10x100_fixed",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+        "--states",
+        "1S",
+        "--electron-energy",
+        "10",
+        "--proton-energy",
+        "100",
+        "--visible-xsec-1s-fb",
+        "104.793",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--w-min",
+        "20",
+        "--w-max",
+        "50",
+        "--n-w-bins",
+        "14",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_1S_10x100_fixed"
+      ],
+      "returncode": 0,
+      "seconds": 2.589693650999834
+    },
+    {
+      "name": "low_selected_candidate_no_event_q2_cut",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+        "--states",
+        "1S",
+        "--electron-energy",
+        "10",
+        "--proton-energy",
+        "100",
+        "--visible-xsec-1s-fb",
+        "104.793",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--w-min",
+        "10",
+        "--w-max",
+        "26.5",
+        "--n-w-bins",
+        "10",
+        "--include-eff-mc-unc",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/low_selected_candidate_no_event_q2_cut"
+      ],
+      "returncode": 0,
+      "seconds": 2.262122635000196
+    },
+    {
+      "name": "low_selected_candidate_q2lt001",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+        "--states",
+        "1S",
+        "--electron-energy",
+        "10",
+        "--proton-energy",
+        "100",
+        "--visible-xsec-1s-fb",
+        "104.793",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--w-min",
+        "10",
+        "--w-max",
+        "26.5",
+        "--n-w-bins",
+        "10",
+        "--include-eff-mc-unc",
+        "--q2-cut",
+        ".001",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/low_selected_candidate_q2lt001"
+      ],
+      "returncode": 0,
+      "seconds": 2.620450210999479
+    },
+    {
+      "name": "low_visual_geometry_hypothesis_W10_25",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+        "--states",
+        "1S",
+        "--electron-energy",
+        "10",
+        "--proton-energy",
+        "100",
+        "--visible-xsec-1s-fb",
+        "104.793",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--w-min",
+        "10",
+        "--w-max",
+        "25",
+        "--n-w-bins",
+        "10",
+        "--include-eff-mc-unc",
+        "--q2-cut",
+        ".001",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/low_visual_geometry_hypothesis_W10_25"
+      ],
+      "returncode": 0,
+      "seconds": 2.5494935530005023
+    },
+    {
+      "name": "recovered_note_low_10x100",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+        "--states",
+        "1S",
+        "--electron-energy",
+        "10",
+        "--proton-energy",
+        "100",
+        "--visible-xsec-1s-fb",
+        "104.793",
+        "--q2-max",
+        ".001",
+        "--lumi-invfb",
+        "10",
+        "--tuple-lumi-invfb",
+        "10",
+        "--weight-convention",
+        "visible_decay",
+        "--normalization-scope",
+        "truth_state",
+        "--w-min",
+        "10",
+        "--w-max",
+        "25",
+        "--n-w-bins",
+        "10",
+        "--include-eff-mc-unc",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_low_10x100"
+      ],
+      "returncode": 0,
+      "seconds": 2.070262057999571
+    },
+    {
+      "name": "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/compare_sigma_gp_two_energies_swan_v4.py",
+        "--low-file",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_10t100.root",
+        "--high-file",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root",
+        "--low-ee",
+        "10",
+        "--low-ep",
+        "100",
+        "--high-ee",
+        "18",
+        "--high-ep",
+        "275",
+        "--low-xsec-visible-fb",
+        "104.793",
+        "--high-xsec-visible-fb",
+        "327.584",
+        "--w-min",
+        "20",
+        "--w-max",
+        "26.5",
+        "--n-w-bins",
+        "3",
+        "--q2-max-flux",
+        ".001",
+        "--q2-cut",
+        ".001",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm"
+      ],
+      "returncode": 0,
+      "seconds": 1.9900321069999336
+    },
+    {
+      "name": "unfold_1S_18x275",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/unfold_sigma_gp_W_swan.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root",
+        "--state",
+        "1S",
+        "--electron-energy",
+        "18",
+        "--proton-energy",
+        "275",
+        "--q2-max",
+        ".001",
+        "--q2-cut",
+        ".001",
+        "--w-edges",
+        "20,37.1429,45.7143,54.2857,62.8571,71.4286,80,88.5714,97.1429,105.714,114.286,122.857,140",
+        "--visible-xsec-fb",
+        "327.584",
+        "--train-fraction",
+        ".5",
+        "--seed",
+        "12345",
+        "--n-iterations",
+        "4",
+        "--n-toys",
+        "300",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/unfold_1S_18x275"
+      ],
+      "returncode": 0,
+      "seconds": 4.090046194000024
+    },
+    {
+      "name": "Wres_1S_18x275_full",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/study_W_resolution_swan.py",
+        "/workspace/scratch/80bba5a372e7/tmp/w_repro_downloads/merged_elecs_test_tuples_fix.root",
+        "--state",
+        "1S",
+        "--electron-energy",
+        "18",
+        "--q2-cut",
+        ".001",
+        "--w-edges",
+        "20,37.1429,45.7143,54.2857,62.8571,71.4286,80,88.5714,97.1429,105.714,114.286,122.857,140",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/Wres_1S_18x275_full"
+      ],
+      "returncode": 0,
+      "seconds": 6.255111089998536
+    },
+    {
+      "name": "selected_note_candidate",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/build_gamma_p_validation_figure_set.py",
+        "--indir",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results",
+        "--low-csv",
+        "low_selected_candidate_q2lt001.csv",
+        "--high-csv",
+        "sigma_gp_family_18x275_fixed_unfolded.csv",
+        "--truth-compare-csv",
+        "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+        "--flux-csv",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/flux_ratio_scan_W20to26p5_Q2lt0p001.csv",
+        "--min-eff",
+        ".05",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate"
+      ],
+      "returncode": 0,
+      "seconds": 6.4521513050003705
+    },
+    {
+      "name": "selected_note_visual_hypothesis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/build_gamma_p_validation_figure_set.py",
+        "--indir",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results",
+        "--low-csv",
+        "low_visual_geometry_hypothesis_W10_25.csv",
+        "--high-csv",
+        "sigma_gp_family_18x275_fixed_unfolded.csv",
+        "--truth-compare-csv",
+        "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+        "--flux-csv",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/flux_ratio_scan_W20to26p5_Q2lt0p001.csv",
+        "--min-eff",
+        ".05",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_visual_hypothesis"
+      ],
+      "returncode": 0,
+      "seconds": 5.171069325000644
+    },
+    {
+      "name": "recovered_note",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/run_reference_replay.py",
+        "--worker",
+        "uproot",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/frozen_legacy/build_gamma_p_validation_figure_set.py",
+        "--indir",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results",
+        "--low-csv",
+        "recovered_note_low_10x100.csv",
+        "--high-csv",
+        "sigma_gp_family_18x275_fixed_unfolded.csv",
+        "--truth-compare-csv",
+        "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+        "--flux-csv",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/flux_ratio_scan_W20to26p5_Q2lt0p001.csv",
+        "--min-eff",
+        ".05",
+        "--out-prefix",
+        "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note"
+      ],
+      "returncode": 0,
+      "seconds": 5.631286828000157
+    }
+  ],
+  "checks": [
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/Wres_1S_18x275_full_W_resolution_summary.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/Wres_1S_18x275_full_W_resolution_summary.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/Wres_1S_18x275_full_W_resolution_summary_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": true,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/Wres_1S_18x275_full_response_counts_selected.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/Wres_1S_18x275_full_response_counts_selected.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/Wres_1S_18x275_full_response_counts_selected_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": true,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 4.547473508864641e-13,
+      "max_relative_difference": 1.7821812611179079e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 1.4551915228366852e-11,
+      "max_relative_difference": 3.1729953731315256e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": [
+        "path"
+      ]
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/sigma_gp_1S_10x100_fixed.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_1S_10x100_fixed.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/sigma_gp_1S_10x100_fixed_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 2.842170943040401e-14,
+      "max_relative_difference": 6.571443360977147e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/sigma_gp_1S_10x100_fixed_normalization.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_1S_10x100_fixed_normalization.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/sigma_gp_1S_10x100_fixed_normalization_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 9.094947017729282e-13,
+      "max_relative_difference": 1.7116541399131148e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/sigma_gp_family_18x275_fixed.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_family_18x275_fixed.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 8.326672684688674e-17,
+      "max_relative_difference": 4.448226164344163e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_normalization.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_family_18x275_fixed_normalization.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_normalization_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_unfolded.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_unfolded_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 1.1368683772161603e-13,
+      "max_relative_difference": 4.448226164344163e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_unfolded_normalization_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/unfold_1S_18x275_normalization.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/unfold_1S_18x275_normalization.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/unfold_1S_18x275_normalization_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 1.4551915228366852e-11,
+      "max_relative_difference": 3.174174570002309e-16,
+      "byte_identical": false,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/unfold_1S_18x275_response_counts.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/unfold_1S_18x275_response_counts.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/unfold_1S_18x275_response_counts_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": true,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/unfold_1S_18x275_response_prob.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/unfold_1S_18x275_response_prob.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/unfold_1S_18x275_response_prob_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": true,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/unfold_1S_18x275_unfolded_summary.csv",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/unfold_1S_18x275_unfolded_summary.csv",
+      "numeric_diff_csv": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/differences/unfold_1S_18x275_unfolded_summary_differences.csv",
+      "pass": true,
+      "issues": [],
+      "max_absolute_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "byte_identical": true,
+      "rtol": 2e-09,
+      "atol": 1e-09,
+      "ignored_columns": []
+    }
+  ],
+  "independent_selection_checks": [
+    {
+      "sample": "low",
+      "state": "1S",
+      "entries": 44018,
+      "state_entries": 43742,
+      "state_sumw_raw": 53135.424999999996,
+      "state_q2lt001_entries": 43251,
+      "state_q2lt001_sumw_raw": 52522.8447884587,
+      "adapter_count_matches": true,
+      "adapter_sum_matches": true
+    },
+    {
+      "sample": "low",
+      "state": "2S",
+      "entries": 44018,
+      "state_entries": 0,
+      "state_sumw_raw": 0.0,
+      "state_q2lt001_entries": 0,
+      "state_q2lt001_sumw_raw": 0.0,
+      "adapter_count_matches": true,
+      "adapter_sum_matches": true
+    },
+    {
+      "sample": "low",
+      "state": "3S",
+      "entries": 44018,
+      "state_entries": 0,
+      "state_sumw_raw": 0.0,
+      "state_q2lt001_entries": 0,
+      "state_q2lt001_sumw_raw": 0.0,
+      "adapter_count_matches": true,
+      "adapter_sum_matches": true
+    },
+    {
+      "sample": "high",
+      "state": "1S",
+      "entries": 58738,
+      "state_entries": 23746,
+      "state_sumw_raw": 45861.759999999995,
+      "state_q2lt001_entries": 23737,
+      "state_q2lt001_sumw_raw": 45844.72248593518,
+      "adapter_count_matches": true,
+      "adapter_sum_matches": true
+    },
+    {
+      "sample": "high",
+      "state": "2S",
+      "entries": 58738,
+      "state_entries": 23746,
+      "state_sumw_raw": 11869.199999999999,
+      "state_q2lt001_entries": 23737,
+      "state_q2lt001_sumw_raw": 11864.790625786314,
+      "adapter_count_matches": true,
+      "adapter_sum_matches": true
+    },
+    {
+      "sample": "high",
+      "state": "3S",
+      "entries": 58738,
+      "state_entries": 10250,
+      "state_sumw_raw": 4412.945462184874,
+      "state_q2lt001_entries": 10244,
+      "state_q2lt001_sumw_raw": 4410.463025210083,
+      "adapter_count_matches": true,
+      "adapter_sum_matches": true
+    }
+  ],
+  "conventions": {
+    "lumi_invfb": 10.0,
+    "tuple_lumi_invfb": 10.0,
+    "flux_q2_max": 0.001,
+    "nominal_extraction_event_q2_cut": null,
+    "truth_comparison_event_q2_cut": 0.001,
+    "normalization_scope": "truth_state",
+    "weights": "visible dielectron; divide by BR exactly once",
+    "historical_uncertainties": "Preserved exactly; not the newer projected-count intervals",
+    "low_selected_note_recipe": "Recovered from frozen producer and original tuple: W10-25GeV/10bins,104.793fb,NO optional event Q2 cut,fluxQ2max=.001. Produces pixel-identical native overlay. No original command or matching low numerical CSV survives; separate raster verification establishes reproduction.",
+    "archived_low_selected_csv": "Quarantined: target304.793, no reconstructed events. Never used as analysis input.",
+    "flux_validation": "Archived CSV rerender; no new eSTARlight executable run"
+  },
+  "all_archival_csv_checks_pass": true,
+  "native_image_checks": [
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_overlay_1S_family.png",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_overlay_1S_family.png",
+      "reference_sha256": "d20cc34d1c40fcf45bed048adeb81912b8c100b019ab6633368eb60a34707926",
+      "rerun_sha256": "77428f695037905d5d7ad74ef3b3b8bcf1fd5f0e03dcd496b96841b436d56092",
+      "pixel_identical": true,
+      "reference_rgba_shape": [
+        2250,
+        2850,
+        4
+      ],
+      "rerun_rgba_shape": [
+        2250,
+        2850,
+        4
+      ],
+      "max_absolute_channel_difference": 0,
+      "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_18x275_family_efficiency.png",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_18x275_family_efficiency.png",
+      "reference_sha256": "38e050d27e8d23f7c5e460e7c53aef06cb1f60d9c83818c0870d2ac31141545a",
+      "rerun_sha256": "d260fc4e6afceb3dceec5b1dff99781622f4476603161ccce1f728e5e0a6bb49",
+      "pixel_identical": true,
+      "reference_rgba_shape": [
+        1950,
+        2700,
+        4
+      ],
+      "rerun_rgba_shape": [
+        1950,
+        2700,
+        4
+      ],
+      "max_absolute_channel_difference": 0,
+      "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_closure.png",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_closure.png",
+      "reference_sha256": "73ca6b985886fdf00492237654b6bbec56fb644eaab01833fb685bd42468a80a",
+      "rerun_sha256": "3260bc3dda2f83cf55ed44e067737da2214f17f32828bd11429f438c4793837e",
+      "pixel_identical": true,
+      "reference_rgba_shape": [
+        1950,
+        2700,
+        4
+      ],
+      "rerun_rgba_shape": [
+        1950,
+        2700,
+        4
+      ],
+      "max_absolute_channel_difference": 0,
+      "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_truth_low_high_ratio.png",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_truth_low_high_ratio.png",
+      "reference_sha256": "0f2758f258f4df43b0eebc79d1def55c0e3c084966a57b783c7751d2e49d5b0b",
+      "rerun_sha256": "fabece6866e05e141f55648acdfa8a78de353372100e7b7f98e8e11b4efee2e6",
+      "pixel_identical": true,
+      "reference_rgba_shape": [
+        1950,
+        2550,
+        4
+      ],
+      "rerun_rgba_shape": [
+        1950,
+        2550,
+        4
+      ],
+      "max_absolute_channel_difference": 0,
+      "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+    },
+    {
+      "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_flux_validation.png",
+      "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_flux_validation.png",
+      "reference_sha256": "3227ccaed3a4d0bbd5d8e724e86de37768a6420855a91df99f84ab3f4475e314",
+      "rerun_sha256": "07144652aed2997be1448a885c45978e179fc4ceeab3808b29ee01a2d08a216e",
+      "pixel_identical": true,
+      "reference_rgba_shape": [
+        1950,
+        2550,
+        4
+      ],
+      "rerun_rgba_shape": [
+        1950,
+        2550,
+        4
+      ],
+      "max_absolute_channel_difference": 0,
+      "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+    }
+  ],
+  "all_native_reference_images_pixel_identical": true,
+  "png_integrity_checks": [
+    {
+      "file": "Wres_1S_18x275_full_W_relative_resolution_vs_W.png",
+      "size_bytes": 144613,
+      "dimensions": [
+        2000,
+        1500
+      ],
+      "decoded": true
+    },
+    {
+      "file": "Wres_1S_18x275_full_W_resolution_vs_W.png",
+      "size_bytes": 122757,
+      "dimensions": [
+        2000,
+        1500
+      ],
+      "decoded": true
+    },
+    {
+      "file": "Wres_1S_18x275_full_deltaW_distributions.png",
+      "size_bytes": 543336,
+      "dimensions": [
+        3300,
+        3168
+      ],
+      "decoded": true
+    },
+    {
+      "file": "Wres_1S_18x275_full_response_counts.png",
+      "size_bytes": 165539,
+      "dimensions": [
+        1750,
+        1500
+      ],
+      "decoded": true
+    },
+    {
+      "file": "archived_vs_rerun_validation.png",
+      "size_bytes": 263998,
+      "dimensions": [
+        2340,
+        1620
+      ],
+      "decoded": true
+    },
+    {
+      "file": "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.png",
+      "size_bytes": 113778,
+      "dimensions": [
+        2000,
+        2000
+      ],
+      "decoded": true
+    },
+    {
+      "file": "low_selected_candidate_no_event_q2_cut.png",
+      "size_bytes": 159539,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "low_selected_candidate_q2lt001.png",
+      "size_bytes": 159547,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "low_visual_geometry_hypothesis_W10_25.png",
+      "size_bytes": 154654,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "recovered_note_18x275_family_efficiency.png",
+      "size_bytes": 294718,
+      "dimensions": [
+        2700,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "recovered_note_closure.png",
+      "size_bytes": 216720,
+      "dimensions": [
+        2700,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "recovered_note_flux_validation.png",
+      "size_bytes": 252211,
+      "dimensions": [
+        2550,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "recovered_note_low_10x100.png",
+      "size_bytes": 154686,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "recovered_note_overlay_1S_family.png",
+      "size_bytes": 210998,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "recovered_note_truth_low_high_ratio.png",
+      "size_bytes": 243497,
+      "dimensions": [
+        2550,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_candidate_18x275_family_efficiency.png",
+      "size_bytes": 294718,
+      "dimensions": [
+        2700,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_candidate_closure.png",
+      "size_bytes": 217087,
+      "dimensions": [
+        2700,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_candidate_flux_validation.png",
+      "size_bytes": 252211,
+      "dimensions": [
+        2550,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_candidate_overlay_1S_family.png",
+      "size_bytes": 212556,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_candidate_truth_low_high_ratio.png",
+      "size_bytes": 243497,
+      "dimensions": [
+        2550,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_visual_hypothesis_18x275_family_efficiency.png",
+      "size_bytes": 294718,
+      "dimensions": [
+        2700,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_visual_hypothesis_closure.png",
+      "size_bytes": 216720,
+      "dimensions": [
+        2700,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_visual_hypothesis_flux_validation.png",
+      "size_bytes": 252211,
+      "dimensions": [
+        2550,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_visual_hypothesis_overlay_1S_family.png",
+      "size_bytes": 211023,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "selected_note_visual_hypothesis_truth_low_high_ratio.png",
+      "size_bytes": 243497,
+      "dimensions": [
+        2550,
+        1950
+      ],
+      "decoded": true
+    },
+    {
+      "file": "sigma_gp_1S_10x100_fixed.png",
+      "size_bytes": 150494,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed.png",
+      "size_bytes": 198536,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed_unfolded.png",
+      "size_bytes": 201940,
+      "dimensions": [
+        2850,
+        2250
+      ],
+      "decoded": true
+    },
+    {
+      "file": "unfold_1S_18x275_closure.png",
+      "size_bytes": 144629,
+      "dimensions": [
+        2125,
+        2000
+      ],
+      "decoded": true
+    },
+    {
+      "file": "unfold_1S_18x275_response_counts.png",
+      "size_bytes": 113366,
+      "dimensions": [
+        1875,
+        1625
+      ],
+      "decoded": true
+    },
+    {
+      "file": "unfold_1S_18x275_response_probability.png",
+      "size_bytes": 135824,
+      "dimensions": [
+        1875,
+        1625
+      ],
+      "decoded": true
+    }
+  ],
+  "all_generated_pngs_decodable": true,
+  "outputs": [
+    {
+      "file": "Wres_1S_18x275_full_W_relative_resolution_vs_W.png",
+      "sha256": "710c75bee8c1327fd4c23c1c04a2e9ea13ef9233ba643e319f78cb24a43a8ea9"
+    },
+    {
+      "file": "Wres_1S_18x275_full_W_resolution_summary.csv",
+      "sha256": "3e14af8e0bffd69af203346029bdf2bfc492ff5f291e1cb29ead09e005c2b9ee"
+    },
+    {
+      "file": "Wres_1S_18x275_full_W_resolution_vs_W.png",
+      "sha256": "f61a9477d1bc2b724438060659d97957768bcf60f36263b8ce6b71d56777120b"
+    },
+    {
+      "file": "Wres_1S_18x275_full_deltaW_distributions.png",
+      "sha256": "b5a06b50e415abca28f875798fc1552ec44524fb0a4f2f56367c310365473335"
+    },
+    {
+      "file": "Wres_1S_18x275_full_response_counts.png",
+      "sha256": "e10786240d436f3b1b349b5e439b349fe36b6ae21a2bbd6a35764939c20f317d"
+    },
+    {
+      "file": "Wres_1S_18x275_full_response_counts_selected.csv",
+      "sha256": "3642e76524c5a7d90fe6165d0e493136f1319219a0966cc0afb51c1e753f9eab"
+    },
+    {
+      "file": "archived_vs_rerun_validation.pdf",
+      "sha256": "67e0a6c3f175a8db2c79695af271c1c130b57682494795fcf7417d6660eed2ec"
+    },
+    {
+      "file": "archived_vs_rerun_validation.png",
+      "sha256": "cf72772c5dc8f451d9962c26319403166ba5788fb4806990ee32278613793df0"
+    },
+    {
+      "file": "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "sha256": "16b9f9371896e6136f831a2b41b984a8bc938c35ac4de91d01f68a1cbef8583e"
+    },
+    {
+      "file": "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.png",
+      "sha256": "966c576446afb96bb83c44ab56d11afc1e27b091233dac1b87e7227b48d6717f"
+    },
+    {
+      "file": "compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "sha256": "a6fcb82dc48092f407267efdfa2ddc353ec9070c1693cefddb1dc1cd934483ec"
+    },
+    {
+      "file": "differences/Wres_1S_18x275_full_W_resolution_summary_differences.csv",
+      "sha256": "7693df59105d41decef528186a99f6c90fc91e4d614106d7a550f16f78ee6963"
+    },
+    {
+      "file": "differences/Wres_1S_18x275_full_response_counts_selected_differences.csv",
+      "sha256": "78c49813809c5967f4f4e779434ffea364b8d1f3843001fa512e52fefa21e198"
+    },
+    {
+      "file": "differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_differences.csv",
+      "sha256": "5f6e92fdfb263aa2cb4441a26509f9d1180ac4986a96d86564c1aaf3ac26432c"
+    },
+    {
+      "file": "differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta_differences.csv",
+      "sha256": "85c7dec2d3e45f42b9afe629839a2693af4d50a21881ed1879b5216f3d7c0bf7"
+    },
+    {
+      "file": "differences/sigma_gp_1S_10x100_fixed_differences.csv",
+      "sha256": "6242aecc7ad31c5d6f4354fc7e0f3d338dece9d6f087f14a963e036093006cc2"
+    },
+    {
+      "file": "differences/sigma_gp_1S_10x100_fixed_normalization_differences.csv",
+      "sha256": "53f8ad5d61677b2758bfce449dc2d809866485cef5d6f0744b20926fe741ad2c"
+    },
+    {
+      "file": "differences/sigma_gp_family_18x275_fixed_differences.csv",
+      "sha256": "bfbdccef39ceb8996e85dc259b9c8157a08cd9bf4ce620afd9d6b62fedfede18"
+    },
+    {
+      "file": "differences/sigma_gp_family_18x275_fixed_normalization_differences.csv",
+      "sha256": "d5723be13a80846a14e86d131d69c2b0601de0242fa2bf61beeb80d556ffeff9"
+    },
+    {
+      "file": "differences/sigma_gp_family_18x275_fixed_unfolded_differences.csv",
+      "sha256": "253a7d7965eea2b95210e0a7d669f0c5e5d3c4f4221af6a487ac6be7017db592"
+    },
+    {
+      "file": "differences/sigma_gp_family_18x275_fixed_unfolded_normalization_differences.csv",
+      "sha256": "d5723be13a80846a14e86d131d69c2b0601de0242fa2bf61beeb80d556ffeff9"
+    },
+    {
+      "file": "differences/unfold_1S_18x275_normalization_differences.csv",
+      "sha256": "9c62328767c7720ed2da3a3c6243216c695d638788df5540dc3a68063b0c5beb"
+    },
+    {
+      "file": "differences/unfold_1S_18x275_response_counts_differences.csv",
+      "sha256": "34aa60748e4b034f3a76b54dc40ba972fd17e27eea4bfe5338b034f7a0db427a"
+    },
+    {
+      "file": "differences/unfold_1S_18x275_response_prob_differences.csv",
+      "sha256": "52bd242b1d65a8a4ef4ec494c370deb3f09159f2572015fc80c644d95d44c158"
+    },
+    {
+      "file": "differences/unfold_1S_18x275_unfolded_summary_differences.csv",
+      "sha256": "28696baedde3223005b3358c9c62ddccb19bcf283b94c8c58d355cdf7ac05a7c"
+    },
+    {
+      "file": "logs/Wres_1S_18x275_full.log",
+      "sha256": "0ea6e847822b4968e636bd858749170257768efb0e6b2b7f5eb1f805194d034e"
+    },
+    {
+      "file": "logs/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.log",
+      "sha256": "f3577e23a9e7366319f472ae06cd275823f26d65607ad187666a8853543edb56"
+    },
+    {
+      "file": "logs/low_selected_candidate_no_event_q2_cut.log",
+      "sha256": "2a90b4fc10c4258e7ceb9983a93ba6bf392536d094a545cf581ae255a322ae61"
+    },
+    {
+      "file": "logs/low_selected_candidate_q2lt001.log",
+      "sha256": "24a266b6ceb7e01c3f2f41efde19e763b528c75660943d1e6e31a4297e5f9883"
+    },
+    {
+      "file": "logs/low_visual_geometry_hypothesis_W10_25.log",
+      "sha256": "46b5a926e9d1fd7576f88ce85805a11fd255d834166e7b4adc192b1cd39740b2"
+    },
+    {
+      "file": "logs/recovered_note.log",
+      "sha256": "111bf29f1f5a9b0458a221bf890a2238afefc02b1cf8b0c3efcd06df8f83297d"
+    },
+    {
+      "file": "logs/recovered_note_low_10x100.log",
+      "sha256": "aa77845290f4bc39bba35ec16d52d0bd515b8e58c75d847d2974510bde810c46"
+    },
+    {
+      "file": "logs/selected_note_candidate.log",
+      "sha256": "c496f4519947fb144a2b102389a2abe55920b4e3c21dc0f267203f61bc15124c"
+    },
+    {
+      "file": "logs/selected_note_visual_hypothesis.log",
+      "sha256": "e7f125825c574f936770e15455bdb268d6ddd8752518ddd7a5150b312260163a"
+    },
+    {
+      "file": "logs/sigma_gp_1S_10x100_fixed.log",
+      "sha256": "15bb7507c4acb2fd7a9858e1cce84d6b735383056fec10253747af24ee8f14ff"
+    },
+    {
+      "file": "logs/sigma_gp_family_18x275_fixed.log",
+      "sha256": "2b03fe738d040ebaae84dec8811c161cf8b8ff6c12e058dd38e5733739933954"
+    },
+    {
+      "file": "logs/sigma_gp_family_18x275_fixed_unfolded.log",
+      "sha256": "90a3cc5910b5548983b713725a7c0cdef65d5c045b1e76917e50fcc28c77d788"
+    },
+    {
+      "file": "logs/unfold_1S_18x275.log",
+      "sha256": "971bcd339dd576cf5aba5eaf71c29bb2e7570f324c1d538f8d97ca7d90b23d05"
+    },
+    {
+      "file": "low_recipe_candidates.csv",
+      "sha256": "735f89d249cb2dca1ece8ed63600fa6143cbec78b4740986d4961a9ad58bda88"
+    },
+    {
+      "file": "low_selected_candidate_no_event_q2_cut.csv",
+      "sha256": "4dc8296cf0c9e0ec0da3cd45891f165764b57cd743cc3e04963f0ff732f32b12"
+    },
+    {
+      "file": "low_selected_candidate_no_event_q2_cut.png",
+      "sha256": "d02c9a6ce3d2403ea51abed4daa87a364fe344c76b4916696e040f56a06d4efd"
+    },
+    {
+      "file": "low_selected_candidate_no_event_q2_cut_normalization.csv",
+      "sha256": "8f7f066bcee5b6fac5af95223f9098151873173caf73245db16c2581a235e2f3"
+    },
+    {
+      "file": "low_selected_candidate_q2lt001.csv",
+      "sha256": "d8f4b3d39646c208dc97c4a813759109a4ecc0069a02c02c006c18890d311cac"
+    },
+    {
+      "file": "low_selected_candidate_q2lt001.png",
+      "sha256": "5d7ad6cc30026089a80b64edead594ca14770b40b1e4c8b4333c4f48fd434b31"
+    },
+    {
+      "file": "low_selected_candidate_q2lt001_normalization.csv",
+      "sha256": "38a8ab54d18159fd7bb488ac88abdda14360185d339c1551050a4e574d939bc4"
+    },
+    {
+      "file": "low_visual_geometry_hypothesis_W10_25.csv",
+      "sha256": "b0fbd2a739db1cb3950546e74ad148a8bb831ac6819f42f9298ed5a0ab82e201"
+    },
+    {
+      "file": "low_visual_geometry_hypothesis_W10_25.png",
+      "sha256": "437093cd507f7cd629c1de3dca005f36d04663fa0523f6cc09ee926e4e0224a0"
+    },
+    {
+      "file": "low_visual_geometry_hypothesis_W10_25_normalization.csv",
+      "sha256": "38a8ab54d18159fd7bb488ac88abdda14360185d339c1551050a4e574d939bc4"
+    },
+    {
+      "file": "native_image_comparison.json",
+      "sha256": "c93c5eb46e2e67f0adcfc172533ff2981a37d158753596e1f0fb6b875b867950"
+    },
+    {
+      "file": "recovered_note_18x275_family_efficiency.png",
+      "sha256": "d260fc4e6afceb3dceec5b1dff99781622f4476603161ccce1f728e5e0a6bb49"
+    },
+    {
+      "file": "recovered_note_closure.png",
+      "sha256": "3260bc3dda2f83cf55ed44e067737da2214f17f32828bd11429f438c4793837e"
+    },
+    {
+      "file": "recovered_note_comparisons.pdf",
+      "sha256": "ba8a3925ce2fcb39d10cdc5d6113b53f9343f45bfd92db90fe9825d1a4f76753"
+    },
+    {
+      "file": "recovered_note_flux_validation.png",
+      "sha256": "07144652aed2997be1448a885c45978e179fc4ceeab3808b29ee01a2d08a216e"
+    },
+    {
+      "file": "recovered_note_low_10x100.csv",
+      "sha256": "61a2443254152a6c9c5aee31eda43e6abb64b2a41286c362f3dc532cee5b866a"
+    },
+    {
+      "file": "recovered_note_low_10x100.png",
+      "sha256": "11bf906f007da939706924df503e76b85458e4dbb93414e46c2f193b2674e458"
+    },
+    {
+      "file": "recovered_note_low_10x100_normalization.csv",
+      "sha256": "8f7f066bcee5b6fac5af95223f9098151873173caf73245db16c2581a235e2f3"
+    },
+    {
+      "file": "recovered_note_overlay_1S_family.pdf",
+      "sha256": "d01f8fd24331ce308ffd43da34de47e2889c535e885b8b81063588c3565559bf"
+    },
+    {
+      "file": "recovered_note_overlay_1S_family.png",
+      "sha256": "77428f695037905d5d7ad74ef3b3b8bcf1fd5f0e03dcd496b96841b436d56092"
+    },
+    {
+      "file": "recovered_note_truth_low_high_ratio.png",
+      "sha256": "fabece6866e05e141f55648acdfa8a78de353372100e7b7f98e8e11b4efee2e6"
+    },
+    {
+      "file": "reference_comparison_summary.csv",
+      "sha256": "8ea12a658cd494aff1afd13af62330666d9c225402b3e84ad800f20e2ff92145"
+    },
+    {
+      "file": "reference_comparison_summary.json",
+      "sha256": "32893ddd2b37e054149fa4340367c59141863f50f227eb654ee65ac69cbb6a7e"
+    },
+    {
+      "file": "selected_note_candidate_18x275_family_efficiency.png",
+      "sha256": "d260fc4e6afceb3dceec5b1dff99781622f4476603161ccce1f728e5e0a6bb49"
+    },
+    {
+      "file": "selected_note_candidate_closure.png",
+      "sha256": "5c04fed5549206dad5258948c26a7249e8a70f6ded6a2ca246097f9230f09e50"
+    },
+    {
+      "file": "selected_note_candidate_comparisons.pdf",
+      "sha256": "c9835066da0044da7474a4f75128c0922f37ae7b57322b3f0d2c6edfe72fc2c8"
+    },
+    {
+      "file": "selected_note_candidate_flux_validation.png",
+      "sha256": "07144652aed2997be1448a885c45978e179fc4ceeab3808b29ee01a2d08a216e"
+    },
+    {
+      "file": "selected_note_candidate_overlay_1S_family.png",
+      "sha256": "abff941a31535ebd6c1c47032dcc4b41957560964d852711e474e92c75065882"
+    },
+    {
+      "file": "selected_note_candidate_truth_low_high_ratio.png",
+      "sha256": "fabece6866e05e141f55648acdfa8a78de353372100e7b7f98e8e11b4efee2e6"
+    },
+    {
+      "file": "selected_note_visual_hypothesis_18x275_family_efficiency.png",
+      "sha256": "d260fc4e6afceb3dceec5b1dff99781622f4476603161ccce1f728e5e0a6bb49"
+    },
+    {
+      "file": "selected_note_visual_hypothesis_closure.png",
+      "sha256": "3260bc3dda2f83cf55ed44e067737da2214f17f32828bd11429f438c4793837e"
+    },
+    {
+      "file": "selected_note_visual_hypothesis_comparisons.pdf",
+      "sha256": "09b302985bd806b9a5137da472af5057be3d1107b8180be8476e62c2f9de1bf1"
+    },
+    {
+      "file": "selected_note_visual_hypothesis_flux_validation.png",
+      "sha256": "07144652aed2997be1448a885c45978e179fc4ceeab3808b29ee01a2d08a216e"
+    },
+    {
+      "file": "selected_note_visual_hypothesis_overlay_1S_family.png",
+      "sha256": "9dad53262e2d302beb7ffe16b946cb4e27ee47b4edf5f798b28cb058cdcc9c87"
+    },
+    {
+      "file": "selected_note_visual_hypothesis_truth_low_high_ratio.png",
+      "sha256": "fabece6866e05e141f55648acdfa8a78de353372100e7b7f98e8e11b4efee2e6"
+    },
+    {
+      "file": "sigma_gp_1S_10x100_fixed.csv",
+      "sha256": "4b702265541ade5e1c614da56d13e6294206d635e21542b4c83143baf044e336"
+    },
+    {
+      "file": "sigma_gp_1S_10x100_fixed.png",
+      "sha256": "a49bafe20d2809915e85fb0112ddca7eb246c1733567b29eca29c0164d8b8963"
+    },
+    {
+      "file": "sigma_gp_1S_10x100_fixed_normalization.csv",
+      "sha256": "8f7f066bcee5b6fac5af95223f9098151873173caf73245db16c2581a235e2f3"
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed.csv",
+      "sha256": "43bb18112908f77e4783de7d7ed7c5af45b2f2cf70aa933789797c7037f97407"
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed.png",
+      "sha256": "681905634dd2d008ef38c1c81e5d03e1b7297cded61f59b46f95d8182e0f95cc"
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed_normalization.csv",
+      "sha256": "0d7139be8bfed59545a4c5be56799ae3ffca715bf336854f9591945f02a1e9fb"
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed_unfolded.csv",
+      "sha256": "820886ae93dcc3490273af72de627173d388532ecf0b1a1d28834493337ccde6"
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed_unfolded.png",
+      "sha256": "9bf766d4d36c7f353d7de7d9f4c69304422f9a66f1f55b9e0d51d07c41825c02"
+    },
+    {
+      "file": "sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "sha256": "0d7139be8bfed59545a4c5be56799ae3ffca715bf336854f9591945f02a1e9fb"
+    },
+    {
+      "file": "unfold_1S_18x275_closure.png",
+      "sha256": "e0b6fbc627966971633234b21f49e8a79798e8f2dbd7eea4f9aab81dc2b1bb2a"
+    },
+    {
+      "file": "unfold_1S_18x275_normalization.csv",
+      "sha256": "f807693eba8a0b48f81e12aa2699e33847c4ee6d7219678f79783d5ddcd8a5c3"
+    },
+    {
+      "file": "unfold_1S_18x275_response_counts.csv",
+      "sha256": "5887bdb7c242087c284cc18d004d3e30eceeffa350ce748fe0c0593739126c44"
+    },
+    {
+      "file": "unfold_1S_18x275_response_counts.png",
+      "sha256": "ae923137545087f99f4c37e4b324853b206619c414a666f197af39331df39140"
+    },
+    {
+      "file": "unfold_1S_18x275_response_prob.csv",
+      "sha256": "a7ccfd26c4871aa8eb67f821723a0dff0d6928eb4e4c0f9dd072b41bcae19dee"
+    },
+    {
+      "file": "unfold_1S_18x275_response_probability.png",
+      "sha256": "cd61ba991ed2c36485055f05175d5091b087c358a600e41d939cec041ba22de2"
+    },
+    {
+      "file": "unfold_1S_18x275_unfolded_summary.csv",
+      "sha256": "59037021449eb1970ad21f5ef0308e5326806def2098d3987c4aa698053f8e81"
+    }
+  ]
+}

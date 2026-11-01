@@ -1,0 +1,5 @@
+t_GeV2,dNdt_GeVminus2,err_low,err_high,source
+0.099228,392.329,53.361,55.171,DESY-11-186_4.eps digitized
+0.325248,77.426,20.468,21.122,DESY-11-186_4.eps digitized
+0.724917,29.501,8.578,8.601,DESY-11-186_4.eps digitized
+3.001654,1.959,0.759,0.783,DESY-11-186_4.eps digitized

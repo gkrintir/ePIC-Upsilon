@@ -1,0 +1,75 @@
+version = 1
+verified_on = "2026-08-22"
+
+[[root_file]]
+filename = "merged_elecs_test.root"
+role = "legacy campaign histogram file"
+size_bytes = 70079
+sha256 = "14d350e59d63d10c08bd869e8d7e9d6b33519e92bb44fafa7c05f76a50b98c41"
+kind = "histograms"
+histograms = 55
+th1 = 45
+th2 = 10
+
+[[root_file]]
+filename = "merged_elecs_test_.root"
+role = "updated campaign histogram file and tuple-reconstruction reference"
+size_bytes = 70700
+sha256 = "daf90faa374ce88addc660ff078afe66a3946aa07e4fc90926c9c157891f92d5"
+kind = "histograms"
+histograms = 55
+th1 = 45
+th2 = 10
+
+[[root_file]]
+filename = "merged_elecs_test_10t100.root"
+role = "legacy 10x100 GeV tuple"
+size_bytes = 6236639
+sha256 = "f714ae48f8903ffc83d34bddcf2cdcb56d409d26e84a430b2e875c35119658b8"
+kind = "tuple"
+tree = "UpsilonTree"
+entries = 44018
+branches = 41
+
+[[root_file]]
+filename = "merged_elecs_test_10t100_10x100.root"
+role = "updated 10x100 GeV tuple"
+size_bytes = 3999517
+sha256 = "0c67638a69a81c036fc0274bc2f6e54b9e28e442e355518cdbe1edce483550aa"
+kind = "tuple"
+tree = "UpsilonTree"
+entries = 24404
+branches = 41
+
+[[root_file]]
+filename = "merged_elecs_test_tuples.root"
+role = "legacy 18x275 GeV tuple"
+size_bytes = 8556381
+sha256 = "a9a1aa1ebdb32b861c07d612bcb4f8ffadc40a55deef0b9b358497b095777977"
+kind = "tuple"
+tree = "UpsilonTree"
+entries = 49988
+branches = 41
+
+[[root_file]]
+filename = "merged_elecs_test_tuples_fix2.root"
+role = "updated/reweighted 18x275 GeV tuple"
+size_bytes = 8504431
+sha256 = "c22591377d31526db1a6e223ef8b086cc9349313a0015cc10540fbd68eec91e3"
+kind = "tuple"
+tree = "UpsilonTree"
+entries = 49988
+branches = 41
+
+[[root_file]]
+filename = "merged_elecs_test_tuples_fix.root"
+role = "expanded 18x275 GeV tuple used by W-resolution, W-unfolding, gamma-p, and high-energy t workflows"
+size_bytes = 10080549
+sha256 = "d3eab02fc1aa72f3467f36eed31ea2970ce2dc85d545c96cfa81fa680dea7dda"
+kind = "tuple"
+tree = "UpsilonTree"
+entries = 58738
+branches = 41
+# Contains every row from merged_elecs_test_tuples.root plus 8750 inserted rows.
+# Of the inserted rows, 3958 repeat existing non-weight event data with changed
+# weights; do not substitute this file for fix2 without producer-level evidence.

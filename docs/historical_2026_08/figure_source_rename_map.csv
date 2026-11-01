@@ -1,0 +1,34 @@
+report_id,page,panel,old_script_or_notebook,new_script_or_notebook,coverage
+original,2,DSCB example,,,external figure
+original,4,generated Upsilon mass,MassFit-Copy4.ipynb C7; MassFit-Copy8.ipynb C0,notebooks/03_event_selection_truth_and_bt_studies.ipynb C7; scripts/plotting/compare_report_campaign_histograms.py,tuple-direct; historical campaign TH1 inputs identified
+original,5,generated Upsilon rapidity and pT,MassFit-Copy4.ipynb C7; MassFit-Copy8.ipynb C0,notebooks/03_event_selection_truth_and_bt_studies.ipynb C7; scripts/plotting/compare_report_campaign_histograms.py,tuple-direct; historical campaign TH1 inputs identified
+original,6,W vs Upsilon rapidity,MassFit-Copy4.ipynb C7,scripts/validation/reconstruct_report_histograms_from_tuple.py; scripts/plotting/compare_report_campaign_histograms.py,tuple-reconstructed exact TH2
+original,6,generated |t| vs W,MassFit-Copy4.ipynb C7,scripts/validation/reconstruct_report_histograms_from_tuple.py; scripts/plotting/compare_report_campaign_histograms.py; notebooks/03_event_selection_truth_and_bt_studies.ipynb C7,tuple-reconstructed exact TH2
+original,7,lepton pT correlation and eta-vs-pT,MassFit-Copy4.ipynb C7,scripts/validation/reconstruct_report_histograms_from_tuple.py; scripts/plotting/compare_report_campaign_histograms.py; notebooks/03_event_selection_truth_and_bt_studies.ipynb C7,three generator-level TH2 fills recovered exactly
+original,8,scattered-electron energy and eta,MassFit-Copy4.ipynb C7; MassFit-Copy8.ipynb C0,notebooks/03_event_selection_truth_and_bt_studies.ipynb C7; scripts/plotting/compare_report_campaign_histograms.py,tuple-direct; archived campaign PNG inputs identified
+original,9,truth/reco lepton maps and efficiency,MassFit-Copy4.ipynb C7; MassFit-Copy2.ipynb C2/C5,scripts/validation/reconstruct_report_histograms_from_tuple.py; scripts/plotting/compare_report_campaign_histograms.py,truth/reco maps exact; derived efficiency convention caveat
+original,10,generated vs reconstructed scattered-electron eta,MassFit-Copy4.ipynb C7 and C0/C1,notebooks/03_event_selection_truth_and_bt_studies.ipynb C7 and C0/C1,tuple-direct ingredients; exact overlay absent
+original,11,electron E/p,MassFit-Copy8.ipynb C0,scripts/plotting/compare_report_campaign_histograms.py,pre-binned; archived PNG exact
+original,12,"reconstructed mass, W, and Upsilon rapidity",MassFit-Copy4.ipynb C0/C1,notebooks/03_event_selection_truth_and_bt_studies.ipynb C0/C1,tuple-direct; uploaded tuple exact artifact input
+original,12,generated/reconstructed W and rapidity overlays,MassFit-Copy4.ipynb C7 and C0/C1,notebooks/03_event_selection_truth_and_bt_studies.ipynb C7 and C0/C1,tuple-direct ingredients; exact overlay absent
+original,12,W-vs-rapidity inset,MassFit-Copy4.ipynb C7,scripts/validation/reconstruct_report_histograms_from_tuple.py; scripts/plotting/compare_report_campaign_histograms.py,tuple-reconstructed exact TH2
+original,13,mass resolution by rapidity,MassFit-Copy8.ipynb C0,scripts/plotting/compare_report_campaign_histograms.py,pre-binned; archived campaign PNGs exact
+original,14,inclusive fit without electron ID,MassFit.ipynb C1,notebooks/01_mass_fits_inclusive_and_rapidity.ipynb C1,image exact with uploaded low tuple; invalid fit
+original,14,inclusive fit with electron ID,MassFit.ipynb C0,notebooks/01_mass_fits_inclusive_and_rapidity.ipynb C0,exact historical mass input still missing
+original,17,rapidity-bin mass fits,MassFit.ipynb C2,notebooks/01_mass_fits_inclusive_and_rapidity.ipynb C2,image exact with updated high tuple; invalid covariance
+followup,3,low-Q2 tagger tracks,MassFit-Copy4.ipynb C0/C1; MassFit-Copy8.ipynb C0,notebooks/03_event_selection_truth_and_bt_studies.ipynb C0/C1; scripts/plotting/compare_report_campaign_histograms.py,tuple-direct; archived campaign PNG exact
+followup,4,central-vs-tagger tracks,plot_central_tagger_correlation.py,scripts/validation/reconstruct_report_histograms_from_tuple.py; scripts/plotting/compare_report_campaign_histograms.py; scripts/validation/plot_track_multiplicity_correlation.py,raw all-event TH2 exact; selected views also retained
+followup,5,central tracks,MassFit-Copy4.ipynb C0/C1; MassFit-Copy8.ipynb C0,notebooks/03_event_selection_truth_and_bt_studies.ipynb C0/C1; scripts/plotting/compare_report_campaign_histograms.py,tuple-direct; archived campaign PNG exact
+followup,6,tagged-proton momentum,MassFit-Copy8.ipynb C0,scripts/plotting/compare_report_campaign_histograms.py,pre-binned; archived PNG exact
+followup,7,reconstructed |t| for 80<W<100 GeV,MassFit-Copy8.ipynb C0; compare_reco_t_distributions_two_energies_swan.py,scripts/plotting/compare_report_campaign_histograms.py; scripts/plotting/plot_reco_t_estimators_by_energy.py,stored-key renderer plus pixel-exact tuple rerun
+followup,8,electron isolation fraction,MassFit-Copy8.ipynb C0,scripts/plotting/compare_report_campaign_histograms.py,pre-binned; archived PNG exact
+followup,9,generated W in acceptance,MassFit-Copy8.ipynb C0; MassFit-Copy4.ipynb C7,scripts/plotting/compare_report_campaign_histograms.py; notebooks/03_event_selection_truth_and_bt_studies.ipynb C7,accepted-W TH1 survives; event-level acceptance expression unresolved
+performance,2,mass-resolution campaign comparison,MassFit-Copy8.ipynb C0,scripts/plotting/compare_report_campaign_histograms.py,exact inputs; archived PNGs byte-exact
+performance,3,track campaign comparison,MassFit-Copy8.ipynb C0,scripts/plotting/compare_report_campaign_histograms.py,exact inputs; archived PNGs byte-exact
+performance,4,eSTARlight vs afterburner,,,no retained producer
+performance,5,cross-section and branching-ratio table,,,manual table; no generator found
+performance,6,event-selection cutflow,MassFit-Copy4.ipynb C8,notebooks/03_event_selection_truth_and_bt_studies.ipynb C8,reads stored h_CutFlow
+performance,7,four 1S efficiency panels,MassFit-Copy2.ipynb C0,notebooks/02_efficiency_and_two_energy_studies.ipynb C0,legacy high tuple reproduces outputs byte-exact
+performance,8,scaled-yield dashboard,MassFit-Copy4.ipynb C0; revised C1,notebooks/03_event_selection_truth_and_bt_studies.ipynb C0/C1,legacy and updated tuple inputs identified
+performance,9,ZEUS spectrum,,,external figure
+performance,10,Upsilon-family gamma-p cross sections,MassFit-Copy7.ipynb C0,notebooks/06_gamma_p_cross_section_family.ipynb C0,legacy high tuple reproduces retained output byte-exact

@@ -1,0 +1,36 @@
+baseFileName = slight
+TARGET_BEAM_Z = 1         # Z of proton
+TARGET_BEAM_A = 1         # A of proton
+
+ELECTRON_BEAM_GAMMA = 19569 # 10 GeV electrons 
+TARGET_BEAM_GAMMA = 106.6   # 100 GeV protons 
+
+W_MAX = -1
+W_MIN = -1
+W_N_BINS = 50
+W_GP_MIN = 9.4603
+W_GP_MAX = 63.0
+EGA_N_BINS = 400
+CUT_PT = 0
+PT_MIN = 1.0
+PT_MAX = 3.0
+
+PROD_MODE = 12            # Coherent vector meson (narrow)
+PROD_PID = 553011         # 553011 = Upsilon(1S) --> e+e-
+N_EVENTS = 10000          
+RND_SEED = 5574531
+
+BREAKUP_MODE = 5          
+OUTPUT_FORMAT = 0         # Standard text output
+
+# --- Kinematic Boundaries ---
+# To reproduce the PHOTOPRODUCTION tables (Table III):
+MIN_GAMMA_Q2 = 0.0
+MAX_GAMMA_Q2 = 1.0        
+
+# To reproduce the ELECTROPRODUCTION tables (Table IV):
+# MIN_GAMMA_Q2 = 1.0
+# MAX_GAMMA_Q2 = 100.0    # Or kinematic max
+
+QUANTUM_GLAUBER = 1
+SELECT_IMPULSE_VM = 0

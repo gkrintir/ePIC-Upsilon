@@ -1,0 +1,1426 @@
+version = 2
+
+[executables]
+python = "python3"
+
+[inputs]
+# Supply the two ROOT tuples in config/local.toml or with --set.
+# ``low_root`` and ``high_root`` are the updated canonical tuples. The legacy
+# counterparts are retained separately because their stored weights differ.
+low_root = ""
+high_root = ""
+low_legacy_root = ""
+high_legacy_root = ""
+ct18_csv = ""
+campaign_old_root = ""
+campaign_new_root = ""
+report_mass_hist_root = ""
+report_mass_tuple_root = ""
+report_low_hist_root = ""
+report_high_hist_root = ""
+estarlight_executable = ""
+estarlight_template = "data/reference/estarlight_template.in"
+zeus_digitized_csv = "data/reference/zeus_fig4_digitized_points.csv"
+zeus_distribution_csv = "data/reference/zeus_fig4_exclusive_upsilon_distribution.csv"
+zeus_step_csv = "data/reference/zeus_fig4_exclusive_upsilon_step.csv"
+
+[checksums]
+estarlight_template = "98d8f8fc6b81506c3121049180225bb495394f41dfb94e3098057dde299cf20d"
+zeus_digitized_csv = "4c1c14c042512635e0219e5b7c0b48cfb3a1306e7be52d913445555b8185a5b6"
+zeus_distribution_csv = "2f2184291522d524940e5464a0430939ca9622ba0ef36d6b0add3e72b1823393"
+zeus_step_csv = "03b88e9d21b4f2d4801370994f15328869df5fcd0ae5120a010b4e35245b7a69"
+
+[analysis]
+tree = "UpsilonTree"
+lumi_invfb = 10.0
+tuple_lumi_invfb = 10.0
+q2_flux_max = 0.001
+q2_event_max = 0.001
+truth_mass_window = 0.2
+reco_mass_window_sigma = 3.0
+train_fraction = 0.5
+seed = 12345
+n_iterations = 4
+n_toys = 300
+t_edges = "0,0.2,0.5,1.0,5.0"
+common_w_edges = "20,21,22,23,24,25,26.5"
+
+[beam.low]
+electron_energy = 10.0
+proton_energy = 100.0
+w_min = 20.0
+w_max = 26.5
+w_edges = "20,20.65,21.3,21.95,22.6,23.25,23.9,24.55,25.2,25.85,26.5"
+visible_xsec_1s_fb = 104.793
+visible_xsec_2s_fb = 29.297
+visible_xsec_3s_fb = 23.447
+generator_xsec_fb = 119.685
+label = "10x100 GeV"
+
+[beam.high]
+electron_energy = 18.0
+proton_energy = 275.0
+w_min = 37.0
+w_max = 114.0
+w_edges = "37,45.5556,54.1111,62.6667,71.2222,79.7778,88.3333,96.8889,105.4444,114"
+visible_xsec_1s_fb = 327.584
+visible_xsec_2s_fb = 84.780
+visible_xsec_3s_fb = 68.929
+label = "18x275 GeV"
+
+[groups]
+schemas = [
+  "validate_low_w_schema",
+  "validate_high_w_schema",
+  "validate_low_t_schema",
+  "validate_high_t_schema",
+  "validate_low_differential_schema",
+  "validate_high_differential_schema",
+  "validate_low_correlation_schema",
+  "validate_high_correlation_schema",
+]
+normalization = [
+  "validate_truth_two_energies",
+  "validate_high_mass_fit_yields",
+  "validate_high_w_resolution",
+  "diagnose_low_gamma_p_normalization",
+]
+cross_sections = [
+  "extract_low_sigma_gamma_p",
+  "extract_high_sigma_gamma_p_family",
+  "plot_sigma_gamma_p_two_energies",
+  "unfold_low_sigma_gamma_p_w",
+  "unfold_high_sigma_gamma_p_w",
+  "extract_low_differential_gamma_p",
+  "extract_high_differential_gamma_p_family",
+  "plot_b_slope_1s_hera",
+  "plot_b_slopes_family_hera",
+]
+t_studies = [
+  "benchmark_t_estimators",
+  "plot_reco_t_estimators",
+  "plot_t_estimators_two_energy_overlay",
+  "unfold_low_t_spectrum",
+  "unfold_high_t_spectrum",
+  "plot_t_spectra_and_impact_parameter",
+]
+correlations = [
+  "plot_low_track_correlation",
+  "plot_high_track_correlation",
+]
+experimental = [
+  "extract_low_sigma_gamma_p_legacy",
+  "validate_estarlight_flux",
+  "unfold_hybrid_t_common_w",
+  "plot_hybrid_t_different_w",
+  "build_gamma_p_validation_figures",
+  "report_legacy_kinematic_efficiencies",
+  "report_legacy_inclusive_dashboard",
+  "report_truth_level_dashboard",
+  "report_gamma_p_family_predecessor",
+  "report_mass_fit_tuple_direct",
+  "report_mass_fit_scaled_legacy",
+  "report_mass_fit_rapidity_recovered",
+]
+report_performance = [
+  "report_compare_campaign_histograms",
+  "report_legacy_kinematic_efficiencies",
+  "report_legacy_inclusive_dashboard",
+  "report_event_selection_cutflow",
+]
+report_crosscheck = [
+  "validate_report_histogram_reconstruction",
+  "report_compare_campaign_histograms",
+]
+report_recovered = [
+  "report_truth_level_dashboard",
+  "report_gamma_p_family_predecessor",
+  "report_mass_fit_tuple_direct",
+  "report_mass_fit_scaled_legacy",
+  "report_mass_fit_rapidity_recovered",
+]
+report = [
+  "validate_report_histogram_reconstruction",
+  "report_compare_campaign_histograms",
+  "report_legacy_kinematic_efficiencies",
+  "report_legacy_inclusive_dashboard",
+  "report_truth_level_dashboard",
+  "report_event_selection_cutflow",
+  "report_gamma_p_family_predecessor",
+  "report_mass_fit_tuple_direct",
+  "report_mass_fit_scaled_legacy",
+  "report_mass_fit_rapidity_recovered",
+]
+core = [
+  "validate_truth_two_energies",
+  "validate_high_mass_fit_yields",
+  "validate_high_w_resolution",
+  "extract_low_sigma_gamma_p",
+  "extract_high_sigma_gamma_p_family",
+  "plot_sigma_gamma_p_two_energies",
+  "unfold_low_sigma_gamma_p_w",
+  "unfold_high_sigma_gamma_p_w",
+  "extract_low_differential_gamma_p",
+  "extract_high_differential_gamma_p_family",
+  "plot_b_slope_1s_hera",
+  "plot_b_slopes_family_hera",
+  "benchmark_t_estimators",
+  "plot_reco_t_estimators",
+  "plot_t_estimators_two_energy_overlay",
+  "unfold_low_t_spectrum",
+  "unfold_high_t_spectrum",
+  "plot_t_spectra_and_impact_parameter",
+  "plot_low_track_correlation",
+  "plot_high_track_correlation",
+]
+all = [
+  "validate_low_w_schema",
+  "validate_high_w_schema",
+  "validate_low_t_schema",
+  "validate_high_t_schema",
+  "validate_low_differential_schema",
+  "validate_high_differential_schema",
+  "validate_low_correlation_schema",
+  "validate_high_correlation_schema",
+  "validate_truth_two_energies",
+  "validate_high_mass_fit_yields",
+  "validate_high_w_resolution",
+  "diagnose_low_gamma_p_normalization",
+  "extract_low_sigma_gamma_p",
+  "extract_high_sigma_gamma_p_family",
+  "plot_sigma_gamma_p_two_energies",
+  "unfold_low_sigma_gamma_p_w",
+  "unfold_high_sigma_gamma_p_w",
+  "extract_low_differential_gamma_p",
+  "extract_high_differential_gamma_p_family",
+  "plot_b_slope_1s_hera",
+  "plot_b_slopes_family_hera",
+  "benchmark_t_estimators",
+  "plot_reco_t_estimators",
+  "plot_t_estimators_two_energy_overlay",
+  "unfold_low_t_spectrum",
+  "unfold_high_t_spectrum",
+  "plot_t_spectra_and_impact_parameter",
+  "plot_low_track_correlation",
+  "plot_high_track_correlation",
+  "extract_low_sigma_gamma_p_legacy",
+  "validate_estarlight_flux",
+  "unfold_hybrid_t_common_w",
+  "plot_hybrid_t_different_w",
+  "build_gamma_p_validation_figures",
+  "validate_report_histogram_reconstruction",
+  "report_compare_campaign_histograms",
+  "report_legacy_kinematic_efficiencies",
+  "report_legacy_inclusive_dashboard",
+  "report_event_selection_cutflow",
+  "report_gamma_p_family_predecessor",
+  "report_mass_fit_scaled_legacy",
+  "report_mass_fit_rapidity_recovered",
+]
+
+# ROOT schema gates. Later tasks depend on the narrowest applicable profile.
+
+[[task]]
+name = "validate_low_w_schema"
+stage = "schema"
+description = "Validate the low-energy tuple for W-dependent analyses"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "w",
+  "--out", "{run.dir}/artifacts/schema/low_w.json",
+]
+requirements = ["module:ROOT", "file:{inputs.low_root}"]
+outputs = ["{run.dir}/artifacts/schema/low_w.json"]
+
+[[task]]
+name = "validate_high_w_schema"
+stage = "schema"
+description = "Validate the high-energy tuple for W-dependent analyses"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "w",
+  "--out", "{run.dir}/artifacts/schema/high_w.json",
+]
+requirements = ["module:ROOT", "file:{inputs.high_root}"]
+outputs = ["{run.dir}/artifacts/schema/high_w.json"]
+
+[[task]]
+name = "validate_low_t_schema"
+stage = "schema"
+description = "Validate the low-energy tuple for all t estimators"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "t",
+  "--branch", "weight_proj",
+  "--out", "{run.dir}/artifacts/schema/low_t.json",
+]
+requirements = ["module:ROOT", "file:{inputs.low_root}"]
+outputs = ["{run.dir}/artifacts/schema/low_t.json"]
+
+[[task]]
+name = "validate_high_t_schema"
+stage = "schema"
+description = "Validate the high-energy tuple for all t estimators"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "t",
+  "--branch", "weight_proj",
+  "--out", "{run.dir}/artifacts/schema/high_t.json",
+]
+requirements = ["module:ROOT", "file:{inputs.high_root}"]
+outputs = ["{run.dir}/artifacts/schema/high_t.json"]
+
+[[task]]
+name = "validate_low_differential_schema"
+stage = "schema"
+description = "Validate the low-energy tuple for differential extraction"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "differential",
+  "--branch", "reco_t_eX",
+  "--out", "{run.dir}/artifacts/schema/low_differential.json",
+]
+requirements = ["module:ROOT", "file:{inputs.low_root}"]
+outputs = ["{run.dir}/artifacts/schema/low_differential.json"]
+
+[[task]]
+name = "validate_high_differential_schema"
+stage = "schema"
+description = "Validate the high-energy tuple for differential extraction"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "differential",
+  "--branch", "reco_t_eX",
+  "--out", "{run.dir}/artifacts/schema/high_differential.json",
+]
+requirements = ["module:ROOT", "file:{inputs.high_root}"]
+outputs = ["{run.dir}/artifacts/schema/high_differential.json"]
+
+[[task]]
+name = "validate_low_correlation_schema"
+stage = "schema"
+description = "Validate the low-energy tuple for track multiplicity correlations"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "correlation",
+  "--out", "{run.dir}/artifacts/schema/low_correlation.json",
+]
+requirements = ["module:ROOT", "file:{inputs.low_root}"]
+outputs = ["{run.dir}/artifacts/schema/low_correlation.json"]
+
+[[task]]
+name = "validate_high_correlation_schema"
+stage = "schema"
+description = "Validate the high-energy tuple for track multiplicity correlations"
+script = "workflow/validate_root_schema.py"
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--profile", "correlation",
+  "--out", "{run.dir}/artifacts/schema/high_correlation.json",
+]
+requirements = ["module:ROOT", "file:{inputs.high_root}"]
+outputs = ["{run.dir}/artifacts/schema/high_correlation.json"]
+
+# Normalization and reconstruction diagnostics.
+
+[[task]]
+name = "validate_truth_two_energies"
+stage = "normalization"
+description = "Compare truth-level gamma-p extraction in the common W range"
+script = "scripts/validation/validate_truth_gamma_p_two_energies.py"
+deps = ["validate_low_w_schema", "validate_high_w_schema"]
+args = [
+  "--low-file", "{inputs.low_root}",
+  "--high-file", "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--low-ee", "{beam.low.electron_energy}",
+  "--low-ep", "{beam.low.proton_energy}",
+  "--high-ee", "{beam.high.electron_energy}",
+  "--high-ep", "{beam.high.proton_energy}",
+  "--low-xsec-visible-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-xsec-visible-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--n-w-bins", "10",
+  "--q2-max-flux", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--mass-half-width", "{analysis.truth_mass_window}",
+  "--out-prefix", "{run.dir}/artifacts/normalization/truth_two_energies",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/normalization/truth_two_energies.csv",
+  "{run.dir}/artifacts/normalization/truth_two_energies_meta.csv",
+  "{run.dir}/artifacts/normalization/truth_two_energies.png",
+]
+fail_patterns = ["Traceback", "Could not open", "Could not find tree"]
+
+[[task]]
+name = "validate_high_mass_fit_yields"
+stage = "normalization"
+description = "Cross-check high-energy mass-fit and cross-section yield conventions"
+script = "scripts/validation/validate_mass_fit_yield_accounting.py"
+deps = ["validate_high_w_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--state-normalize",
+  "--visible-xsecs-fb", "1S:{beam.high.visible_xsec_1s_fb},2S:{beam.high.visible_xsec_2s_fb},3S:{beam.high.visible_xsec_3s_fb}",
+  "--out-csv", "{run.dir}/artifacts/normalization/high_mass_fit_yields.csv",
+]
+requirements = ["module:ROOT", "module:numpy"]
+outputs = ["{run.dir}/artifacts/normalization/high_mass_fit_yields.csv"]
+fail_patterns = ["Traceback", "empty truth state", "zero raw"]
+
+[[task]]
+name = "validate_high_w_resolution"
+stage = "resolution"
+description = "Measure high-energy W reconstruction response and resolution"
+script = "scripts/validation/validate_w_resolution.py"
+deps = ["validate_high_w_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-edges", "{beam.high.w_edges}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--out-prefix", "{run.dir}/artifacts/resolution/high_w",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/resolution/high_w_W_resolution_summary.csv",
+  "{run.dir}/artifacts/resolution/high_w_response_counts_selected.csv",
+  "{run.dir}/artifacts/resolution/high_w_W_resolution_vs_W.png",
+  "{run.dir}/artifacts/resolution/high_w_W_relative_resolution_vs_W.png",
+]
+fail_patterns = ["Traceback", "Histogram is empty", "selection is empty"]
+
+[[task]]
+name = "diagnose_low_gamma_p_normalization"
+stage = "normalization"
+description = "Write the verbose low-energy gamma-p normalization debug table"
+script = "scripts/validation/validate_gamma_p_normalization.py"
+deps = ["validate_low_w_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--out-csv", "{run.dir}/artifacts/normalization/low_gamma_p_debug.csv",
+  "--theory-csv", "{inputs.ct18_csv}",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--n-w-bins", "10",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--expected-generator-xsec-fb", "{beam.low.generator_xsec_fb}",
+  "--weight-convention", "visible_decay",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas"]
+outputs = ["{run.dir}/artifacts/normalization/low_gamma_p_debug.csv"]
+fail_patterns = ["Traceback", "ERROR: input file not found", "Could not identify"]
+
+# W-dependent gamma-p cross sections.
+
+[[task]]
+name = "extract_low_sigma_gamma_p"
+stage = "cross_section"
+description = "Extract the low-energy Upsilon(1S) gamma-p cross section"
+script = "scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py"
+deps = ["validate_low_w_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/cross_sections/low_sigma_gamma_p_1s",
+  "--states", "1S",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--n-w-bins", "10",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--visible-xsec-1s-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--visible-xsec-2s-fb", "{beam.low.visible_xsec_2s_fb}",
+  "--visible-xsec-3s-fb", "{beam.low.visible_xsec_3s_fb}",
+  "--weight-convention", "visible_decay",
+  "--normalization-scope", "truth_state",
+  "--min-eff", "0.05",
+  "--no-hera",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/cross_sections/low_sigma_gamma_p_1s.csv",
+  "{run.dir}/artifacts/cross_sections/low_sigma_gamma_p_1s_normalization.csv",
+  "{run.dir}/artifacts/cross_sections/low_sigma_gamma_p_1s.png",
+]
+fail_patterns = ["Traceback", "truth selection is empty", "Skipping 1S"]
+
+[[task]]
+name = "extract_high_sigma_gamma_p_family"
+stage = "cross_section"
+description = "Extract high-energy gamma-p cross sections for all three Upsilon states"
+script = "scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py"
+deps = ["validate_high_w_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/cross_sections/high_sigma_gamma_p_family",
+  "--states", "1S,2S,3S",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--proton-energy", "{beam.high.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--n-w-bins", "9",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--visible-xsec-1s-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--visible-xsec-2s-fb", "{beam.high.visible_xsec_2s_fb}",
+  "--visible-xsec-3s-fb", "{beam.high.visible_xsec_3s_fb}",
+  "--weight-convention", "visible_decay",
+  "--normalization-scope", "truth_state",
+  "--min-eff", "0.05",
+  "--no-hera",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/cross_sections/high_sigma_gamma_p_family.csv",
+  "{run.dir}/artifacts/cross_sections/high_sigma_gamma_p_family_normalization.csv",
+  "{run.dir}/artifacts/cross_sections/high_sigma_gamma_p_family.png",
+]
+fail_patterns = ["Traceback", "truth selection is empty", "Skipping 1S", "Skipping 2S", "Skipping 3S"]
+
+[[task]]
+name = "plot_sigma_gamma_p_two_energies"
+stage = "plotting"
+description = "Overlay low- and high-energy gamma-p cross sections"
+script = "scripts/plotting/plot_gamma_p_cross_sections_by_energy.py"
+deps = ["extract_low_sigma_gamma_p", "extract_high_sigma_gamma_p_family"]
+args = [
+  "--low-csv", "{run.dir}/artifacts/cross_sections/low_sigma_gamma_p_1s.csv",
+  "--high-csv", "{run.dir}/artifacts/cross_sections/high_sigma_gamma_p_family.csv",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--states", "1S",
+  "--min-eff", "0.05",
+  "--require-plotted",
+  "--out-prefix", "{run.dir}/artifacts/figures/sigma_gamma_p_two_energies",
+  "--q2-label", "Q2 < 0.001 GeV2",
+  "--lumi-label", "Lep = 10 fb-1",
+]
+requirements = ["module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/figures/sigma_gamma_p_two_energies.csv",
+  "{run.dir}/artifacts/figures/sigma_gamma_p_two_energies.png",
+  "{run.dir}/artifacts/figures/sigma_gamma_p_two_energies.pdf",
+]
+fail_patterns = ["Traceback", "No valid", "empty"]
+
+# Report-era input recovery and notebook reruns. The promoted histogram tasks
+# are ROOT-macro independent and use uproot/NumPy. Selected legacy notebook
+# cells still run in private directories with in-memory path replacements.
+
+[[task]]
+name = "validate_report_histogram_reconstruction"
+stage = "validation"
+description = "Reconstruct all ten report-era TH2 histograms from UpsilonTree and compare every flow bin"
+script = "scripts/validation/reconstruct_report_histograms_from_tuple.py"
+args = [
+  "--tuple-root", "{inputs.high_legacy_root}",
+  "--reference-root", "{inputs.campaign_new_root}",
+  "--tree", "{analysis.tree}",
+  "--out-json", "{run.dir}/artifacts/report/input_crosscheck/tuple_th2_validation.json",
+  "--out-npz", "{run.dir}/artifacts/report/input_crosscheck/reconstructed_report_th2.npz",
+]
+requirements = [
+  "module:numpy", "module:uproot",
+  "file:{inputs.high_legacy_root}", "file:{inputs.campaign_new_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/report/input_crosscheck/tuple_th2_validation.json",
+  "{run.dir}/artifacts/report/input_crosscheck/reconstructed_report_th2.npz",
+]
+fail_patterns = ["Traceback", "missing required branches", "Reference comparison: 0/"]
+
+[[task]]
+name = "report_compare_campaign_histograms"
+stage = "report"
+description = "Regenerate the raw-count TH1 references and all TH2 campaign comparisons"
+script = "scripts/plotting/compare_report_campaign_histograms.py"
+args = [
+  "--old-root", "{inputs.campaign_old_root}",
+  "--new-root", "{inputs.campaign_new_root}",
+  "--out-dir", "{run.dir}/artifacts/report/campaign_comparison",
+  "--old-label", "merged_elecs_test (1)",
+  "--new-label", "merged_elecs_test_",
+  "--th1-mode", "raw",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.campaign_old_root}", "file:{inputs.campaign_new_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/report/campaign_comparison/campaign_histogram_manifest.json",
+  "{run.dir}/artifacts/report/campaign_comparison/RapidityBins_h_MassRes_Bin2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/RapidityBins_h_MassRes_Bin3.png",
+  "{run.dir}/artifacts/report/campaign_comparison/h_nTracks_Central.png",
+  "{run.dir}/artifacts/report/campaign_comparison/h_nTracks_Tagger.png",
+  "{run.dir}/artifacts/report/campaign_comparison/GenLevel_h2_Gen_W_vs_Rapidity_TH2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/GenLevel_h2_Gen_t_vs_W_TH2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/GenLevel_h2_Gen_DecayLeps_pT_vs_pT_TH2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/GenLevel_h2_Gen_DecayLeps_Eta_vs_pT_TH2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/h2_nTracks_Central_vs_Tagger_TH2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/h2_Reco_DecayLeps_Eta_vs_pT_TH2.png",
+  "{run.dir}/artifacts/report/campaign_comparison/DecayLepton_Efficiency_Eta_vs_pT_new.png",
+]
+fail_patterns = ["Traceback", "axis mismatch", "Rendered 0 files"]
+
+[[task]]
+name = "report_legacy_kinematic_efficiencies"
+stage = "report"
+description = "High-near/source-match legacy single-sample efficiency figures"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/02_efficiency_and_two_energy_studies.ipynb",
+  "--cells", "0",
+  "--replace", "\"~/merged_elecs_test_tuples.root\"=\"{inputs.high_legacy_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/legacy_kinematic_efficiencies",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/02_efficiency_and_two_energy_studies.ipynb",
+  "file:{inputs.high_legacy_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/report/legacy_kinematic_efficiencies/Upsilon_1S_Kinematic_Efficiencies.png",
+  "{run.dir}/artifacts/report/legacy_kinematic_efficiencies/Upsilon_2S_Kinematic_Efficiencies.png",
+  "{run.dir}/artifacts/report/legacy_kinematic_efficiencies/Upsilon_3S_Kinematic_Efficiencies.png",
+]
+fail_patterns = ["Traceback", "Error opening file", "No events found"]
+
+[[task]]
+name = "report_legacy_inclusive_dashboard"
+stage = "report"
+description = "High-near/source-match dashboard superseded by an audited notebook cell"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/03_event_selection_truth_and_bt_studies.ipynb",
+  "--cells", "0",
+  "--replace", "\"~/merged_elecs_test_tuples.root\"=\"{inputs.high_legacy_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/legacy_inclusive_dashboard",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/03_event_selection_truth_and_bt_studies.ipynb",
+  "file:{inputs.high_legacy_root}",
+]
+outputs = ["{run.dir}/artifacts/report/legacy_inclusive_dashboard/Upsilon_Inclusive_Dashboard.png"]
+fail_patterns = ["Traceback", "Error opening file", "Histogram is empty"]
+
+[[task]]
+name = "report_event_selection_cutflow"
+stage = "report"
+description = "Recover the styled two-energy event-selection cutflow replacement"
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/03_event_selection_truth_and_bt_studies.ipynb",
+  "--cells", "8",
+  "--replace", "\"~/merged_elecs_test_10t100.root\"=\"{inputs.report_low_hist_root}\"",
+  "--replace", "\"~/merged_elecs_test_tuples.root\"=\"{inputs.report_high_hist_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/event_selection_cutflow",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/03_event_selection_truth_and_bt_studies.ipynb",
+  "file:{inputs.report_low_hist_root}", "file:{inputs.report_high_hist_root}",
+]
+outputs = ["{run.dir}/artifacts/report/event_selection_cutflow/Upsilon_EventSelection_Cutflow_with_Loss.png"]
+fail_patterns = ["Traceback", "Error opening ROOT files", "Could not retrieve TH1D"]
+
+[[task]]
+name = "report_truth_level_dashboard"
+stage = "report"
+description = "Tuple-direct truth distributions and 2D report-observable descendants"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/03_event_selection_truth_and_bt_studies.ipynb",
+  "--cells", "7",
+  "--replace", "\"~/merged_elecs_test_10t100_10x100.root\"=\"{inputs.low_root}\"",
+  "--replace", "\"~/merged_elecs_test_tuples_fix2.root\"=\"{inputs.high_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/truth_level_dashboard",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/03_event_selection_truth_and_bt_studies.ipynb",
+  "file:{inputs.low_root}", "file:{inputs.high_root}",
+]
+outputs = ["{run.dir}/artifacts/report/truth_level_dashboard/Upsilon_TrueLevel_Overlay_Dashboard.png"]
+fail_patterns = ["Traceback", "Error opening files", "No events found"]
+
+[[task]]
+name = "report_gamma_p_family_predecessor"
+stage = "report"
+description = "High-near exploratory gamma-p family predecessor retained for provenance"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/06_gamma_p_cross_section_family.ipynb",
+  "--cells", "0",
+  "--replace", "\"~/merged_elecs_test_tuples.root\"=\"{inputs.high_legacy_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/gamma_p_family_predecessor",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/06_gamma_p_cross_section_family.ipynb",
+  "file:{inputs.high_legacy_root}",
+]
+outputs = ["{run.dir}/artifacts/report/gamma_p_family_predecessor/Upsilon_Family_GammaP.png"]
+fail_patterns = ["Traceback", "Error opening", "No events", "Data has no positive values"]
+
+[[task]]
+name = "report_mass_fit_scaled_legacy"
+stage = "report"
+description = "Unvalidated legacy inclusive DSCB fit with post-fit state scaling"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/01_mass_fits_inclusive_and_rapidity.ipynb",
+  "--cells", "0",
+  "--replace", "\"~/merged_elecs_test.root\"=\"{inputs.report_mass_hist_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/mass_fit_scaled_legacy",
+]
+requirements = [
+  "module:ROOT",
+  "file:{paths.project}/notebooks/01_mass_fits_inclusive_and_rapidity.ipynb",
+  "file:{inputs.report_mass_hist_root}",
+]
+outputs = ["{run.dir}/artifacts/report/mass_fit_scaled_legacy/Fit_Inclusive_Upsilon_DSCB_Scaled.pdf"]
+fail_patterns = [
+  "Traceback", "Error: Could not", "STATUS=CALL LIMIT", "NOT POSDEF",
+  "NOT POS-DEF", "abnormal termination", "negative integrated",
+]
+
+[[task]]
+name = "report_mass_fit_tuple_direct"
+stage = "report"
+description = "Tuple-direct inclusive DSCB fit analogue; electron-ID configuration remains unresolved"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/01_mass_fits_inclusive_and_rapidity.ipynb",
+  "--cells", "1",
+  "--replace", "\"~/merged_elecs_test_10t100_10x100.root\"=\"{inputs.report_mass_tuple_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/mass_fit_tuple_direct",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/01_mass_fits_inclusive_and_rapidity.ipynb",
+  "file:{inputs.report_mass_tuple_root}",
+]
+outputs = ["{run.dir}/artifacts/report/mass_fit_tuple_direct/Fit_Inclusive_Upsilon_DSCB_Nice.png"]
+fail_patterns = [
+  "Traceback", "Error opening file", "STATUS=CALL LIMIT", "NOT POSDEF",
+  "NOT POS-DEF", "abnormal termination", "Histogram is empty", "negative",
+]
+
+[[task]]
+name = "report_mass_fit_rapidity_recovered"
+stage = "report"
+description = "Recovered rapidity-bin DSCB fit; numerical results require fit-quality review"
+experimental = true
+script = "workflow/run_notebook_cell.py"
+args = [
+  "{paths.project}/notebooks/01_mass_fits_inclusive_and_rapidity.ipynb",
+  "--cells", "2",
+  "--replace", "\"~/merged_elecs_test_tuples_fix2.root\"=\"{inputs.report_mass_tuple_root}\"",
+  "--workdir", "{run.dir}/artifacts/report/mass_fit_rapidity_recovered",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{paths.project}/notebooks/01_mass_fits_inclusive_and_rapidity.ipynb",
+  "file:{inputs.report_mass_tuple_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/report/mass_fit_rapidity_recovered/Fit_Inclusive_Upsilon_RapidityBins_raw_visible_decay.png",
+]
+fail_patterns = [
+  "Traceback", "Error opening file", "STATUS=CALL LIMIT", "NOT POSDEF",
+  "NOT POS-DEF", "abnormal termination", "Histogram is empty", "negative",
+]
+
+[[task]]
+name = "unfold_low_sigma_gamma_p_w"
+stage = "unfolding"
+description = "Unfold the low-energy Upsilon(1S) W spectrum"
+script = "scripts/unfolding/unfold_gamma_p_cross_section_vs_w.py"
+deps = ["validate_low_w_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/unfolding/low_sigma_gamma_p_w",
+  "--state", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-edges", "{beam.low.w_edges}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/unfolding/low_sigma_gamma_p_w_unfolded_summary.csv",
+  "{run.dir}/artifacts/unfolding/low_sigma_gamma_p_w_normalization.csv",
+  "{run.dir}/artifacts/unfolding/low_sigma_gamma_p_w_response_prob.csv",
+  "{run.dir}/artifacts/unfolding/low_sigma_gamma_p_w_closure.png",
+]
+fail_patterns = ["Traceback", "zero reconstructed", "selection is empty"]
+
+[[task]]
+name = "unfold_high_sigma_gamma_p_w"
+stage = "unfolding"
+description = "Unfold the high-energy Upsilon(1S) W spectrum"
+script = "scripts/unfolding/unfold_gamma_p_cross_section_vs_w.py"
+deps = ["validate_high_w_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/unfolding/high_sigma_gamma_p_w",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--proton-energy", "{beam.high.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-edges", "{beam.high.w_edges}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/unfolding/high_sigma_gamma_p_w_unfolded_summary.csv",
+  "{run.dir}/artifacts/unfolding/high_sigma_gamma_p_w_normalization.csv",
+  "{run.dir}/artifacts/unfolding/high_sigma_gamma_p_w_response_prob.csv",
+  "{run.dir}/artifacts/unfolding/high_sigma_gamma_p_w_closure.png",
+]
+fail_patterns = ["Traceback", "zero reconstructed", "selection is empty"]
+
+# Differential extraction and b-slope presentation.
+
+[[task]]
+name = "extract_low_differential_gamma_p"
+stage = "differential"
+description = "Extract low-energy 1S pT2 and rapidity spectra and b slope"
+script = "scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py"
+deps = ["validate_low_differential_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-1s-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--variables", "pT2,y",
+  "--y-bins=-1,0,1,2",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--min-eff", "0.05",
+  "--fit-b-slope",
+  "--b-slope-variable", "pT2",
+  "--b-slope-bins", "{analysis.t_edges}",
+  "--b-slope-zeus-mass-window",
+  "--out-prefix", "{run.dir}/artifacts/differential/low_1s",
+  "--campaign", "low-energy",
+  "--energy-label", "{beam.low.label}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/differential/low_1s_1S_all.csv",
+  "{run.dir}/artifacts/differential/low_1s_1S_b_slope_bins.csv",
+  "{run.dir}/artifacts/differential/low_1s_b_slope_summary.csv",
+  "{run.dir}/artifacts/differential/low_1s_metadata.csv",
+  "{run.dir}/artifacts/differential/low_1s_pt2_y.png",
+  "{run.dir}/artifacts/differential/low_1s_pt2_y.pdf",
+]
+fail_patterns = ["Traceback", "Need visible xsec", "valid_bins.*[01]"]
+
+[[task]]
+name = "extract_high_differential_gamma_p_family"
+stage = "differential"
+description = "Extract high-energy family pT2 and rapidity spectra and b slopes"
+script = "scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py"
+deps = ["validate_high_differential_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--states", "1S,2S,3S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--proton-energy", "{beam.high.proton_energy}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-1s-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--visible-xsec-2s-fb", "{beam.high.visible_xsec_2s_fb}",
+  "--visible-xsec-3s-fb", "{beam.high.visible_xsec_3s_fb}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--variables", "pT2,y",
+  "--y-bins=-1,0,1,2",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--min-eff", "0.05",
+  "--fit-b-slope",
+  "--b-slope-variable", "pT2",
+  "--b-slope-bins", "{analysis.t_edges}",
+  "--out-prefix", "{run.dir}/artifacts/differential/high_family",
+  "--campaign", "high-energy",
+  "--energy-label", "{beam.high.label}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/differential/high_family_1S_all.csv",
+  "{run.dir}/artifacts/differential/high_family_2S_all.csv",
+  "{run.dir}/artifacts/differential/high_family_3S_all.csv",
+  "{run.dir}/artifacts/differential/high_family_b_slope_summary.csv",
+  "{run.dir}/artifacts/differential/high_family_metadata.csv",
+  "{run.dir}/artifacts/differential/high_family_pt2_y.png",
+  "{run.dir}/artifacts/differential/high_family_pt2_y.pdf",
+]
+fail_patterns = ["Traceback", "Need visible xsec", "valid_bins.*[01]"]
+
+[[task]]
+name = "plot_b_slope_1s_hera"
+stage = "plotting"
+description = "Compare low- and high-energy 1S b slopes with HERA context"
+script = "scripts/plotting/plot_b_slope_1s_hera_overlay.py"
+deps = ["extract_low_differential_gamma_p", "extract_high_differential_gamma_p_family"]
+args = [
+  "--low-summary", "{run.dir}/artifacts/differential/low_1s_b_slope_summary.csv",
+  "--high-summary", "{run.dir}/artifacts/differential/high_family_b_slope_summary.csv",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--state", "1S",
+  "--q2-low", "{analysis.q2_event_max}",
+  "--q2-high", "{analysis.q2_event_max}",
+  "--out-prefix", "{run.dir}/artifacts/figures/b_slope_1s_hera",
+]
+requirements = ["module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/figures/b_slope_1s_hera.png",
+  "{run.dir}/artifacts/figures/b_slope_1s_hera.pdf",
+  "{run.dir}/artifacts/figures/b_slope_1s_hera_epic_points.csv",
+]
+fail_patterns = ["Traceback", "No valid"]
+
+[[task]]
+name = "plot_b_slopes_family_hera"
+stage = "plotting"
+description = "Compare high-energy family b slopes with HERA context"
+script = "scripts/plotting/plot_b_slopes_family_hera_overlay.py"
+deps = ["extract_high_differential_gamma_p_family"]
+args = [
+  "--summary", "{run.dir}/artifacts/differential/high_family_b_slope_summary.csv",
+  "--q2", "{analysis.q2_event_max}",
+  "--sample-label", "{beam.high.label}",
+  "--out-prefix", "{run.dir}/artifacts/figures/b_slopes_family_hera",
+]
+requirements = ["module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/figures/b_slopes_family_hera.png",
+  "{run.dir}/artifacts/figures/b_slopes_family_hera.pdf",
+  "{run.dir}/artifacts/figures/b_slopes_family_hera_epic_points.csv",
+]
+fail_patterns = ["Traceback", "No valid"]
+
+# t-estimator diagnostics and unfolding.
+
+[[task]]
+name = "benchmark_t_estimators"
+stage = "t_validation"
+description = "Benchmark all t estimators in their energy-specific W ranges"
+script = "scripts/validation/benchmark_t_estimators.py"
+deps = ["validate_low_t_schema", "validate_high_t_schema"]
+args = [
+  "--low-file", "{inputs.low_root}",
+  "--high-file", "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--methods", "eX,BABE,eXBABE,proj,pT2",
+  "--low-visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--state-norm-mode", "target_visible_xsec",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--low-electron-energy", "{beam.low.electron_energy}",
+  "--high-electron-energy", "{beam.high.electron_energy}",
+  "--low-w-min", "{beam.low.w_min}",
+  "--low-w-max", "{beam.low.w_max}",
+  "--high-w-min", "{beam.high.w_min}",
+  "--high-w-max", "{beam.high.w_max}",
+  "--t-edges", "{analysis.t_edges}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--seed", "{analysis.seed}",
+  "--out-prefix", "{run.dir}/artifacts/t/benchmark",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/benchmark_summary.csv",
+  "{run.dir}/artifacts/t/benchmark_per_bin.csv",
+  "{run.dir}/artifacts/t/benchmark_residuals.png",
+  "{run.dir}/artifacts/t/benchmark_metrics.png",
+  "{run.dir}/artifacts/t/benchmark_closure.png",
+]
+fail_patterns = ["Traceback", "zero raw", "No selected"]
+
+[[task]]
+name = "plot_reco_t_estimators"
+stage = "t_validation"
+description = "Plot reconstructed t-estimator distributions by beam energy"
+script = "scripts/plotting/plot_reco_t_estimators_by_energy.py"
+deps = ["validate_low_t_schema", "validate_high_t_schema"]
+args = [
+  "--low-file", "{inputs.low_root}",
+  "--high-file", "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--methods", "eX,BABE,eXBABE,proj,pT2",
+  "--low-visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--state-norm-mode", "target_visible_xsec",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--low-electron-energy", "{beam.low.electron_energy}",
+  "--high-electron-energy", "{beam.high.electron_energy}",
+  "--low-w-min", "{beam.low.w_min}",
+  "--low-w-max", "{beam.low.w_max}",
+  "--high-w-min", "{beam.high.w_min}",
+  "--high-w-max", "{beam.high.w_max}",
+  "--t-edges", "{analysis.t_edges}",
+  "--out-prefix", "{run.dir}/artifacts/t/reco_estimators",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/reco_estimators.png",
+  "{run.dir}/artifacts/t/reco_estimators.pdf",
+  "{run.dir}/artifacts/t/reco_estimators_summary.csv",
+]
+fail_patterns = ["Traceback", "zero raw", "No selected"]
+
+[[task]]
+name = "plot_t_estimators_two_energy_overlay"
+stage = "t_validation"
+description = "Build the report-specific two-energy overlay of all t estimators"
+script = "scripts/plotting/plot_t_estimators_two_energy_overlay.py"
+deps = ["validate_low_t_schema", "validate_high_t_schema"]
+args = [
+  "--low-file", "{inputs.low_root}",
+  "--high-file", "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--low-visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--state-norm-mode", "target_visible_xsec",
+  "--out-prefix", "{run.dir}/artifacts/t/t_estimators_two_energy_overlay",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/t_estimators_two_energy_overlay.png",
+  "{run.dir}/artifacts/t/t_estimators_two_energy_overlay_summary.csv",
+]
+fail_patterns = ["Traceback", "zero raw", "No selected"]
+
+[[task]]
+name = "unfold_low_t_spectrum"
+stage = "t_unfolding"
+description = "Unfold the low-energy pT2-based t spectrum"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_low_t_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/t/low_pT2",
+  "--state", "1S",
+  "--method", "pT2",
+  "--t-edges", "{analysis.t_edges}",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--weight-convention", "visible_decay",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--zeus-csv", "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode", "scale_to_zeus",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep",
+  "file:{inputs.zeus_step_csv}",
+]
+outputs = [
+  "{run.dir}/artifacts/t/low_pT2_t_unfold_summary.csv",
+  "{run.dir}/artifacts/t/low_pT2_normalization.csv",
+  "{run.dir}/artifacts/t/low_pT2_response_prob.csv",
+  "{run.dir}/artifacts/t/low_pT2_closure.png",
+  "{run.dir}/artifacts/t/low_pT2_zeus_overlay.png",
+]
+fail_patterns = ["Traceback", "zero raw", "selection is empty"]
+
+[[task]]
+name = "unfold_high_t_spectrum"
+stage = "t_unfolding"
+description = "Unfold the high-energy pT2-based t spectrum"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_high_t_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/t/high_pT2",
+  "--state", "1S",
+  "--method", "pT2",
+  "--t-edges", "{analysis.t_edges}",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--weight-convention", "visible_decay",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--zeus-csv", "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode", "scale_to_zeus",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep",
+  "file:{inputs.zeus_step_csv}",
+]
+outputs = [
+  "{run.dir}/artifacts/t/high_pT2_t_unfold_summary.csv",
+  "{run.dir}/artifacts/t/high_pT2_normalization.csv",
+  "{run.dir}/artifacts/t/high_pT2_response_prob.csv",
+  "{run.dir}/artifacts/t/high_pT2_closure.png",
+  "{run.dir}/artifacts/t/high_pT2_zeus_overlay.png",
+]
+fail_patterns = ["Traceback", "zero raw", "selection is empty"]
+
+[[task]]
+name = "plot_t_spectra_and_impact_parameter"
+stage = "plotting"
+description = "Compare pT2-based spectra and transform them to impact parameter"
+script = "scripts/plotting/plot_t_spectra_and_impact_parameter.py"
+deps = ["unfold_low_t_spectrum", "unfold_high_t_spectrum"]
+args = [
+  "--low-csv", "{run.dir}/artifacts/t/low_pT2_t_unfold_summary.csv",
+  "--high-csv", "{run.dir}/artifacts/t/high_pT2_t_unfold_summary.csv",
+  "--zeus-csv", "{paths.project}/{inputs.zeus_step_csv}",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--shape-mode", "scale_to_zeus",
+  "--bt-norm", "peak",
+  "--n-toys", "200",
+  "--out-prefix", "{run.dir}/artifacts/figures/t_spectra_and_bT",
+]
+requirements = ["module:numpy", "module:matplotlib", "module:mplhep", "module:scipy", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/figures/t_spectra_and_bT.png",
+  "{run.dir}/artifacts/figures/t_spectra_and_bT.pdf",
+  "{run.dir}/artifacts/figures/t_spectra_and_bT_bT_profiles.csv",
+]
+fail_patterns = ["Traceback", "No valid", "empty"]
+
+# Track correlations.
+
+[[task]]
+name = "plot_low_track_correlation"
+stage = "correlation"
+description = "Plot low-energy central/tagger multiplicity correlation"
+script = "scripts/validation/plot_track_multiplicity_correlation.py"
+deps = ["validate_low_correlation_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/correlation/low_tracks",
+  "--state", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--energy-label", "{beam.low.label}",
+  "--campaign", "low-energy",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/correlation/low_tracks.png",
+  "{run.dir}/artifacts/correlation/low_tracks.pdf",
+  "{run.dir}/artifacts/correlation/low_tracks_summary.csv",
+  "{run.dir}/artifacts/correlation/low_tracks_map.csv",
+]
+fail_patterns = ["Traceback", "No selected", "empty"]
+
+[[task]]
+name = "plot_high_track_correlation"
+stage = "correlation"
+description = "Plot high-energy central/tagger multiplicity correlation"
+script = "scripts/validation/plot_track_multiplicity_correlation.py"
+deps = ["validate_high_correlation_schema"]
+args = [
+  "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/correlation/high_tracks",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--energy-label", "{beam.high.label}",
+  "--campaign", "high-energy",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/correlation/high_tracks.png",
+  "{run.dir}/artifacts/correlation/high_tracks.pdf",
+  "{run.dir}/artifacts/correlation/high_tracks_summary.csv",
+  "{run.dir}/artifacts/correlation/high_tracks_map.csv",
+]
+fail_patterns = ["Traceback", "No selected", "empty"]
+
+# Experimental tasks are excluded unless --include-experimental is supplied.
+
+[[task]]
+name = "extract_low_sigma_gamma_p_legacy"
+stage = "cross_section"
+description = "Superseded low-energy 1S extractor retained only for controlled comparisons"
+experimental = true
+script = "scripts/cross_sections/extract_gamma_p_cross_section_1s_legacy.py"
+deps = ["validate_low_w_schema"]
+args = [
+  "{inputs.low_root}",
+  "--tree", "{analysis.tree}",
+  "--out-prefix", "{run.dir}/artifacts/experimental/legacy_low_sigma_gamma_p_1s",
+  "--theory-csv", "{inputs.ct18_csv}",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--n-w-bins", "10",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--expected-generator-xsec-fb", "{beam.low.generator_xsec_fb}",
+  "--renormalize-sumw-to-xsec", "{beam.low.generator_xsec_fb}",
+  "--renormalize-sumw-scope", "truth_1s",
+  "--weight-convention", "inclusive_upsilon",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+]
+requirements = ["module:ROOT", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/experimental/legacy_low_sigma_gamma_p_1s.csv",
+  "{run.dir}/artifacts/experimental/legacy_low_sigma_gamma_p_1s.png",
+]
+fail_patterns = ["Traceback", "Skipping", "No valid"]
+
+[[task]]
+name = "validate_estarlight_flux"
+stage = "flux"
+description = "Run the external eSTARlight narrow-W flux-ratio scan"
+experimental = true
+script = "scripts/flux/validate_estarlight_flux_ratio.py"
+args = [
+  "--executable", "{inputs.estarlight_executable}",
+  "--template", "{paths.project}/{inputs.estarlight_template}",
+  "--low-electron-gamma", "19569",
+  "--low-target-gamma", "106.6",
+  "--high-electron-gamma", "35225",
+  "--high-target-gamma", "293.2",
+  "--w-edges", "{analysis.common_w_edges}",
+  "--q2-min", "0.0",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--n-events", "1",
+  "--out", "{run.dir}/artifacts/flux/estarlight_flux_ratio.csv",
+]
+requirements = [
+  "module:numpy", "module:pandas",
+  "executable:{inputs.estarlight_executable}",
+  "file:{inputs.estarlight_template}",
+]
+outputs = ["{run.dir}/artifacts/flux/estarlight_flux_ratio.csv"]
+fail_patterns = ["Traceback", "Could not parse", "returned zero total cross section"]
+
+[[task]]
+name = "unfold_hybrid_t_common_w"
+stage = "t_unfolding"
+description = "Experimental common-W hybrid; requires nonzero high-energy efficiency"
+experimental = true
+script = "scripts/unfolding/unfold_hybrid_t_common_w.py"
+deps = ["validate_low_t_schema", "validate_high_t_schema"]
+args = [
+  "--low-file", "{inputs.low_root}",
+  "--high-file", "{inputs.high_root}",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--method", "pT2",
+  "--low-visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--t-edges", "{analysis.t_edges}",
+  "--switch-t", "0.5",
+  "--w-edges", "{analysis.common_w_edges}",
+  "--target-w-mode", "average",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--electron-energy-low", "{beam.low.electron_energy}",
+  "--electron-energy-high", "{beam.high.electron_energy}",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--zeus-csv", "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode", "scale_to_zeus",
+  "--out-prefix", "{run.dir}/artifacts/experimental/hybrid_common_w",
+]
+requirements = [
+  "module:ROOT", "module:numpy", "module:matplotlib", "module:mplhep",
+  "file:{inputs.zeus_step_csv}",
+]
+outputs = [
+  "{run.dir}/artifacts/experimental/hybrid_common_w_normalization_meta.csv",
+  "{run.dir}/artifacts/experimental/hybrid_common_w_W_reweighting_table.csv",
+  "{run.dir}/artifacts/experimental/hybrid_common_w_hybrid_commonW.csv",
+  "{run.dir}/artifacts/experimental/hybrid_common_w_hybrid_commonW_overlay.png",
+]
+fail_patterns = ["Traceback", "zero raw truth-state weight", "zero weighted reconstructed yield", "no positive response efficiency"]
+
+[[task]]
+name = "plot_hybrid_t_different_w"
+stage = "plotting"
+description = "Experimental detector-coverage overlay; not a single physical spectrum"
+experimental = true
+script = "scripts/plotting/plot_hybrid_t_different_w.py"
+deps = ["unfold_low_t_spectrum", "unfold_high_t_spectrum"]
+args = [
+  "--low-csv", "{run.dir}/artifacts/t/low_pT2_t_unfold_summary.csv",
+  "--high-csv", "{run.dir}/artifacts/t/high_pT2_t_unfold_summary.csv",
+  "--switch-t", "0.2",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--zeus-csv", "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode", "scale_to_zeus",
+  "--out-prefix", "{run.dir}/artifacts/experimental/hybrid_different_w",
+]
+requirements = ["module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/experimental/hybrid_different_w_hybrid.csv",
+  "{run.dir}/artifacts/experimental/hybrid_different_w_hybrid_overlay.png",
+  "{run.dir}/artifacts/experimental/hybrid_different_w_hybrid_overlay.pdf",
+]
+fail_patterns = ["Traceback", "No valid", "empty"]
+
+[[task]]
+name = "build_gamma_p_validation_figures"
+stage = "plotting"
+description = "Build the five-page gamma-p validation figure set"
+experimental = true
+script = "scripts/plotting/build_gamma_p_validation_figure_set.py"
+deps = [
+  "extract_low_sigma_gamma_p",
+  "extract_high_sigma_gamma_p_family",
+  "validate_truth_two_energies",
+  "validate_estarlight_flux",
+]
+args = [
+  "--indir", "{run.dir}/artifacts",
+  "--out-prefix", "{run.dir}/artifacts/experimental/gamma_p_validation",
+  "--min-eff", "0.05",
+  "--low-csv", "{run.dir}/artifacts/cross_sections/low_sigma_gamma_p_1s.csv",
+  "--high-csv", "{run.dir}/artifacts/cross_sections/high_sigma_gamma_p_family.csv",
+  "--flux-csv", "{run.dir}/artifacts/flux/estarlight_flux_ratio.csv",
+  "--truth-compare-csv", "{run.dir}/artifacts/normalization/truth_two_energies.csv",
+]
+requirements = ["module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/experimental/gamma_p_validation_comparisons.pdf",
+  "{run.dir}/artifacts/experimental/gamma_p_validation_overlay_1S_family.png",
+  "{run.dir}/artifacts/experimental/gamma_p_validation_flux_validation.png",
+  "{run.dir}/artifacts/experimental/gamma_p_validation_truth_low_high_ratio.png",
+  "{run.dir}/artifacts/experimental/gamma_p_validation_18x275_family_efficiency.png",
+  "{run.dir}/artifacts/experimental/gamma_p_validation_closure.png",
+]
+fail_patterns = ["Traceback", "No valid", "empty"]

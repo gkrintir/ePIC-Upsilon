@@ -1,0 +1,160 @@
+[
+  {
+    "source": "upsilon_esr/__init__.py",
+    "destination": "upsilon_esr/__init__.py",
+    "source_sha256": "9dfcd088cdca0c6c007bd6e8118d9cfa6d240aa097d2709254b545b4bfe5048c"
+  },
+  {
+    "source": "upsilon_esr/common.py",
+    "destination": "upsilon_esr/common.py",
+    "source_sha256": "2db4180ddf46dae5aad4c05ef72d6fc6c9d88bc84fabfa6ea81d4f31aa977b15"
+  },
+  {
+    "source": "upsilon_esr/differential.py",
+    "destination": "upsilon_esr/differential.py",
+    "source_sha256": "df3d52791951515e46fe045e24059f2eed5844030312d7e6a892a683e7d51fba"
+  },
+  {
+    "source": "upsilon_esr/mass_fit_intervals.py",
+    "destination": "upsilon_esr/mass_fit_intervals.py",
+    "source_sha256": "7a31259f9fc8329551518d9fe91269247b45cab334e7bde704b2730bf2b1fcbd"
+  },
+  {
+    "source": "upsilon_esr/proton_inputs.py",
+    "destination": "upsilon_esr/proton_inputs.py",
+    "source_sha256": "49034a05015d3f9fecdec7dd8237c4a70e493300f37f15e4dc6408360efddced"
+  },
+  {
+    "source": "upsilon_esr/rebin_toys.py",
+    "destination": "upsilon_esr/rebin_toys.py",
+    "source_sha256": "fb6c4b17753eae06772c32f8b2e94b70e9a872e48aa517f29d4ae5411320abd7"
+  },
+  {
+    "source": "upsilon_esr/rebinning.py",
+    "destination": "upsilon_esr/rebinning.py",
+    "source_sha256": "4fb4220403e6dcaa658d6f6b62afcfb6c870d26f6dd5d960f840602ab765990b"
+  },
+  {
+    "source": "upsilon_esr/reconstruction.py",
+    "destination": "upsilon_esr/reconstruction.py",
+    "source_sha256": "c64b5e129bdfc290345f9c4f459ff84060be7d7e01c1ba61f4a563c6363ded49"
+  },
+  {
+    "source": "upsilon_esr/reoptimization_inputs.py",
+    "destination": "upsilon_esr/reoptimization_inputs.py",
+    "source_sha256": "3c1c7e3d9734960a6935d3213271e22cbdfab31ada473a379cfb2389160d38ae"
+  },
+  {
+    "source": "upsilon_esr/w_cross_section.py",
+    "destination": "upsilon_esr/w_cross_section.py",
+    "source_sha256": "050ff6c07868f6c094bd3d4a22f74fa643fe2e441689d668a6241dc830739e32"
+  },
+  {
+    "source": "audit_projected_binning.py",
+    "destination": "audit_projected_binning.py",
+    "source_sha256": "78e3b14b1e011127332c5a02a9e16721de661ae9f71348071872e3e7429b97db"
+  },
+  {
+    "source": "01_reconstruction.ipynb",
+    "destination": "01_reconstruction.ipynb",
+    "source_sha256": "63762759e924f9234453037d8162e007060a3074658db4abf1aae1c3e69fe195"
+  },
+  {
+    "source": "02_w_cross_section.ipynb",
+    "destination": "02_w_cross_section.ipynb",
+    "source_sha256": "2e020bcee28c45a8b302187bfffbbfa9120a80df3814b65e4f2bb1937427b8a6"
+  },
+  {
+    "source": "03_differential_available_cases.ipynb",
+    "destination": "03_differential.ipynb",
+    "source_sha256": "cd3983f18da5257930927ed54196ae46b6db30e297581bcc3042d815e5218787"
+  },
+  {
+    "source": "06_mass_and_2d_efficiency.ipynb",
+    "destination": "06_mass_and_2d_efficiency.ipynb",
+    "source_sha256": "fe027d83a46031b9d8d68114eefe4fb29308199fbfff217b9ef4f452cb1008ea"
+  },
+  {
+    "source": "07_mass_and_efficiency_w_xv.ipynb",
+    "destination": "07_mass_and_efficiency_w_xv.ipynb",
+    "source_sha256": "e959893fe11ea0c33adfc3b9877a05d1b3480840a386a0e069e9ed9265ca2af4"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_binning_audit.py",
+    "destination": "tests/test_binning_audit.py",
+    "source_sha256": "e3a1ab5413c612061522bbc3b4fbbb6f27329d3d79b0caf565f5fae784e1176e"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_common.py",
+    "destination": "tests/test_common.py",
+    "source_sha256": "aa1126ae036ba0bb9cd95c3d5cd855dc799c08506fdb497afbbda29f204c3744"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_differential.py",
+    "destination": "tests/test_differential.py",
+    "source_sha256": "eddc692b9af8c15256bbb7e7f6b0f518e23250f97585ad6e9f3973c9058e3fd9"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_metadata.py",
+    "destination": "tests/test_metadata.py",
+    "source_sha256": "a1ae21938027ba6ac7af870e68411233c53cb486785f3ae1f5ecfd64dc50f157"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_proton_inputs.py",
+    "destination": "tests/test_proton_inputs.py",
+    "source_sha256": "f8727dcacd236d0e57be8e714dc6cd6b706e61bec0747eba55e6b0584517d2b9"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_rebin_toys.py",
+    "destination": "tests/test_rebin_toys.py",
+    "source_sha256": "f5bb9142ed6621375e74a88c4070c79d80dd03602361ccc24d8cd35ce0c6e939"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_rebinning.py",
+    "destination": "tests/test_rebinning.py",
+    "source_sha256": "d5a0f2153b570a720d78d2127d251e1a1b23b956e2a6adfca92fde0c14132732"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_reconstruction.py",
+    "destination": "tests/test_reconstruction.py",
+    "source_sha256": "7b39092e2d58439ea3971e6121660e29f6d7aa169ccfc954d1b9901b73decfb2"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_reoptimization_inputs.py",
+    "destination": "tests/test_reoptimization_inputs.py",
+    "source_sha256": "9d06ce92a54211bc64470bf860138aaad991ada7eb4120b83f685d6e79bfb7e4"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_unavailable_reoptimization.py",
+    "destination": "tests/test_unavailable_reoptimization.py",
+    "source_sha256": "bd97c942e09c09cb2e295157427723300aa085c212cdb547ed71db62bca7be41"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_w_reference.py",
+    "destination": "tests/test_w_reference.py",
+    "source_sha256": "9d4ad6e6acf3340a4f12a8a0c19dcb86a3fcecf6cf06e5dfc285d0e4bafd9e7d"
+  },
+  {
+    "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/tests/test_mass_fit_intervals.py",
+    "destination": "tests/test_mass_fit_intervals.py",
+    "source_sha256": "4d17531f1e3be6075fbe0e5467233be2f35af364091439b53904eace42291a19"
+  },
+  {
+    "source_archive": "tmp/repo_sources/Ypsilon_ProtonTagged_Plotting.zip",
+    "source": "Ypsilon_ESR_SWAN_ProtonTagged/upsilon_esr/rebinning.py",
+    "source_sha256": "f3f9d023f1c5d94f43c25a83c7589d32f91a01e7a0ecd68bc17ad5bc135455d6",
+    "destination": "plotting/upsilon_esr/rebinning.py"
+  }
+]

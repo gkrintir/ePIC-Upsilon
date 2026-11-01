@@ -1,0 +1,16 @@
+# Overrides for the existing statistics pipeline. Rates and physics tasks are inherited.
+[inputs]
+root_9x130 = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x130/hiAcc/output_newID/merged_Upsilon_final.root"
+root_9x275 = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root"
+
+[analysis]
+stat_mode = "projected"
+projection_lumi_invfb = 10.0
+count_interval = "median_garwood"
+
+[newid]
+electron_id = "reco"
+expected_mode = 1
+femc_scenario = "full"
+normalization_policy = "Inherit assigned visible cross sections; normalize each complete generated sample separately before ID selection"
+

@@ -1,0 +1,97 @@
+[
+  {
+    "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_overlay_1S_family.png",
+    "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_overlay_1S_family.png",
+    "reference_sha256": "d20cc34d1c40fcf45bed048adeb81912b8c100b019ab6633368eb60a34707926",
+    "rerun_sha256": "77428f695037905d5d7ad74ef3b3b8bcf1fd5f0e03dcd496b96841b436d56092",
+    "pixel_identical": true,
+    "reference_rgba_shape": [
+      2250,
+      2850,
+      4
+    ],
+    "rerun_rgba_shape": [
+      2250,
+      2850,
+      4
+    ],
+    "max_absolute_channel_difference": 0,
+    "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+  },
+  {
+    "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_18x275_family_efficiency.png",
+    "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_18x275_family_efficiency.png",
+    "reference_sha256": "38e050d27e8d23f7c5e460e7c53aef06cb1f60d9c83818c0870d2ac31141545a",
+    "rerun_sha256": "d260fc4e6afceb3dceec5b1dff99781622f4476603161ccce1f728e5e0a6bb49",
+    "pixel_identical": true,
+    "reference_rgba_shape": [
+      1950,
+      2700,
+      4
+    ],
+    "rerun_rgba_shape": [
+      1950,
+      2700,
+      4
+    ],
+    "max_absolute_channel_difference": 0,
+    "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+  },
+  {
+    "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_closure.png",
+    "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_closure.png",
+    "reference_sha256": "73ca6b985886fdf00492237654b6bbec56fb644eaab01833fb685bd42468a80a",
+    "rerun_sha256": "3260bc3dda2f83cf55ed44e067737da2214f17f32828bd11429f438c4793837e",
+    "pixel_identical": true,
+    "reference_rgba_shape": [
+      1950,
+      2700,
+      4
+    ],
+    "rerun_rgba_shape": [
+      1950,
+      2700,
+      4
+    ],
+    "max_absolute_channel_difference": 0,
+    "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+  },
+  {
+    "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_truth_low_high_ratio.png",
+    "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_truth_low_high_ratio.png",
+    "reference_sha256": "0f2758f258f4df43b0eebc79d1def55c0e3c084966a57b783c7751d2e49d5b0b",
+    "rerun_sha256": "fabece6866e05e141f55648acdfa8a78de353372100e7b7f98e8e11b4efee2e6",
+    "pixel_identical": true,
+    "reference_rgba_shape": [
+      1950,
+      2550,
+      4
+    ],
+    "rerun_rgba_shape": [
+      1950,
+      2550,
+      4
+    ],
+    "max_absolute_channel_difference": 0,
+    "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+  },
+  {
+    "reference": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/upsilon_selected_flux_validation.png",
+    "rerun": "/workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/recovered_note_flux_validation.png",
+    "reference_sha256": "3227ccaed3a4d0bbd5d8e724e86de37768a6420855a91df99f84ab3f4475e314",
+    "rerun_sha256": "07144652aed2997be1448a885c45978e179fc4ceeab3808b29ee01a2d08a216e",
+    "pixel_identical": true,
+    "reference_rgba_shape": [
+      1950,
+      2550,
+      4
+    ],
+    "rerun_rgba_shape": [
+      1950,
+      2550,
+      4
+    ],
+    "max_absolute_channel_difference": 0,
+    "note": "Decoded pixel comparison; PNG metadata/compression may differ. Flux panel is archival CSV rerender, other panels use recomputed tuple results."
+  }
+]

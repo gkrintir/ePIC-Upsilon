@@ -1,0 +1,15 @@
+{
+  "description": "Supplied source snapshot used for this additive port; runtime records the actual imported source hashes.",
+  "sha256": {
+    "workflow/run_reoptimization.py": "09873919f2810cbb6faef8a17ac1be3148e5b768cc82dcba55626f01fd8c1eb4",
+    "workflow/proton_selection.py": "a1d0724ee8db43bb2eca9f1086908f7d2c5a67535acbeb09769aa310b0694145",
+    "workflow/proton_category_isolation.py": "f763d1e620ffcede68708f9a372f4b1fe5926adb5b77039ffd0ed9d04886c134",
+    "scripts/unfolding/unfold_t_spectrum.py": "8b195a8be6a3381943c212726a7e999239f2021f2cd741c4d55165e981a49e47",
+    "scripts/reoptimization/__init__.py": "8ccc0c8a2cf50bf4ceb01cb38c48266cd87dd39a22d56870196e6bae30fdbe43",
+    "scripts/reoptimization/data.py": "1af57bdd8f4367e498e499009da8cff73f9e0e8911956506304b1f2701969bf6",
+    "scripts/reoptimization/inference.py": "66bbb89643e281598f7305bc7f2d3884614e61afc102022ecfa0a19ca97c8bcd",
+    "scripts/reoptimization/reporting.py": "1d5281c87f0b0def6ae842156711a4fd1abfec304f442abce29d306b3292f2e6",
+    "scripts/reoptimization/response.py": "040e9ecf81f89c674af00f785e22910d9659b00cb248ff847f629ba88d0f202e",
+    "scripts/reoptimization/stress.py": "848f2470aa5b21e3ef2fc18e7b0083d6f6311e847fa1065e25b6ce5bde9fd0dc"
+  }
+}

@@ -1,0 +1,63 @@
+
+=== Recommended final inputs ===
+10x100 final 1S: low_selected_candidate_q2lt001.csv
+18x275 final family: sigma_gp_family_18x275_fixed_unfolded.csv
+Flux validation: /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/archived_reference/flux_ratio_scan_W20to26p5_Q2lt0p001.csv
+Truth comparison: compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv
+
+=== 10x100 plotted bins ===
+ W_low  W_high  sigma_gamma_p_pb  sigma_gamma_p_err_pb  eff_reco_over_true
+ 18.25   19.90         74.328175              7.610711            0.055969
+ 19.90   21.55         90.023789              3.031478            0.400771
+ 21.55   23.20        111.262861              3.380891            0.439505
+ 23.20   24.85        127.603196              3.625988            0.479921
+ 24.85   26.50         71.731583              3.236930            0.399413
+
+=== 18x275 plotted bins by state ===
+state      W_low     W_high  sigma_gamma_p_pb  sigma_gamma_p_err_pb  eff_reco_over_true
+   1S  37.142857  45.714286        136.059037             12.275334            0.097516
+   1S  45.714286  54.285714        159.120673              5.746083            0.535816
+   1S  54.285714  62.857143        209.769578              7.759170            0.511807
+   1S  62.857143  71.428571        243.055873              9.237013            0.535507
+   1S  71.428571  80.000000        281.356201             12.348124            0.457644
+   1S  80.000000  88.571429        338.783652             13.923446            0.521499
+   1S  88.571429  97.142857        357.650171             16.313207            0.503701
+   1S  97.142857 105.714286        412.449847             20.497604            0.466940
+   1S 105.714286 114.285714        443.277711             24.478563            0.438552
+   2S  37.142857  45.714286         43.113357              3.985187            0.092814
+   2S  45.714286  54.285714         52.307473              1.911049            0.527052
+   2S  54.285714  62.857143         67.450081              2.461809            0.522055
+   2S  62.857143  71.428571         78.028330              2.892115            0.552367
+   2S  71.428571  80.000000         91.223232              3.835631            0.491135
+   2S  80.000000  88.571429        110.832427              4.368527            0.547915
+   2S  88.571429  97.142857        114.744693              4.942657            0.547367
+   2S  97.142857 105.714286        130.644786              6.418897            0.497655
+   2S 105.714286 114.285714        144.158993              7.720282            0.456252
+   3S  37.142857  45.714286         30.353962              3.939583            0.108727
+   3S  45.714286  54.285714         39.472406              1.980384            0.569585
+   3S  54.285714  62.857143         51.303509              2.567416            0.572360
+   3S  62.857143  71.428571         57.657003              3.096372            0.586276
+   3S  71.428571  80.000000         64.732386              4.004595            0.508957
+   3S  80.000000  88.571429         77.752782              4.670064            0.574843
+   3S  88.571429  97.142857         82.256060              5.421413            0.542679
+   3S  97.142857 105.714286         86.213446              6.627369            0.481107
+   3S 105.714286 114.285714        104.701976              8.156275            0.476240
+
+=== Flux closure ===
+  W_low  W_high  internal_over_analytic_ratio
+20.0000 22.1667                      1.011772
+22.1667 24.3333                      0.981493
+24.3333 26.5000                      1.018295
+
+=== Truth low/high ratio ===
+    W_low    W_high  ratio_low_over_high
+20.000000 22.166667             2.370202
+22.166667 24.333333             1.923896
+24.333333 26.500000             1.401643
+
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate_comparisons.pdf
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate_overlay_1S_family.png
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate_flux_validation.png
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate_truth_low_high_ratio.png
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate_18x275_family_efficiency.png
+Saved /workspace/scratch/80bba5a372e7/output/Ypsilon_W_Reproduction_Update/reference_replay/verified_results/selected_note_candidate_closure.png

@@ -1,0 +1,658 @@
+{
+  "files": [
+    {
+      "path": "analysis/reference_replay/README.md",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/README.md",
+      "sha256": "825586fea7e4cc61a0bb00156a98b7ff81dbe58f2d09166e547af9a7d0360147"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/Wres_1S_18x275_full_W_resolution_summary.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/Wres_1S_18x275_full_W_resolution_summary.csv",
+      "sha256": "3e14af8e0bffd69af203346029bdf2bfc492ff5f291e1cb29ead09e005c2b9ee"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/Wres_1S_18x275_full_response_counts_selected.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/Wres_1S_18x275_full_response_counts_selected.csv",
+      "sha256": "3642e76524c5a7d90fe6165d0e493136f1319219a0966cc0afb51c1e753f9eab"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "sha256": "b3e2029191230d896407b639b92aebb985a97b3c33f0caa066bf4feec903a8d0"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "sha256": "9fecad80d31e0b4d37c3f5fba56344db907d88f5922ec8da88aa1caf79aeac4e"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/flux_ratio_scan_W20to26p5_Q2lt0p001.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/flux_ratio_scan_W20to26p5_Q2lt0p001.csv",
+      "sha256": "663e444803a57567f900d90abc12984300fb07c45a6345d2ff5200056c843f44"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC.csv",
+      "sha256": "4241c7c455cbf9f299541dbd2577c864aa8e257ca513438dd71bdc0fbc251ca4"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_1S_10x100_W20to26p5_Q2lt0p001_unfolded_withEffMC_normalization.csv",
+      "sha256": "ee2ac2d9a9299248e750796c59c8f329ff26adb097e87f68a36789d5a9baa670"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_1S_10x100_fixed.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_1S_10x100_fixed.csv",
+      "sha256": "2a87256cadf83aeb49932fa8032b56d796bf592a2ae0b647cdd84f1aa8324133"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_1S_10x100_fixed_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_1S_10x100_fixed_normalization.csv",
+      "sha256": "29ddbaadbbd36cdbfb175d292783b5f8d102e9eabaf08ab7b49a5f1f64592069"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_family_18x275_fixed.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_family_18x275_fixed.csv",
+      "sha256": "93ac37afffc4b4756fc9b0e81e0489c90236a18e8197755788c6473efb17023a"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_allbins.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_family_18x275_fixed_allbins.csv",
+      "sha256": "d84ff30c1562f97168910e0fe43b5e6c48fea903cd8e84150f8721b8c3020783"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_allbins_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_family_18x275_fixed_allbins_normalization.csv",
+      "sha256": "40b1d0e59680b9607f83c0dc5933fd256c68e76a24ee4e34330adc07af80abdc"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_family_18x275_fixed_normalization.csv",
+      "sha256": "40b1d0e59680b9607f83c0dc5933fd256c68e76a24ee4e34330adc07af80abdc"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_unfolded.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_family_18x275_fixed_unfolded.csv",
+      "sha256": "111e552e6f2998ddb6483ffe3e9bbc3d90df4988d31fb5fef2d2db6ba6d6ae9e"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "sha256": "40b1d0e59680b9607f83c0dc5933fd256c68e76a24ee4e34330adc07af80abdc"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/unfold_1S_18x275_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/unfold_1S_18x275_normalization.csv",
+      "sha256": "a1a4b2fa7a591f0583267cbf21c5266367314bb548e19e7a605c67769a01cda5"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/unfold_1S_18x275_response_counts.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/unfold_1S_18x275_response_counts.csv",
+      "sha256": "5887bdb7c242087c284cc18d004d3e30eceeffa350ce748fe0c0593739126c44"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/unfold_1S_18x275_response_prob.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/unfold_1S_18x275_response_prob.csv",
+      "sha256": "a7ccfd26c4871aa8eb67f821723a0dff0d6928eb4e4c0f9dd072b41bcae19dee"
+    },
+    {
+      "path": "analysis/reference_replay/archived_reference/unfold_1S_18x275_unfolded_summary.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/archived_reference/unfold_1S_18x275_unfolded_summary.csv",
+      "sha256": "59037021449eb1970ad21f5ef0308e5326806def2098d3987c4aa698053f8e81"
+    },
+    {
+      "path": "analysis/reference_replay/atomic_plot_io.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/atomic_plot_io.py",
+      "sha256": "ac83bab0276ceb7da0b964e0ee1ea77eb6b56883cca676778b43d29b27a4508c"
+    },
+    {
+      "path": "analysis/reference_replay/frozen_legacy/build_gamma_p_validation_figure_set.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/frozen_legacy/build_gamma_p_validation_figure_set.py",
+      "sha256": "24f2411cd4f5e6d876a5ec02a39f144ae61611f465d2534cfd34402592086799"
+    },
+    {
+      "path": "analysis/reference_replay/frozen_legacy/compare_sigma_gp_two_energies_swan_v4.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/frozen_legacy/compare_sigma_gp_two_energies_swan_v4.py",
+      "sha256": "c285473e32de1559feab9fdd6e3f7d0c0632a81971ca6dd4c4248e053ef721cc"
+    },
+    {
+      "path": "analysis/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan.py",
+      "sha256": "de7ddf666e6cf564c24fb9df0b3f0a9dffda150ad6f00e9e1c9be4e3891cad11"
+    },
+    {
+      "path": "analysis/reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/frozen_legacy/extract_sigma_gamma_p_family_fixed_swan_v2.py",
+      "sha256": "9f2d468f08940f4aadfadfb958f1a4effec87cf7f765825a5be4f3865443f920"
+    },
+    {
+      "path": "analysis/reference_replay/frozen_legacy/study_W_resolution_swan.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/frozen_legacy/study_W_resolution_swan.py",
+      "sha256": "3943081dfde16cb2fe0b7c92df29b25693f92740a761d8f9fd307fb1f2964def"
+    },
+    {
+      "path": "analysis/reference_replay/frozen_legacy/unfold_sigma_gp_W_swan.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/frozen_legacy/unfold_sigma_gp_W_swan.py",
+      "sha256": "5b42f2465fda4aad577d6a2ae5a88f83c5759a3b2b393d8b8582ae4146f23d7f"
+    },
+    {
+      "path": "analysis/reference_replay/requirements.txt",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/requirements.txt",
+      "sha256": "3cf477d43241197fd2004b8a50afe0f466ce70cdc2ad2497b5ae5c9b5a57a7df"
+    },
+    {
+      "path": "analysis/reference_replay/run_reference_replay.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/run_reference_replay.py",
+      "sha256": "3eae5e5e7aeff9175752187c27eef38bd1cd4c03c4ec1c0a16b477afeded1491"
+    },
+    {
+      "path": "analysis/reference_replay/uproot_io_adapter.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/uproot_io_adapter.py",
+      "sha256": "7f072e0ed73b485715c4733b45cd0af84d20671d692f377d32915ed251c43e6b"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/Wres_1S_18x275_full_W_resolution_summary.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/Wres_1S_18x275_full_W_resolution_summary.csv",
+      "sha256": "3e14af8e0bffd69af203346029bdf2bfc492ff5f291e1cb29ead09e005c2b9ee"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/Wres_1S_18x275_full_response_counts_selected.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/Wres_1S_18x275_full_response_counts_selected.csv",
+      "sha256": "3642e76524c5a7d90fe6165d0e493136f1319219a0966cc0afb51c1e753f9eab"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.csv",
+      "sha256": "16b9f9371896e6136f831a2b41b984a8bc938c35ac4de91d01f68a1cbef8583e"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta.csv",
+      "sha256": "a6fcb82dc48092f407267efdfa2ddc353ec9070c1693cefddb1dc1cd934483ec"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/Wres_1S_18x275_full_W_resolution_summary_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/Wres_1S_18x275_full_W_resolution_summary_differences.csv",
+      "sha256": "7693df59105d41decef528186a99f6c90fc91e4d614106d7a550f16f78ee6963"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/Wres_1S_18x275_full_response_counts_selected_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/Wres_1S_18x275_full_response_counts_selected_differences.csv",
+      "sha256": "78c49813809c5967f4f4e779434ffea364b8d1f3843001fa512e52fefa21e198"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_differences.csv",
+      "sha256": "5f6e92fdfb263aa2cb4441a26509f9d1180ac4986a96d86564c1aaf3ac26432c"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm_meta_differences.csv",
+      "sha256": "85c7dec2d3e45f42b9afe629839a2693af4d50a21881ed1879b5216f3d7c0bf7"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/sigma_gp_1S_10x100_fixed_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/sigma_gp_1S_10x100_fixed_differences.csv",
+      "sha256": "6242aecc7ad31c5d6f4354fc7e0f3d338dece9d6f087f14a963e036093006cc2"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/sigma_gp_1S_10x100_fixed_normalization_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/sigma_gp_1S_10x100_fixed_normalization_differences.csv",
+      "sha256": "53f8ad5d61677b2758bfce449dc2d809866485cef5d6f0744b20926fe741ad2c"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_differences.csv",
+      "sha256": "bfbdccef39ceb8996e85dc259b9c8157a08cd9bf4ce620afd9d6b62fedfede18"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_normalization_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_normalization_differences.csv",
+      "sha256": "d5723be13a80846a14e86d131d69c2b0601de0242fa2bf61beeb80d556ffeff9"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_unfolded_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_unfolded_differences.csv",
+      "sha256": "253a7d7965eea2b95210e0a7d669f0c5e5d3c4f4221af6a487ac6be7017db592"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_unfolded_normalization_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/sigma_gp_family_18x275_fixed_unfolded_normalization_differences.csv",
+      "sha256": "d5723be13a80846a14e86d131d69c2b0601de0242fa2bf61beeb80d556ffeff9"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/unfold_1S_18x275_normalization_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/unfold_1S_18x275_normalization_differences.csv",
+      "sha256": "9c62328767c7720ed2da3a3c6243216c695d638788df5540dc3a68063b0c5beb"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/unfold_1S_18x275_response_counts_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/unfold_1S_18x275_response_counts_differences.csv",
+      "sha256": "34aa60748e4b034f3a76b54dc40ba972fd17e27eea4bfe5338b034f7a0db427a"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/unfold_1S_18x275_response_prob_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/unfold_1S_18x275_response_prob_differences.csv",
+      "sha256": "52bd242b1d65a8a4ef4ec494c370deb3f09159f2572015fc80c644d95d44c158"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/differences/unfold_1S_18x275_unfolded_summary_differences.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/differences/unfold_1S_18x275_unfolded_summary_differences.csv",
+      "sha256": "28696baedde3223005b3358c9c62ddccb19bcf283b94c8c58d355cdf7ac05a7c"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/Wres_1S_18x275_full.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/Wres_1S_18x275_full.log",
+      "sha256": "0ea6e847822b4968e636bd858749170257768efb0e6b2b7f5eb1f805194d034e"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/compare_10x100_18x275_truth_W20to26p5_Q2lt0p001_stateNorm.log",
+      "sha256": "f3577e23a9e7366319f472ae06cd275823f26d65607ad187666a8853543edb56"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/low_selected_candidate_no_event_q2_cut.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/low_selected_candidate_no_event_q2_cut.log",
+      "sha256": "2a90b4fc10c4258e7ceb9983a93ba6bf392536d094a545cf581ae255a322ae61"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/low_selected_candidate_q2lt001.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/low_selected_candidate_q2lt001.log",
+      "sha256": "24a266b6ceb7e01c3f2f41efde19e763b528c75660943d1e6e31a4297e5f9883"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/low_visual_geometry_hypothesis_W10_25.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/low_visual_geometry_hypothesis_W10_25.log",
+      "sha256": "46b5a926e9d1fd7576f88ce85805a11fd255d834166e7b4adc192b1cd39740b2"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/recovered_note.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/recovered_note.log",
+      "sha256": "111bf29f1f5a9b0458a221bf890a2238afefc02b1cf8b0c3efcd06df8f83297d"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/recovered_note_low_10x100.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/recovered_note_low_10x100.log",
+      "sha256": "aa77845290f4bc39bba35ec16d52d0bd515b8e58c75d847d2974510bde810c46"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/selected_note_candidate.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/selected_note_candidate.log",
+      "sha256": "c496f4519947fb144a2b102389a2abe55920b4e3c21dc0f267203f61bc15124c"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/selected_note_visual_hypothesis.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/selected_note_visual_hypothesis.log",
+      "sha256": "e7f125825c574f936770e15455bdb268d6ddd8752518ddd7a5150b312260163a"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/sigma_gp_1S_10x100_fixed.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/sigma_gp_1S_10x100_fixed.log",
+      "sha256": "15bb7507c4acb2fd7a9858e1cce84d6b735383056fec10253747af24ee8f14ff"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/sigma_gp_family_18x275_fixed.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/sigma_gp_family_18x275_fixed.log",
+      "sha256": "2b03fe738d040ebaae84dec8811c161cf8b8ff6c12e058dd38e5733739933954"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/sigma_gp_family_18x275_fixed_unfolded.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/sigma_gp_family_18x275_fixed_unfolded.log",
+      "sha256": "90a3cc5910b5548983b713725a7c0cdef65d5c045b1e76917e50fcc28c77d788"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/logs/unfold_1S_18x275.log",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/logs/unfold_1S_18x275.log",
+      "sha256": "971bcd339dd576cf5aba5eaf71c29bb2e7570f324c1d538f8d97ca7d90b23d05"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_recipe_candidates.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_recipe_candidates.csv",
+      "sha256": "735f89d249cb2dca1ece8ed63600fa6143cbec78b4740986d4961a9ad58bda88"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_selected_candidate_no_event_q2_cut.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_selected_candidate_no_event_q2_cut.csv",
+      "sha256": "4dc8296cf0c9e0ec0da3cd45891f165764b57cd743cc3e04963f0ff732f32b12"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_selected_candidate_no_event_q2_cut_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_selected_candidate_no_event_q2_cut_normalization.csv",
+      "sha256": "8f7f066bcee5b6fac5af95223f9098151873173caf73245db16c2581a235e2f3"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_selected_candidate_q2lt001.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_selected_candidate_q2lt001.csv",
+      "sha256": "d8f4b3d39646c208dc97c4a813759109a4ecc0069a02c02c006c18890d311cac"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_selected_candidate_q2lt001_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_selected_candidate_q2lt001_normalization.csv",
+      "sha256": "38a8ab54d18159fd7bb488ac88abdda14360185d339c1551050a4e574d939bc4"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_visual_geometry_hypothesis_W10_25.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_visual_geometry_hypothesis_W10_25.csv",
+      "sha256": "b0fbd2a739db1cb3950546e74ad148a8bb831ac6819f42f9298ed5a0ab82e201"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/low_visual_geometry_hypothesis_W10_25_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/low_visual_geometry_hypothesis_W10_25_normalization.csv",
+      "sha256": "38a8ab54d18159fd7bb488ac88abdda14360185d339c1551050a4e574d939bc4"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/native_image_comparison.json",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/native_image_comparison.json",
+      "sha256": "c93c5eb46e2e67f0adcfc172533ff2981a37d158753596e1f0fb6b875b867950"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/recovered_note_low_10x100.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/recovered_note_low_10x100.csv",
+      "sha256": "61a2443254152a6c9c5aee31eda43e6abb64b2a41286c362f3dc532cee5b866a"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/recovered_note_low_10x100_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/recovered_note_low_10x100_normalization.csv",
+      "sha256": "8f7f066bcee5b6fac5af95223f9098151873173caf73245db16c2581a235e2f3"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/reference_comparison_summary.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/reference_comparison_summary.csv",
+      "sha256": "8ea12a658cd494aff1afd13af62330666d9c225402b3e84ad800f20e2ff92145"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/reference_comparison_summary.json",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/reference_comparison_summary.json",
+      "sha256": "32893ddd2b37e054149fa4340367c59141863f50f227eb654ee65ac69cbb6a7e"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/replay_manifest.json",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/replay_manifest.json",
+      "sha256": "ba04c694e9af51ce2851dc04eeb845afc1ef80cae69f37105aedc70dec182c79"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/sigma_gp_1S_10x100_fixed.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/sigma_gp_1S_10x100_fixed.csv",
+      "sha256": "4b702265541ade5e1c614da56d13e6294206d635e21542b4c83143baf044e336"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/sigma_gp_1S_10x100_fixed_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/sigma_gp_1S_10x100_fixed_normalization.csv",
+      "sha256": "8f7f066bcee5b6fac5af95223f9098151873173caf73245db16c2581a235e2f3"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/sigma_gp_family_18x275_fixed.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/sigma_gp_family_18x275_fixed.csv",
+      "sha256": "43bb18112908f77e4783de7d7ed7c5af45b2f2cf70aa933789797c7037f97407"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/sigma_gp_family_18x275_fixed_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/sigma_gp_family_18x275_fixed_normalization.csv",
+      "sha256": "0d7139be8bfed59545a4c5be56799ae3ffca715bf336854f9591945f02a1e9fb"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded.csv",
+      "sha256": "820886ae93dcc3490273af72de627173d388532ecf0b1a1d28834493337ccde6"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/sigma_gp_family_18x275_fixed_unfolded_normalization.csv",
+      "sha256": "0d7139be8bfed59545a4c5be56799ae3ffca715bf336854f9591945f02a1e9fb"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/unfold_1S_18x275_normalization.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/unfold_1S_18x275_normalization.csv",
+      "sha256": "f807693eba8a0b48f81e12aa2699e33847c4ee6d7219678f79783d5ddcd8a5c3"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/unfold_1S_18x275_response_counts.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/unfold_1S_18x275_response_counts.csv",
+      "sha256": "5887bdb7c242087c284cc18d004d3e30eceeffa350ce748fe0c0593739126c44"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/unfold_1S_18x275_response_prob.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/unfold_1S_18x275_response_prob.csv",
+      "sha256": "a7ccfd26c4871aa8eb67f821723a0dff0d6928eb4e4c0f9dd072b41bcae19dee"
+    },
+    {
+      "path": "analysis/reference_replay/verified_results/unfold_1S_18x275_unfolded_summary.csv",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "reference_replay/verified_results/unfold_1S_18x275_unfolded_summary.csv",
+      "sha256": "59037021449eb1970ad21f5ef0308e5326806def2098d3987c4aa698053f8e81"
+    },
+    {
+      "path": "analysis/validation_snapshot/scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "validation_snapshot/scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py",
+      "sha256": "b22cf867c904965fe9b49b8c32ad5d48bf78c349ad0fb0ed874720c35daba75f"
+    },
+    {
+      "path": "analysis/validation_snapshot/scripts/cross_sections/statistical_components.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "validation_snapshot/scripts/cross_sections/statistical_components.py",
+      "sha256": "4b0691604aed07dba9c998727ca9b8c0e1d55a423ed974ab0ed79825cc5e58e9"
+    },
+    {
+      "path": "analysis/validation_snapshot/scripts/flux/validate_estarlight_flux_ratio.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "validation_snapshot/scripts/flux/validate_estarlight_flux_ratio.py",
+      "sha256": "7aca94a13734e031d91baf93b9a822d6a918602e0620fd633f07d32b80e66fab"
+    },
+    {
+      "path": "analysis/validation_snapshot/scripts/projected_intervals.py",
+      "source_archive": "Ypsilon_W_Reproduction_Update.zip",
+      "member": "validation_snapshot/scripts/projected_intervals.py",
+      "sha256": "514d3ad9eccb6a74e4471e3c64fa7628ddc36539135c8e8aee8652cdc9d29557"
+    },
+    {
+      "path": "extensions/efficiency/04_efficiency_diagnostics.ipynb",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/04_efficiency_diagnostics.ipynb",
+      "sha256": "5352e869d59cb561b8d1304538a64043c04d02ba78e3f6056d9cb320fe42f760"
+    },
+    {
+      "path": "extensions/efficiency/05_final_efficiency_2d.ipynb",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/05_final_efficiency_2d.ipynb",
+      "sha256": "5233598c7e86035ccb256c94948d14d55c4bd75a7a77f4dcfc9c52d9250bb946"
+    },
+    {
+      "path": "extensions/efficiency/05_final_efficiency_2d_display.ipynb",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/05_final_efficiency_2d_display.ipynb",
+      "sha256": "bea2014e30938ebd436eca66ade441f1ea5e4f29f8e5e35609bb454bb5772f1e"
+    },
+    {
+      "path": "extensions/efficiency/README.md",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/README.md",
+      "sha256": "6a812018e6f767d6b864ffec3d629478e9145c8572611033620d9e9c80145f03"
+    },
+    {
+      "path": "extensions/efficiency/VALIDATION.md",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/VALIDATION.md",
+      "sha256": "e100d04628beb857e5124b5a87110aa7532e81b6828773685972485a96e24b5d"
+    },
+    {
+      "path": "extensions/efficiency/config_9x275.json",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/config_9x275.json",
+      "sha256": "b6a910c6c6bb3842a838c92694cfa28495e1172dd83eaca0d52ca63543a18286"
+    },
+    {
+      "path": "extensions/efficiency/diagnostics/__init__.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/diagnostics/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "extensions/efficiency/diagnostics/core.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/diagnostics/core.py",
+      "sha256": "2e77679306919fee11f9ed1cc6fa7c25e7b3341d7729c1fb5ac3e73b1f62c1a5"
+    },
+    {
+      "path": "extensions/efficiency/diagnostics/final_maps.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/diagnostics/final_maps.py",
+      "sha256": "c1cf89627c8d1e4ddd5330a2aeaa21a5049dbc49dbf97dd89e91d286f1968367"
+    },
+    {
+      "path": "extensions/efficiency/diagnostics/final_maps_report.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/diagnostics/final_maps_report.py",
+      "sha256": "f9d377c95941fc573375498af9aa65c506180bd8491d3d351c2a4b181c46a404"
+    },
+    {
+      "path": "extensions/efficiency/diagnostics/proton.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/diagnostics/proton.py",
+      "sha256": "01cffc60662d9be2962144b0d8790a22c8b889de022fc398b4d84845de8f03c5"
+    },
+    {
+      "path": "extensions/efficiency/diagnostics/report.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/diagnostics/report.py",
+      "sha256": "720334297b2142735476cdff18d74ab14be8712817cdaad6d03fff46fc48d73d"
+    },
+    {
+      "path": "extensions/efficiency/requirements.txt",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/requirements.txt",
+      "sha256": "d08d16b000cfa33147140842d9c13ee0845b00bb7c6991898197bea5f9b3a6e4"
+    },
+    {
+      "path": "extensions/efficiency/run_efficiency_diagnostics.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/run_efficiency_diagnostics.py",
+      "sha256": "2976bab078f11d87a01e85cd3f7de132cc346fbc973f7ada0946a47dc7c8daaf"
+    },
+    {
+      "path": "extensions/efficiency/run_final_efficiency_2d.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/run_final_efficiency_2d.py",
+      "sha256": "09a158c642c17f628fc797f03f9cef6a783ada5bd405be90d3a747bceb211dfc"
+    },
+    {
+      "path": "extensions/efficiency/selection_provenance.json",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/selection_provenance.json",
+      "sha256": "ecaac817aa9aaf6e602ad3c2a4a9a77447614b833ed81406e692eed4563c9df2"
+    },
+    {
+      "path": "extensions/efficiency/tests/make_synthetic_inputs.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/tests/make_synthetic_inputs.py",
+      "sha256": "e9eb23e82c3fde7650fe8d96b8c35ddb4f39bf54c86ec90a40235084da6e1cc3"
+    },
+    {
+      "path": "extensions/efficiency/tests/original_selection_reference.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/tests/original_selection_reference.py",
+      "sha256": "ace4f79eb857fdee5ff2e893cd76aadfab002e0155849c9a45aba957a749487c"
+    },
+    {
+      "path": "extensions/efficiency/tests/test_core.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/tests/test_core.py",
+      "sha256": "e8c63b7a053f1cca69e7039198e74bcd8786a597c13362f36d1c1da349faf948"
+    },
+    {
+      "path": "extensions/efficiency/tests/test_final_maps.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/tests/test_final_maps.py",
+      "sha256": "1b3daf7d7d7eb795132b7c2b59fb7c0afc7571175d9d49ac67d8c4c77867efc5"
+    },
+    {
+      "path": "extensions/efficiency/tests/test_proton_selection.py",
+      "source_archive": "Ypsilon_ProtonTagged_Plotting.zip",
+      "member": "Ypsilon_Efficiency_Diagnostics_ProtonTagged/tests/test_proton_selection.py",
+      "sha256": "992ef1a252dee343bbca157834c694cc2c3a2ae9a0f3252cd5f737916e8704d8"
+    }
+  ]
+}

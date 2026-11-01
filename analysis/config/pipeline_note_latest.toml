@@ -1,0 +1,2209 @@
+# Latest Upsilon(1S) samples only. This is independent of pipeline.toml.
+# Raw ROOT files are preserved. All analysis tasks consume run-local normalized copies.
+# Normalization uses all input tree entries BEFORE state, Q2, W or reconstruction cuts.
+# The cross-section interpretation is conditional on the visible dielectron convention.
+# Rates and dielectron branching fraction reproduce eSTARlight 939b11a with the Jul26 cards.
+# The historical 18x275 rates and archived reproduction remain in pipeline.toml.
+# Note groups add adapted report layouts and all ten reconstructed TH2 maps.
+# Historical references are not cross-checked; unsupported states are not fabricated.
+version = 2
+
+[executables]
+python = "python3"
+
+[inputs]
+zeus_step_csv = "data/reference/zeus_fig4_exclusive_upsilon_step.csv"
+root_9x130 = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x130/hiAcc/output/merged_Upsilon_final.root"
+root_9x275 = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output/merged_Upsilon_final.root"
+
+[analysis]
+normalization_profile = "jul26-estarlight-939b11a"
+branching_fractions = "1S:0.0238,2S:0.0191,3S:0.0218"
+generator_branching_fraction = 0.0238
+tree = "UpsilonTree"
+states = "1S"
+lumi_invfb = 10.0
+tuple_lumi_invfb = 10.0
+q2_flux_max = 1.0
+q2_event_max = 1.0
+truth_mass_window = 0.2
+reco_mass_window_sigma = 3.0
+common_w_min = 20.0
+common_w_max = 65.0
+common_w_edges = "20,25,30,35,40,45,50,55,60,65"
+# pT2 unfolding is retained as an estimator study, not a validation of true_t.
+t_edges = "0,0.2,0.5,1.0,5.0"
+train_fraction = 0.5
+seed = 12345
+n_iterations = 4
+n_toys = 300
+
+[beam.low]
+label = "9x130 GeV"
+electron_energy = 9.0
+proton_energy = 130.0
+w_min = 20.0
+w_max = 70.0
+w_edges = "20,25,30,35,40,45,50,55,60,65,70"
+n_w_bins = 10
+visible_xsec_1s_fb = 119.685
+normalization_source = "Reproduced eSTARlight 939b11a with Jul26 Upsilon_Sim_Cards f62965a (9x130, Upsilon(1S), Q2 0-1 GeV^2): visible dielectron 119.685 fb; generator B_ee=0.0238"
+
+[beam.high]
+label = "9x275 GeV"
+electron_energy = 9.0
+proton_energy = 275.0
+w_min = 20.0
+w_max = 100.0
+w_edges = "20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100"
+n_w_bins = 16
+# Reproduced 9x275 rate; the historical 327.584 fb value belongs to 18x275.
+visible_xsec_1s_fb = 210.136
+normalization_source = "Reproduced eSTARlight 939b11a with Jul26 Upsilon_Sim_Cards f62965a (9x275, Upsilon(1S), Q2 0-1 GeV^2): visible dielectron 210.136 fb; generator B_ee=0.0238"
+
+[groups]
+latest_9x130 = [
+  "plot_9x130_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+  "extract_9x130_sigma_gamma_p",
+  "extract_9x130_differential_gamma_p",
+  "unfold_9x130_sigma_gamma_p_w",
+  "unfold_9x130_t_spectrum",
+]
+latest_9x275 = [
+  "plot_9x275_performance",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+  "extract_9x275_sigma_gamma_p",
+  "extract_9x275_differential_gamma_p",
+  "unfold_9x275_sigma_gamma_p_w",
+  "unfold_9x275_t_spectrum",
+]
+performance_9x130 = [
+  "plot_9x130_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+]
+performance_9x275 = [
+  "plot_9x275_performance",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+]
+prepare_latest = [
+  "prepare_9x130",
+  "prepare_9x275",
+]
+schemas = [
+  "validate_9x130_schema",
+  "validate_9x275_schema",
+]
+comparisons = [
+  "compare_latest_beams",
+  "benchmark_latest_t_estimators",
+  "plot_latest_reco_t_estimators",
+  "plot_latest_sigma_gamma_p",
+  "plot_latest_b_slopes",
+]
+performance = [
+  "plot_9x130_performance",
+  "plot_9x275_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+  "compare_latest_beams",
+  "benchmark_latest_t_estimators",
+  "plot_latest_reco_t_estimators",
+]
+cross_sections = [
+  "extract_9x130_sigma_gamma_p",
+  "extract_9x130_differential_gamma_p",
+  "unfold_9x130_sigma_gamma_p_w",
+  "extract_9x275_sigma_gamma_p",
+  "extract_9x275_differential_gamma_p",
+  "unfold_9x275_sigma_gamma_p_w",
+  "plot_latest_sigma_gamma_p",
+  "plot_latest_b_slopes",
+]
+t_studies = [
+  "unfold_9x130_t_spectrum",
+  "unfold_9x275_t_spectrum",
+  "benchmark_latest_t_estimators",
+  "plot_latest_reco_t_estimators",
+]
+core = [
+  "plot_9x130_performance",
+  "plot_9x275_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+  "extract_9x130_sigma_gamma_p",
+  "extract_9x130_differential_gamma_p",
+  "unfold_9x130_sigma_gamma_p_w",
+  "unfold_9x130_t_spectrum",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+  "extract_9x275_sigma_gamma_p",
+  "extract_9x275_differential_gamma_p",
+  "unfold_9x275_sigma_gamma_p_w",
+  "unfold_9x275_t_spectrum",
+  "compare_latest_beams",
+  "benchmark_latest_t_estimators",
+  "plot_latest_reco_t_estimators",
+  "plot_latest_sigma_gamma_p",
+  "plot_latest_b_slopes",
+]
+all = [
+  "plot_9x130_performance",
+  "plot_9x275_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+  "extract_9x130_sigma_gamma_p",
+  "extract_9x130_differential_gamma_p",
+  "unfold_9x130_sigma_gamma_p_w",
+  "unfold_9x130_t_spectrum",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+  "extract_9x275_sigma_gamma_p",
+  "extract_9x275_differential_gamma_p",
+  "unfold_9x275_sigma_gamma_p_w",
+  "unfold_9x275_t_spectrum",
+  "compare_latest_beams",
+  "benchmark_latest_t_estimators",
+  "plot_latest_reco_t_estimators",
+  "plot_latest_sigma_gamma_p",
+  "plot_latest_b_slopes",
+]
+
+# Latest-sample report presentation. Groups are flat task lists for this runner.
+note_9x130 = [
+  "plot_9x130_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+  "extract_9x130_sigma_gamma_p",
+  "extract_9x130_differential_gamma_p",
+  "unfold_9x130_sigma_gamma_p_w",
+  "unfold_9x130_t_spectrum",
+  "reconstruct_9x130_report_histograms",
+  "render_9x130_note_kinematics",
+  "render_9x130_note_mass_efficiency",
+  "render_9x130_note_physics",
+  "render_9x130_note_t_studies",
+  "unfold_9x130_note_eX_zeus",
+  "unfold_9x130_note_eX_merged",
+  "unfold_9x130_note_pT2_merged",
+]
+note_9x275 = [
+  "plot_9x275_performance",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+  "extract_9x275_sigma_gamma_p",
+  "extract_9x275_differential_gamma_p",
+  "unfold_9x275_sigma_gamma_p_w",
+  "unfold_9x275_t_spectrum",
+  "reconstruct_9x275_report_histograms",
+  "render_9x275_note_kinematics",
+  "render_9x275_note_mass_efficiency",
+  "render_9x275_note_physics",
+  "render_9x275_note_t_studies",
+  "unfold_9x275_note_eX_zeus",
+  "unfold_9x275_note_eX_merged",
+  "unfold_9x275_note_pT2_merged",
+]
+note_comparisons = [
+  "render_note_kinematics_comparison",
+  "render_note_mass_efficiency_comparison",
+]
+note_all = [
+  "plot_9x130_performance",
+  "validate_9x130_w_resolution",
+  "validate_9x130_mass_fit_yields",
+  "plot_9x130_track_correlation",
+  "extract_9x130_sigma_gamma_p",
+  "extract_9x130_differential_gamma_p",
+  "unfold_9x130_sigma_gamma_p_w",
+  "unfold_9x130_t_spectrum",
+  "reconstruct_9x130_report_histograms",
+  "render_9x130_note_kinematics",
+  "render_9x130_note_mass_efficiency",
+  "render_9x130_note_physics",
+  "render_9x130_note_t_studies",
+  "unfold_9x130_note_eX_zeus",
+  "unfold_9x130_note_eX_merged",
+  "unfold_9x130_note_pT2_merged",
+  "plot_9x275_performance",
+  "validate_9x275_w_resolution",
+  "validate_9x275_mass_fit_yields",
+  "plot_9x275_track_correlation",
+  "extract_9x275_sigma_gamma_p",
+  "extract_9x275_differential_gamma_p",
+  "unfold_9x275_sigma_gamma_p_w",
+  "unfold_9x275_t_spectrum",
+  "reconstruct_9x275_report_histograms",
+  "render_9x275_note_kinematics",
+  "render_9x275_note_mass_efficiency",
+  "render_9x275_note_physics",
+  "render_9x275_note_t_studies",
+  "unfold_9x275_note_eX_zeus",
+  "unfold_9x275_note_eX_merged",
+  "unfold_9x275_note_pT2_merged",
+  "render_note_kinematics_comparison",
+  "render_note_mass_efficiency_comparison",
+]
+
+# Optional note momentum-transfer appendices are also included in note_all.
+note_t_studies_9x130 = [
+  "render_9x130_note_t_studies",
+  "unfold_9x130_note_eX_zeus",
+  "unfold_9x130_note_eX_merged",
+  "unfold_9x130_note_pT2_merged",
+]
+note_t_studies_9x275 = [
+  "render_9x275_note_t_studies",
+  "unfold_9x275_note_eX_zeus",
+  "unfold_9x275_note_eX_merged",
+  "unfold_9x275_note_pT2_merged",
+]
+
+[[task]]
+name = "prepare_9x130"
+stage = "normalization"
+description = "Normalize the complete 9x130 input once and record the normalization source"
+script = "scripts/validation/prepare_latest_sample.py"
+args = [
+  "--generator-branching-fraction", "{analysis.generator_branching_fraction}", "--normalization-profile", "{analysis.normalization_profile}",
+  "--input", "{inputs.root_9x130}",
+  "--tree", "{analysis.tree}",
+  "--cross-section-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--normalization-source", "{beam.low.normalization_source}",
+  "--out-root", "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--out-json", "{run.dir}/artifacts/normalization/9x130_input_audit.json",
+]
+requirements = ["module:uproot", "module:numpy", "file:{inputs.root_9x130}"]
+outputs = [
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "{run.dir}/artifacts/normalization/9x130_input_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "validate_9x130_schema"
+stage = "schema"
+description = "Check all latest 9x130 analysis branches"
+script = "workflow/validate_root_schema.py"
+deps = ["prepare_9x130"]
+args = [
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--profile", "t",
+  "--branch", "true_pT",
+  "--branch", "true_y",
+  "--branch", "reco_y",
+  "--branch", "weight_proj",
+  "--branch", "reco_nTracks_Central",
+  "--branch", "reco_nTracks_Tagger",
+  "--out", "{run.dir}/artifacts/schema/9x130.json",
+]
+requirements = ["module:uproot"]
+outputs = [
+  "{run.dir}/artifacts/schema/9x130.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "validate_9x130_w_resolution"
+stage = "resolution"
+description = "Measure 9x130 W response and resolution"
+script = "scripts/validation/validate_w_resolution.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-edges", "{beam.low.w_edges}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--out-prefix", "{run.dir}/artifacts/resolution/9x130_w",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/resolution/9x130_w_W_resolution_summary.csv",
+  "{run.dir}/artifacts/resolution/9x130_w_response_counts_selected.csv",
+  "{run.dir}/artifacts/resolution/9x130_w_W_resolution_vs_W.png",
+  "{run.dir}/artifacts/resolution/9x130_w_W_relative_resolution_vs_W.png",
+  "{run.dir}/artifacts/resolution/9x130_w_deltaW_distributions.png",
+  "{run.dir}/artifacts/resolution/9x130_w_response_counts.png",
+]
+fail_patterns = ["Traceback"]
+
+# This is yield accounting, not an invariant-mass fit. Do not state-normalize again.
+[[task]]
+name = "validate_9x130_mass_fit_yields"
+stage = "normalization"
+description = "Compare 9x130 selected 1S yield conventions with prepared weights"
+script = "scripts/validation/validate_mass_fit_yield_accounting.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--n-w-bins", "{beam.low.n_w_bins}",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--visible-xsecs-fb", "1S:{beam.low.visible_xsec_1s_fb}",
+  "--out-csv", "{run.dir}/artifacts/normalization/9x130_mass_fit_yields.csv",
+]
+requirements = ["module:uproot", "module:numpy"]
+outputs = [
+  "{run.dir}/artifacts/normalization/9x130_mass_fit_yields.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "plot_9x130_track_correlation"
+stage = "correlation"
+description = "Plot 9x130 central and tagger track correlations"
+script = "scripts/validation/plot_track_multiplicity_correlation.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--energy-label", "{beam.low.label}",
+  "--campaign", "Jul26 latest 1S",
+  "--out-prefix", "{run.dir}/artifacts/correlation/9x130_central_tagger",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/correlation/9x130_central_tagger.png",
+  "{run.dir}/artifacts/correlation/9x130_central_tagger.pdf",
+  "{run.dir}/artifacts/correlation/9x130_central_tagger_summary.csv",
+  "{run.dir}/artifacts/correlation/9x130_central_tagger_map.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "extract_9x130_sigma_gamma_p"
+stage = "cross_section"
+description = "Extract 9x130 1S gamma-p cross sections with the assigned visible normalization"
+script = "scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--n-w-bins", "{beam.low.n_w_bins}",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--visible-xsec-1s-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--state-norm-mode", "raw",
+  "--min-eff", "0.05",
+  "--no-hera",
+  "--out-prefix", "{run.dir}/artifacts/cross_sections/9x130_sigma_gamma_p_1s",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/cross_sections/9x130_sigma_gamma_p_1s.csv",
+  "{run.dir}/artifacts/cross_sections/9x130_sigma_gamma_p_1s_normalization.csv",
+  "{run.dir}/artifacts/cross_sections/9x130_sigma_gamma_p_1s.png",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "extract_9x130_differential_gamma_p"
+stage = "differential"
+description = "Extract 9x130 1S pT2 and rapidity spectra and a pT2 slope"
+script = "scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--visible-xsec-1s-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--no-state-normalize",
+  "--output-convention", "inclusive_upsilon",
+  "--variables", "pT2,y",
+  "--pt2-bins", "{analysis.t_edges}",
+  "--y-bins=-1,-0.5,0,0.5,1,1.5,2,2.5,3",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--min-eff", "0.05",
+  "--fit-b-slope",
+  "--b-slope-variable", "pT2",
+  "--b-slope-bins", "{analysis.t_edges}",
+  "--campaign", "Jul26 latest 1S",
+  "--energy-label", "{beam.low.label}",
+  "--out-prefix", "{run.dir}/artifacts/differential/9x130_1s",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/differential/9x130_1s_1S_all.csv",
+  "{run.dir}/artifacts/differential/9x130_1s_1S_b_slope_bins.csv",
+  "{run.dir}/artifacts/differential/9x130_1s_b_slope_summary.csv",
+  "{run.dir}/artifacts/differential/9x130_1s_metadata.csv",
+  "{run.dir}/artifacts/differential/9x130_1s_pt2_y.png",
+  "{run.dir}/artifacts/differential/9x130_1s_pt2_y.pdf",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x130_sigma_gamma_p_w"
+stage = "unfolding"
+description = "Unfold 9x130 1S W and assess independent train-test closure"
+script = "scripts/unfolding/unfold_gamma_p_cross_section_vs_w.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--proton-energy", "{beam.low.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-edges", "{beam.low.w_edges}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--state-norm-mode", "raw",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--out-prefix", "{run.dir}/artifacts/unfolding/9x130_sigma_gamma_p_w",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/unfolding/9x130_sigma_gamma_p_w_unfolded_summary.csv",
+  "{run.dir}/artifacts/unfolding/9x130_sigma_gamma_p_w_normalization.csv",
+  "{run.dir}/artifacts/unfolding/9x130_sigma_gamma_p_w_response_prob.csv",
+  "{run.dir}/artifacts/unfolding/9x130_sigma_gamma_p_w_closure.png",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x130_t_spectrum"
+stage = "t_unfolding"
+description = "Unfold the 9x130 pT2 estimator against true t for closure diagnostics"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--method", "pT2",
+  "--t-edges", "{analysis.t_edges}",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--state-norm-mode", "raw",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--out-prefix", "{run.dir}/artifacts/t/9x130_pT2",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/9x130_pT2_t_unfold_summary.csv",
+  "{run.dir}/artifacts/t/9x130_pT2_normalization.csv",
+  "{run.dir}/artifacts/t/9x130_pT2_response_prob.csv",
+  "{run.dir}/artifacts/t/9x130_pT2_closure.png",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "prepare_9x275"
+stage = "normalization"
+description = "Normalize the complete 9x275 input once and record the normalization source"
+script = "scripts/validation/prepare_latest_sample.py"
+args = [
+  "--generator-branching-fraction", "{analysis.generator_branching_fraction}", "--normalization-profile", "{analysis.normalization_profile}",
+  "--input", "{inputs.root_9x275}",
+  "--tree", "{analysis.tree}",
+  "--cross-section-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--normalization-source", "{beam.high.normalization_source}",
+  "--out-root", "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--out-json", "{run.dir}/artifacts/normalization/9x275_input_audit.json",
+]
+requirements = ["module:uproot", "module:numpy", "file:{inputs.root_9x275}"]
+outputs = [
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "{run.dir}/artifacts/normalization/9x275_input_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "validate_9x275_schema"
+stage = "schema"
+description = "Check all latest 9x275 analysis branches"
+script = "workflow/validate_root_schema.py"
+deps = ["prepare_9x275"]
+args = [
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--profile", "t",
+  "--branch", "true_pT",
+  "--branch", "true_y",
+  "--branch", "reco_y",
+  "--branch", "weight_proj",
+  "--branch", "reco_nTracks_Central",
+  "--branch", "reco_nTracks_Tagger",
+  "--out", "{run.dir}/artifacts/schema/9x275.json",
+]
+requirements = ["module:uproot"]
+outputs = [
+  "{run.dir}/artifacts/schema/9x275.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "validate_9x275_w_resolution"
+stage = "resolution"
+description = "Measure 9x275 W response and resolution"
+script = "scripts/validation/validate_w_resolution.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-edges", "{beam.high.w_edges}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--out-prefix", "{run.dir}/artifacts/resolution/9x275_w",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/resolution/9x275_w_W_resolution_summary.csv",
+  "{run.dir}/artifacts/resolution/9x275_w_response_counts_selected.csv",
+  "{run.dir}/artifacts/resolution/9x275_w_W_resolution_vs_W.png",
+  "{run.dir}/artifacts/resolution/9x275_w_W_relative_resolution_vs_W.png",
+  "{run.dir}/artifacts/resolution/9x275_w_deltaW_distributions.png",
+  "{run.dir}/artifacts/resolution/9x275_w_response_counts.png",
+]
+fail_patterns = ["Traceback"]
+
+# This is yield accounting, not an invariant-mass fit. Do not state-normalize again.
+[[task]]
+name = "validate_9x275_mass_fit_yields"
+stage = "normalization"
+description = "Compare 9x275 selected 1S yield conventions with prepared weights"
+script = "scripts/validation/validate_mass_fit_yield_accounting.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--n-w-bins", "{beam.high.n_w_bins}",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--visible-xsecs-fb", "1S:{beam.high.visible_xsec_1s_fb}",
+  "--out-csv", "{run.dir}/artifacts/normalization/9x275_mass_fit_yields.csv",
+]
+requirements = ["module:uproot", "module:numpy"]
+outputs = [
+  "{run.dir}/artifacts/normalization/9x275_mass_fit_yields.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "plot_9x275_track_correlation"
+stage = "correlation"
+description = "Plot 9x275 central and tagger track correlations"
+script = "scripts/validation/plot_track_multiplicity_correlation.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--energy-label", "{beam.high.label}",
+  "--campaign", "Jul26 latest 1S",
+  "--out-prefix", "{run.dir}/artifacts/correlation/9x275_central_tagger",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/correlation/9x275_central_tagger.png",
+  "{run.dir}/artifacts/correlation/9x275_central_tagger.pdf",
+  "{run.dir}/artifacts/correlation/9x275_central_tagger_summary.csv",
+  "{run.dir}/artifacts/correlation/9x275_central_tagger_map.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "extract_9x275_sigma_gamma_p"
+stage = "cross_section"
+description = "Extract 9x275 1S gamma-p cross sections with the assigned visible normalization"
+script = "scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--proton-energy", "{beam.high.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--n-w-bins", "{beam.high.n_w_bins}",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--visible-xsec-1s-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--state-norm-mode", "raw",
+  "--min-eff", "0.05",
+  "--no-hera",
+  "--out-prefix", "{run.dir}/artifacts/cross_sections/9x275_sigma_gamma_p_1s",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/cross_sections/9x275_sigma_gamma_p_1s.csv",
+  "{run.dir}/artifacts/cross_sections/9x275_sigma_gamma_p_1s_normalization.csv",
+  "{run.dir}/artifacts/cross_sections/9x275_sigma_gamma_p_1s.png",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "extract_9x275_differential_gamma_p"
+stage = "differential"
+description = "Extract 9x275 1S pT2 and rapidity spectra and a pT2 slope"
+script = "scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--states", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--proton-energy", "{beam.high.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--visible-xsec-1s-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--no-state-normalize",
+  "--output-convention", "inclusive_upsilon",
+  "--variables", "pT2,y",
+  "--pt2-bins", "{analysis.t_edges}",
+  "--y-bins=-1,-0.5,0,0.5,1,1.5,2,2.5,3",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--reco-mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--min-eff", "0.05",
+  "--fit-b-slope",
+  "--b-slope-variable", "pT2",
+  "--b-slope-bins", "{analysis.t_edges}",
+  "--campaign", "Jul26 latest 1S",
+  "--energy-label", "{beam.high.label}",
+  "--out-prefix", "{run.dir}/artifacts/differential/9x275_1s",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/differential/9x275_1s_1S_all.csv",
+  "{run.dir}/artifacts/differential/9x275_1s_1S_b_slope_bins.csv",
+  "{run.dir}/artifacts/differential/9x275_1s_b_slope_summary.csv",
+  "{run.dir}/artifacts/differential/9x275_1s_metadata.csv",
+  "{run.dir}/artifacts/differential/9x275_1s_pt2_y.png",
+  "{run.dir}/artifacts/differential/9x275_1s_pt2_y.pdf",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x275_sigma_gamma_p_w"
+stage = "unfolding"
+description = "Unfold 9x275 1S W and assess independent train-test closure"
+script = "scripts/unfolding/unfold_gamma_p_cross_section_vs_w.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--proton-energy", "{beam.high.proton_energy}",
+  "--q2-max", "{analysis.q2_flux_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-edges", "{beam.high.w_edges}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--state-norm-mode", "raw",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--out-prefix", "{run.dir}/artifacts/unfolding/9x275_sigma_gamma_p_w",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/unfolding/9x275_sigma_gamma_p_w_unfolded_summary.csv",
+  "{run.dir}/artifacts/unfolding/9x275_sigma_gamma_p_w_normalization.csv",
+  "{run.dir}/artifacts/unfolding/9x275_sigma_gamma_p_w_response_prob.csv",
+  "{run.dir}/artifacts/unfolding/9x275_sigma_gamma_p_w_closure.png",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x275_t_spectrum"
+stage = "t_unfolding"
+description = "Unfold the 9x275 pT2 estimator against true t for closure diagnostics"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--method", "pT2",
+  "--t-edges", "{analysis.t_edges}",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--lumi-invfb", "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention", "visible_decay",
+  "--state-norm-mode", "raw",
+  "--mass-window-sigma", "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window", "{analysis.truth_mass_window}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--seed", "{analysis.seed}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--n-toys", "{analysis.n_toys}",
+  "--out-prefix", "{run.dir}/artifacts/t/9x275_pT2",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/9x275_pT2_t_unfold_summary.csv",
+  "{run.dir}/artifacts/t/9x275_pT2_normalization.csv",
+  "{run.dir}/artifacts/t/9x275_pT2_response_prob.csv",
+  "{run.dir}/artifacts/t/9x275_pT2_closure.png",
+]
+fail_patterns = ["Traceback"]
+
+# Existing beam-comparison script has no Q2 event cut. This shape diagnostic uses
+# the common truth-W range and the full input Q2 coverage, including any outliers.
+[[task]]
+name = "compare_latest_beams"
+stage = "comparison"
+description = "Compare latest 1S truth and reconstructed shapes in common truth W range"
+script = "scripts/validation/compare_beam_samples.py"
+deps = ["validate_9x130_schema", "validate_9x275_schema"]
+args = [
+  "--reference-file", "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--candidate-file", "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--reference-label", "{beam.low.label}",
+  "--candidate-label", "{beam.high.label}",
+  "--reference-electron-energy", "{beam.low.electron_energy}",
+  "--candidate-electron-energy", "{beam.high.electron_energy}",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--weight-branch", "weight",
+  "--w-min", "{analysis.common_w_min}",
+  "--w-max", "{analysis.common_w_max}",
+  "--out-dir", "{run.dir}/artifacts/beam_comparison",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/beam_comparison/truth_shapes.png",
+  "{run.dir}/artifacts/beam_comparison/reco_shapes.png",
+  "{run.dir}/artifacts/beam_comparison/selection_summary.csv",
+  "{run.dir}/artifacts/beam_comparison/bin_values.csv",
+  "{run.dir}/artifacts/beam_comparison/comparison_manifest.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "benchmark_latest_t_estimators"
+stage = "t_validation"
+description = "Benchmark latest t estimators in the common W range"
+script = "scripts/validation/benchmark_t_estimators.py"
+deps = ["validate_9x130_schema", "validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "--low-file", "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--high-file", "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--methods", "eX,BABE,eXBABE,proj,pT2",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--low-visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--state-norm-mode", "raw",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--low-electron-energy", "{beam.low.electron_energy}",
+  "--high-electron-energy", "{beam.high.electron_energy}",
+  "--low-w-min", "{analysis.common_w_min}",
+  "--low-w-max", "{analysis.common_w_max}",
+  "--high-w-min", "{analysis.common_w_min}",
+  "--high-w-max", "{analysis.common_w_max}",
+  "--t-edges", "{analysis.t_edges}",
+  "--train-fraction", "{analysis.train_fraction}",
+  "--n-iterations", "{analysis.n_iterations}",
+  "--seed", "{analysis.seed}",
+  "--out-prefix", "{run.dir}/artifacts/t/latest_benchmark",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/latest_benchmark_summary.csv",
+  "{run.dir}/artifacts/t/latest_benchmark_per_bin.csv",
+  "{run.dir}/artifacts/t/latest_benchmark_residuals.png",
+  "{run.dir}/artifacts/t/latest_benchmark_metrics.png",
+  "{run.dir}/artifacts/t/latest_benchmark_closure.png",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "plot_latest_reco_t_estimators"
+stage = "t_validation"
+description = "Plot latest reconstructed t estimators in the common W range"
+script = "scripts/plotting/plot_reco_t_estimators_by_energy.py"
+deps = ["validate_9x130_schema", "validate_9x275_schema"]
+args = [
+  "--low-file", "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--high-file", "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--methods", "eX,BABE,eXBABE,proj,pT2",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--low-visible-xsec-fb", "{beam.low.visible_xsec_1s_fb}",
+  "--high-visible-xsec-fb", "{beam.high.visible_xsec_1s_fb}",
+  "--lumi-invfb", "{analysis.tuple_lumi_invfb}",
+  "--state-norm-mode", "raw",
+  "--truth-mass-window", "{analysis.truth_mass_window}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--low-electron-energy", "{beam.low.electron_energy}",
+  "--high-electron-energy", "{beam.high.electron_energy}",
+  "--low-w-min", "{analysis.common_w_min}",
+  "--low-w-max", "{analysis.common_w_max}",
+  "--high-w-min", "{analysis.common_w_min}",
+  "--high-w-max", "{analysis.common_w_max}",
+  "--t-edges", "{analysis.t_edges}",
+  "--out-prefix", "{run.dir}/artifacts/t/latest_reco_estimators",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/t/latest_reco_estimators.png",
+  "{run.dir}/artifacts/t/latest_reco_estimators.pdf",
+  "{run.dir}/artifacts/t/latest_reco_estimators_summary.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "plot_latest_sigma_gamma_p"
+stage = "plotting"
+description = "Overlay latest 1S gamma-p extractions using the assigned reference normalizations"
+script = "scripts/plotting/plot_gamma_p_cross_sections_by_energy.py"
+deps = ["extract_9x130_sigma_gamma_p", "extract_9x275_sigma_gamma_p"]
+args = [
+  "--low-csv", "{run.dir}/artifacts/cross_sections/9x130_sigma_gamma_p_1s.csv",
+  "--high-csv", "{run.dir}/artifacts/cross_sections/9x275_sigma_gamma_p_1s.csv",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--states", "1S",
+  "--min-eff", "0.05",
+  "--require-plotted",
+  "--q2-label", "Q2 < {analysis.q2_event_max} GeV2",
+  "--lumi-label", "Lep = {analysis.lumi_invfb} fb-1",
+  "--out-prefix", "{run.dir}/artifacts/figures/latest_sigma_gamma_p",
+]
+requirements = ["module:numpy", "module:pandas", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/figures/latest_sigma_gamma_p.csv",
+  "{run.dir}/artifacts/figures/latest_sigma_gamma_p.png",
+  "{run.dir}/artifacts/figures/latest_sigma_gamma_p.pdf",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "plot_latest_b_slopes"
+stage = "plotting"
+description = "Compare latest pT2 slopes with the HERA reference"
+script = "scripts/plotting/plot_b_slope_1s_hera_overlay.py"
+deps = ["extract_9x130_differential_gamma_p", "extract_9x275_differential_gamma_p"]
+args = [
+  "--low-summary", "{run.dir}/artifacts/differential/9x130_1s_b_slope_summary.csv",
+  "--high-summary", "{run.dir}/artifacts/differential/9x275_1s_b_slope_summary.csv",
+  "--low-label", "{beam.low.label}",
+  "--high-label", "{beam.high.label}",
+  "--state", "1S",
+  "--q2-low", "{analysis.q2_event_max}",
+  "--q2-high", "{analysis.q2_event_max}",
+  "--out-prefix", "{run.dir}/artifacts/figures/latest_b_slopes",
+]
+requirements = ["module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/figures/latest_b_slopes.png",
+  "{run.dir}/artifacts/figures/latest_b_slopes.pdf",
+  "{run.dir}/artifacts/figures/latest_b_slopes_epic_points.csv",
+]
+fail_patterns = ["Traceback"]
+
+
+[[task]]
+name = "plot_9x130_performance"
+stage = "performance"
+description = "Plot 9x130 1S mass performance, tuple selection efficiency, and stored upstream diagnostics"
+script = "scripts/validation/plot_latest_sample_performance.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--input", "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.low.electron_energy}",
+  "--energy-label", "{beam.low.label}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-min", "{beam.low.w_min}",
+  "--w-max", "{beam.low.w_max}",
+  "--out-dir", "{run.dir}/artifacts/performance/9x130",
+]
+requirements = ["module:uproot", "module:numpy", "module:scipy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/performance/9x130/mass_fit_mc.png",
+  "{run.dir}/artifacts/performance/9x130/mass_projected.png",
+  "{run.dir}/artifacts/performance/9x130/selection_efficiency.png",
+  "{run.dir}/artifacts/performance/9x130/stored_cutflows.png",
+  "{run.dir}/artifacts/performance/9x130/stored_electron_id.png",
+  "{run.dir}/artifacts/performance/9x130/mass_fit.json",
+  "{run.dir}/artifacts/performance/9x130/mass_fit_parameters.csv",
+  "{run.dir}/artifacts/performance/9x130/mass_bins.csv",
+  "{run.dir}/artifacts/performance/9x130/selection_efficiency.csv",
+  "{run.dir}/artifacts/performance/9x130/stored_histogram_counts.csv",
+  "{run.dir}/artifacts/performance/9x130/performance_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "plot_9x275_performance"
+stage = "performance"
+description = "Plot 9x275 1S mass performance, tuple selection efficiency, and stored upstream diagnostics"
+script = "scripts/validation/plot_latest_sample_performance.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--input", "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree", "{analysis.tree}",
+  "--state", "1S",
+  "--electron-energy", "{beam.high.electron_energy}",
+  "--energy-label", "{beam.high.label}",
+  "--q2-cut", "{analysis.q2_event_max}",
+  "--w-min", "{beam.high.w_min}",
+  "--w-max", "{beam.high.w_max}",
+  "--out-dir", "{run.dir}/artifacts/performance/9x275",
+]
+requirements = ["module:uproot", "module:numpy", "module:scipy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/performance/9x275/mass_fit_mc.png",
+  "{run.dir}/artifacts/performance/9x275/mass_projected.png",
+  "{run.dir}/artifacts/performance/9x275/selection_efficiency.png",
+  "{run.dir}/artifacts/performance/9x275/stored_cutflows.png",
+  "{run.dir}/artifacts/performance/9x275/stored_electron_id.png",
+  "{run.dir}/artifacts/performance/9x275/mass_fit.json",
+  "{run.dir}/artifacts/performance/9x275/mass_fit_parameters.csv",
+  "{run.dir}/artifacts/performance/9x275/mass_bins.csv",
+  "{run.dir}/artifacts/performance/9x275/selection_efficiency.csv",
+  "{run.dir}/artifacts/performance/9x275/stored_histogram_counts.csv",
+  "{run.dir}/artifacts/performance/9x275/performance_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+# Additional report renderers. Each records its selections and numerical sources.
+
+[[task]]
+name = "reconstruct_9x130_report_histograms"
+stage = "note"
+description = "Reconstruct and render all ten report TH2 observables with configured latest selections"
+script = "scripts/validation/reconstruct_latest_report_histograms.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--energy-label",
+  "{beam.low.label}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--normalization",
+  "projected",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-root",
+  "{run.dir}/artifacts/note/9x130/histograms/reconstructed_report_histograms.root",
+  "--out-npz",
+  "{run.dir}/artifacts/note/9x130/histograms/reconstructed_report_histograms.npz",
+  "--out-json",
+  "{run.dir}/artifacts/note/9x130/histograms/note_histogram_reconstruction_audit.json",
+  "--plot-dir",
+  "{run.dir}/artifacts/note/9x130/histograms",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_Eta.png",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_Eta.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_DecayLeps_pT_vs_pT.png",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_DecayLeps_pT_vs_pT.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_pT.png",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_pT.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_W_vs_Rapidity.png",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_W_vs_Rapidity.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_t_vs_W.png",
+  "{run.dir}/artifacts/note/9x130/histograms/GenLevel_h2_Gen_t_vs_W.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_nTracks_Central_vs_Tagger.png",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_nTracks_Central_vs_Tagger.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_eta_ePlus_eMinus.png",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_eta_ePlus_eMinus.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_pT_ePlus_eMinus.png",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_pT_ePlus_eMinus.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_Reco_DecayLeps_Eta_vs_pT.png",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_Reco_DecayLeps_Eta_vs_pT.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_t_Correlation.png",
+  "{run.dir}/artifacts/note/9x130/histograms/h2_t_Correlation.pdf",
+  "{run.dir}/artifacts/note/9x130/histograms/reconstructed_report_histograms.root",
+  "{run.dir}/artifacts/note/9x130/histograms/reconstructed_report_histograms.npz",
+  "{run.dir}/artifacts/note/9x130/histograms/note_histogram_reconstruction_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x130_note_kinematics"
+stage = "note"
+description = "Restore the note kinematics, lepton, electron-ID, cutflow and estimator presentation"
+script = "scripts/reporting/render_note_kinematics.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.low.label}",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x130",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/generator_upsilon_kinematics.png",
+  "{run.dir}/artifacts/note/9x130/generator_upsilon_kinematics.pdf",
+  "{run.dir}/artifacts/note/9x130/generator_production_scattered_electron.png",
+  "{run.dir}/artifacts/note/9x130/generator_production_scattered_electron.pdf",
+  "{run.dir}/artifacts/note/9x130/generator_decay_leptons.png",
+  "{run.dir}/artifacts/note/9x130/generator_decay_leptons.pdf",
+  "{run.dir}/artifacts/note/9x130/generator_kinematic_correlations.png",
+  "{run.dir}/artifacts/note/9x130/generator_kinematic_correlations.pdf",
+  "{run.dir}/artifacts/note/9x130/projected_1s_upsilon_kinematics.png",
+  "{run.dir}/artifacts/note/9x130/projected_1s_upsilon_kinematics.pdf",
+  "{run.dir}/artifacts/note/9x130/projected_1s_production_exclusivity.png",
+  "{run.dir}/artifacts/note/9x130/projected_1s_production_exclusivity.pdf",
+  "{run.dir}/artifacts/note/9x130/projected_1s_decay_leptons.png",
+  "{run.dir}/artifacts/note/9x130/projected_1s_decay_leptons.pdf",
+  "{run.dir}/artifacts/note/9x130/projected_1s_scattered_electron_tracking.png",
+  "{run.dir}/artifacts/note/9x130/projected_1s_scattered_electron_tracking.pdf",
+  "{run.dir}/artifacts/note/9x130/t_estimators_electron_hybrid.png",
+  "{run.dir}/artifacts/note/9x130/t_estimators_electron_hybrid.pdf",
+  "{run.dir}/artifacts/note/9x130/t_estimators_projective_transverse.png",
+  "{run.dir}/artifacts/note/9x130/t_estimators_projective_transverse.pdf",
+  "{run.dir}/artifacts/note/9x130/electron_identification.png",
+  "{run.dir}/artifacts/note/9x130/electron_identification.pdf",
+  "{run.dir}/artifacts/note/9x130/event_selection_cutflow_numbered.png",
+  "{run.dir}/artifacts/note/9x130/event_selection_cutflow_numbered.pdf",
+  "{run.dir}/artifacts/note/9x130/central_tagger_correlation.png",
+  "{run.dir}/artifacts/note/9x130/central_tagger_correlation.pdf",
+  "{run.dir}/artifacts/note/9x130/kinematic_bins.csv",
+  "{run.dir}/artifacts/note/9x130/kinematic_2d_bins.csv",
+  "{run.dir}/artifacts/note/9x130/stored_histogram_bins.csv",
+  "{run.dir}/artifacts/note/9x130/kinematic_selection_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x130_note_mass_efficiency"
+stage = "note"
+description = "Restore the inclusive and rapidity mass-fit pages and four-panel truth efficiencies"
+script = "scripts/reporting/render_note_mass_efficiency.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.low.label}",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x130",
+]
+requirements = ["module:uproot", "module:numpy", "module:scipy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/mass_fit_inclusive.png",
+  "{run.dir}/artifacts/note/9x130/mass_fit_inclusive.pdf",
+  "{run.dir}/artifacts/note/9x130/mass_fit_rapidity_minus1_to_0.png",
+  "{run.dir}/artifacts/note/9x130/mass_fit_rapidity_minus1_to_0.pdf",
+  "{run.dir}/artifacts/note/9x130/mass_fit_rapidity_0_to_1.png",
+  "{run.dir}/artifacts/note/9x130/mass_fit_rapidity_0_to_1.pdf",
+  "{run.dir}/artifacts/note/9x130/efficiency_1S_truth_rapidity.png",
+  "{run.dir}/artifacts/note/9x130/efficiency_1S_truth_rapidity.pdf",
+  "{run.dir}/artifacts/note/9x130/mass_fit_parameters.csv",
+  "{run.dir}/artifacts/note/9x130/mass_fit_bins.csv",
+  "{run.dir}/artifacts/note/9x130/mass_fit_quality.json",
+  "{run.dir}/artifacts/note/9x130/efficiency_points.csv",
+  "{run.dir}/artifacts/note/9x130/efficiency_integrated.csv",
+  "{run.dir}/artifacts/note/9x130/note_mass_efficiency_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x130_note_physics"
+stage = "note"
+description = "Render cross sections, closures, momentum-transfer and impact-parameter diagnostics in the note style"
+script = "scripts/reporting/render_note_physics.py"
+deps = ["extract_9x130_sigma_gamma_p", "extract_9x130_differential_gamma_p", "unfold_9x130_sigma_gamma_p_w", "unfold_9x130_t_spectrum", "validate_9x130_w_resolution"]
+args = [
+  "--run-artifacts",
+  "{run.dir}/artifacts",
+  "--energy-key",
+  "9x130",
+  "--energy-label",
+  "{beam.low.label}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x130",
+]
+requirements = ["module:numpy", "module:pandas", "module:scipy", "module:matplotlib", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/cross_section_w.png",
+  "{run.dir}/artifacts/note/9x130/cross_section_w.pdf",
+  "{run.dir}/artifacts/note/9x130/w_reconstruction_efficiency.png",
+  "{run.dir}/artifacts/note/9x130/w_reconstruction_efficiency.pdf",
+  "{run.dir}/artifacts/note/9x130/bin_by_bin_closure.png",
+  "{run.dir}/artifacts/note/9x130/bin_by_bin_closure.pdf",
+  "{run.dir}/artifacts/note/9x130/pt2_spectra.png",
+  "{run.dir}/artifacts/note/9x130/pt2_spectra.pdf",
+  "{run.dir}/artifacts/note/9x130/rapidity_coverage.png",
+  "{run.dir}/artifacts/note/9x130/rapidity_coverage.pdf",
+  "{run.dir}/artifacts/note/9x130/b_slope_comparison.png",
+  "{run.dir}/artifacts/note/9x130/b_slope_comparison.pdf",
+  "{run.dir}/artifacts/note/9x130/momentum_transfer_comparison.png",
+  "{run.dir}/artifacts/note/9x130/momentum_transfer_comparison.pdf",
+  "{run.dir}/artifacts/note/9x130/impact_parameter_profiles.png",
+  "{run.dir}/artifacts/note/9x130/impact_parameter_profiles.pdf",
+  "{run.dir}/artifacts/note/9x130/w_unfolding_closure.png",
+  "{run.dir}/artifacts/note/9x130/w_unfolding_closure.pdf",
+  "{run.dir}/artifacts/note/9x130/w_response_probability.png",
+  "{run.dir}/artifacts/note/9x130/w_response_probability.pdf",
+  "{run.dir}/artifacts/note/9x130/t_response_probability.png",
+  "{run.dir}/artifacts/note/9x130/t_response_probability.pdf",
+  "{run.dir}/artifacts/note/9x130/t_unfolding_closure.png",
+  "{run.dir}/artifacts/note/9x130/t_unfolding_closure.pdf",
+  "{run.dir}/artifacts/note/9x130/note_physics_audit.json",
+  "{run.dir}/artifacts/note/9x130/momentum_transfer_shapes.csv",
+  "{run.dir}/artifacts/note/9x130/impact_parameter_profiles.csv",
+  "{run.dir}/artifacts/note/9x130/w_resolution.png",
+  "{run.dir}/artifacts/note/9x130/w_resolution.pdf",
+  "{run.dir}/artifacts/note/9x130/w_relative_resolution.png",
+  "{run.dir}/artifacts/note/9x130/w_relative_resolution.pdf",
+  "{run.dir}/artifacts/note/9x130/t_resolution.png",
+  "{run.dir}/artifacts/note/9x130/t_resolution.pdf",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "reconstruct_9x275_report_histograms"
+stage = "note"
+description = "Reconstruct and render all ten report TH2 observables with configured latest selections"
+script = "scripts/validation/reconstruct_latest_report_histograms.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--energy-label",
+  "{beam.high.label}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--normalization",
+  "projected",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-root",
+  "{run.dir}/artifacts/note/9x275/histograms/reconstructed_report_histograms.root",
+  "--out-npz",
+  "{run.dir}/artifacts/note/9x275/histograms/reconstructed_report_histograms.npz",
+  "--out-json",
+  "{run.dir}/artifacts/note/9x275/histograms/note_histogram_reconstruction_audit.json",
+  "--plot-dir",
+  "{run.dir}/artifacts/note/9x275/histograms",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_Eta.png",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_Eta.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_DecayLeps_pT_vs_pT.png",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_DecayLeps_pT_vs_pT.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_pT.png",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_DecayLeps_Eta_vs_pT.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_W_vs_Rapidity.png",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_W_vs_Rapidity.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_t_vs_W.png",
+  "{run.dir}/artifacts/note/9x275/histograms/GenLevel_h2_Gen_t_vs_W.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_nTracks_Central_vs_Tagger.png",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_nTracks_Central_vs_Tagger.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_eta_ePlus_eMinus.png",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_eta_ePlus_eMinus.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_pT_ePlus_eMinus.png",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_pT_ePlus_eMinus.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_Reco_DecayLeps_Eta_vs_pT.png",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_Reco_DecayLeps_Eta_vs_pT.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_t_Correlation.png",
+  "{run.dir}/artifacts/note/9x275/histograms/h2_t_Correlation.pdf",
+  "{run.dir}/artifacts/note/9x275/histograms/reconstructed_report_histograms.root",
+  "{run.dir}/artifacts/note/9x275/histograms/reconstructed_report_histograms.npz",
+  "{run.dir}/artifacts/note/9x275/histograms/note_histogram_reconstruction_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x275_note_kinematics"
+stage = "note"
+description = "Restore the note kinematics, lepton, electron-ID, cutflow and estimator presentation"
+script = "scripts/reporting/render_note_kinematics.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.high.label}",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x275",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/generator_upsilon_kinematics.png",
+  "{run.dir}/artifacts/note/9x275/generator_upsilon_kinematics.pdf",
+  "{run.dir}/artifacts/note/9x275/generator_production_scattered_electron.png",
+  "{run.dir}/artifacts/note/9x275/generator_production_scattered_electron.pdf",
+  "{run.dir}/artifacts/note/9x275/generator_decay_leptons.png",
+  "{run.dir}/artifacts/note/9x275/generator_decay_leptons.pdf",
+  "{run.dir}/artifacts/note/9x275/generator_kinematic_correlations.png",
+  "{run.dir}/artifacts/note/9x275/generator_kinematic_correlations.pdf",
+  "{run.dir}/artifacts/note/9x275/projected_1s_upsilon_kinematics.png",
+  "{run.dir}/artifacts/note/9x275/projected_1s_upsilon_kinematics.pdf",
+  "{run.dir}/artifacts/note/9x275/projected_1s_production_exclusivity.png",
+  "{run.dir}/artifacts/note/9x275/projected_1s_production_exclusivity.pdf",
+  "{run.dir}/artifacts/note/9x275/projected_1s_decay_leptons.png",
+  "{run.dir}/artifacts/note/9x275/projected_1s_decay_leptons.pdf",
+  "{run.dir}/artifacts/note/9x275/projected_1s_scattered_electron_tracking.png",
+  "{run.dir}/artifacts/note/9x275/projected_1s_scattered_electron_tracking.pdf",
+  "{run.dir}/artifacts/note/9x275/t_estimators_electron_hybrid.png",
+  "{run.dir}/artifacts/note/9x275/t_estimators_electron_hybrid.pdf",
+  "{run.dir}/artifacts/note/9x275/t_estimators_projective_transverse.png",
+  "{run.dir}/artifacts/note/9x275/t_estimators_projective_transverse.pdf",
+  "{run.dir}/artifacts/note/9x275/electron_identification.png",
+  "{run.dir}/artifacts/note/9x275/electron_identification.pdf",
+  "{run.dir}/artifacts/note/9x275/event_selection_cutflow_numbered.png",
+  "{run.dir}/artifacts/note/9x275/event_selection_cutflow_numbered.pdf",
+  "{run.dir}/artifacts/note/9x275/central_tagger_correlation.png",
+  "{run.dir}/artifacts/note/9x275/central_tagger_correlation.pdf",
+  "{run.dir}/artifacts/note/9x275/kinematic_bins.csv",
+  "{run.dir}/artifacts/note/9x275/kinematic_2d_bins.csv",
+  "{run.dir}/artifacts/note/9x275/stored_histogram_bins.csv",
+  "{run.dir}/artifacts/note/9x275/kinematic_selection_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x275_note_mass_efficiency"
+stage = "note"
+description = "Restore the inclusive and rapidity mass-fit pages and four-panel truth efficiencies"
+script = "scripts/reporting/render_note_mass_efficiency.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.high.label}",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x275",
+]
+requirements = ["module:uproot", "module:numpy", "module:scipy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/mass_fit_inclusive.png",
+  "{run.dir}/artifacts/note/9x275/mass_fit_inclusive.pdf",
+  "{run.dir}/artifacts/note/9x275/mass_fit_rapidity_minus1_to_0.png",
+  "{run.dir}/artifacts/note/9x275/mass_fit_rapidity_minus1_to_0.pdf",
+  "{run.dir}/artifacts/note/9x275/mass_fit_rapidity_0_to_1.png",
+  "{run.dir}/artifacts/note/9x275/mass_fit_rapidity_0_to_1.pdf",
+  "{run.dir}/artifacts/note/9x275/efficiency_1S_truth_rapidity.png",
+  "{run.dir}/artifacts/note/9x275/efficiency_1S_truth_rapidity.pdf",
+  "{run.dir}/artifacts/note/9x275/mass_fit_parameters.csv",
+  "{run.dir}/artifacts/note/9x275/mass_fit_bins.csv",
+  "{run.dir}/artifacts/note/9x275/mass_fit_quality.json",
+  "{run.dir}/artifacts/note/9x275/efficiency_points.csv",
+  "{run.dir}/artifacts/note/9x275/efficiency_integrated.csv",
+  "{run.dir}/artifacts/note/9x275/note_mass_efficiency_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x275_note_physics"
+stage = "note"
+description = "Render cross sections, closures, momentum-transfer and impact-parameter diagnostics in the note style"
+script = "scripts/reporting/render_note_physics.py"
+deps = ["extract_9x275_sigma_gamma_p", "extract_9x275_differential_gamma_p", "unfold_9x275_sigma_gamma_p_w", "unfold_9x275_t_spectrum", "validate_9x275_w_resolution"]
+args = [
+  "--run-artifacts",
+  "{run.dir}/artifacts",
+  "--energy-key",
+  "9x275",
+  "--energy-label",
+  "{beam.high.label}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x275",
+]
+requirements = ["module:numpy", "module:pandas", "module:scipy", "module:matplotlib", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/cross_section_w.png",
+  "{run.dir}/artifacts/note/9x275/cross_section_w.pdf",
+  "{run.dir}/artifacts/note/9x275/w_reconstruction_efficiency.png",
+  "{run.dir}/artifacts/note/9x275/w_reconstruction_efficiency.pdf",
+  "{run.dir}/artifacts/note/9x275/bin_by_bin_closure.png",
+  "{run.dir}/artifacts/note/9x275/bin_by_bin_closure.pdf",
+  "{run.dir}/artifacts/note/9x275/pt2_spectra.png",
+  "{run.dir}/artifacts/note/9x275/pt2_spectra.pdf",
+  "{run.dir}/artifacts/note/9x275/rapidity_coverage.png",
+  "{run.dir}/artifacts/note/9x275/rapidity_coverage.pdf",
+  "{run.dir}/artifacts/note/9x275/b_slope_comparison.png",
+  "{run.dir}/artifacts/note/9x275/b_slope_comparison.pdf",
+  "{run.dir}/artifacts/note/9x275/momentum_transfer_comparison.png",
+  "{run.dir}/artifacts/note/9x275/momentum_transfer_comparison.pdf",
+  "{run.dir}/artifacts/note/9x275/impact_parameter_profiles.png",
+  "{run.dir}/artifacts/note/9x275/impact_parameter_profiles.pdf",
+  "{run.dir}/artifacts/note/9x275/w_unfolding_closure.png",
+  "{run.dir}/artifacts/note/9x275/w_unfolding_closure.pdf",
+  "{run.dir}/artifacts/note/9x275/w_response_probability.png",
+  "{run.dir}/artifacts/note/9x275/w_response_probability.pdf",
+  "{run.dir}/artifacts/note/9x275/t_response_probability.png",
+  "{run.dir}/artifacts/note/9x275/t_response_probability.pdf",
+  "{run.dir}/artifacts/note/9x275/t_unfolding_closure.png",
+  "{run.dir}/artifacts/note/9x275/t_unfolding_closure.pdf",
+  "{run.dir}/artifacts/note/9x275/note_physics_audit.json",
+  "{run.dir}/artifacts/note/9x275/momentum_transfer_shapes.csv",
+  "{run.dir}/artifacts/note/9x275/impact_parameter_profiles.csv",
+  "{run.dir}/artifacts/note/9x275/w_resolution.png",
+  "{run.dir}/artifacts/note/9x275/w_resolution.pdf",
+  "{run.dir}/artifacts/note/9x275/w_relative_resolution.png",
+  "{run.dir}/artifacts/note/9x275/w_relative_resolution.pdf",
+  "{run.dir}/artifacts/note/9x275/t_resolution.png",
+  "{run.dir}/artifacts/note/9x275/t_resolution.pdf",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_note_kinematics_comparison"
+stage = "note"
+description = "Compare the latest samples using the note kinematics and diagnostic panels"
+script = "scripts/reporting/render_note_kinematics.py"
+deps = ["validate_9x130_schema", "validate_9x275_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.low.label}",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/compare_9x130_9x275",
+  "--second-input",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--second-energy-label",
+  "{beam.high.label}",
+  "--second-electron-energy",
+  "{beam.high.electron_energy}",
+  "--second-w-min",
+  "{beam.high.w_min}",
+  "--second-w-max",
+  "{beam.high.w_max}",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_upsilon_kinematics.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_upsilon_kinematics.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_production_scattered_electron.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_production_scattered_electron.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_decay_leptons.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_decay_leptons.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_kinematic_correlations.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/generator_kinematic_correlations.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_upsilon_kinematics.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_upsilon_kinematics.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_production_exclusivity.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_production_exclusivity.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_decay_leptons.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_decay_leptons.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_scattered_electron_tracking.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/projected_1s_scattered_electron_tracking.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/t_estimators_electron_hybrid.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/t_estimators_electron_hybrid.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/t_estimators_projective_transverse.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/t_estimators_projective_transverse.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/electron_identification.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/electron_identification.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/event_selection_cutflow_numbered.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/event_selection_cutflow_numbered.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/central_tagger_correlation.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/central_tagger_correlation.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/kinematic_bins.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/kinematic_2d_bins.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/stored_histogram_bins.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/kinematic_selection_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_note_mass_efficiency_comparison"
+stage = "note"
+description = "Compare latest truth efficiencies; mass pages refer to the primary 9x130 input"
+script = "scripts/reporting/render_note_mass_efficiency.py"
+deps = ["validate_9x130_schema", "validate_9x275_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.low.label}",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/compare_9x130_9x275",
+  "--second-input",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--second-energy-label",
+  "{beam.high.label}",
+  "--second-electron-energy",
+  "{beam.high.electron_energy}",
+  "--second-w-min",
+  "{beam.high.w_min}",
+  "--second-w-max",
+  "{beam.high.w_max}",
+]
+requirements = ["module:uproot", "module:numpy", "module:scipy", "module:matplotlib"]
+outputs = [
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_inclusive.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_inclusive.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_rapidity_minus1_to_0.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_rapidity_minus1_to_0.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_rapidity_0_to_1.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_rapidity_0_to_1.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/efficiency_1S_truth_rapidity.png",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/efficiency_1S_truth_rapidity.pdf",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_parameters.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_bins.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/mass_fit_quality.json",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/efficiency_points.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/efficiency_integrated.csv",
+  "{run.dir}/artifacts/note/compare_9x130_9x275/note_mass_efficiency_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x130_note_t_studies"
+stage = "note"
+description = "Compare all five momentum-transfer estimators and independent closure in the note style"
+script = "scripts/reporting/render_note_t_studies.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.low.label}",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x130/t_appendix",
+  "--t-edges",
+  "{analysis.t_edges}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_metrics.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_metrics.pdf",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_residuals.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_residuals.pdf",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_closure.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_closure.pdf",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_per_bin.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/t_methods_residual_bins.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/note_t_studies_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x130_note_eX_zeus"
+stage = "note_t_unfolding"
+description = "Run 9x130 eX unfolding in eX_zeus binning with a unit-area ZEUS comparison"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--method",
+  "eX",
+  "--t-edges",
+  "0,0.2,0.5,1,5",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb",
+  "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention",
+  "visible_decay",
+  "--state-norm-mode",
+  "raw",
+  "--mass-window-sigma",
+  "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+  "--n-toys",
+  "{analysis.n_toys}",
+  "--out-prefix",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode",
+  "unit_area",
+  "--y-min",
+  "0.0001",
+  "--y-max",
+  "100",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_response_counts.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_closure.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_t_resolution.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_zeus_overlay.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_t_unfold_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_normalization.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_t_resolution_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_response_counts.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_zeus_response_prob.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x130_note_eX_merged"
+stage = "note_t_unfolding"
+description = "Run 9x130 eX unfolding in eX_merged binning with a unit-area ZEUS comparison"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--method",
+  "eX",
+  "--t-edges",
+  "0,0.5,1,5",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb",
+  "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention",
+  "visible_decay",
+  "--state-norm-mode",
+  "raw",
+  "--mass-window-sigma",
+  "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+  "--n-toys",
+  "{analysis.n_toys}",
+  "--out-prefix",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode",
+  "unit_area",
+  "--y-min",
+  "0.0001",
+  "--y-max",
+  "100",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_response_counts.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_closure.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_t_resolution.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_zeus_overlay.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_t_unfold_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_normalization.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_t_resolution_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_response_counts.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_eX_merged_response_prob.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x130_note_pT2_merged"
+stage = "note_t_unfolding"
+description = "Run 9x130 pT2 unfolding in pT2_merged binning with a unit-area ZEUS comparison"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x130_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x130_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--method",
+  "pT2",
+  "--t-edges",
+  "0,0.5,1,5",
+  "--electron-energy",
+  "{beam.low.electron_energy}",
+  "--w-min",
+  "{beam.low.w_min}",
+  "--w-max",
+  "{beam.low.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb",
+  "{beam.low.visible_xsec_1s_fb}",
+  "--weight-convention",
+  "visible_decay",
+  "--state-norm-mode",
+  "raw",
+  "--mass-window-sigma",
+  "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+  "--n-toys",
+  "{analysis.n_toys}",
+  "--out-prefix",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode",
+  "unit_area",
+  "--y-min",
+  "0.0001",
+  "--y-max",
+  "100",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_response_counts.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_closure.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_t_resolution.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_zeus_overlay.png",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_t_unfold_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_normalization.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_t_resolution_summary.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_response_counts.csv",
+  "{run.dir}/artifacts/note/9x130/t_appendix/9x130_pT2_merged_response_prob.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "render_9x275_note_t_studies"
+stage = "note"
+description = "Compare all five momentum-transfer estimators and independent closure in the note style"
+script = "scripts/reporting/render_note_t_studies.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--input",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--energy-label",
+  "{beam.high.label}",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--out-dir",
+  "{run.dir}/artifacts/note/9x275/t_appendix",
+  "--t-edges",
+  "{analysis.t_edges}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib", "module:mplhep"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_metrics.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_metrics.pdf",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_residuals.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_residuals.pdf",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_closure.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_closure.pdf",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_per_bin.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/t_methods_residual_bins.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/note_t_studies_audit.json",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x275_note_eX_zeus"
+stage = "note_t_unfolding"
+description = "Run 9x275 eX unfolding in eX_zeus binning with a unit-area ZEUS comparison"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--method",
+  "eX",
+  "--t-edges",
+  "0,0.2,0.5,1,5",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb",
+  "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention",
+  "visible_decay",
+  "--state-norm-mode",
+  "raw",
+  "--mass-window-sigma",
+  "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+  "--n-toys",
+  "{analysis.n_toys}",
+  "--out-prefix",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode",
+  "unit_area",
+  "--y-min",
+  "0.0001",
+  "--y-max",
+  "100",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_response_counts.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_closure.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_t_resolution.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_zeus_overlay.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_t_unfold_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_normalization.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_t_resolution_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_response_counts.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_zeus_response_prob.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x275_note_eX_merged"
+stage = "note_t_unfolding"
+description = "Run 9x275 eX unfolding in eX_merged binning with a unit-area ZEUS comparison"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--method",
+  "eX",
+  "--t-edges",
+  "0,0.5,1,5",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb",
+  "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention",
+  "visible_decay",
+  "--state-norm-mode",
+  "raw",
+  "--mass-window-sigma",
+  "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+  "--n-toys",
+  "{analysis.n_toys}",
+  "--out-prefix",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode",
+  "unit_area",
+  "--y-min",
+  "0.0001",
+  "--y-max",
+  "100",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_response_counts.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_closure.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_t_resolution.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_zeus_overlay.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_t_unfold_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_normalization.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_t_resolution_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_response_counts.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_eX_merged_response_prob.csv",
+]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "unfold_9x275_note_pT2_merged"
+stage = "note_t_unfolding"
+description = "Run 9x275 pT2 unfolding in pT2_merged binning with a unit-area ZEUS comparison"
+script = "scripts/unfolding/unfold_t_spectrum.py"
+deps = ["validate_9x275_schema"]
+args = [
+  "--branching-fractions", "{analysis.branching_fractions}",
+  "{run.dir}/artifacts/inputs/9x275_normalized.root",
+  "--tree",
+  "{analysis.tree}",
+  "--state",
+  "1S",
+  "--method",
+  "pT2",
+  "--t-edges",
+  "0,0.5,1,5",
+  "--electron-energy",
+  "{beam.high.electron_energy}",
+  "--w-min",
+  "{beam.high.w_min}",
+  "--w-max",
+  "{beam.high.w_max}",
+  "--q2-cut",
+  "{analysis.q2_event_max}",
+  "--lumi-invfb",
+  "{analysis.lumi_invfb}",
+  "--tuple-lumi-invfb",
+  "{analysis.tuple_lumi_invfb}",
+  "--visible-xsec-fb",
+  "{beam.high.visible_xsec_1s_fb}",
+  "--weight-convention",
+  "visible_decay",
+  "--state-norm-mode",
+  "raw",
+  "--mass-window-sigma",
+  "{analysis.reco_mass_window_sigma}",
+  "--true-mass-window",
+  "{analysis.truth_mass_window}",
+  "--train-fraction",
+  "{analysis.train_fraction}",
+  "--seed",
+  "{analysis.seed}",
+  "--n-iterations",
+  "{analysis.n_iterations}",
+  "--n-toys",
+  "{analysis.n_toys}",
+  "--out-prefix",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged",
+  "--zeus-csv",
+  "{paths.project}/{inputs.zeus_step_csv}",
+  "--zeus-mode",
+  "unit_area",
+  "--y-min",
+  "0.0001",
+  "--y-max",
+  "100",
+]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "file:{inputs.zeus_step_csv}"]
+outputs = [
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_response_counts.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_closure.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_t_resolution.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_zeus_overlay.png",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_t_unfold_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_normalization.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_t_resolution_summary.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_response_counts.csv",
+  "{run.dir}/artifacts/note/9x275/t_appendix/9x275_pT2_merged_response_prob.csv",
+]
+fail_patterns = ["Traceback"]

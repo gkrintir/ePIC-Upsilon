@@ -1,0 +1,60 @@
+legacy_name,kind,logical_family,disposition,canonical_path,notes
+MassFit.ipynb,notebook,mass fits,promoted,notebooks/01_mass_fits_inclusive_and_rapidity.ipynb,"Inclusive and rapidity fits; cached numerical results unvalidated"
+MassFit-Copy1.ipynb,notebook,efficiencies,superseded,,Superseded notebook fork retained byte-for-byte
+MassFit-Copy2.ipynb,notebook,efficiencies and two-energy studies,promoted,notebooks/02_efficiency_and_two_energy_studies.ipynb,Only audited cells are in the default workflow
+MassFit-Copy3.ipynb,notebook,basic kinematics,promoted,notebooks/12_basic_kinematic_distributions.ipynb,Cached binary outputs may be stale relative to source
+MassFit-Copy4.ipynb,notebook,event selection and bT,promoted,notebooks/03_event_selection_truth_and_bt_studies.ipynb,Unsafe mixed-energy cell excluded
+MassFit-Copy5.ipynb,notebook,low-Q2 tagger reach,promoted,notebooks/04_low_q2_tagger_reach.ipynb,
+MassFit-Copy6.ipynb,notebook,differential rapidity cross section,promoted,notebooks/05_differential_rapidity_cross_section.ipynb,
+MassFit-Copy7.ipynb,notebook,gamma-p family,promoted,notebooks/06_gamma_p_cross_section_family.ipynb,
+MassFit-Copy8.ipynb,notebook,campaign histogram comparison,promoted,notebooks/07_compare_campaign_histograms.ipynb,
+MassFit-Copy9.ipynb,notebook,gamma-p 10x100,promoted,notebooks/08_gamma_p_cross_section_10x100.ipynb,
+MassFit-Copy10.ipynb,notebook,gamma-p two energies,promoted,notebooks/09_gamma_p_cross_section_two_energies.ipynb,
+MassFit-Copy11.ipynb,notebook,t migration diagnostics,promoted,notebooks/10_t_migration_diagnostics.ipynb,Original created a literal tilde output directory
+MassFit-Copy12.ipynb,notebook,t binning optimization,promoted,notebooks/11_t_binning_optimization.ipynb,
+MassFit-Copy13.ipynb,notebook,tau decay study,unrelated,archive/unrelated/tau_decay_study.ipynb,Uses HepMC and is outside the Upsilon analysis
+Upsilon_1S_TMethods_TwoEnergy_Overlay_visibleEE.py,python,t-estimator overlay,promoted,scripts/plotting/plot_t_estimators_two_energy_overlay.py,Promoted version parameterized to remove hardcoded samples
+compare_reco_t_distributions_two_energies_swan.py,python,reconstructed t comparison,promoted,scripts/plotting/plot_reco_t_estimators_by_energy.py,
+compare_sigma_gp_two_energies_swan.py,python,truth gamma-p comparison,superseded,scripts/validation/validate_truth_gamma_p_two_energies.py,Earlier family version
+compare_sigma_gp_two_energies_swan_v2.py,python,truth gamma-p comparison,superseded,scripts/validation/validate_truth_gamma_p_two_energies.py,Earlier family version
+compare_sigma_gp_two_energies_swan_v2.py~,backup,truth gamma-p comparison,backup,,Editor backup; nonauthoritative
+compare_sigma_gp_two_energies_swan_v4.py,python,truth gamma-p comparison,promoted,scripts/validation/validate_truth_gamma_p_two_energies.py,State-scoped metadata matches preserved artifacts
+compare_t_methods_two_energies_swan.py,python,t-estimator benchmark,superseded,scripts/validation/benchmark_t_estimators.py,Earlier family version
+compare_t_methods_two_energies_swan_v2.py,python,t-estimator benchmark,promoted,scripts/validation/benchmark_t_estimators.py,
+crosscheck_massfit_vs_sigma_yields.py,python,fit yield accounting,promoted,scripts/validation/validate_mass_fit_yield_accounting.py,
+debug_sigma_gp_1S_swan.py,python,gamma-p normalization diagnostic,promoted,scripts/validation/validate_gamma_p_normalization.py,
+extract_differential_gamma_p_swan.py,python,differential bin-by-bin extraction,superseded,scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py,Earlier family version
+extract_differential_gamma_p_swan_v2.py,python,differential bin-by-bin extraction,superseded,scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py,Earlier family version
+extract_differential_gamma_p_swan_v3.py,python,differential bin-by-bin extraction,superseded,scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py,Earlier family version
+extract_differential_gamma_p_swan_v4.py,python,differential bin-by-bin extraction,promoted,scripts/cross_sections/extract_differential_gamma_p_bin_by_bin.py,Producer of finite-bin b-slope tables
+extract_sigma_gamma_p_family_fixed_swan.py,python,family bin-by-bin extraction,superseded,scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py,Earlier family version
+extract_sigma_gamma_p_family_fixed_swan.py~,backup,family bin-by-bin extraction,backup,,Editor backup; contains np.trapzd typo
+extract_sigma_gamma_p_family_fixed_swan_v2.py,python,family bin-by-bin extraction,promoted,scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py,Same-sample efficiency correction
+extract_sigma_gamma_p_family_fixed_swan_v2.py~,backup,family bin-by-bin extraction,backup,,Editor backup; nonauthoritative
+extract_sigma_gp_1S_renorm_swan.py,python,legacy 1S bin-by-bin extraction,superseded,scripts/cross_sections/extract_gamma_p_cross_section_1s_legacy.py,Earlier family version
+extract_sigma_gp_1S_renorm_swan.py~,backup,legacy 1S bin-by-bin extraction,backup,,Editor backup; nonauthoritative
+extract_sigma_gp_1S_renorm_swan_v2.py,python,legacy 1S bin-by-bin extraction,promoted-experimental,scripts/cross_sections/extract_gamma_p_cross_section_1s_legacy.py,Known reference output is invalid
+extract_sigma_gp_1S_renorm_swan_v2.py~,backup,legacy 1S bin-by-bin extraction,backup,,Editor backup; nonauthoritative
+make_hybrid_t_low_high_overlay_v2.py,python,different-W hybrid t overlay,superseded,scripts/plotting/plot_hybrid_t_different_w.py,Earlier family version
+make_hybrid_t_low_high_overlay_v3.py,python,different-W hybrid t overlay,promoted,scripts/plotting/plot_hybrid_t_different_w.py,
+overlay_b_slopes_on_hera_fig4.py,python,1S b-slope HERA overlay,promoted,scripts/plotting/plot_b_slope_1s_hera_overlay.py,Contains approximate embedded HERA anchors
+overlay_b_slopes_three_states_on_hera_fig4.py,python,family b-slope HERA overlay,promoted,scripts/plotting/plot_b_slopes_family_hera_overlay.py,Contains approximate embedded HERA anchors
+overlay_pt2_twoE_with_ZEUS_and_bT.py,python,t and impact-parameter plotting,promoted,scripts/plotting/plot_t_spectra_and_impact_parameter.py,
+overlay_sigma_gp_two_energies_swan.py,python,gamma-p energy overlay,promoted,scripts/plotting/plot_gamma_p_cross_sections_by_energy.py,
+plot_central_tagger_correlation.py,python,track multiplicity correlation,promoted,scripts/validation/plot_track_multiplicity_correlation.py,
+plot_selected_upsilon_comparisons.py,python,selected validation figure set,superseded,scripts/plotting/build_gamma_p_validation_figure_set.py,Earlier family version
+plot_selected_upsilon_comparisons_v2.py,python,selected validation figure set,promoted,scripts/plotting/build_gamma_p_validation_figure_set.py,Promoted version requires explicit low and high CSVs
+scan_estarlight_flux_ratio.py,python,eSTARlight flux validation,superseded,scripts/flux/validate_estarlight_flux_ratio.py,Earlier family version
+scan_estarlight_flux_ratio_v2.py,python,eSTARlight flux validation,superseded,scripts/flux/validate_estarlight_flux_ratio.py,Earlier family version
+scan_estarlight_flux_ratio_v3.py,python,eSTARlight flux validation,promoted,scripts/flux/validate_estarlight_flux_ratio.py,
+study_W_resolution_swan.py,python,W-resolution study,promoted,scripts/validation/validate_w_resolution.py,
+unfold_sigma_gp_W_swan.py,python,Bayesian W unfolding,promoted,scripts/unfolding/unfold_gamma_p_cross_section_vs_w.py,
+unfold_t_distribution_swan.py,python,Bayesian t unfolding,superseded,scripts/unfolding/unfold_t_spectrum.py,Earlier family version
+unfold_t_distribution_swan_v2.py,python,Bayesian t unfolding,broken-duplicate,scripts/unfolding/unfold_t_spectrum.py,Exact duplicate of v3; unescaped backslash U prevents compilation
+unfold_t_distribution_swan_v3.py,python,Bayesian t unfolding,broken-duplicate,scripts/unfolding/unfold_t_spectrum.py,Exact duplicate of v2; unescaped backslash U prevents compilation
+unfold_t_distribution_swan_v4.py,python,Bayesian t unfolding,superseded,scripts/unfolding/unfold_t_spectrum.py,Earlier family version
+unfold_t_distribution_swan_v5.py,python,Bayesian t unfolding,promoted,scripts/unfolding/unfold_t_spectrum.py,
+unfold_t_hybrid_commonW_swan.py,python,common-W hybrid t unfolding,superseded,scripts/unfolding/unfold_hybrid_t_common_w.py,Earlier family version
+unfold_t_hybrid_commonW_swan_nopandas.py,python,common-W hybrid t unfolding,promoted-experimental,scripts/unfolding/unfold_hybrid_t_common_w.py,Preserved metadata uniquely matches this version; strict empty-sample guard added
+unfold_t_hybrid_commonW_swan_v2.py,python,common-W hybrid t unfolding,superseded,scripts/unfolding/unfold_hybrid_t_common_w.py,Earlier family version
+unfold_t_hybrid_commonW_swan_v3.py,python,common-W hybrid t unfolding,superseded,scripts/unfolding/unfold_hybrid_t_common_w.py,Numerically equivalent valid-input path but not artifact producer

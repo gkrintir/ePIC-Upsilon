@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="910" viewBox="0 0 1080 910" role="img" aria-labelledby="title desc">
+<title id="title">ePIC Upsilon workflow from event files to reviewed figures</title>
+<desc id="desc">New production and existing merged inputs join at normalization. Full analysis and reoptimization run separately before validation and plotting.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#475569"/></marker></defs>
+<rect width="1080" height="910" rx="14" fill="#ffffff"/>
+<path d="M275 101 V145" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M275 221 V265" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M275 341 V365 H540 V385" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M805 101 V365 H540 V385" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M540 461 V483 H275 V505" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M540 461 V483 H805 V505" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M275 591 V615 H540 V635" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M805 591 V615 H540 V635" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M540 711 V745" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="55" y="25" width="440" height="76" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="75" y="55" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">1  Reconstructed ePIC events</text>
+<text x="75" y="80" font-family="Arial,sans-serif" font-size="14" fill="#334155">Download / explicit input list</text>
+<rect x="585" y="25" width="440" height="76" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="605" y="55" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">Existing merged UpsilonTree</text>
+<text x="605" y="80" font-family="Arial,sans-serif" font-size="14" fill="#334155">Start here when tuples are already available</text>
+<rect x="55" y="145" width="440" height="76" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+<text x="75" y="175" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">2  ROOT producer + Condor</text>
+<text x="75" y="200" font-family="Arial,sans-serif" font-size="14" fill="#334155">Decay electrons, scattered electron, recoil proton</text>
+<rect x="55" y="265" width="440" height="76" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+<text x="75" y="295" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">3  Merge job outputs</text>
+<text x="75" y="320" font-family="Arial,sans-serif" font-size="14" fill="#334155">Retain generated-event counts and provenance</text>
+<rect x="320" y="385" width="440" height="76" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+<text x="340" y="415" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">4  Normalize and audit</text>
+<text x="340" y="440" font-family="Arial,sans-serif" font-size="14" fill="#334155">State rate, luminosity, branches and photon flux</text>
+<rect x="55" y="505" width="440" height="86" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+<text x="75" y="535" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">5  Full state analysis</text>
+<text x="75" y="560" font-family="Arial,sans-serif" font-size="14" fill="#334155">Mass, efficiency, cross sections and resolutions</text>
+<rect x="585" y="505" width="440" height="86" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+<text x="605" y="535" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">6  Reoptimization</text>
+<text x="605" y="560" font-family="Arial,sans-serif" font-size="14" fill="#334155">Response, binning, inference and stress tests</text>
+<rect x="320" y="635" width="440" height="76" rx="12" fill="#fce7f3" stroke="#be185d" stroke-width="1.5"/>
+<text x="340" y="665" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">7  Review validation status</text>
+<text x="340" y="690" font-family="Arial,sans-serif" font-size="14" fill="#334155">Accepted conditional results / diagnostics / unavailable</text>
+<rect x="320" y="745" width="440" height="76" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+<text x="340" y="775" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#0f172a">8  SWAN notebooks and exports</text>
+<text x="340" y="800" font-family="Arial,sans-serif" font-size="14" fill="#334155">One profile selects runs, category and luminosity</text>
+<text x="540" y="858" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" fill="#0f172a">Separate inclusive / proton-tagged workspaces · EOS data stay external</text>
+<text x="540" y="886" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#475569">Simulation cards are pinned references. Production requires the documented source and environment checks.</text>
+</svg>

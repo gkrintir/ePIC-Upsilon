@@ -1,0 +1,11 @@
+row,column,archived,rerun,difference,relative_difference,pass
+0,sumw_state_raw,45844.72248593519,45844.72248593518,-1.4551915228366852e-11,-3.174174570002309e-16,True
+0,inferred_visible_xsec_fb,4584.472248593518,4584.472248593518,0.0,0.0,True
+0,target_visible_xsec_fb,327.584,327.584,0.0,0.0,True
+0,weight_scale,0.0714551168022666,0.0714551168022666,0.0,0.0,True
+0,train_fraction,0.5,0.5,0.0,0.0,True
+0,n_iterations,4.0,4.0,0.0,0.0,True
+0,n_toys,300.0,300.0,0.0,0.0,True
+0,q2_max_flux,0.001,0.001,0.0,0.0,True
+0,q2_cut,0.001,0.001,0.0,0.0,True
+0,background_assumption,0.0,0.0,0.0,,True

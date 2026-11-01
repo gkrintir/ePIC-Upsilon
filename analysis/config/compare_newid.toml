@@ -1,0 +1,201 @@
+version = 1
+
+# Additive comparisons for output_newID and legacy-ID 9x275 fEMC half-plane samples.
+# It does not replace existing pipelines. The half-plane samples use LEGACY electron ID.
+# Each curve is normalized separately. Fractions use stored tuple rows as the denominator.
+# This pipeline compares shapes and tuple selections, not absolute yields or sigma(W).
+
+[executables]
+python = "python3"
+
+[inputs]
+# Override individual file paths if the merged filenames differ.
+baseline_9x130_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x130/hiAcc/output/merged_Upsilon_final.root"
+root_9x130 = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x130/hiAcc/output_newID/merged_Upsilon_final.root"
+baseline_9x275_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output/merged_Upsilon_final.root"
+root_9x275 = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root"
+
+# fEMC half-plane producer modes 4 (y<0) and 3 (x>=0) use LEGACY electron ID.
+keep_yneg_9x275_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output_keep_yneg/merged_Upsilon_final.root"
+keep_xpos_9x275_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output_keep_xpos/merged_Upsilon_final.root"
+
+[comparison]
+tree = "UpsilonTree"
+state = "1S"
+electron_energy = 9.0
+bins = 60
+
+[groups]
+compare_newid = ["compare_id_9x130_samples", "compare_id_9x275_samples", "compare_newid_energies_samples"]
+compare_id_9x130 = ["compare_id_9x130_samples"]
+compare_id_9x275 = ["compare_id_9x275_samples"]
+compare_newid_energies = ["compare_newid_energies_samples"]
+
+compare_halfplanes_9x275 = ["compare_9x275_keep_yneg_samples", "compare_9x275_keep_xpos_samples"]
+compare_keep_yneg_9x275 = ["compare_9x275_keep_yneg_samples"]
+compare_keep_xpos_9x275 = ["compare_9x275_keep_xpos_samples"]
+compare_ele_id_all = ["compare_id_9x130_samples", "compare_id_9x275_samples", "compare_newid_energies_samples", "compare_9x275_keep_yneg_samples", "compare_9x275_keep_xpos_samples"]
+
+[[task]]
+name = "compare_id_9x130_samples"
+stage = "comparison"
+description = "Compare 9x130 GeV, previous electron ID with 9x130 GeV, new electron ID: shapes and tuple selection fractions"
+script = "scripts/validation/compare_newid_samples.py"
+args = [
+  "--reference-file", "{inputs.baseline_9x130_root}",
+  "--candidate-file", "{inputs.root_9x130}",
+  "--tree", "{comparison.tree}",
+  "--state", "{comparison.state}",
+  "--reference-label", "9x130 GeV, previous electron ID",
+  "--candidate-label", "9x130 GeV, new electron ID",
+  "--reference-electron-energy", "{comparison.electron_energy}",
+  "--candidate-electron-energy", "{comparison.electron_energy}",
+  "--bins", "{comparison.bins}",
+  "--out-dir", "{run.dir}/artifacts/comparisons/id_9x130",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.baseline_9x130_root}", "file:{inputs.root_9x130}",
+]
+outputs = [
+  "{run.dir}/artifacts/comparisons/id_9x130/truth_shapes.png",
+  "{run.dir}/artifacts/comparisons/id_9x130/truth_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/id_9x130/reco_shapes.png",
+  "{run.dir}/artifacts/comparisons/id_9x130/reco_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/id_9x130/selection_summary.csv",
+  "{run.dir}/artifacts/comparisons/id_9x130/bin_values.csv",
+  "{run.dir}/artifacts/comparisons/id_9x130/comparison_manifest.json",
+]
+fail_patterns = ["Traceback", "Comparison failed:"]
+
+[[task]]
+name = "compare_id_9x275_samples"
+stage = "comparison"
+description = "Compare 9x275 GeV, previous electron ID with 9x275 GeV, new electron ID: shapes and tuple selection fractions"
+script = "scripts/validation/compare_newid_samples.py"
+args = [
+  "--reference-file", "{inputs.baseline_9x275_root}",
+  "--candidate-file", "{inputs.root_9x275}",
+  "--tree", "{comparison.tree}",
+  "--state", "{comparison.state}",
+  "--reference-label", "9x275 GeV, previous electron ID",
+  "--candidate-label", "9x275 GeV, new electron ID",
+  "--reference-electron-energy", "{comparison.electron_energy}",
+  "--candidate-electron-energy", "{comparison.electron_energy}",
+  "--bins", "{comparison.bins}",
+  "--out-dir", "{run.dir}/artifacts/comparisons/id_9x275",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.baseline_9x275_root}", "file:{inputs.root_9x275}",
+]
+outputs = [
+  "{run.dir}/artifacts/comparisons/id_9x275/truth_shapes.png",
+  "{run.dir}/artifacts/comparisons/id_9x275/truth_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/id_9x275/reco_shapes.png",
+  "{run.dir}/artifacts/comparisons/id_9x275/reco_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/id_9x275/selection_summary.csv",
+  "{run.dir}/artifacts/comparisons/id_9x275/bin_values.csv",
+  "{run.dir}/artifacts/comparisons/id_9x275/comparison_manifest.json",
+]
+fail_patterns = ["Traceback", "Comparison failed:"]
+
+[[task]]
+name = "compare_newid_energies_samples"
+stage = "comparison"
+description = "Compare 9x130 GeV, new electron ID with 9x275 GeV, new electron ID: shapes and tuple selection fractions"
+script = "scripts/validation/compare_newid_samples.py"
+args = [
+  "--reference-file", "{inputs.root_9x130}",
+  "--candidate-file", "{inputs.root_9x275}",
+  "--tree", "{comparison.tree}",
+  "--state", "{comparison.state}",
+  "--reference-label", "9x130 GeV, new electron ID",
+  "--candidate-label", "9x275 GeV, new electron ID",
+  "--reference-electron-energy", "{comparison.electron_energy}",
+  "--candidate-electron-energy", "{comparison.electron_energy}",
+  "--bins", "{comparison.bins}",
+  "--out-dir", "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.root_9x130}", "file:{inputs.root_9x275}",
+]
+outputs = [
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/truth_shapes.png",
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/truth_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/reco_shapes.png",
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/reco_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/selection_summary.csv",
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/bin_values.csv",
+  "{run.dir}/artifacts/comparisons/newid_9x130_vs_9x275/comparison_manifest.json",
+]
+fail_patterns = ["Traceback", "Comparison failed:"]
+
+[[task]]
+name = "compare_9x275_keep_yneg_samples"
+stage = "comparison"
+description = "Compare 9x275 legacy-ID full fEMC with legacy-ID fEMC y<0: shapes and tuple selection fractions"
+script = "scripts/validation/compare_newid_samples.py"
+args = [
+  "--reference-file", "{inputs.baseline_9x275_root}",
+  "--candidate-file", "{inputs.keep_yneg_9x275_root}",
+  "--tree", "{comparison.tree}",
+  "--state", "{comparison.state}",
+  "--reference-label", "9x275 GeV, legacy electron ID, full fEMC",
+  "--candidate-label", "9x275 GeV, legacy electron ID, fEMC y<0",
+  "--reference-electron-energy", "{comparison.electron_energy}",
+  "--candidate-electron-energy", "{comparison.electron_energy}",
+  "--reference-audit", "{run.dir}/artifacts/schema/9x275_legacy_full.json",
+  "--candidate-audit", "{run.dir}/artifacts/schema/9x275_keep_yneg.json",
+  "--bins", "{comparison.bins}",
+  "--out-dir", "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.baseline_9x275_root}", "file:{inputs.keep_yneg_9x275_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/truth_shapes.png",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/truth_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/reco_shapes.png",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/reco_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/selection_summary.csv",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/bin_values.csv",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_yneg/comparison_manifest.json",
+]
+fail_patterns = ["Traceback", "Comparison failed:"]
+
+[[task]]
+name = "compare_9x275_keep_xpos_samples"
+stage = "comparison"
+description = "Compare 9x275 legacy-ID full fEMC with legacy-ID fEMC x>=0: shapes and tuple selection fractions"
+script = "scripts/validation/compare_newid_samples.py"
+args = [
+  "--reference-file", "{inputs.baseline_9x275_root}",
+  "--candidate-file", "{inputs.keep_xpos_9x275_root}",
+  "--tree", "{comparison.tree}",
+  "--state", "{comparison.state}",
+  "--reference-label", "9x275 GeV, legacy electron ID, full fEMC",
+  "--candidate-label", "9x275 GeV, legacy electron ID, fEMC x>=0",
+  "--reference-electron-energy", "{comparison.electron_energy}",
+  "--candidate-electron-energy", "{comparison.electron_energy}",
+  "--reference-audit", "{run.dir}/artifacts/schema/9x275_legacy_full.json",
+  "--candidate-audit", "{run.dir}/artifacts/schema/9x275_keep_xpos.json",
+  "--bins", "{comparison.bins}",
+  "--out-dir", "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos",
+]
+requirements = [
+  "module:numpy", "module:matplotlib", "module:uproot",
+  "file:{inputs.baseline_9x275_root}", "file:{inputs.keep_xpos_9x275_root}",
+]
+outputs = [
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/truth_shapes.png",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/truth_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/reco_shapes.png",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/reco_shapes.pdf",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/selection_summary.csv",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/bin_values.csv",
+  "{run.dir}/artifacts/comparisons/9x275_full_vs_keep_xpos/comparison_manifest.json",
+]
+fail_patterns = ["Traceback", "Comparison failed:"]

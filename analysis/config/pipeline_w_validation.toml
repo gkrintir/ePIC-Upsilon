@@ -1,0 +1,102 @@
+version = 2
+
+[executables]
+python = "python3"
+
+[analysis]
+# Old and July samples keep explicit per-sample rate/branching conventions.
+# This profile enables cache protection without imposing July beam settings on
+# the archived 10x100/18x275 reference-reproduction tasks.
+normalization_profile = "sample-specific-w-comparison-jul26"
+
+[inputs]
+old_low_w_root = "/eos/user/g/gkrintir/merged_elecs_test_10t100.root"
+old_high_w_root = "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix.root"
+old_low_updated_root = "/eos/user/g/gkrintir/merged_elecs_test_10t100_10x100.root"
+old_high_fix2_root = "/eos/user/g/gkrintir/merged_elecs_test_tuples_fix2.root"
+new_low_w_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x130/hiAcc/output/merged_Upsilon_final.root"
+new_high_w_root = "/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc/output/merged_Upsilon_final.root"
+estarlight_executable = ""
+estarlight_template = "reference_data/estarlight_template.in"
+
+[validation]
+legacy_backend = "auto"
+current_extractor = "scripts/cross_sections/extract_gamma_p_cross_sections_bin_by_bin.py"
+
+[groups]
+w_note_reproduction = ["w_note_normalization", "w_note_reference_replay", "w_note_split_luminosity_correction", "w_framework_regression"]
+w_comparisons = ["w_sample_comparisons"]
+w_validation = ["w_note_normalization", "w_note_reference_replay", "w_note_split_luminosity_correction", "w_framework_regression", "w_sample_comparisons"]
+w_new_normalization = ["w_all_sample_normalization"]
+w_generator_flux = ["w_generator_flux_scan"]
+
+[[task]]
+name = "w_note_normalization"
+stage = "validation"
+description = "Independently check the note's historical normalization and recorded flux scan"
+script = "scripts/validation/audit_w_normalization.py"
+args = ["--old-low", "{inputs.old_low_w_root}", "--old-high", "{inputs.old_high_w_root}", "--out-dir", "{run.dir}/artifacts/w_validation/normalization_old", "--flux-reference", "{paths.project}/reference_data/flux_ratio_scan_W20to26p5_Q2lt0p001.csv"]
+requirements = ["module:uproot", "module:numpy", "file:{inputs.old_low_w_root}", "file:{inputs.old_high_w_root}"]
+outputs = ["{run.dir}/artifacts/w_validation/normalization_old/audit_summary.json", "{run.dir}/artifacts/w_validation/normalization_old/normalization_ledger.csv", "{run.dir}/artifacts/w_validation/normalization_old/flux_reference_check.csv"]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "w_note_reference_replay"
+stage = "validation"
+description = "Replay frozen note producers with exact historical inputs, bins, response and resolution settings"
+script = "reference_replay/run_reference_replay.py"
+args = ["--low-root", "{inputs.old_low_w_root}", "--high-root", "{inputs.old_high_w_root}", "--backend", "{validation.legacy_backend}", "--out-dir", "{run.dir}/artifacts/w_validation/reference_replay"]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:mplhep", "module:PIL", "file:{inputs.old_low_w_root}", "file:{inputs.old_high_w_root}"]
+outputs = ["{run.dir}/artifacts/w_validation/reference_replay/replay_manifest.json", "{run.dir}/artifacts/w_validation/reference_replay/archived_vs_rerun_validation.png", "{run.dir}/artifacts/w_validation/reference_replay/unfold_1S_18x275_response_counts.csv", "{run.dir}/artifacts/w_validation/reference_replay/Wres_1S_18x275_full_W_resolution_summary.csv"]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "w_framework_regression"
+stage = "validation"
+description = "Compare the installed current extractor to historical numerical cross sections on identical ROOT inputs"
+script = "scripts/validation/check_w_framework_regression.py"
+args = ["--old-low", "{inputs.old_low_w_root}", "--old-high", "{inputs.old_high_w_root}", "--extractor", "{paths.project}/{validation.current_extractor}", "--out-dir", "{run.dir}/artifacts/w_validation/framework_regression"]
+requirements = ["module:uproot", "module:numpy", "module:pandas", "module:matplotlib", "module:scipy", "file:{inputs.old_low_w_root}", "file:{inputs.old_high_w_root}", "file:{validation.current_extractor}"]
+outputs = ["{run.dir}/artifacts/w_validation/framework_regression/framework_regression.json", "{run.dir}/artifacts/w_validation/framework_regression/old_high_family_regression.png", "{run.dir}/artifacts/w_validation/framework_regression/old_low_regression.png"]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "w_note_split_luminosity_correction"
+stage = "validation"
+description = "Write a separate correction for the historical W unfolding's half-sample test exposure; retain frozen replay unchanged"
+script = "scripts/validation/correct_w_split_luminosity.py"
+deps = ["w_note_reference_replay"]
+args = ["--input", "{run.dir}/artifacts/w_validation/reference_replay/unfold_1S_18x275_unfolded_summary.csv", "--recorded-lumi-invfb", "10", "--test-fraction", "0.5", "--out-dir", "{run.dir}/artifacts/w_validation/split_luminosity_correction"]
+requirements = []
+outputs = ["{run.dir}/artifacts/w_validation/split_luminosity_correction/unfold_1S_18x275_unfolded_summary_split_luminosity_corrected.csv", "{run.dir}/artifacts/w_validation/split_luminosity_correction/split_luminosity_correction_audit.json"]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "w_sample_comparisons"
+stage = "comparison"
+description = "Recompute old/old and old/new W spectra in identical bins and Q2 ranges; preserve available comparisons if another sample is missing"
+script = "scripts/validation/compare_w_samples.py"
+args = ["--config", "{paths.project}/config/w_samples.json", "--out-dir", "{run.dir}/artifacts/w_validation/comparisons", "--set-root", "old10x100={inputs.old_low_w_root}", "--set-root", "old18x275={inputs.old_high_w_root}", "--set-root", "new9x130={inputs.new_low_w_root}", "--set-root", "new9x275={inputs.new_high_w_root}", "--set-root", "old10x100_updated={inputs.old_low_updated_root}", "--set-root", "old18x275_fix2={inputs.old_high_fix2_root}"]
+requirements = ["module:uproot", "module:numpy", "module:matplotlib"]
+outputs = ["{run.dir}/artifacts/w_validation/comparisons/comparison_complete.json", "{run.dir}/artifacts/w_validation/comparisons/manifest.json", "{run.dir}/artifacts/w_validation/comparisons/comparisons/old_old_common/comparison.png", "{run.dir}/artifacts/w_validation/comparisons/comparisons/old_low_new_low_common/comparison.png"]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "w_all_sample_normalization"
+stage = "validation"
+description = "Independent normalization ledger for all four physics samples"
+script = "scripts/validation/audit_w_normalization.py"
+args = ["--old-low", "{inputs.old_low_w_root}", "--old-high", "{inputs.old_high_w_root}", "--new-low", "{inputs.new_low_w_root}", "--new-high", "{inputs.new_high_w_root}", "--out-dir", "{run.dir}/artifacts/w_validation/normalization_all", "--flux-reference", "{paths.project}/reference_data/flux_ratio_scan_W20to26p5_Q2lt0p001.csv"]
+requirements = ["module:uproot", "module:numpy", "file:{inputs.old_low_w_root}", "file:{inputs.old_high_w_root}", "file:{inputs.new_low_w_root}", "file:{inputs.new_high_w_root}"]
+outputs = ["{run.dir}/artifacts/w_validation/normalization_all/audit_summary.json", "{run.dir}/artifacts/w_validation/normalization_all/normalization_ledger.csv"]
+fail_patterns = ["Traceback"]
+
+[[task]]
+name = "w_generator_flux_scan"
+stage = "validation"
+description = "Optional fresh eSTARlight generation of the note's three-bin photon-flux validation"
+script = "validation_snapshot/scripts/flux/validate_estarlight_flux_ratio.py"
+args = ["--executable", "{inputs.estarlight_executable}", "--template", "{paths.project}/{inputs.estarlight_template}", "--low-electron-gamma", "19569", "--low-target-gamma", "106.6", "--high-electron-gamma", "35225", "--high-target-gamma", "293.2", "--w-edges", "20,22.166666666666668,24.333333333333332,26.5", "--q2-min", "0.0", "--q2-max", "0.001", "--n-events", "1", "--out", "{run.dir}/artifacts/w_validation/flux_rerun/estarlight_flux_ratio.csv", "--keep-workdirs"]
+requirements = ["module:numpy", "module:pandas", "executable:{inputs.estarlight_executable}", "file:{inputs.estarlight_template}"]
+outputs = ["{run.dir}/artifacts/w_validation/flux_rerun/estarlight_flux_ratio.csv"]
+fail_patterns = ["Traceback", "Could not parse", "returned zero total cross section"]
