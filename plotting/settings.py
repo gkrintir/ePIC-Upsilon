@@ -44,6 +44,10 @@ def load_profile(path=None):
     profile = json.loads(source.read_text())
     if not isinstance(profile, dict) or profile.get("schema_version") != 1:
         raise ValueError("Plotting profile requires schema_version=1")
+    if "saved_categories" in profile:
+        if "categories" in profile and profile["categories"] != profile["saved_categories"]:
+            raise ValueError("saved_categories and legacy categories disagree")
+        profile["categories"] = profile["saved_categories"]
     if profile.get("energy") not in ("9x130", "9x275"):
         raise ValueError("Plotting profile energy must be 9x130 or 9x275")
     lumi = profile.get("projection_lumi_invfb")

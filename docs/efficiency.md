@@ -64,12 +64,18 @@ keep those paths absolute.
 With the supplied input base, these are the selected directories, all ending in
 `merged_Upsilon_final.root`:
 
-| Sample key | Directory below `/eos/cms/store/group/phys_top/gkrintir/upsilon_data/` | Q²max [GeV²] |
+| Sample key | Directory below `input_base` | Q²max [GeV²] |
 |---|---|---:|
 | `1s_newid` | `Upsilon1S/9x275/hiAcc/output_newID` | 1 |
 | `1s_standard` | `Upsilon1S/9x275/hiAcc/output` | 1 |
 | `2s_standard` | `Upsilon2S/9x275/hiAcc/output` | 0.01 |
 | `3s_standard` | `Upsilon3S/9x275/hiAcc/output` | 0.01 |
+
+The `*_standard` and `1s_newid` sample keys are retained for archived run
+lookup. The six [paper tuples](../inputs/paper_inputs.csv) at both energies
+record `ele_id_mode=1` and `femc_mode=0`. Only three of the four rows above
+belong to this set. The separate `1s_standard` comparison has its own input.
+When supplied, the producer-mode branches are recorded in the input audit.
 
 These settings describe 9×275. A 9×130 study needs its own configuration with
 matching input paths, beam energies, W range and display edges; changing only
@@ -167,5 +173,4 @@ The 68.27% Wilson intervals describe finite MC counts, not projected data errors
 These display bins do not establish feasible bins for a projected 2D measurement.
 
 The CLI and copied-configuration plan were checked during repository assembly.
-No CERN tuple was read for that check. A COMPLETE run still requires review of
-the selection audit before its figures are used in the note.
+The subsequent [paper replay](../paper/README.md) runs the producer on the original 9×275 1S tuple and checks the two published maps cell by cell.

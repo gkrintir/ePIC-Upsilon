@@ -13,8 +13,9 @@ cp configs/plots_9x275.example.json configs/plots.local.json
 ```
 
 Edit `configs/plots.local.json` before running. The example points to the archived
-9×275 proton-tagged 2.5 fb⁻¹ runs. It does not contain data or mean that those
-results are validated. The local profile is not committed.
+9×275 proton-tagged 2.5 fb⁻¹ runs and displays every fitted bin. For the paper,
+start from [`plots_9x275.paper.json`](../configs/plots_9x275.paper.json) instead.
+The [paper replay](../paper/README.md) sets the paths for a fresh run.
 
 | Setting | Meaning |
 |---|---|
@@ -24,7 +25,7 @@ results are validated. The local profile is not committed.
 | `reoptimization_run` | One explicit saved inference run, used by W and pT²/rapidity figures |
 | `energy`, `projection_lumi_invfb` | Requested beam and exposure; saved inference must match exactly |
 | `proton_selection` | `required` for these preserved tagged notebooks |
-| `q2_max`, `categories` | Actual per-state selection metadata; checked against the selected numerical products |
+| `q2_max`, `saved_categories` | Per-state virtuality limit and sample labels. See the verified tuple settings below. |
 | `efficiency_2d_run`, `map_sample` | Run and sample key containing saved 2D efficiency counts/audits |
 | `root_input_override` | Optional accessible location of the original 1S ROOT tuple for notebook 07; null uses the recorded path |
 | `display_rebin` | Optional adjacent-bin display merges for 1S W or rapidity; false retains saved bins |
@@ -37,9 +38,13 @@ An alternate profile can be selected using `--profile` or the environment:
 export UPSILON_PLOT_PROFILE="$PWD/configs/plots.local.json"
 ```
 
-The current example has Q²<1 GeV² for 1S and Q²<0.01 GeV² for 2S/3S, with different
-electron-ID categories. These are the supplied numerical settings. A note label
-or profile edit cannot create a common-selection sample.
+The six paper tuples all record reconstructed electron ID (`ele_id_mode=1`).
+`saved_categories` retains the historical run labels, including “standard electron ID”
+for 2S/3S, so the plotter can check the source-run contract. Existing profiles
+using `categories` are also supported. Figure audits report the verified
+reconstruction mode when the original tuple SHA-256 matches the input manifest.
+The `output` and `output_newID` directory names locate the inputs. The event selection and flux
+integration use Q²max = 1 GeV² for 1S and 0.01 GeV² for the excited states.
 
 ## Command-line plots
 
@@ -116,13 +121,21 @@ counts and selection audit before opening these notebooks.
 
 ## Display merging and unavailable results
 
-For example, set this in the profile:
+The optimizer uses training MC at the target luminosity to choose the largest
+number of bins passing its expected-yield and response criteria. The held-out
+spectrum is fitted with those boundaries. The paper profile applies the
+following rule to the fitted 1S spectrum for **both** observables:
 
 ```json
-"display_rebin": {"1S": {"w": "keep_outer_bins", "y": false}}
+"display_rebin": {"1S": {"w": "keep_outer_bins", "y": "keep_outer_bins"}}
 ```
 
-This preserves the first and last saved W bins and merges the interior. With
+| 1S observable | Optimized fit edges | Paper display edges |
+|---|---|---|
+| W [GeV] | 20, 40, 45, 50, 60, 100 | 20, 40, 60, 100 |
+| Laboratory rapidity | −1, 0.25, 0.5, 0.75, 1, 3 | −1, 0.25, 1, 3 |
+
+This preserves the first and last saved bins and merges the interior. With
 three or fewer bins it leaves the original edges unchanged. Explicit edge lists
 are also accepted only when every edge is already present and the full range is
 preserved. This is display aggregation, not a new response fit or optimization.
@@ -153,8 +166,8 @@ Copy the exact named runs, including JSON/CSV and covariance files. PNGs alone
 cannot reproduce these figures. For example, with explicit shell variables:
 
 ```bash
-source_run=/afs/cern.ch/work/g/gkrintir/private/Ypsilon-Fit-Framework-ProtonTagged/results/generated/runs/reopt-proton-9x275-L2p5-v1
-runs_on_eos=/eos/user/g/gkrintir/Ypsilon-SWAN-ProtonTagged/results/generated/runs
+source_run="$PWD/workspaces/tagged-v1/results/generated/runs/reopt-275-L2p5-v1"
+runs_on_eos=/path/to/your/shared/results/generated/runs
 mkdir -p "$runs_on_eos"
 rsync -av --exclude='*.root' "$source_run/" "$runs_on_eos/$(basename "$source_run")/"
 ```

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "energy": "9x275",
+  "projection_lumi_invfb": 2.5,
+  "proton_selection": "required",
+  "campaign": "26.07.1 Campaign",
+  "q2_max": {
+    "1S": 1.0,
+    "2S": 0.01,
+    "3S": 0.01
+  },
+  "saved_categories": {
+    "1S": "new electron ID",
+    "2S": "standard electron ID",
+    "3S": "standard electron ID"
+  },
+  "results_root": "../work/paper-replay/results/generated/runs",
+  "output_root": "../work/paper-plots",
+  "full_runs": {
+    "1S": "paper-1s",
+    "2S": "paper-2s",
+    "3S": "paper-3s"
+  },
+  "reoptimization_run": "paper-reopt",
+  "efficiency_2d_run": "paper-1s-tagged-maps",
+  "map_sample": "1s_newid",
+  "root_input_override": null,
+  "root_tree": "UpsilonTree",
+  "w_map_edges": null,
+  "display_rebin": {
+    "1S": {
+      "w": "keep_outer_bins",
+      "y": "keep_outer_bins"
+    }
+  },
+  "allow_diagnostic_results": false
+}

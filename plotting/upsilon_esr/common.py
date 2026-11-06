@@ -4,6 +4,7 @@ No ROOT input is modified. Cross sections are already flux/BR corrected by
 the framework; only expected reconstructed counts and their limits change
 with luminosity. No second luminosity, branching-ratio or flux correction.
 """
+from .electron_id import electron_id_metadata
 from dataclasses import dataclass, field
 from pathlib import Path
 import hashlib
@@ -244,8 +245,10 @@ def sample_metadata(config, state):
                 raise ValueError(f"{state}: normalization audit {key} conflicts with performance Q2 selection.")
         if all(k in settings for k in ("q2_cut", "q2_max")):
             flux_status = "cross-checked against normalization audit settings"
-    return {**proton_metadata, "state": state, "q2_max": q2, "category": config.categories[state],
-            "category_source": "explicit notebook configuration; verify against production provenance",
+    normalization = base / "normalization" / f"{config.energy}_input_audit.json"
+    raw_hash = read_json(normalization).get("sha256") if normalization.is_file() else None
+    id_metadata = electron_id_metadata(config.categories[state], raw_hash, state, config.energy)
+    return {**proton_metadata, **id_metadata, "state": state, "q2_max": q2,
             "w_range": w_range, "source": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "flux_selection_check": flux_status,
             "normalization_audit_status": normalization_status,
@@ -277,7 +280,7 @@ def preflight(config, section="all"):
     if missing:
         raise FileNotFoundError("Missing numerical framework outputs:\n" + "\n".join(missing))
     if len({r["q2_max"] for r in rows}) > 1 or len({r["category"] for r in rows}) > 1:
-        warnings.warn("States have different Q2/ID settings. Labels retain these differences; this is not a common-selection state comparison.")
+        warnings.warn("Check the per-state Q2 ranges and sample metadata when comparing the spectra.")
     columns = ["state", "q2_max", "category", "w_range", "source_lumi", "flux_selection_check", "normalization_audit_status"]
     if config.require_proton_tag:
         columns += ["proton_selection_mode"]

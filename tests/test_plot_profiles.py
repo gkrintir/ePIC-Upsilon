@@ -91,6 +91,30 @@ class PlotProfiles(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'not a saved edge'):
                 apply_display_rebin(cfg, p, 'w')
 
+    def test_legacy_category_field_keeps_its_original_meaning(self):
+        old = deepcopy(self.values)
+        old.pop("saved_categories", None)
+        self.assertEqual(self.profile(old)["categories"], old["categories"])
+        old["saved_categories"] = dict(old["categories"], **{"2S": "different"})
+        with self.assertRaisesRegex(ValueError, "disagree"):
+            self.profile(old)
+
+    def test_paper_profile_keeps_outer_bins_for_both_1s_observables(self):
+        profile = load_profile(ROOT / 'configs/plots_9x275.paper.json')
+        self.assertEqual(profile['display_rebin'], {'1S': {'w': 'keep_outer_bins', 'y': 'keep_outer_bins'}})
+        self.assertFalse(profile['allow_diagnostic_results'])
+        config = make_reoptimization_config(profile=profile)
+        for section, variable, edges, paper in (
+            ('w', 'w', [20, 40, 45, 50, 60, 100], [20, 40, 60, 100]),
+            ('differential', 'y', [-1, .25, .5, .75, 1, 3], [-1, .25, 1, 3]),
+        ):
+            frame = pd.DataFrame({'x_low': edges[:-1], 'x_high': edges[1:]})
+            with self.subTest(variable=variable), mock.patch(
+                'upsilon_esr.reoptimization_inputs.load_case', return_value=(frame, {}, [], {})
+            ):
+                apply_display_rebin(config, profile, section)
+                self.assertEqual(config.rebin_edges, {'1S': {variable: paper}})
+
     def test_diagnostics_require_explicit_permission(self):
         cfg = test_proton_inputs.ProtonInputsTests().reopt_fixture(self.directory/'fixture')
         cfg.allow_diagnostic_results = False

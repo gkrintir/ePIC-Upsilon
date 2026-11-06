@@ -68,7 +68,9 @@ def _q2_label(band, cap, split):
 
 def _short_sample(sample):
     state = sample["state"]
-    mode = str(sample.get("id_mode", "unspecified ID")).replace("_", " ")
+    modes = sample.get("producer_modes", {}).get("ele_id_mode")
+    mode = ("reco track–cluster ID" if modes == [1] else
+            str(sample.get("id_mode", "unspecified ID")).replace("_", " "))
     return r"$\Upsilon(%s)$, %s" % (state, mode)
 
 
@@ -162,7 +164,7 @@ def _id_comparison(eff, first, second, settings, output, config):
         for ax, variable in zip(axes[row], ("true_pT", "true_W", "true_y")):
             for sample, color, marker in ((first, "#0072B2", "o"), (second, "#D55E00", "s")):
                 _efficiency(ax, _selection(eff, sample=sample["key"], q2_band=band, variable=variable),
-                            str(sample["id_mode"]).replace("_", " "), color, marker,
+                            sample.get("label", sample["key"]), color, marker,
                             settings["min_denominator"])
             ax.set_xlabel(VARIABLE_LABELS[variable])
             ax.set_ylabel("Selection efficiency [%]")

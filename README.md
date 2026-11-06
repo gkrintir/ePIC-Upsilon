@@ -3,7 +3,8 @@
 One repository for ROOT tuple production, batch processing, normalization,
 analysis and the SWAN figures used in the Υ note.
 
-**Start with the analysis quick start if you already have merged ROOT files.**
+**To reproduce the early-science paper, start with [the paper replay](#reproduce-the-early-science-paper).**
+For a different selection or luminosity, use [the analysis quick start](#analysis-quick-start).
 Production is a separate stage. Its recovered macro and new Condor wrapper need
 an environment pilot and source reconciliation before a new physics production.
 In particular, the recovered producer has a fixed 275 GeV proton beam; it is not
@@ -31,6 +32,8 @@ its editable [Mermaid description](docs/workflow.mmd) is also included.
 
 | Directory | Purpose |
 |---|---|
+| [`inputs/`](inputs/) | CERNBox download and checksum manifest for the six merged paper tuples |
+| [`paper/`](paper/) | Paper replay and numerical references for the 9×275 GeV, 2.5 fb⁻¹ proton-tagged projections |
 | [`production/`](production/) | Recovered `.C`/`.h` files, official cards, downloader and new Condor/worker/merge tooling |
 | [`analysis/`](analysis/) | Preserved analysis backend: workflow, scripts, configs, reference tables and tests |
 | [`plotting/`](plotting/) | Canonical SWAN notebooks, shared style and plotting modules |
@@ -42,7 +45,7 @@ its editable [Mermaid description](docs/workflow.mmd) is also included.
 | [`provenance/`](provenance/) | Source origin and checksum records |
 | `workspaces/` | Ignored runtime copies and generated runs; created locally |
 
-## Analysis quick start
+## Clone and install
 
 The repository is hosted privately at
 [gkrintir/ePIC-Upsilon](https://github.com/gkrintir/ePIC-Upsilon). Clone it into
@@ -53,12 +56,8 @@ git clone https://github.com/gkrintir/ePIC-Upsilon.git
 cd ePIC-Upsilon
 ```
 
-Authentication uses your own GitHub access. Run the remaining commands from
-`ePIC-Upsilon/`. The previously supplied ZIP remains a standalone fallback;
-unpack it into a separate new directory if needed. Its local Git history predates
-publication, so use a fresh clone for subsequent GitHub work. See
-[repository bookkeeping](docs/repository.md). Existing frameworks and runs stay
-in their original directories.
+Authentication uses your GitHub access. Run the remaining commands from
+`ePIC-Upsilon/`. [Repository bookkeeping](docs/repository.md)
 
 Use Python 3.11 or newer when convenient; the preserved analysis also supports
 Python 3.9 with its TOML fallback. Main Python analysis uses uproot. ROOT/podio for
@@ -69,7 +68,26 @@ as described in the production guide.
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
+```
 
+## Reproduce the early-science paper
+
+The [CERNBox input folder](https://cernbox.cern.ch/s/UHPvC04xj29cxrp) contains one merged ROOT tuple per state and energy (1S, 2S and 3S at 9×130 and 9×275 GeV). All six have the same filename. Keep the directory hierarchy when downloading. The paper figures use the three 9×275 tuples; the lower-energy files supply the beam comparison in the analysis note.
+
+From the repository root, with the environment above active, run:
+
+```bash
+python3 inputs/fetch_paper_inputs.py work/paper-inputs
+python3 paper/replay_paper.py --inputs work/paper-inputs --output work/paper-replay
+```
+
+If you already have the tuples on EOS or locally, pass their common parent directory to `--inputs`. Choose a fresh output directory. [Paper replay instructions and expected results](paper/README.md)
+
+The fit uses bins selected by the optimizer. For the paper's 1S `W` and rapidity plots, the [paper profile](configs/plots_9x275.paper.json) then keeps the first and last bins and combines the interior bins using the joint toys. The [general example](configs/plots_9x275.example.json) displays all optimized bins. [Binning and plotting details](docs/plotting.md#display-merging-and-unavailable-results)
+
+## Analysis quick start
+
+```bash
 cp configs/local.example.json configs/local.json
 ```
 
@@ -120,6 +138,10 @@ For the 9×130, 1 fb⁻¹ projection, change `--energy 9x130`, `--lumi 1` and us
 fresh batch ID such as `allstates-130-L1-v1`. Use `--states 1S` to run only 1S.
 The source tuple luminosity stays 10 fb⁻¹; the projected yield and uncertainty
 use the explicitly requested target luminosity.
+
+For the note's **equal-luminosity comparison**, use the inclusive workspace
+and `--lumi 10` at both energies. The paper's 1.0 and 2.5 fb⁻¹ comparison has
+a different exposure as well as different beam kinematics.
 
 ## Reoptimization is a separate calculation
 
@@ -192,18 +214,22 @@ read-only collection command there.
 
 ## Physics conventions and tests
 
-The executable baseline retains Q²max=1 for 1S and 0.01 for 2S/3S, with different
-ID input categories. The precise rates, branching fractions, selection contract
+All six paper tuples record `ele_id_mode=1` (reconstructed track–cluster matching) and
+`femc_mode=0` (full forward calorimeter). The 1S directory is named `output_newID`
+and the 2S/3S directories are named `output`. The event and photon-flux limits
+are Q²max = 1 GeV² for 1S and 0.01 GeV² for 2S/3S. The rates, branching fractions, selection contract
 and cross-section definitions are documented in
 [selections and normalization](docs/selections-and-normalization.md).
-Changing those is a new analysis decision, not repository cleanup.
+At 9×275 GeV the tagged 1S efficiency is **12.82%** (144,473 / 1,126,936
+eligible truth events), or **19.59%** before proton tagging. The W and rapidity projections
+reproduce the paper and retain `NOT_VALIDATED`. The 1S pT² slope is
+2.46 (+0.66 / −0.62) GeV⁻² and retains `PASS_CONDITIONAL`. [Validation scope](docs/validation.md)
 
 ```bash
 python3 -m pip install -r requirements-dev.txt
 python3 tools/run_checks.py
 ```
 
-See [validation](docs/validation.md) for the checks actually run during repository
-assembly and the remaining CERN-dependent tests. The original imported notebooks
+See [validation](docs/validation.md) for the event-level paper replay, software tests and outstanding upstream production checks. The original imported notebooks
 and replay code are labeled historical; they are not the preferred new-sample
 workflow.

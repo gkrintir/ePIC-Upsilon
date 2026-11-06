@@ -115,7 +115,13 @@ def inspect_sample(sample, tree_name, uproot, settings=None, validate_protons=Fa
             from diagnostics.proton import PROTON_BRANCHES, proton_mask
             for arrays in tree.iterate(expressions=list(PROTON_BRANCHES), step_size="32 MB", library="np"):
                 proton_mask(arrays, settings, len(arrays[PROTON_BRANCHES[0]]))
+        # These optional producer branches describe the original tuple. The
+        # configured id_mode is retained separately for archived sample lookup.
+        from numpy import unique
+        producer_modes = {name: unique(tree[name].array(library="np")).tolist()
+                          for name in ("ele_id_mode", "femc_mode") if name in names}
         return {"path": str(path), "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns,
+                "producer_modes": producer_modes,
                 "entries": int(tree.num_entries), "branches": sorted(names),
                 "required_branches": list(required), "weight_branches_used": []}
 
@@ -205,6 +211,9 @@ def run(config, args, root):
         print("LOAD", key, sample["path"], flush=True)
         try:
             metadata = inspect_sample(sample, config["tree"], uproot, config["settings"])
+            sample["producer_modes"] = metadata["producer_modes"]
+            if metadata["producer_modes"].get("ele_id_mode") == [1]:
+                sample["label"] = f"{sample['state']} ({sample['key']}), reconstructed track–cluster ID"
             if args.hash_inputs:
                 print("HASH", key, flush=True)
                 metadata["sha256"] = sha256(sample["path"])

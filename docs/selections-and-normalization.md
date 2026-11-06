@@ -11,11 +11,13 @@ physics selections or turn a failed validation into an accepted measurement.
 | 2S | 0.01 | 0.0191 | 29.297 | 53.133 | output |
 | 3S | 0.01 | 0.0218 | 23.447 | 42.969 | output |
 
-These values are enforced by `analysis/workflow/normalization_contract.py` and
-current state configuration. They differ from recent note prose asserting Q²<1
-for all states. That prose must not be used to change the executable baseline:
-matching generated samples and rates are needed before changing the excited-state
-phase space.
+The analysis and photon-flux integration use the listed state-specific Q² bounds.
+The six original paper tuples have `ele_id_mode=1` and `femc_mode=0` throughout:
+all three states used reconstructed track–cluster matching with the full forward
+calorimeter. The directory names identify the source files. Historical
+`new electron ID` and `standard electron ID` strings identify archived runs.
+The [input manifest](../inputs/paper_inputs.csv) binds the verified mode to each
+raw checksum. This six-file check excludes the separate 1S `output` control.
 
 The all-generated normalization uses ordinary `weight`. Preparation assigns a
 uniform visible dielectron weight σvis × Ltuple / Ngenerated to each generated

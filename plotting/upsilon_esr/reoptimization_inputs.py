@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from .electron_id import electron_id_metadata
 from .common import read_json, read_csv, STATES
 
 
@@ -26,6 +27,13 @@ class SavedCaseUnavailable(ValueError):
     def __init__(self, message, metadata, sources, entry):
         super().__init__(message)
         self.metadata, self.sources, self.entry = metadata, sources, entry
+
+
+def _case_id_metadata(entry, config, state):
+    selection = entry.get("selection_metadata") or {}
+    normalization = selection.get("normalization_metadata") or {}
+    return electron_id_metadata(entry["state_config"]["category"], normalization.get("sha256"),
+                                state, config.energy)
 
 
 def _unavailable_case(config, state, observable, source_config, entry,
@@ -68,7 +76,7 @@ def _unavailable_case(config, state, observable, source_config, entry,
     metadata = dict(state=state, observable=observable, available=False,
         source_lumi=float(source_config["target_lumi_invfb"]),
         q2_max=state_cfg["q2_max"], q2_cut_events=state_cfg["q2_max"], q2_max_flux=state_cfg["q2_max"],
-        category=state_cfg["category"], w_range=source_config["w_range"],
+        **_case_id_metadata(entry, config, state), w_range=source_config["w_range"],
         w_min=source_config["w_range"][0], w_max=source_config["w_range"][1],
         source=str(paths[1]), overall_status=status, stage_status="NOT_RUN", publication_ready=False,
         optimization_status=status, failed_checks=entry.get("failed_checks") or [],
@@ -218,7 +226,7 @@ def load_case(config, state, observable):
     metadata = dict(state=state, observable=observable, available=True,
         diagnostic_rendering_explicit=bool(config.allow_diagnostic_results), q2_max=state_cfg["q2_max"],
         q2_cut_events=state_cfg["q2_max"], q2_max_flux=state_cfg["q2_max"],
-        category=state_cfg["category"], w_range=source_config["w_range"],
+        **_case_id_metadata(entry, config, state), w_range=source_config["w_range"],
         w_min=source_config["w_range"][0], w_max=source_config["w_range"][1],
         source_lumi=saved_lumi, source=str(result_path), overall_status=status,
         stage_status=extraction["status"], publication_ready=False,
