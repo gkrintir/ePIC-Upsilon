@@ -57,9 +57,9 @@ For the tagged 9×130 GeV projection, use `--energy 9x130 --lumi 1` and new batc
 
 For the note’s equal-luminosity comparison, create a separate workspace with `--selection inclusive` (no recoil-proton tag requirement) and use `--lumi 10` for the analysis at each energy. [Analysis commands and output paths](docs/analysis.md)
 
-## Plot saved results on SWAN
+## Plot saved results
 
-The SWAN notebooks use all three states at 9×275 GeV. To redraw a paper figure, copy the paper profile and set its paths and run IDs to your saved results.
+The plotting notebooks use all three states at 9×275 GeV. To redraw a paper figure, copy the paper profile and set its paths and run IDs to your saved results.
 
 ```bash
 cp configs/plots_9x275.paper.json configs/plots.local.json
@@ -68,7 +68,7 @@ cp configs/plots_9x275.paper.json configs/plots.local.json
 - **W and rapidity spectra.** The optimizer selects the fit bins. For 1S, the paper profile keeps the first and last bins and combines the three middle bins for display. To draw the W and rapidity spectra, set `allow_diagnostic_results` to `true` in the profile. These spectra failed the coverage checks. [Validation results](docs/validation.md)
 - **Mass and efficiency (notebook 07).** The notebook uses saved mass templates and efficiency counts. It reads the original 9×275 GeV 1S ROOT file to build the $W$–$x_V$ efficiency map. If you moved the ROOT file, set `root_input_override` to its new path. [Open notebook 07](plotting/07_mass_and_efficiency_w_xv.ipynb)
 
-Open the notebook for your figure in SWAN and run all cells. [Notebook list and command-line options](docs/plotting.md)
+Open the notebook in JupyterLab or on CERN SWAN. Use the Python environment from the installation step and run all cells. [Notebook list and command-line options](docs/plotting.md)
 
 ## Workflow and reference
 
