@@ -2,6 +2,8 @@
 
 Use this repository to reproduce the Υ(1S), Υ(2S) and Υ(3S) figures in the ePIC early-science paper or to run the projections used in the analysis note. Both workflows start from merged ROOT files.
 
+[Follow the analysis note in the Wiki](https://github.com/gkrintir/ePIC-Upsilon/wiki) to find the code and checks for each section and figure group.
+
 ## Clone and install
 
 Python 3.11 or newer is recommended. Run the examples from the repository root.

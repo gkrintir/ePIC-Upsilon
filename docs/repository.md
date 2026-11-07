@@ -1,9 +1,6 @@
 # Source revisions and remote hosting
 
-The source repository is
-[gkrintir/ePIC-Upsilon](https://github.com/gkrintir/ePIC-Upsilon), currently
-**private**, with the main development branch named `main`. A fresh clone is the
-preferred starting point for continued work:
+The public source repository uses `main` for development. Clone it to start a new analysis.
 
 ```bash
 git clone https://github.com/gkrintir/ePIC-Upsilon.git
@@ -12,10 +9,7 @@ git status
 git log -1 --oneline
 ```
 
-Clone into a new directory alongside the existing frameworks. Authentication
-uses your own GitHub access; no password or token belongs in this repository.
-The clone configures `origin` automatically. Visibility remains private until
-the owner explicitly changes it in GitHub settings.
+The clone configures `origin` automatically. Sign in to GitHub when pushing changes.
 
 Code, reference tables, source provenance and documentation are tracked. ROOT
 data, runtime workspaces, generated results, local paths and environments are
