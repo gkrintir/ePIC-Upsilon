@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare inclusive reconstructed Υ distributions at two EIC beam energies using the bins and count bounds behind analysis note figures 10–12.">
+  <title>Beam comparison · ePIC Υ atlas</title>
+  <link href="beams.css" rel="stylesheet">
+  <script src="data/beams.js" defer></script>
+  <script src="pdf-link.js" defer></script>
+  <script src="beams-view.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#explore">Skip to comparison</a>
+  <header class="mast">
+    <div class="shell mast-inner">
+      <a class="wordmark" href="./index.html"><span class="mark" aria-hidden="true">Υ</span> ePIC <span class="muted">/</span> Υ Atlas</a>
+      <a class="return" href="./index.html"><span aria-hidden="true">←</span> Paper figures</a>
+    </div>
+  </header>
+  <main class="shell">
+    <div class="intro">
+      <p class="eyebrow">Analysis note <span>/</span> Figures 10–12</p>
+      <h1>Beam comparison</h1>
+      <p>Compare reconstructed Υ → e⁺e⁻ events with a 9 GeV electron beam and two proton energies. Both samples use 10 fb⁻¹ and the inclusive selection before the recoil-proton requirement.</p>
+    </div>
+    <section id="explore" aria-label="Beam comparison explorer">
+      <div class="controls">
+        <label for="state">Υ state<select id="state"><option value="1S">Υ(1S)</option><option value="2S">Υ(2S)</option><option value="3S">Υ(3S)</option></select></label>
+        <label for="group">Figure<select id="group"></select></label>
+        <label for="observable">Observable<select id="observable"></select></label>
+      </div>
+      <div id="import-box" class="import-box" hidden>
+        <div><h2>Explore the bins from your replay</h2><p>Choose <code>beams.json</code> to inspect bin values and count bounds in this browser. The figure PDFs are available below.</p></div>
+        <div><label for="bins-file">Local beam bins (.json)</label><input id="bins-file" type="file" accept=".json,application/json"><p id="import-status" role="status"></p></div>
+      </div>
+      <article class="panel source-view" id="source-view" hidden>
+        <p class="eyebrow" id="pdf-id"></p><h2 id="pdf-title"></h2>
+        <p class="small" id="pdf-caption"></p>
+        <div class="source-links"><a id="pdf-open" target="_blank" rel="noopener">Open figure PDF ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/blob/main/analysis/scripts/reporting/render_note_kinematics.py" target="_blank" rel="noopener">Rendering code ↗</a><button class="inline-link" id="note-shortcut" type="button">Open the analysis note</button></div>
+        <iframe id="pdf-preview" title="Original analysis-note figure"></iframe>
+      </article>
+      <div class="workspace" id="workspace">
+        <article class="panel plot-card">
+          <div class="chart-head">
+            <div><p class="eyebrow" id="chart-id"></p><h2 id="chart-title"></h2></div>
+            <label class="scale-label" for="scale">Y scale<select id="scale"><option value="linear">Linear</option><option value="log">Log</option></select></label>
+          </div>
+          <div class="legend"><span><i class="line e130"></i>9 × 130 GeV</span><span><i class="line e275"></i>9 × 275 GeV</span></div>
+          <p id="y-title" class="axis-name"></p>
+          <svg id="chart" role="img" aria-labelledby="chart-title y-title" aria-describedby="chart-help" preserveAspectRatio="xMidYMid meet"></svg>
+          <p id="x-title" class="x-axis"></p>
+          <p id="chart-help">Hover or tap a bin to inspect it. Use the bin slider or the arrow buttons to move through the spectrum.</p>
+        </article>
+        <aside class="panel inspector" aria-label="Selected bin">
+          <p class="eyebrow">Bin inspector</p>
+          <h2 id="bin-range"></h2>
+          <div class="bin-nav"><button id="previous" type="button" aria-label="Previous bin">←</button><span id="bin-num"></span><button id="next" type="button" aria-label="Next bin">→</button></div>
+          <label class="sr-only" for="bin">Selected bin</label><input id="bin" type="range" min="1" step="1" value="1">
+          <p class="measure" id="unit-caption"></p>
+          <div id="bin-values"></div>
+          <p id="bound-caption" class="small">The whiskers on the selected bin show its 68.3% median count bounds where available.</p>
+          <button type="button" class="download" id="csv">Download observable CSV <span aria-hidden="true">↓</span></button>
+        </aside>
+      </div>
+      <div class="sources">
+        <section class="source-block"><p class="eyebrow">Selection</p><h2>Reading this distribution</h2><p id="selection"></p><p id="context"></p></section>
+        <section class="source-block"><p class="eyebrow">Sources</p><h2>Figure and analysis note</h2>
+          <div class="source-links"><a id="source" target="_blank" rel="noopener">Original figure PDF ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/blob/main/analysis/scripts/reporting/render_note_kinematics.py" target="_blank" rel="noopener">Renderer ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/wiki" target="_blank" rel="noopener">AN Wiki ↗</a></div>
+          <label class="local-label" for="note-file">Choose your local analysis note PDF to open this figure in context.</label>
+          <input id="note-file" type="file" accept="application/pdf,.pdf">
+          <div class="source-links"><a id="note-jump" aria-disabled="true">Open note page</a></div>
+        </section>
+      </div>
+    </section>
+    <noscript>Enable JavaScript to select a figure or inspect its bins.</noscript>
+  </main>
+  <footer class="shell">ePIC Υ Atlas <span aria-hidden="true">/</span> Two-energy comparison</footer>
+</body>
+</html>
