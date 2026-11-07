@@ -1,5 +1,7 @@
 # From reconstructed events to analysis tuples
 
+[Follow a reconstructed branch into a paper figure](https://gkrintir.github.io/ePIC-Upsilon/#w/reconstruction).
+
 Use the existing merged samples for the analysis and plotting workflow. This guide is for **new tuple production** from downloaded ePIC reconstructed `events` trees. It does not run eSTARlight, detector simulation or EICrecon.
 
 ## What is recovered and what remains missing

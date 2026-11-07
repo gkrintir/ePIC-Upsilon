@@ -1,41 +1,44 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Explore the ePIC exclusive Υ photoproduction projections, the note pages behind each figure and their reproducible analysis outputs.">
-<title>ePIC Υ Atlas · Paper figures</title>
-<link rel="stylesheet" href="beams.css"><link rel="stylesheet" href="style.css">
-<script defer src="data/paper.js"></script><script defer src="pdf-link.js"></script><script defer src="figure-panels.js"></script><script defer src="app.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Follow each ePIC Upsilon analysis result from reconstruction through its paper figure, or trace the sources back from publication.">
+  <title>Analysis guide · ePIC Υ Atlas</title>
+  <link rel="stylesheet" href="./beams.css">
+  <link rel="stylesheet" href="./trace.css">
+  <script defer src="./trace-data.js"></script>
+  <script defer src="./replay-directory.js"></script>
+  <script defer src="./trace-evidence.js"></script>
+  <script defer src="./trace-run.js"></script>
+  <script defer src="./trace.js"></script>
 </head>
 <body>
-<a class="skip" href="#figure-content">Skip to figure</a>
-<header class="mast"><div class="shell mast-inner">
-<a class="wordmark" href="#mass"><span class="mark" aria-hidden="true">Υ</span> ePIC <span class="muted">/</span> Υ Atlas</a>
-<a class="return" href="./beams.html">Compare beam energies <span aria-hidden="true">→</span></a>
-</div></header>
-<main class="shell">
-<header class="intro"><p class="eyebrow">ePIC <span>/</span> Exclusive photoproduction</p><h1>Υ figure atlas</h1>
-<p>Explore the projected Υ → e⁺e⁻ signal at 9 × 275 GeV with 2.5 fb⁻¹ and a reconstructed recoil proton. Each figure links to the corresponding analysis note page and the code that produces it.</p></header>
-<nav class="atlas-nav" aria-label="Paper figures">
-<a href="#mass" data-tab="mass"><small>Fig. 7 · Table 8</small><span>Mass fit</span></a>
-<a href="#efficiency" data-tab="efficiency"><small>Fig. 13</small><span>Efficiency maps</span></a>
-<a href="#w" data-tab="w"><small>Fig. 14</small><span>W spectra</span></a>
-<a href="#differential" data-tab="differential"><small>Fig. 15</small><span>pT² &amp; rapidity</span></a>
-</nav>
-<section class="panel figure-content" id="figure-content" aria-labelledby="figure-title" tabindex="-1">
-<div class="figure-copy"><p class="eyebrow" id="kicker"></p><h2 id="figure-title"></h2><p id="lead"></p></div>
-<div class="figure-grid">
-<div class="image-wrap"><div class="filters panel-filter"><label for="plot-panel">Focus on a panel<select id="plot-panel"></select></label></div><a id="enlarge" target="_blank" rel="noopener"><img id="figure-image" alt="" decoding="async"><svg id="panel-zoom" role="img" aria-label="Selected paper panel"></svg></a><p class="image-caption"><span id="figure-caption"></span><a id="open-image" target="_blank" rel="noopener">Enlarge figure ↗</a></p></div>
-<aside class="figure-aside"><p class="eyebrow">Analysis note</p><h3 id="note-name"></h3><p id="note-description"></p><div class="source-links"><a id="note-link" aria-disabled="true"></a><button id="table-jump" type="button" class="inline-link" hidden>Table 8 · PDF p. 23</button></div>
-<label class="local-label" for="local-note" id="local-label">Choose your local note PDF to enable page links.</label><input id="local-note" type="file" accept="application/pdf,.pdf">
-<hr><p class="eyebrow">Reproduce</p><div class="source-links links-column"><a id="code-link" target="_blank" rel="noopener"></a><a id="support-link" target="_blank" rel="noopener"></a><a href="https://github.com/gkrintir/ePIC-Upsilon/wiki" target="_blank" rel="noopener">Analysis note Wiki ↗</a></div>
-</aside></div>
-</section>
-<section id="inspector" class="panel inspect-panel" aria-labelledby="inspector-title">
-<div class="inspect-head"><div><p class="eyebrow">Numerical results</p><h2 id="inspector-title"></h2></div><button id="csv" class="action" type="button">Download CSV ↓</button></div>
-<div id="results"></div>
-</section>
-<div id="import-box" class="import-box" hidden><div><h2>Open the numerical replay</h2><p>Choose <code>paper.json</code> to inspect the fit intervals, individual map cells and spectrum bins locally.</p></div><div><label for="data-file">Local paper data (.json)</label><input id="data-file" type="file" accept="application/json,.json"><p id="load-status" role="status"></p></div></div>
-<noscript>Enable JavaScript to switch between figures or inspect the numerical results.</noscript>
-</main><footer class="shell">ePIC Υ Atlas <span>/</span> Proton-tagged paper projections</footer>
-</body></html>
+  <a class="skip" href="#trace-main">Skip to analysis guide</a>
+  <header class="mast"><div class="shell mast-inner"><a class="wordmark trace-brand" href="./index.html"><span class="mark" aria-hidden="true">Υ</span> ePIC / Υ analysis</a><a class="return" href="./figures.html#mass">Browse figures →</a></div></header>
+  <main id="trace-main" class="shell trace-shell" tabindex="-1">
+    <div class="trace-intro"><p class="eyebrow">Υ(1S), Υ(2S) and Υ(3S) · Source guide</p><h1>How a result is made</h1><p>Follow a result from reconstructed events to its figure, or start with a figure and check where it came from.</p></div>
+    <p id="trace-status" role="status">Loading the analysis guide…</p>
+    <div id="trace-content" hidden>
+      <section class="trace-controls" aria-label="Guide settings">
+        <div><label for="trace-result" class="trace-label">Result</label><select id="trace-result"></select></div>
+        <div><span class="trace-label" id="trace-direction">Reading order</span><div class="trace-modes" role="group" aria-labelledby="trace-direction"><button type="button" id="trace-forward" aria-pressed="true">Reconstruction → paper</button><button type="button" id="trace-reverse" aria-pressed="false">Paper → reconstruction</button></div></div>
+      </section>
+      <section aria-labelledby="trace-route-title" class="trace-route-intro"><p class="eyebrow">Selected result</p><h2 id="trace-route-title"></h2><div id="trace-references" class="trace-references"></div><p id="trace-description"></p></section>
+      <div class="trace-layout">
+        <nav aria-label="Analysis stages" class="trace-stage-nav"><h3>Stages</h3><ol id="trace-stages"></ol></nav>
+        <article class="trace-panel" aria-labelledby="trace-title">
+          <p class="eyebrow" id="trace-progress"></p><h3 id="trace-title" tabindex="-1"></h3><p id="trace-detail"></p>
+          <aside id="trace-boundary" class="trace-boundary" hidden></aside><div id="trace-preview"></div><dl class="trace-io"><div><dt>Input</dt><dd id="trace-input"></dd></div><div><dt>Output</dt><dd id="trace-output"></dd></div></dl>
+          <p id="trace-shortcut"></p><section aria-labelledby="trace-source-title"><h4 id="trace-source-title">Sources for this stage</h4><ul id="trace-sources"></ul></section>
+          <nav class="trace-pagination" aria-label="Adjacent stages" id="trace-pagination"></nav>
+        </article>
+      </div>
+      <section id="trace-run" aria-label="Local run"></section>
+      <p id="trace-announcer" class="sr-only" role="status" aria-live="polite"></p>
+    </div>
+    <noscript><p>This guide needs JavaScript to switch between results. <a href="./figures.html#mass">Open the explorer</a>.</p></noscript>
+  <footer class="trace-footer">Source links identify the checked code revision; paper figure numbers follow the exclusive Υ subsection of the supplied early-science manuscript. <a href="https://github.com/gkrintir/ePIC-Upsilon">Repository</a></footer>
+  </main>
+</body>
+</html>

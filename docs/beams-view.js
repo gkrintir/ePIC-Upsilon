@@ -56,6 +56,7 @@
   function updateHash() {
     clearTimeout(urlTimer);
     const hash = new URLSearchParams({state: state.value, group: group.value, observable: observable.value, scale: scale.value, ...(hasBins() ? {bin: index + 1} : pendingBin === undefined ? {} : {bin: pendingBin + 1})}).toString();
+    for(const link of document.querySelectorAll('a[href*="#beams/plot/review"]')) link.href="./index.html#beams/plot/review?"+hash;
     if (location.hash.slice(1) !== hash) {
       try { history.replaceState(null, "", "#" + hash); }
       catch { if (location.hash.slice(1) !== hash) location.replace("#" + hash); }

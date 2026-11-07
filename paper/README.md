@@ -9,6 +9,8 @@ python3 paper/replay_paper.py --inputs work/paper-inputs --output work/paper-rep
 
 The [shared CERNBox folder](https://cernbox.cern.ch/s/UHPvC04xj29cxrp) holds the three Υ states at both energies. If you already have the tuples on EOS, use `--inputs /path/to/your/upsilon_data` and skip the download. The paper replay verifies and reads the three 9×275 inputs. The full input manifest also includes the three 9×130 inputs used for the note's beam comparison. Choose a fresh output directory for each run.
 
+[Trace a paper panel to its plotting function, analysis files and tuple producer](https://gkrintir.github.io/ePIC-Upsilon/#mass/publication/review). If you already ran the replay, select its output folder there to inspect your own files.
+
 ## What the replay does
 
 1. Verify the raw SHA-256 values and prepare separate state tuples with the all-generated visible dielectron weights. The generation and photon-flux upper limits are 1 GeV² for 1S and 0.01 GeV² for 2S and 3S. All six reference files record `ele_id_mode=1` for reconstructed electron identification.

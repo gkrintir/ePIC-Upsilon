@@ -1,8 +1,10 @@
 # ePIC Υ analysis
 
-Use this repository to reproduce the Υ(1S), Υ(2S) and Υ(3S) figures in the ePIC early-science paper or to run the projections used in the analysis note. Both workflows start from merged ROOT files.
+Follow an exclusive Υ result from reconstructed ePIC events to the analysis note and early-science paper. Each stage shows the code that reads an input and the file it passes to the next stage.
 
-[Open the figure explorer](https://gkrintir.github.io/ePIC-Upsilon/) to compare beam energies, inspect paper figures and jump to the corresponding note page or plotting code. The [Wiki](https://github.com/gkrintir/ePIC-Upsilon/wiki) maps the remaining sections and appendices.
+**New to the analysis?** [Start at the tuple producer](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction). If you already have the merged ROOT files, [start at the inputs](https://gkrintir.github.io/ePIC-Upsilon/#mass/tuple) or run the two replay commands below.
+
+**Reviewing a figure?** [Trace the tagged efficiency backward from the paper](https://gkrintir.github.io/ePIC-Upsilon/#efficiency/publication/review). Switch the result to follow the mass fit, W spectrum, differential projections or inclusive beam comparison. With a completed run, select its output folder to open the actual intermediate files.
 
 ## Clone and install
 
@@ -61,22 +63,12 @@ For the note’s equal-luminosity comparison, create a separate workspace with `
 
 ## Plot saved results
 
-The plotting notebooks use all three states at 9×275 GeV. To redraw a paper figure, copy the paper profile and set its paths and run IDs to your saved results.
-
-```bash
-cp configs/plots_9x275.paper.json configs/plots.local.json
-```
-
-- **W and rapidity spectra.** The optimizer selects the fit bins. For 1S, the paper profile keeps the first and last bins and combines the three middle bins for display. To draw the W and rapidity spectra, set `allow_diagnostic_results` to `true` in the profile. These spectra failed the coverage checks. [Validation results](docs/validation.md)
-- **Mass and efficiency (notebook 07).** The notebook uses saved mass templates and efficiency counts. It reads the original 9×275 GeV 1S ROOT file to build the $W$–$x_V$ efficiency map. If you moved the ROOT file, set `root_input_override` to its new path. [Open notebook 07](plotting/07_mass_and_efficiency_w_xv.ipynb)
-
-Open the notebook in JupyterLab or on CERN SWAN. Use the Python environment from the installation step and run all cells. [Notebook list and command-line options](docs/plotting.md)
+Open the [paper figures](https://gkrintir.github.io/ePIC-Upsilon/figures.html#mass) or the [two-energy comparison](https://gkrintir.github.io/ePIC-Upsilon/beams.html). Each plot links back to its analysis and tuple producer. For Jupyter notebooks, display merging and diagnostic rendering, see [plotting instructions](docs/plotting.md).
 
 ## Workflow and reference
 
-![Workflow from reconstructed ePIC events and merged ROOT files to analysis figures](docs/workflow.svg)
+[![From reconstructed events or merged UpsilonTree files to reviewed analysis figures](docs/workflow.svg)](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction)
 
-- **Tuple production.** If you start from reconstructed events, follow the [production guide](docs/production.md). The recovered macro fixes the proton beam at 275 GeV. New 9×130 production requires the corresponding producer and CERN job configuration. [Missing production sources](docs/missing-production-sources.md)
-- **Electron identification and normalization.** All six inputs use reconstructed track–cluster matching (`ele_id_mode=1`). The event selection and photon flux use Q² upper limits of 1 GeV² for 1S and 0.01 GeV² for 2S and 3S. [Selections and normalization](docs/selections-and-normalization.md)
-- **Efficiency maps.** To regenerate the two-dimensional maps from the merged files, follow the [efficiency guide](docs/efficiency.md).
-- **Run records.** To resume a run or find its settings and outputs, see [bookkeeping](docs/bookkeeping.md).
+- [Produce tuples from reconstructed events](docs/production.md) and review the [missing historical production records](docs/missing-production-sources.md).
+- [Selections and normalization](docs/selections-and-normalization.md) define the electron identification, recoil-proton tag and state-specific Q² limits.
+- [Validation](docs/validation.md) records what each result supports. [Bookkeeping](docs/bookkeeping.md) explains how to resume a run.

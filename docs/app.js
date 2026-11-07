@@ -34,6 +34,7 @@
     }
     if(fullFigure)params.set("panel","all");
     const suffix=params.toString();
+    $("trace-link").href="./index.html#"+view+"/plot/review"+(suffix ? "?"+suffix : "");
     const hash="#"+view+(suffix?"?"+suffix:"");
     if (location.hash!==hash) {
       try {history.replaceState(null,"",hash);} catch {location.replace(hash);}
@@ -66,6 +67,7 @@
     $("note-name").textContent=p.note;$("note-description").textContent=p.about;
     $("note-link").textContent="Open "+(view==="mass"?"Fig. 7":p.note)+" · PDF p. "+p.page+" ↗";
     $("table-jump").hidden=view!=="mass";
+    $("trace-link").href="./index.html#"+view+"/plot/review";
     $("code-link").href=base+p.code;$("code-link").textContent="Figure notebook ↗";
     $("support-link").href=base+p.support;$("support-link").textContent=p.supportLabel+" ↗";
     if (window.ATLAS_HAS_LOCAL_NOTE===true) $("local-label").textContent="The bundled note opens directly. You can also choose another local copy.";
@@ -329,6 +331,34 @@
       $("load-status").textContent="Loaded fit intervals, efficiency maps and spectral bins.";render();
     }catch(err){if(seq===req)$("load-status").textContent=err instanceof SyntaxError?"The file contains invalid JSON. Choose paper.json from the replay.":err.message;}
   });
+  $("replay-folder").addEventListener("change", async () => {
+    const seq=++req;
+    try {
+      const files=window.paperDirectory.indexDirectory($("replay-folder").files);
+      if (!files.size) return;
+      const imported=validated(await window.paperDirectory.read(files));
+      if (seq!==req) return;
+      data=imported;
+      $("load-status").textContent="Loaded the fit, efficiency cells and spectral bins from your replay folder.";
+      render();
+    } catch (error) {
+      if(seq===req) $("load-status").textContent=error.message;
+    }
+  });
+  // The workflow can open a result with the folder its reader already selected.
+  if (window.opener && location.origin!=="null" && new URLSearchParams(location.search).has("from-run")) {
+    const accept = event => {
+      if(event.source!==window.opener || event.origin!==location.origin || event.data?.type!=="epic-run-result") return;
+      window.removeEventListener("message",accept);
+      try {
+        data=validated(event.data.payload);
+        $("load-status").textContent="Inspecting the replay folder selected in the analysis workflow.";
+        render();
+      } catch(error) { $("load-status").textContent=error.message; }
+    };
+    window.addEventListener("message",accept);
+    window.opener.postMessage({type:"epic-run-view-ready"},location.origin);
+  }
   $("csv").addEventListener("click",exportCsv);
   let tableRequested=false;
   window.notePage.attach({pick:$("local-note"),link:$("note-link"),page:()=>tableRequested?23:papers[view].page});

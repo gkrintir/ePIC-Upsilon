@@ -1,8 +1,10 @@
 # Rebuild the figure explorer
 
-The [figure explorer](https://gkrintir.github.io/ePIC-Upsilon/) follows the figure numbers in analysis note revision `ad6c3b0`. Under **Paper figures**, the sample is proton tagged at 9×275 GeV and 2.5 fb⁻¹. Under **Beam comparison**, the curves show inclusive reconstructed events at 10 fb⁻¹ for each beam energy. The two views have different selection and normalization conventions.
+The [figure explorer](https://gkrintir.github.io/ePIC-Upsilon/figures.html#mass) follows the figure numbers in analysis note revision `ad6c3b0`. Under **Paper figures**, the sample is proton tagged at 9×275 GeV and 2.5 fb⁻¹. Under **Beam comparison**, the curves show inclusive reconstructed events at 10 fb⁻¹ for each beam energy. The two views have different selection and normalization conventions.
 
 ## Paper figures
+
+To inspect an existing run, open the figure and choose the output folder containing `paper_replay.json`. The browser reads the fit intervals and binned tables in that folder. The export below is for a standalone copy.
 
 Follow the [paper replay](../paper/README.md) from the repository root. After the replay succeeds, export its results using the same Python environment.
 
@@ -29,4 +31,4 @@ On the beam-comparison page, choose `work/explorer/data/beams.json` to inspect t
 
 ## Open a local copy
 
-Copy `docs/` into a new `work/explorer/` directory before running the two exports above. Open `index.html` in your browser. Each figure links to its analysis code. A selected note PDF opens at the physical page for that figure. Your PDF and imported numerical data are read locally in the browser.
+Copy `docs/` into a new `work/explorer/` directory before running the two exports above. Open `figures.html` for the paper figures or `beams.html` for the beam comparison. Each figure links to its analysis code. A selected note PDF opens at the physical page for that figure. Your PDF and imported numerical data are read locally in the browser.
