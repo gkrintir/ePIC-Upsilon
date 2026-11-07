@@ -2,7 +2,7 @@
 
 Use this repository to reproduce the Υ(1S), Υ(2S) and Υ(3S) figures in the ePIC early-science paper or to run the projections used in the analysis note. Both workflows start from merged ROOT files.
 
-[Follow the analysis note in the Wiki](https://github.com/gkrintir/ePIC-Upsilon/wiki) to find the code and checks for each section and figure group.
+[Open the figure explorer](https://gkrintir.github.io/ePIC-Upsilon/) to compare beam energies, inspect paper figures and jump to the corresponding note page or plotting code. The [Wiki](https://github.com/gkrintir/ePIC-Upsilon/wiki) maps the remaining sections and appendices.
 
 ## Clone and install
 

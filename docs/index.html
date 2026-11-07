@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Explore the ePIC exclusive Υ photoproduction projections, the note pages behind each figure and their reproducible analysis outputs.">
+<title>ePIC Υ Atlas · Paper figures</title>
+<link rel="stylesheet" href="beams.css"><link rel="stylesheet" href="style.css">
+<script defer src="data/paper.js"></script><script defer src="pdf-link.js"></script><script defer src="figure-panels.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#figure-content">Skip to figure</a>
+<header class="mast"><div class="shell mast-inner">
+<a class="wordmark" href="#mass"><span class="mark" aria-hidden="true">Υ</span> ePIC <span class="muted">/</span> Υ Atlas</a>
+<a class="return" href="./beams.html">Compare beam energies <span aria-hidden="true">→</span></a>
+</div></header>
+<main class="shell">
+<header class="intro"><p class="eyebrow">ePIC <span>/</span> Exclusive photoproduction</p><h1>Υ figure atlas</h1>
+<p>Explore the projected Υ → e⁺e⁻ signal at 9 × 275 GeV with 2.5 fb⁻¹ and a reconstructed recoil proton. Each figure links to the corresponding analysis note page and the code that produces it.</p></header>
+<nav class="atlas-nav" aria-label="Paper figures">
+<a href="#mass" data-tab="mass"><small>Fig. 7 · Table 8</small><span>Mass fit</span></a>
+<a href="#efficiency" data-tab="efficiency"><small>Fig. 13</small><span>Efficiency maps</span></a>
+<a href="#w" data-tab="w"><small>Fig. 14</small><span>W spectra</span></a>
+<a href="#differential" data-tab="differential"><small>Fig. 15</small><span>pT² &amp; rapidity</span></a>
+</nav>
+<section class="panel figure-content" id="figure-content" aria-labelledby="figure-title" tabindex="-1">
+<div class="figure-copy"><p class="eyebrow" id="kicker"></p><h2 id="figure-title"></h2><p id="lead"></p></div>
+<div class="figure-grid">
+<div class="image-wrap"><div class="filters panel-filter"><label for="plot-panel">Focus on a panel<select id="plot-panel"></select></label></div><a id="enlarge" target="_blank" rel="noopener"><img id="figure-image" alt="" decoding="async"><svg id="panel-zoom" role="img" aria-label="Selected paper panel"></svg></a><p class="image-caption"><span id="figure-caption"></span><a id="open-image" target="_blank" rel="noopener">Enlarge figure ↗</a></p></div>
+<aside class="figure-aside"><p class="eyebrow">Analysis note</p><h3 id="note-name"></h3><p id="note-description"></p><div class="source-links"><a id="note-link" aria-disabled="true"></a><button id="table-jump" type="button" class="inline-link" hidden>Table 8 · PDF p. 23</button></div>
+<label class="local-label" for="local-note" id="local-label">Choose your local note PDF to enable page links.</label><input id="local-note" type="file" accept="application/pdf,.pdf">
+<hr><p class="eyebrow">Reproduce</p><div class="source-links links-column"><a id="code-link" target="_blank" rel="noopener"></a><a id="support-link" target="_blank" rel="noopener"></a><a href="https://github.com/gkrintir/ePIC-Upsilon/wiki" target="_blank" rel="noopener">Analysis note Wiki ↗</a></div>
+</aside></div>
+</section>
+<section id="inspector" class="panel inspect-panel" aria-labelledby="inspector-title">
+<div class="inspect-head"><div><p class="eyebrow">Numerical results</p><h2 id="inspector-title"></h2></div><button id="csv" class="action" type="button">Download CSV ↓</button></div>
+<div id="results"></div>
+</section>
+<div id="import-box" class="import-box" hidden><div><h2>Open the numerical replay</h2><p>Choose <code>paper.json</code> to inspect the fit intervals, individual map cells and spectrum bins locally.</p></div><div><label for="data-file">Local paper data (.json)</label><input id="data-file" type="file" accept="application/json,.json"><p id="load-status" role="status"></p></div></div>
+<noscript>Enable JavaScript to switch between figures or inspect the numerical results.</noscript>
+</main><footer class="shell">ePIC Υ Atlas <span>/</span> Proton-tagged paper projections</footer>
+</body></html>
