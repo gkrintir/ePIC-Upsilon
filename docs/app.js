@@ -91,12 +91,12 @@
   }
   function massView() {
     if (!data.mass) {
-      note("Read the three-state fit in panel (a) or open Table 8 in the note. Choose your results folder below to inspect the fitted yields and asymmetric errors.");
+      note("Open your run’s paper.json below to see the fitted yields and uncertainties for all three states.");
       reportCsv("empty",[],[]);return;
     }
     appendTable(["State","Fitted expected events","Gaussian core width [MeV]"],states.map(s=>["Υ("+s+")",fitText(data.mass[s].yield),fitText(data.mass[s].width)]));
     const hasErrors=data.mass["1S"].yield[1]!==null;
-    note(hasErrors?"Parentheses give the negative and positive 68.27% conditional profile-likelihood errors. The fit fixes the calibrated tails and relative widths, so the width errors share the same fitted scale.":"The table gives the rounded central values. Open Table 8 for the conditional fit errors, or choose your results folder below.");
+    note(hasErrors?"Parentheses give the negative and positive 68.27% conditional profile-likelihood errors. The fit fixes the calibrated tails and relative widths, so the width errors share the same fitted scale.":"The table gives the rounded central values. For the conditional fit errors, open Table 8 or your run’s paper.json.");
     reportCsv(hasErrors?"mass_fit":"mass_fit_summary",["state","yield_events","yield_err_minus","yield_err_plus","core_width_MeV","width_err_minus_MeV","width_err_plus_MeV"],states.map(s=>[s,...data.mass[s].yield,...data.mass[s].width]));
   }
   function addSelect(box,id,label,choices,value,onChange) {
@@ -118,7 +118,7 @@
   function efficiencyView() {
     const e=data.efficiency, stats=make("div",undefined,"stats");
     if (!Number.isFinite(e.eligible)) {
-      note("Focus on either map above. Choose your results folder below to select a cell, compare the pretag and tagged efficiency, or download the counts.");
+      note("Open your run’s paper.json below to inspect the counts before and after proton tagging in each cell.");
       reportCsv("empty",[],[]);return;
     }
     simpleStat(stats,count(e.eligible),"Eligible simulated decays");
@@ -142,7 +142,7 @@
     $("results").append(stageBox);
     showRate("tag_of_all");
     if(!e.cells.length) {
-      note("The two maps appear in panels (b) and (c) above. Choose your results folder below to inspect the numerator and denominator of each cell.");
+      note("Open your run’s paper.json below to inspect the numerator and denominator of each cell.");
       reportCsv("efficiency_summary",["eligible","selected_before_proton","selected"],[[e.eligible,e.pretag,e.tagged]]);return;
     }
     const filters=make("div",undefined,"filters");$("results").append(filters);
@@ -237,7 +237,7 @@
       const csvRows=isPt?[...rows,...data.spectra.filter(r=>r.quantity==="slope"&&r.state===state)]:rows;
       reportCsv("spectrum_"+q+"_"+state,pointFields,csvRows.map(row=>pointFields.map(key=>row[key])));
     } else {
-      note("The published points appear in the figure above. Choose your results folder below to inspect individual bins and download their full-precision values.");
+      note("Open your run’s paper.json below to inspect individual bins and download their full-precision values.");
       if(isPt && data.slope)reportCsv("slope_1S_summary",["state","slope_GeV_minus2","err_minus","err_plus"],[["1S",...data.slope]]);
       else reportCsv("empty",[],[]);
     }

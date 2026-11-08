@@ -24,6 +24,7 @@ Paths below are relative to `--output`.
 
 | Output | Contents |
 |---|---|
+| `paper.json` | Fitted yields and widths, efficiency counts and spectral bins. Open this file in the [figure explorer](https://gkrintir.github.io/ePIC-Upsilon/figures.html#mass) or share it with a colleague. |
 | `paper_replay.json` | Overall replay results and the path of the combined mass/efficiency PDF |
 | `reconstruction/efficiency_cells.csv` | Observed denominators, pretag counts and tagged numerators for all 528 map cells |
 | `spectra/w/upsilon_es_w_cross_section.pdf` | State-resolved W spectra |

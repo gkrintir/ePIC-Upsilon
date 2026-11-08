@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 
+from explorer_results import results_json, write_atomic
 from maps import render_and_check_maps
 from fingerprints import mass_rows, verify
 
@@ -80,8 +81,10 @@ def main():
     run(HERE/"check_spectra.py",["--reopt-run",reopt,"--output",out/"spectra"],env)
     result["mass_values_and_errors_checked"] = 18
     result["spectra"] = json.loads((out/"spectra/comparison.json").read_text())
-    (out/"paper_replay.json").write_text(json.dumps(result,indent=2)+"\n")
+    write_atomic(out/"paper.json", results_json(out, result))
+    write_atomic(out/"paper_replay.json", json.dumps(result,indent=2)+"\n")
     print(f"Paper reproduction complete: {out/'paper_replay.json'}")
+    print(f"Figure explorer results: {out/'paper.json'}")
 
 if __name__ == "__main__":
     main()

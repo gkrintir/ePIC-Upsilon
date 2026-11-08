@@ -4,15 +4,13 @@ The [figure explorer](https://gkrintir.github.io/ePIC-Upsilon/figures.html#mass)
 
 ## Paper figures
 
-To inspect an existing run, open the figure and choose the output folder containing `paper_replay.json`. The browser reads the fit intervals and binned tables in that folder. The export below is for a standalone copy.
+The [paper replay](../paper/README.md) writes `work/paper-replay/paper.json`. Choose that file in the explorer to inspect the fit intervals, efficiency counts and spectral bins. Send the same file to a colleague to share those numbers.
 
-Follow the [paper replay](../paper/README.md) from the repository root. After the replay succeeds, export its results using the same Python environment.
+For an older completed run, choose **Open a run folder instead** or create the summary from the saved outputs:
 
 ```bash
-python3 tools/export_explorer_paper.py --replay work/paper-replay --out work/explorer
+python3 tools/export_explorer_paper.py --replay work/paper-replay
 ```
-
-Use `work/explorer/data/paper.json` with the local data control on the paper-figure page. The exporter reads the reported mass-fit intervals, efficiency counts, and displayed spectra. The status associated with each fit travels with its values.
 
 ## Two-energy kinematics
 
@@ -31,4 +29,10 @@ On the beam-comparison page, choose `work/explorer/data/beams.json` to inspect t
 
 ## Open a local copy
 
-Copy `docs/` into a new `work/explorer/` directory before running the two exports above. Open `figures.html` for the paper figures or `beams.html` for the beam comparison. Each figure links to its analysis code. A selected note PDF opens at the physical page for that figure. Your PDF and imported numerical data are read locally in the browser.
+Copy `docs/` into a new `work/explorer/` directory. To include your paper figures and numerical results, run:
+
+```bash
+python3 tools/export_explorer_paper.py --replay work/paper-replay --out work/explorer
+```
+
+Open `work/explorer/figures.html` for the paper figures. For the beam comparison, run the two-energy export above and open `work/explorer/beams.html`.

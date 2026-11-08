@@ -29,7 +29,7 @@ python3 paper/replay_paper.py --inputs work/paper-inputs --output work/paper-rep
 
 If you already have the files, skip the download and point `--inputs` to the directory containing `Upsilon1S`, `Upsilon2S` and `Upsilon3S`. Choose a new `--output` directory for each replay.
 
-The replay makes all three paper figures and checks the fitted yields, mass resolutions, efficiency maps, spectra and 1S slope against the saved paper results. Open `work/paper-replay/paper_replay.json` for the results of those checks. [Figure paths and expected values](paper/README.md)
+The replay makes all three paper figures and checks the numerical results against the paper. Open `work/paper-replay/paper.json` in the [figure explorer](https://gkrintir.github.io/ePIC-Upsilon/figures.html#mass) to inspect or share the numbers. The same folder contains `paper_replay.json`, which records the checks. [Figure paths and expected values](paper/README.md)
 
 ## Analysis quick start
 
