@@ -11,6 +11,7 @@ const repo = fileURLToPath(new URL("../", import.meta.url));
 const docs = resolve(repo, "docs");
 const routeIds = ["mass", "efficiency", "w", "differential", "beams"];
 const stageIds = ["reconstruction", "tuple", "analysis", "plot", "publication"];
+const spectrumStageIds = ["reconstruction", "tuple", "response", "analysis", "plot", "publication"];
 const publicRepo = "/gkrintir/ePIC-Upsilon/";
 
 function nonempty(value, where) {
@@ -116,7 +117,8 @@ function main(args) {
     nonempty(label, route + " label");
     nonempty(question, route + " question");
     checkExplanation(description, data, route + " description");
-    assert.deepEqual(Array.from(steps, step => step.id), stageIds, route + " must contain the five stages in order");
+    const expected = ["w", "differential"].includes(route) ? spectrumStageIds : stageIds;
+    assert.deepEqual(Array.from(steps, step => step.id), expected, route + " stages must follow calculation order");
     for (const step of steps) {
       const where = route + "/" + step.id;
       for (const key of ["title", "input", "output"]) nonempty(step[key], where + " " + key);
@@ -135,7 +137,8 @@ function main(args) {
     }
   }
   for (const path of replayFiles) fileAt(path);
-  console.log("PASS · 5 results, 25 stages, " + Object.keys(sources).length + " source links" +
+  const stageCount = Object.values(routes).reduce((sum, route) => sum + route.steps.length, 0);
+  console.log("PASS · " + routeIds.length + " results, " + stageCount + " stages, " + Object.keys(sources).length + " source links" +
     (replay ? ", " + replayFiles.size + " paper replay files" : ""));
 }
 

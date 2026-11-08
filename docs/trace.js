@@ -91,15 +91,17 @@
     const usedSources = new Set();
     showExplanation(byId('description'), route.description, result, usedSources);
     const figureURL=resultURL(route,result);
+    byId('figure').href = figureURL;
+    byId('current-result').textContent = route.label;
     byId("references").replaceChildren(link(route.section+" · "+route.paper,figureURL));
     const boundary=byId("boundary");
-    boundary.hidden=!["reconstruction","tuple"].includes(step.id);
+    boundary.hidden=step.id!=="reconstruction";
     boundary.textContent=data.boundary;
     const shortcut=byId("shortcut");
     shortcut.replaceChildren();
     if (step.id==="reconstruction") {
-      shortcut.append(link("Already have merged ROOT files? Start here →",atStage(steps[1])));
-    } else if (step.id==="tuple" || step.id==="analysis") {
+      shortcut.append(link("Already have merged ROOT files? Start here →",hash(result, 'tuple')));
+    } else if (["tuple", "response", "analysis"].includes(step.id)) {
       const run=data.sources[result==="beams" ? "beamGuide" : "paperRun"];
       shortcut.append(link("Run this analysis →",run.url));
     }
@@ -157,15 +159,30 @@
   }
 
   select.addEventListener('change', () => {
-    location.hash = hash(select.value, locationState().step.id);
+    const stage = locationState().step.id;
+    const target = data.routes[select.value];
+    location.hash = hash(select.value, target.steps.some(step => step.id === stage) ? stage : 'analysis');
   });
+  byId('all-stages').addEventListener('click', () => {
+    const stages = byId('stages');
+    stages.querySelector('[aria-current="step"]').focus({preventScroll: true});
+    stages.scrollIntoView({block: 'start'});
+  });
+  function revealLinkedStage() {
+    const [route, stage] = location.hash.slice(1).split('?')[0].split('/');
+    if (data.routes[route]?.steps?.some(step => step.id === stage)) {
+      byId('panel').scrollIntoView({block: 'start'});
+    }
+  }
   let focusStage = false;
-  for (const id of ['stages', 'pagination', 'description', 'detail']) {
+  for (const id of ['stages', 'pagination', 'description', 'detail', 'shortcut']) {
     byId(id).addEventListener('click', event => {
       const anchor = event.target.closest('a');
       if (!anchor || !anchor.getAttribute('href').startsWith('#') || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      if (anchor.hash === location.hash) byId('title').focus();
-      else focusStage = true;
+      if (anchor.hash === location.hash) {
+        byId('title').focus({preventScroll: true});
+        revealLinkedStage();
+      } else focusStage = true;
     });
   }
   // Keep the skip link independent of the URL fragment that identifies the current stage.
@@ -175,10 +192,12 @@
   });
   window.addEventListener('hashchange', () => {
     render();
-    if (focusStage) byId('title').focus();
+    if (focusStage) byId('title').focus({preventScroll: true});
     focusStage = false;
+    revealLinkedStage();
   });
   render();
   status.hidden = true;
   byId('content').hidden = false;
+  revealLinkedStage();
 })();
