@@ -1,7 +1,7 @@
 /* Stages are listed in production order. Source links identify the checked
    implementation. Run files are relative to a local replay or state workspace. */
 (() => {
-  const referenceRevision = "616ce23479e069e418e2e320f61bc02c082087cb";
+  const referenceRevision = "86f6aac8024ae032b70afd840ce238fed27bc660";
   const git = "https://github.com/gkrintir/ePIC-Upsilon/";
   const src = (label, path) => ({label, url:git+"blob/"+referenceRevision+"/"+path});
   const guide = src;
@@ -14,6 +14,7 @@
     cards: page("July simulation cards · pinned source", "https://github.com/eic/Upsilon_Sim_Cards/tree/f62965a1612fc734dbab18e141f4809740d6b234"),
     production: guide("Run a new tuple production", "docs/production.md"),
     gap: guide("Compare the recovered producers with the six reference tuples", "docs/missing-production-sources.md"),
+    eventCheck: guide("Compare two original inputs with the merged events", "docs/missing-production-sources.md#two-reconstructed-inputs"),
     cernCampaign: guide("Trace the 2S 9×130 Condor run into the merged tuple", "production/cern-2026-10/README.md"),
     producer130: src("9×130 working copy · beam setting", "production/macros/9x130/DVMP_Upsilon_Analysis.C#L35-L42"),
     entry: src("Tuple macro · entry point and ID mode",macro+"#L166-L188"),
@@ -118,7 +119,7 @@
       description:"In each bin of generated kinematics, count the eligible decays and how many survive each selection. The fraction that reaches the tagged sample gives the efficiency for that bin.",
       steps:[
         reco("Record truth and reconstructed candidates","true_pT, true_y, true_Q2, true_W; reco_mass and proton tag",
-          "The denominator must include eligible decays even when reconstruction loses an electron. The tuple macro [writes an event row][fill] with the generated kinematics in either case. When it finds a candidate, it also [records the reconstructed mass and proton information][tag]. This lets the map count a selected event in the same truth bin as its generated decay.",["entry","tag","fill"]),
+          "The denominator must include eligible decays even when reconstruction loses an electron. The tuple macro [writes an event row][fill] with the generated kinematics in either case. When it finds a candidate, it also [records the reconstructed mass and proton information][tag]. In a [rerun of one original 9×275 file][eventCheck], all 100 generated decays enter the denominator of the paper map. Of these, 13 pass the lepton selection and 8 also have a proton tag. Each selected decay contributes to the same rapidity–pT bin as its generated event.",["entry","tag","fill"]),
         tuples("Merge the 1S tuples","Original merged 9×275 1S ROOT file","The [merge][merge] collects the simulated 1S events across jobs. The [efficiency calculation][efficiency/analysis] needs integer counts in that sample, so it reads the original merged tuple. The [mass fit][mass/analysis] uses luminosity weights because its histogram predicts how many events the experiment would see.",[audits[0]]),
         step("analysis","Count eligible, pretag and tagged events","Original merged 1S tuple and the final-selection definition","final_efficiency_2d.csv and selection_audit.json",
           "The [selection code][maps] first identifies eligible decays using generated mass, Q² and W. It then selects reconstructed candidates using the dielectron mass, W and the event’s E − pz balance, and finally requires a reconstructed recoil proton. For each truth bin the [accumulator][mapCounts] saves all three counts, so one can distinguish losses in reconstructing and selecting the leptons from losses at the proton tag.",["maps","mapCounts","mapRun","selection"],[mapbase+"tables/final_efficiency_2d.csv",mapbase+"selection_audit.json"]),
@@ -177,7 +178,7 @@
           "Use [the beam comparison][viewBeams] to read the Υ rapidity distribution in Fig. 10 alongside the lepton directions in Fig. 11. A difference between the curves can reflect both the available phase space and which decays pass selection. The [paper mass fit][mass/plot] instead gives the expected yields and widths of the three peaks with a reconstructed proton at 9×275 GeV and 2.5 fb⁻¹.",["viewBeams","beamGuide"],beamPdfs)
       ]}
   };
-  const boundary = "Separate producer sources are available for 9×130 and 9×275. The 2S 9×130 worker logs match electron-ID counts in all 10,583 blocks of the merged tuple. The other five samples have verified merged inputs and less complete production records.";
+  const boundary = "For one Υ(1S) input at 9×275 and one Υ(2S) input at 9×130, the producer reproduced every saved branch for all 100 events in each file. For the full 2S 9×130 sample, the electron-ID counts also match the original worker logs in all 10,583 blocks.";
   // The text of a reference reads as part of the explanation. Its key identifies
   // either a pinned source or another stage in this guide.
   function referenceParts(text) {
