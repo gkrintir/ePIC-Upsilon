@@ -4,33 +4,46 @@
 
 Use the existing merged samples for the analysis and plotting workflow. This guide is for **new tuple production** from downloaded ePIC reconstructed `events` trees. It does not run eSTARlight, detector simulation or EICrecon.
 
-## What is recovered and what remains missing
+## Production sources
 
-`production/sources.json` records the exact origin and SHA256 of every recovered file. The latest uploaded producer and electron finder are preserved byte for byte under their canonical include names. Style files come from `gkrintir/lAger_JPsi_MuMu_Dataset` at commit `64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d`. The six cards come from `eic/Upsilon_Sim_Cards/Jul26_Campaign_Input` at commit `f62965a1612fc734dbab18e141f4809740d6b234`.
+Choose `--beam 9x130` or `--beam 9x275`. The planner selects the corresponding preserved C++ macro, checks its beam constants and freezes it with the electron finder and style files in the batch. The beam setting also determines the proton-candidate momentum threshold, half the proton-beam energy. The tuple stores the candidate information for downstream selections. [Source paths and SHA-256 values](../production/sources.json)
 
-The actual CERN Condor submit description, worker/environment setup, merge script/input manifest and per-energy source revisions still need to be exported from CERN. The new `production/jobs.py` is clearly separate from those missing historical scripts. Its local tests exercise planning and synthetic ROOT bookkeeping; they do **not** establish successful compilation with the user's ROOT/podio installation.
+For the 2S 9×130 sample, the recovered input list and per-file worker messages account for 1,058,300 events. The track-matching counters agree with the distributed ROOT file in all 10,583 consecutive blocks of 100 events. [Original campaign and merge check](../production/cern-2026-10/README.md)
 
-The recovered source has these important limitations:
-
-| Item | Preserved behavior and implication |
-| --- | --- |
-| Beam constants | `E_e_beam=9`, `E_p_beam=275`; the planner blocks new 9×130 production |
-| Proton candidate threshold | Uses `0.5 * E_p_beam`; a 9×130 card cannot change this C++ constant |
-| Raw visible rates | 327.584, 84.780, 68.929 fb for 1S, 2S, 3S, inferred from the input filename; these are historical source values, **not the current assigned analysis rates** |
-| Raw luminosity | 10 fb⁻¹ per job; each job assigns `sigma * 10 / N_job` |
-| Merge normalization | `hadd` sums raw weights. It does not turn per-job weights into a valid complete-sample normalization |
-| Generated rows | Source fills one tuple row per input entry and writes the total to `h_EventCount`; the wrapper checks both |
-| Recoil proton tagging | Producer stores tag information. The downstream tagged analysis adds its explicit selection; production mode is not the analysis category |
-
-Do not infer which exact executable produced existing EOS files from this archive alone. Do not edit beam constants or weights silently to make a new production pass. Supply the missing source/environment revision and audit it as a new revision first.
+Each recovered macro sets its raw per-job event weight to the state’s visible cross section times 10 fb⁻¹ divided by the generated events in that job. Those constants reproduce the observed raw weights for some samples. The 1S 9×130 and the 2S and 3S 9×275 weights require different constants from the corresponding preserved macro. For physics yields the analysis normalizes all generated rows after merging, using the assigned rate for each state and energy. [Sample-by-sample evidence and missing records](missing-production-sources.md)
 
 ## Environment
 
+Both macros compile and load with ROOT 6.40.00 and podio v01-02. The private CERN ZIP contains a compiler dependency path for ROOT 6.40.04.
+
 The planner needs Python 3.9+. Executing or merging needs `uproot` in that Python environment, plus the user's tested ROOT/podio environment. `root` and `hadd` must be available in it. The C++ source includes `podio/ObjectID.h` and `podio/CollectionIDTable.h`; reconstructed electron ID additionally uses the ROOT-I/O dictionaries and, where available, `podio/utilities/RootHelpers.h`. It loads `libpodio`, `libpodioDict` and `libpodioRootIODict`.
 
-The exact ROOT, podio, EDM4hep/EDM4eic and ePIC environment versions used at CERN were not supplied. There is therefore no guessed CVMFS `source` command here. Provide a tested setup script and a precise environment label, preferably a release/container digest. The setup script must be readable on workers, must set the ROOT/podio environment, and must not depend on interactive shell state. Its SHA256 is recorded and checked. Python with `uproot` must already work before this script: the worker performs bookkeeping in Python and applies the setup script to its ROOT/hadd subprocess.
+The archived CERN submit configuration selected `eic_xl:nightly`. Its immutable image digest is unknown. For a new batch, set `PRODUCTION_ENV_LABEL` to your tested release or image digest. Set `PRODUCTION_SETUP` to the absolute path of a noninteractive setup script that works on the execution nodes. The planner records its SHA-256. Python with `uproot` must be available in the launching environment, and the setup script configures the ROOT and `hadd` subprocesses.
 
-Jobs use a shared filesystem: the input files, fresh work directory and environment script must be readable from the execute nodes. The submit file sets `should_transfer_files=NO`; it does not transfer inputs or arrange authentication. Check CERN access on the intended nodes before a large submission. Only a limited set of environment variables is inherited, including `ROOT_INCLUDE_PATH`; other setup belongs in the explicit setup script.
+The new jobs use a shared filesystem. Workers must be able to read the same input paths, work directory and setup script. The generated submit file sets `should_transfer_files=NO`. Check node access and authentication with a pilot before a full submission.
+
+## One-file pilot
+
+Run this example from the repository root on a host with the CERN EOS files mounted. It selects the first reconstructed input from the original campaign and creates a separate one-file batch.
+
+```bash
+mkdir -p workspaces/manifests
+unzip -p "${CERN_TUPLE_ARCHIVE:?Set the path to your original production ZIP}" eic/list.txt \
+  | sed -n '1p' > workspaces/manifests/2S-9x130-pilot.txt
+
+PRODUCTION_WORK="$PWD/workspaces/production/2S-9x130-pilot-v1"
+python3 production/jobs.py plan \
+  --input-list workspaces/manifests/2S-9x130-pilot.txt \
+  --work-dir "$PRODUCTION_WORK" --beam 9x130 --state 2S \
+  --electron-id reco --femc full --hash-inputs \
+  --environment-label "${PRODUCTION_ENV_LABEL:?Set the tested release or digest}" \
+  --setup-script "${PRODUCTION_SETUP:?Set the absolute setup script path}" --write
+
+python3 "$PRODUCTION_WORK/snapshot/jobs.py" worker \
+  "$PRODUCTION_WORK/jobs/job_000000/job.json" --execute
+```
+
+The historical job recorded 100 input events for this file. Check `$PRODUCTION_WORK/jobs/job_000000/result.json` for `DONE` and 100 output rows. If you stage the input elsewhere, put its accessible path in the one-line list and retain the state and beam identifiers. The private ZIP holds the input list. The [CERN campaign record](../production/cern-2026-10/README.md) explains how to verify it locally.
 
 ## Optional download
 
@@ -38,24 +51,25 @@ The recovered downloader requires `xrdfs` and `xrdcp`. Its dry run performs remo
 
 ```bash
 python3 production/download/download_upsilon_fast.py \
-  --dest /eos/cms/store/group/phys_top/gkrintir/upsilon_data \
+  --dest "${RECO_INPUT_BASE:?Set the destination for reconstructed files}" \
   --dataset Upsilon1S/9x275/hiAcc --dry-run
 ```
 
 Review the selected paths before removing `--dry-run`; `--max-files 1` is available for a transfer check. Its recovered defaults refer to `26.07.1/epic_craterlake`, `eSTARlight1.3.0-1.0`, and a `q2_0to0.01` remote path for every state. The recovered official 1S cards specify a Q² upper bound of 1 GeV², whereas 2S/3S specify 0.01 GeV². This path/card difference needs production provenance verification; a directory name does not establish the generated phase space. The downloader has not been changed to resolve that difference.
 
-## 1. Prepare an explicit input list
+## 1. Prepare an input list for a full batch
 
 Use one mounted reconstructed `.root` path per line, with no wildcards. Keep downloaded input files separate from tuple outputs. Every input path must identify the declared state using `1S`, `2S` or `3S`, because the preserved producer infers its raw rate from that path. Duplicated paths are rejected. One input file becomes one job.
 
-For example, create a list of the immediate ROOT files in the downloaded input directory; this does not recurse into scenario output folders:
+Export `RECO_INPUT_BASE` as the absolute path to your downloaded datasets. This example lists the reconstructed files directly under the 1S input directory.
 
 ```bash
 mkdir -p workspaces/manifests
 python3 - <<'PY'
 from pathlib import Path
-source = Path('/eos/cms/store/group/phys_top/gkrintir/upsilon_data/Upsilon1S/9x275/hiAcc')
-files = sorted(p.resolve() for p in source.glob('*.root') if p.is_file())
+import os
+source = Path(os.environ['RECO_INPUT_BASE']) / 'Upsilon1S/9x275/hiAcc'
+files = sorted(p.resolve() for p in source.glob('*.eicrecon.edm4eic.root') if p.is_file())
 if not files:
     raise SystemExit('No reconstructed input ROOT files found; check the source directory')
 with Path('workspaces/manifests/9x275-1S-inputs.txt').open('x') as out:
@@ -130,7 +144,7 @@ All jobs declared in the batch must have validated `DONE` results. The helper ch
 For the **1S, reconstructed electron ID, full fEMC** batch above, write directly to a fresh writable EOS pilot area with the directory layout expected by the analysis front end. Keep this base separate from the current production inputs:
 
 ```bash
-export PILOT_INPUT_BASE=/eos/user/g/gkrintir/upsilon-production-pilot-v1
+export PILOT_INPUT_BASE="${PILOT_INPUT_BASE:?Set a fresh absolute output directory on shared storage}"
 mkdir -p "$PILOT_INPUT_BASE/Upsilon1S/9x275/hiAcc/output_newID"
 
 python3 "$PRODUCTION_WORK/snapshot/jobs.py" merge \
@@ -157,12 +171,12 @@ For 2S/3S, create separate production batches using their own input lists and th
 
 ## 5. Normalize and audit in the analysis framework
 
-Set `input_base` in `configs/local.json` to the pilot base used above. Preserve any intentional custom `workspace_root`; with the default local workspaces the file is:
+Set `input_base` in `configs/local.json` to the absolute path printed by `echo "$PILOT_INPUT_BASE"`. For example, with the default workspace directory:
 
 ```json
 {
   "workspace_root": "workspaces",
-  "input_base": "/eos/user/g/gkrintir/upsilon-production-pilot-v1"
+  "input_base": "/path/to/upsilon-production-pilot-v1"
 }
 ```
 
@@ -189,7 +203,7 @@ python3 upsilon.py status --workspace pilot-275-tagged-v1
 
 Inspect the `plan` output and confirm the input is the pilot EOS path before running. Once all three pilot files are present and reviewed, use `--states 1S 2S 3S` and a fresh batch ID such as `pilot-275-allstates-L2p5-v1`. For an analysis without an explicit proton tag, initialize another fresh workspace with `--selection inclusive`. Neither choice reruns tuple production.
 
-The CLI retains the current state/energy-specific visible rates, generated phase-space settings, tuple luminosity and branching fractions. `--lumi 2.5` sets the projected luminosity; it does not change the producer's raw weights or the source tuple luminosity. The framework's preparation step normalizes the complete generated sample; its audit must verify the expected total weight, row preservation, saved cross sections and flux/selection consistency. Do not interpret the merged producer `weight` sum as an expected experimental yield, and do not apply the producer's historical cross sections a second time. These numerical checks still do not authenticate the producer revision or resolve the input generation provenance.
+The CLI retains the current state/energy-specific visible rates, generated phase-space settings, tuple luminosity and branching fractions. `--lumi 2.5` sets the projected luminosity; it does not change the producer's raw weights or the source tuple luminosity. The framework's preparation step normalizes the complete generated sample; its audit must verify the expected total weight, row preservation, saved cross sections and flux/selection consistency. Use the normalized tuple for projected yields. The original weighted rows and job records remain available for production checks.
 
 Keep the batch `plan.json`, individual `job.json`/`result.json`, source snapshot, logs and merge audit with the analysis provenance. This keeps the existing samples and previous tagged/untagged results independently reproducible.
 
@@ -199,6 +213,6 @@ Keep the batch `plan.json`, individual `job.json`/`result.json`, source snapshot
 python3 -m unittest discover -s tests -p test_production_plan.py -v
 ```
 
-Tests cover source hashes, read-only planning, duplicate/state/energy restrictions, fresh-output protection, frozen selections, explicit execution and synthetic ROOT entry-count/merge bookkeeping. Synthetic ROOT checks need `uproot` and NumPy. No Condor job or real producer invocation is made by these tests. The ROOT/podio compilation and a CERN worker smoke test remain required in the user's actual environment.
+Tests cover source hashes, read-only planning, duplicate/state/energy restrictions, fresh-output protection, frozen selections, explicit execution and synthetic ROOT entry-count/merge bookkeeping. Synthetic ROOT checks need `uproot` and NumPy. No Condor job or real producer invocation is made by these tests. Run the one-file pilot in your production environment to exercise the event readers.
 
 Interface references: [HTCondor submit description](https://htcondor.readthedocs.io/en/24.x/man-pages/condor_submit.html), [shared filesystem/file transfer behavior](https://htcondor.readthedocs.io/en/main/users-manual/file-transfer.html), [ROOT hadd indirect input lists](https://root.cern.ch/doc/v632/hadd_8cxx.html).

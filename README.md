@@ -69,6 +69,6 @@ Open the [paper figures](https://gkrintir.github.io/ePIC-Upsilon/figures.html#ma
 
 [![From reconstructed events or merged UpsilonTree files to reviewed analysis figures](docs/workflow.svg)](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction)
 
-- [Produce tuples from reconstructed events](docs/production.md) and review the [missing historical production records](docs/missing-production-sources.md).
+- [Produce tuples at either beam energy](docs/production.md) or [check the original 2S 9×130 campaign against its merged ROOT file](production/cern-2026-10/README.md).
 - [Selections and normalization](docs/selections-and-normalization.md) define the electron identification, recoil-proton tag and state-specific Q² limits.
 - [Validation](docs/validation.md) records what each result supports. [Bookkeeping](docs/bookkeeping.md) explains how to resume a run.

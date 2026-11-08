@@ -64,12 +64,14 @@ tested with explicit temporary paths. It did not read CERN event data.
 
 - The event-level comparison above starts with the six merged tuples. The
   9×275 files also match the SHA-256 values in the historical paper runs.
-- ROOT/podio compilation, a representative real producer job, CERN authentication,
-  shared-filesystem behavior and a Condor pilot still require the actual CERN
-  environment. Synthetic worker/merge tests check bookkeeping only.
-- The original CERN batch scripts, exact producer revisions by energy and tested
-  environment setup remain to be reconciled. The recovered 275 GeV producer is
-  not accepted for new 9×130 production.
+- Both beam-specific macros compiled and loaded with ROOT ACLiC in separate clean processes under ROOT 6.40.00 and [podio v01-02](https://github.com/AIDASoft/podio/tree/d3f03813d7bf50f87c3aa4f32e619cebeb060113), using the real ObjectID and CollectionIDTable dictionaries. This verifies compilation in that environment. An original EDM4eic event file is needed to exercise the readers and compare their output.
+- ROOT 6.40.00 `hadd` merged two archived 18×275 pilot tuples with 1,666 rows each. All 41 tree branches matched the concatenated input arrays, and `h_EventCount` summed to 3,332. Verifying the current 9-GeV-electron production also requires original reconstructed EDM4eic inputs and a pilot in the intended environment.
+- For the 2S 9×130 CERN campaign, the input list and worker records agree with all
+  10,583 blocks of 100 events in the merged tuple. The comparison uses four
+  electron-matching counters per input. [Campaign audit](../production/cern-2026-10/README.md)
+- Both beam energies have preserved producer sources. Their raw weights differ
+  from the reference for 1S at 9×130 and the excited states at 9×275. Analysis
+  normalization is applied after merging. [Per-sample comparison](missing-production-sources.md)
 - Notebook 07's W–xV cache and consistency checks require the original 1S tuple.
 - Existing conditional or failed statistical validation, signal-only assumptions,
   response limitations and omitted experimental uncertainties are unchanged.

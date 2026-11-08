@@ -3,17 +3,25 @@
   "files": [
     {
       "path": "macros/DVMP_Upsilon_Analysis.C",
-      "origin": "Library libfile_df0730b4b37c81918c5dad0b00435ab3, uploaded 2026-10-18",
+      "origin": "Supplied source file, uploaded 2026-10-18",
       "sha256": "e15891cf7dd8bb36e9b96e6ba82e84d5bad0ab9b1a1f5b73b378b7bbec9d2cb0",
       "import": "byte-exact",
       "original_name": "DVMP_Upsilon_Analysis(3).C"
     },
     {
+      "path": "macros/9x130/DVMP_Upsilon_Analysis.C",
+      "origin": "CERN production working directory, 21 October 2026",
+      "sha256": "1ec15daf4f9c7fbe5031c42afe6b9ee47c88d3856d0c70e0749f0dcb8f06c661",
+      "archive_member": "lAger_JPsi_MuMu_Dataset/DVMP_Upsilon_Analysis.C",
+      "import": "byte-exact"
+    },
+    {
       "path": "macros/ElectronFinder.C",
-      "origin": "Library libfile_571b0f6a12d081919d7d185841798a73, uploaded 2026-10-17",
+      "origin": "Supplied source file, uploaded 2026-10-17",
       "sha256": "914495b6729016b1eb4f7aa54f260a1e517873e640ec6b92fa1a05adac7aae43",
       "import": "byte-exact",
-      "original_name": "ElectronFinder(2).C"
+      "original_name": "ElectronFinder(2).C",
+      "also_matched_in_cern_archive": "lAger_JPsi_MuMu_Dataset/ElectronFinder.C"
     },
     {
       "path": "macros/ePICStyle.C",
@@ -22,7 +30,8 @@
       "import": "byte-exact",
       "blob_sha": "1ff8d2c4cf0e6e1a6cfc07e6bbcd49b1c67fdab6",
       "url": "https://github.com/gkrintir/lAger_JPsi_MuMu_Dataset/blob/64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d/ePICStyle.C",
-      "blob_verified": true
+      "blob_verified": true,
+      "also_matched_in_cern_archive": "lAger_JPsi_MuMu_Dataset/ePICStyle.C"
     },
     {
       "path": "macros/ePICStyle.h",
@@ -31,11 +40,12 @@
       "import": "byte-exact",
       "blob_sha": "0d33253b7e7bd1daeecaa8c7c32c9e44c124013f",
       "url": "https://github.com/gkrintir/lAger_JPsi_MuMu_Dataset/blob/64a07c2a1dfd633ff3c9ef03f5e15982e7ea2f6d/ePICStyle.h",
-      "blob_verified": true
+      "blob_verified": true,
+      "also_matched_in_cern_archive": "lAger_JPsi_MuMu_Dataset/ePICStyle.h"
     },
     {
       "path": "download/download_upsilon_fast.py",
-      "origin": "Library libfile_35f5678c074881918e85cccd999cf8b9, modified 2026-10-21",
+      "origin": "Supplied source file, modified 2026-10-21",
       "sha256": "3daab4590140b1ee0b4ceda0dd58963f4192084b68d5012f2601aee60b4afd52",
       "import": "byte-exact"
     },
@@ -95,15 +105,19 @@
     }
   ],
   "missing": [
-    "Historical CERN Condor submit description",
-    "Historical worker/environment setup script",
-    "Historical merge script and file manifest",
-    "Actual per-energy producer sources used for EOS production"
+    "Immutable build or source identity for the historical jobs and exact nightly container digest",
+    "Original hadd invocation and per-file merge checksums",
+    "Complete historical job and merge records for the remaining five state/energy datasets"
   ],
   "caveats": [
-    "Recovered producer hardcodes 9x275 and historical per-job raw weights.",
-    "Style dependencies come from the user GitHub repository; exact CERN production copy was not authenticated.",
-    "Existing production ROOT inputs are never regenerated automatically.",
-    "Recovered downloader uses a q2_0to0.01 remote directory for every state; verify against the generated phase space and the official 1S card with MAX_GAMMA_Q2=1."
-  ]
+    "The new pilot planner freezes the corresponding preserved producer for 9x130 or 9x275. Agreement with every historical raw weight is not established; see docs/missing-production-sources.md.",
+    "Raw weights are set per input file; the analysis renormalizes the full generated sample after merging.",
+    "Recovered downloader uses a q2_0to0.01 remote directory for every state; compare generated phase space with the official cards."
+  ],
+  "cern_archive": {
+    "sha256": "5e6297cf6a0de81e6644203b3c9c1cf282f0d812afb72fe255f21c0ab2b028e7",
+    "working_copy": "lAger_JPsi_MuMu_Dataset/",
+    "job_records": "cern-2026-10/campaign.json",
+    "scope": "Verified input paths, Condor worker messages and merged electron-ID counters for Upsilon2S/9x130."
+  }
 }

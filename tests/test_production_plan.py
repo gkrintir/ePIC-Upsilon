@@ -34,16 +34,17 @@ class ProductionPlanTest(unittest.TestCase):
             '--beam', '9x275', '--state', '1S', '--electron-id', 'reco',
             '--environment-label', 'test-only-no-ROOT', *extra])
 
-    def create(self):
+    def create(self, *extra):
         with redirect_stdout(io.StringIO()):
-            jobs.plan(self.args('--write', '--hash-inputs'))
+            jobs.plan(self.args('--write', '--hash-inputs', *extra))
         return self.work / 'jobs/job_000000/job.json'
 
     def test_preserved_sources_hashes(self):
         source = ROOT / 'production'
         for record in json.loads((source / 'sources.json').read_text())['files']:
             self.assertEqual(jobs.sha256(source / record['path']), record['sha256'])
-        jobs.verify_macro_sources()
+        for beam in ('9x130', '9x275'):
+            jobs.verify_macro_sources(beam)
 
     def test_plan_is_read_only(self):
         with patch.object(jobs.subprocess, 'run') as execute, redirect_stdout(io.StringIO()):
@@ -51,8 +52,8 @@ class ProductionPlanTest(unittest.TestCase):
         execute.assert_not_called()
         self.assertFalse(self.work.exists())
 
-    def test_unsupported_energy_and_id_combinations_fail_before_writes(self):
-        for extra in [('--beam', '9x130'), ('--femc', 'keep_xpos'), ('--femc', 'keep_yneg'),
+    def test_unsupported_id_and_batch_combinations_fail_before_writes(self):
+        for extra in [('--femc', 'keep_xpos'), ('--femc', 'keep_yneg'),
                       ('--job-flavour', 'bad\nqueue 50')]:
             with self.subTest(extra=extra), self.assertRaises(ValueError):
                 jobs.plan(self.args('--write', *extra))
@@ -66,6 +67,43 @@ class ProductionPlanTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'identify 2S'):
             jobs.plan(self.args('--write', '--state', '2S'))
         self.assertFalse(self.work.exists())
+
+    def test_beam_labels_must_match_before_planning(self):
+        for label in ('9x130', '9To130', '10on100'):
+            with self.subTest(label=label):
+                file = self.input.with_name(f'Upsilon1S_{label}_q2_0to0.01.root')
+                file.touch()
+                self.inputs.write_text(str(file) + '\n')
+                with self.assertRaisesRegex(ValueError, 'conflicts with 9x275'):
+                    jobs.plan(self.args('--write'))
+                self.assertFalse(self.work.exists())
+
+    def test_130_job_freezes_dedicated_macro_under_original_name(self):
+        input130 = self.input.with_name('Upsilon1S_9x130_q2_0to1.root')
+        self.input.rename(input130)
+        self.inputs.write_text(str(input130) + '\n')
+        path = self.create('--beam', '9x130')
+        job = jobs.load_job(path)
+        source = ROOT / 'production/macros/9x130/DVMP_Upsilon_Analysis.C'
+        snapshot = Path(job['macro_dir'])
+        self.assertEqual(job['beam'], '9x130')
+        self.assertEqual((snapshot / jobs.PRODUCER).read_bytes(), source.read_bytes())
+        self.assertEqual(job['source_hashes'][jobs.PRODUCER], jobs.sha256(source))
+        self.assertNotEqual(job['source_hashes'][jobs.PRODUCER], jobs.sha256(source.parent.parent / jobs.PRODUCER))
+        for helper in ('ElectronFinder.C', 'ePICStyle.h', 'ePICStyle.C'):
+            self.assertEqual((snapshot / helper).read_bytes(), (source.parent.parent / helper).read_bytes())
+        with patch.object(jobs.subprocess, 'run') as execute, redirect_stdout(io.StringIO()):
+            jobs.worker(SimpleNamespace(job=path, execute=False))
+        execute.assert_not_called()
+        self.assertIn(str(snapshot / jobs.PRODUCER), jobs.root_command(job)[-1])
+
+        # A relabelled plan cannot run a frozen source with the other energy.
+        for record in (path, self.work / 'plan.json'):
+            spec = json.loads(record.read_text())
+            spec['beam'] = '9x275'
+            record.write_text(json.dumps(spec))
+        with self.assertRaisesRegex(ValueError, 'beam constant E_p_beam conflicts'):
+            jobs.load_job(path)
 
     def test_write_freezes_sources_and_worker_dryrun_does_not_execute(self):
         path = self.create()
@@ -125,7 +163,7 @@ class ProductionPlanTest(unittest.TestCase):
         with uproot.recreate(self.input) as output:
             output.mktree('events', {'event': 'int64'})
             output['events'].extend({'event': np.arange(4)})
-        path = self.create()
+        path = self.create('--beam', '9x130')
         job = jobs.load_job(path)
 
         def write_tuple(destination, count=4, generated=4):
@@ -155,6 +193,8 @@ class ProductionPlanTest(unittest.TestCase):
             jobs.merge(SimpleNamespace(batch=self.work, output=out, execute=False))
         execute.assert_not_called()
         self.assertFalse(out.exists())
+        with self.assertRaisesRegex(ValueError, 'conflicts with 9x130'):
+            jobs.merge(SimpleNamespace(batch=self.work, output=self.base / '9x275.root', execute=False))
 
         def fake_hadd(command, setup, **kwargs):
             self.assertEqual(command[0:2], ['hadd', str(out)])
@@ -166,7 +206,10 @@ class ProductionPlanTest(unittest.TestCase):
 
         with patch.object(jobs, 'run_with_setup', side_effect=fake_hadd), redirect_stdout(io.StringIO()):
             jobs.merge(SimpleNamespace(batch=self.work, output=out, execute=True))
-        self.assertEqual(json.loads(out.with_name(out.name + '.merge.json').read_text())['status'], 'DONE')
+        merge_record = json.loads(out.with_name(out.name + '.merge.json').read_text())
+        self.assertEqual(merge_record['status'], 'DONE')
+        self.assertEqual(merge_record['beam'], '9x130')
+        self.assertEqual(merge_record['source_hashes'], job['source_hashes'])
         with uproot.open(out) as source:
             self.assertEqual(source['UpsilonTree']['weight'].array(library='np').sum(), 20.)
         with redirect_stdout(io.StringIO()), self.assertRaises(FileExistsError):

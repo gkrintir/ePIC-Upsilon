@@ -1,0 +1,79 @@
+{
+  "dataset": "Upsilon(2S), 9x130 GeV",
+  "archive_sha256": "5e6297cf6a0de81e6644203b3c9c1cf282f0d812afb72fe255f21c0ab2b028e7",
+  "submission": {
+    "job_timezone": "Europe/Zurich",
+    "dates": [
+      "2026-10-21",
+      "2026-10-22"
+    ],
+    "universe": "vanilla",
+    "wrapper": "condor_wrapper.sh",
+    "worker": "run_Upsilon_Analysis_new_condor.sh",
+    "queue": "one process per input list",
+    "arguments": [
+      "input_list",
+      "output_directory"
+    ],
+    "image_selector": "eic_xl:nightly",
+    "requested_cpus": 1,
+    "requested_memory_MB": 500,
+    "requested_disk_MB": 500,
+    "JobFlavour": "longlunch",
+    "macro_arguments": [
+      "input_filename",
+      "output_filename"
+    ]
+  },
+  "jobs": {
+    "processes": 76,
+    "exited_zero": 76,
+    "unique_reconstructed_inputs": 10583,
+    "distinct_output_paths_with_write_log": 10583,
+    "events_per_logged_input": 100,
+    "logged_events": 1058300,
+    "femc_mode_logged": 0,
+    "femc_eta_split_logged": 1.68,
+    "electron_id_mode_logged": 1,
+    "electron_e_over_p_range": [
+      0.8,
+      1.2
+    ],
+    "min_track_linked_isolation": 0.9,
+    "isolation_cone": 0.4,
+    "aggregate_id_counts": {
+      "ele_id_nMatched": 1582986,
+      "ele_id_nMissing": 1080934,
+      "ele_id_nMasked": 0,
+      "ele_id_nAmbiguous": 20985
+    }
+  },
+  "merged_tuple_check": {
+    "sha256": "c412e289e05b5762602900bf45dbcc6fea109a5def5ce10b9f67fce1ce4438f6",
+    "entries": 1058300,
+    "block_size": 100,
+    "blocks": 10583,
+    "multiset_matches": 10583,
+    "matches_in_submission_list_order": 9,
+    "matches_in_lexicographic_output_filename_order": 10583,
+    "distinct_logged_signatures": 3065,
+    "unique_signatures_in_logged_inputs": 1201,
+    "largest_signature_multiplicity": 25,
+    "signature_order": [
+      "ele_id_nMatched",
+      "ele_id_nMissing",
+      "ele_id_nMasked",
+      "ele_id_nAmbiguous"
+    ],
+    "signature_encoding": "ASCII decimal integers separated by commas, LF after every 100-event block; no header.",
+    "merged_signature_sha256": "f431ffbdd7e77d0989be2ba9f5984569eb8279fdc9cdf0f06c86c7a0c420580d",
+    "submission_order_signature_sha256": "e00c92550378066abf3065bc59b03b683aed0780658fc90a799d9c34feb21dfa",
+    "lexicographic_output_filename_signature_sha256": "f431ffbdd7e77d0989be2ba9f5984569eb8279fdc9cdf0f06c86c7a0c420580d"
+  },
+  "limits": [
+    "Worker logs associate reconstructed inputs with tuple-write messages and electron-ID totals. No original merge command or intermediate-file checksums were recovered.",
+    "Different inputs can produce the same four counts. Their contents cannot be identified uniquely from those counts alone.",
+    "The selected software image was a floating nightly. Its historical immutable digest and the exact producer source checksum at each execution remain unknown."
+  ],
+  "input_list_sha256": "9a0266c8143f5a400be3564703446fc53a4ff5bb91b0ffbc790d60fd84ac49a1"
+}

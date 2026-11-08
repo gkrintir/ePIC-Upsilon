@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """New, explicit shared-filesystem production planner; never submits Condor jobs.
 
-The recovered macro is preserved byte-for-byte and supports only the declared
-9x275 beam here. These wrappers are not the historical CERN production scripts.
+Each beam uses its own recovered, byte-exact tuple macro. Each batch freezes
+the selected macro, its shared helpers and the worker script.
 """
 import argparse
 from datetime import datetime, timezone
@@ -19,7 +19,9 @@ import sys
 
 PRODUCTION = Path(__file__).resolve().parent
 REPO = PRODUCTION.parent
-MACROS = ('DVMP_Upsilon_Analysis.C', 'ElectronFinder.C', 'ePICStyle.C', 'ePICStyle.h')
+PRODUCER = 'DVMP_Upsilon_Analysis.C'
+PRODUCERS = {'9x275': 'macros/' + PRODUCER, '9x130': 'macros/9x130/' + PRODUCER}
+MACROS = (PRODUCER, 'ElectronFinder.C', 'ePICStyle.C', 'ePICStyle.h')
 SCENARIOS = ('full', 'remove_inner', 'remove_outer', 'keep_xpos', 'keep_yneg')
 
 
@@ -73,7 +75,14 @@ def submit_text(info, jobs):
     return '\n'.join(lines) + '\n'
 
 
-def input_records(path, state, hash_inputs=False):
+def check_beam_label(path, beam):
+    # Campaign names include both 9x130 and 9To130, beside cuts such as q2_0to1.
+    for electron, proton in re.findall(r'(?<!\d)(5|9|10|18)(?:x|on|to)(41|100|130|250|275)(?!\d)', str(path), re.I):
+        if f'{int(electron)}x{int(proton)}' != beam:
+            raise ValueError(f'Beam label {electron}x{proton} conflicts with {beam}: {path}')
+
+
+def input_records(path, state, hash_inputs=False, *, beam=None):
     lines = [line.strip() for line in Path(path).read_text().splitlines()
              if line.strip() and not line.lstrip().startswith('#')]
     if not lines:
@@ -82,7 +91,10 @@ def input_records(path, state, hash_inputs=False):
     if len(set(paths)) != len(paths):
         raise ValueError('Duplicate input ROOT files would duplicate events')
     records = []
-    for p in paths:
+    for line, p in zip(lines, paths):
+        if beam is not None:
+            check_beam_label(line, beam)
+            check_beam_label(p, beam)
         if not p.is_file() or p.suffix != '.root':
             raise ValueError('Expected a mounted, existing .root file: ' + str(p))
         # Match the preserved producer path-based state inference exactly.
@@ -97,24 +109,28 @@ def input_records(path, state, hash_inputs=False):
     return records
 
 
-def verify_macro_sources():
+def verify_beam_constants(path, beam):
+    text = path.read_text()
+    electron, proton = map(float, beam.split('x'))
+    for name, value in [('E_e_beam', electron), ('E_p_beam', proton)]:
+        match = re.search(r'^\s*const double\s+' + name + r'\s*=\s*([0-9.]+)\s*;', text, re.M)
+        if not match or float(match.group(1)) != value:
+            raise ValueError(f'Producer beam constant {name} conflicts with {beam}: {path}')
+
+
+def verify_macro_sources(beam='9x275'):
     sources = json.loads((PRODUCTION / 'sources.json').read_text())
     expected = {row['path']: row['sha256'] for row in sources['files']}
-    for name in MACROS:
-        path = PRODUCTION / 'macros' / name
-        if sha256(path) != expected['macros/' + name]:
-            raise ValueError('Recovered macro changed; audit a new producer revision before planning: ' + name)
-    text = (PRODUCTION / 'macros/DVMP_Upsilon_Analysis.C').read_text()
-    for name, value in [('E_e_beam', 9.), ('E_p_beam', 275.)]:
-        match = re.search(r'const double\s+' + name + r'\s*=\s*([0-9.]+)', text)
-        if not match or float(match.group(1)) != value:
-            raise ValueError('Unrecognized producer beam constants')
-    return expected
+    selected = {name: 'macros/' + name for name in MACROS}
+    selected[PRODUCER] = PRODUCERS[beam]
+    for relative in selected.values():
+        if sha256(PRODUCTION / relative) != expected[relative]:
+            raise ValueError('Recovered macro changed; audit a new producer revision before planning: ' + relative)
+    verify_beam_constants(PRODUCTION / selected[PRODUCER], beam)
+    return selected, {name: expected[relative] for name, relative in selected.items()}
 
 
 def plan(args):
-    if args.beam != '9x275':
-        raise ValueError('9x130 production is BLOCKED: the recovered macro hardcodes 9x275. Supply/audit the actual per-energy producer before regenerating samples.')
     if args.femc in ('keep_xpos', 'keep_yneg') and args.electron_id != 'legacy':
         raise ValueError('The preserved producer supports half-plane modes only with legacy electron ID')
     if not math.isfinite(args.eta_split) or args.eta_split <= 0:
@@ -129,8 +145,8 @@ def plan(args):
     if work.exists() or work.is_symlink():
         raise FileExistsError('Use a fresh work directory; existing work is unchanged: ' + str(work))
     validate_work_location(work)
-    records = input_records(args.input_list, args.state, args.hash_inputs)
-    source_hashes = verify_macro_sources()
+    records = input_records(args.input_list, args.state, args.hash_inputs, beam=args.beam)
+    selected_sources, source_hashes = verify_macro_sources(args.beam)
     setup = None
     if args.setup_script:
         setup_path = safe_path(args.setup_script).resolve()
@@ -138,13 +154,13 @@ def plan(args):
             raise FileNotFoundError(setup_path)
         setup = dict(path=str(setup_path), sha256=sha256(setup_path))
     info = dict(schema_version=1, kind='new_shared_filesystem_condor_plan',
-                producer_identity='recovered Oct18 source; not authenticated EOS production executable',
+                producer_identity='archived source: ' + selected_sources[PRODUCER],
                 beam=args.beam, state=args.state, data_version=args.data_version,
                 electron_id=args.electron_id, femc=args.femc, eta_split=args.eta_split,
                 memory_mb=args.memory_mb, disk_mb=args.disk_mb, job_flavour=args.job_flavour,
                 environment_label=args.environment_label, setup_script=setup,
                 input_list=str(Path(args.input_list).resolve()), inputs=records,
-                work_dir=str(work), repository_root=str(REPO), source_hashes={name: source_hashes['macros/' + name] for name in MACROS},
+                work_dir=str(work), repository_root=str(REPO), source_hashes=source_hashes,
                 worker_sha256=sha256(__file__), created_utc=datetime.now(timezone.utc).isoformat(),
                 normalization='Historical per-job weights; merge does not normalize. Run framework preparation/audit before yields.',
                 job_count=len(records))
@@ -154,8 +170,8 @@ def plan(args):
         return 0
     work.mkdir(parents=True, exist_ok=False)
     (work / 'snapshot/macros').mkdir(parents=True)
-    for name in MACROS:
-        shutil.copyfile(PRODUCTION / 'macros' / name, work / 'snapshot/macros' / name)
+    for name, relative in selected_sources.items():
+        shutil.copyfile(PRODUCTION / relative, work / 'snapshot/macros' / name)
     shutil.copyfile(__file__, work / 'snapshot/jobs.py')
     launcher = work / 'snapshot/run_job.sh'
     launcher.write_text('#!/usr/bin/env bash\nset -euo pipefail\nexec python3 -B "$(dirname "$0")/jobs.py" worker "$1" --execute\n')
@@ -217,8 +233,8 @@ def load_job(path):
     job = json.loads(path.read_text())
     if job.get('schema_version') != 1 or job.get('kind') != 'new_shared_filesystem_condor_plan':
         raise ValueError('Unrecognized job format')
-    if job['beam'] != '9x275':
-        raise ValueError('Recovered producer is 9x275-only')
+    if job['beam'] not in PRODUCERS:
+        raise ValueError('Unknown production beam: ' + str(job['beam']))
     work = Path(job['work_dir']).resolve()
     batch = json.loads((work / 'plan.json').read_text())
     index = job['job_id']
@@ -242,6 +258,7 @@ def load_job(path):
     for name in MACROS:
         if sha256(macro_dir / name) != job['source_hashes'][name]:
             raise ValueError('Macro snapshot hash mismatch: ' + name)
+    verify_beam_constants(macro_dir / PRODUCER, job['beam'])
     if sha256(__file__) != job['worker_sha256']:
         raise ValueError('Worker differs from the recorded plan')
     record = job['inputs'][0]
@@ -339,10 +356,15 @@ def merge(args):
     jobs = [load_job(p) for p in plan_data['jobs']]
     paths, expected = [], 0
     for job in jobs:
+        if Path(job['work_dir']).resolve() != plan_path.parent:
+            raise ValueError('Merge input job belongs to a different batch')
         result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
         path = Path(job['output'])
         if result.get('status') != 'DONE' or result.get('output') != str(path):
             raise ValueError('All declared jobs must have validated DONE outputs before merging')
+        for key in ('beam', 'state', 'source_hashes'):
+            if result.get(key) != job[key]:
+                raise ValueError('Job result differs from the planned ' + key)
         if sha256(path) != result['output_sha256']:
             raise ValueError('Output changed after job validation: ' + str(path))
         if root_counts(path, 'UpsilonTree') != result['output_rows']:
@@ -352,6 +374,7 @@ def merge(args):
     if not paths or len(set(paths)) != len(paths):
         raise ValueError('Empty or duplicate merge inputs')
     out = safe_path(args.output)
+    check_beam_label(out, plan_data['beam'])
     validate_work_location(out, plan_data['repository_root'])
     if out.exists() or out.is_symlink():
         raise FileExistsError('Merged output already exists; it will not be replaced')
@@ -372,6 +395,7 @@ def merge(args):
     lock_fd = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     os.close(lock_fd)
     result = dict(status='FAILED', command=command, expected_rows=expected, inputs=list(map(str, paths)),
+                  beam=plan_data['beam'], state=plan_data['state'], source_hashes=plan_data['source_hashes'],
                   normalization='Unchanged raw per-job weights. Normalize the complete merged sample in the framework.',
                   plan_sha256=sha256(plan_path))
     try:
@@ -404,7 +428,7 @@ def parser():
     a = sub.add_parser('plan', help='Inspect a production plan; --write creates job/Condor files')
     a.add_argument('--input-list', type=Path, required=True)
     a.add_argument('--work-dir', type=Path, required=True)
-    a.add_argument('--beam', choices=('9x130', '9x275'), required=True)
+    a.add_argument('--beam', choices=sorted(PRODUCERS), required=True)
     a.add_argument('--state', choices=('1S', '2S', '3S'), required=True)
     a.add_argument('--electron-id', choices=('legacy', 'reco'), required=True)
     a.add_argument('--femc', choices=SCENARIOS, default='full')
