@@ -2,7 +2,9 @@
 .trace-brand { text-decoration: none; color: inherit; }
 .trace-intro { max-width: 49rem; }
 .trace-intro h1 { margin: .25rem 0 .55rem; font: 600 clamp(2.45rem,5vw,4.3rem)/1.02 var(--serif,Georgia,serif); letter-spacing: -.045em; }
-.trace-intro > p:last-child, .trace-route-intro > p:last-child, #trace-detail { max-width: 67ch; line-height: 1.55; }
+.trace-intro > p:last-child, #trace-description, #trace-detail { max-width: 67ch; line-height: 1.55; }
+#trace-description a, #trace-more summary { color: var(--accent); }
+#trace-more summary { cursor: pointer; }
 .trace-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem 2.4rem; margin: 1.6rem 0 2rem; border-block: 1px solid var(--rule); padding: 1.05rem 0 1.2rem; font-family: var(--ui,sans-serif); }
 .trace-label { display: block; margin-bottom: .4rem; color: var(--muted); font-size: .85rem; font-weight: 650; }
 .trace-controls select { font: inherit; min-height: 44px; padding: .45rem .7rem; border: 1px solid var(--rule); border-radius: .28rem; color: var(--ink); background: var(--paper,white); cursor: pointer; }

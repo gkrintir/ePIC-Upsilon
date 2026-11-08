@@ -58,6 +58,27 @@
     return anchor;
   }
 
+  function showExplanation(host, text, result, usedSources) {
+    const paragraphs = text.split(/\n\s*\n/).map(paragraph => {
+      const p = document.createElement('p');
+      for (const part of data.referenceParts(paragraph)) {
+        if (typeof part === 'string') {
+          p.append(part);
+        } else if (Object.hasOwn(data.sources, part.target)) {
+          usedSources.add(part.target);
+          const route = data.routes[result];
+          const url = part.target === route.figure ? resultURL(route, result) : data.sources[part.target].url;
+          p.append(link(part.label, url));
+        } else {
+          const [key, stage] = part.target.split('/');
+          p.append(link(part.label, hash(key, stage)));
+        }
+      }
+      return p;
+    });
+    host.replaceChildren(...paragraphs);
+  }
+
   function render() {
     if (redirectFigure()) return;
     const {result, step} = locationState();
@@ -66,8 +87,9 @@
     const position = steps.indexOf(step);
     const atStage = item => hash(result, item.id);
     select.value = result;
-    byId('route-title').textContent = route.label;
-    byId('description').textContent = route.description;
+    byId('route-title').textContent = route.question;
+    const usedSources = new Set();
+    showExplanation(byId('description'), route.description, result, usedSources);
     const figureURL=resultURL(route,result);
     byId("references").replaceChildren(link(route.section+" · "+route.paper,figureURL));
     const boundary=byId("boundary");
@@ -106,15 +128,17 @@
     const progress = `Stage ${position + 1} of ${steps.length}`;
     byId('progress').textContent = progress;
     byId('title').textContent = step.title;
-    byId('detail').textContent = step.detail;
+    showExplanation(byId('detail'), step.detail, result, usedSources);
     byId('input').textContent = step.input;
     byId('output').textContent = step.output;
-    const sources = step.links.map(key => data.sources[key]).filter(Boolean).map(source => {
+    const sources = step.links.filter(key => !usedSources.has(key)).map(key => data.sources[key]).map(source => {
       const li = document.createElement('li');
       li.append(link(source.label,source === data.sources[route.figure] ? figureURL : source.url));
       return li;
     });
     byId('sources').replaceChildren(...sources);
+    byId('more').hidden = sources.length === 0;
+    byId('more').open = false;
     const neighbours = [];
     if (position > 0) {
       const prev = steps[position - 1];
@@ -136,10 +160,10 @@
     location.hash = hash(select.value, locationState().step.id);
   });
   let focusStage = false;
-  for (const id of ['stages', 'pagination']) {
+  for (const id of ['stages', 'pagination', 'description', 'detail']) {
     byId(id).addEventListener('click', event => {
       const anchor = event.target.closest('a');
-      if (!anchor || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      if (!anchor || !anchor.getAttribute('href').startsWith('#') || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       if (anchor.hash === location.hash) byId('title').focus();
       else focusStage = true;
     });

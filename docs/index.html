@@ -6,30 +6,30 @@
   <meta name="description" content="Follow each ePIC Upsilon analysis result from reconstruction through its paper figure, or trace the sources back from publication.">
   <title>Analysis guide · ePIC Υ Atlas</title>
   <link rel="stylesheet" href="./beams.css?v=8238dd774b46">
-  <link rel="stylesheet" href="./trace.css?v=e04710919341">
-  <script defer src="./trace-data.js?v=2530d0a87a59"></script>
+  <link rel="stylesheet" href="./trace.css?v=bae5e347e416">
+  <script defer src="./trace-data.js?v=7f2990ac458e"></script>
   <script defer src="./replay-directory.js?v=508bd681499c"></script>
   <script defer src="./trace-evidence.js?v=62581ff2e79e"></script>
   <script defer src="./trace-run.js?v=1ed83b597998"></script>
-  <script defer src="./trace.js?v=7c96f59b82c2"></script>
+  <script defer src="./trace.js?v=48d6b78351b4"></script>
 </head>
 <body>
   <a class="skip" href="#trace-main">Skip to analysis guide</a>
   <header class="mast"><div class="shell mast-inner"><a class="wordmark trace-brand" href="./index.html"><span class="mark" aria-hidden="true">Υ</span> ePIC / Υ analysis</a><a class="return" href="./figures.html#mass">Browse figures →</a></div></header>
   <main id="trace-main" class="shell trace-shell" tabindex="-1">
-    <div class="trace-intro"><p class="eyebrow">Υ(1S), Υ(2S) and Υ(3S) · Source guide</p><h1>How a result is made</h1><p>Follow the steps from reconstructed events to the figures and tables. Select any step to see its inputs, outputs and code.</p></div>
+    <div class="trace-intro"><p class="eyebrow">Υ(1S), Υ(2S) and Υ(3S)</p><h1>How a result is made</h1><p>Choose a result to follow the physics from reconstructed events to the figure or table.</p></div>
     <p id="trace-status" role="status">You can also <a href="https://github.com/gkrintir/ePIC-Upsilon#readme">read the analysis workflow on GitHub</a>.</p>
     <div id="trace-content" hidden>
       <section class="trace-controls" aria-label="Guide settings">
         <div><label for="trace-result" class="trace-label">Result</label><select id="trace-result"></select></div>
       </section>
-      <section aria-labelledby="trace-route-title" class="trace-route-intro"><p class="eyebrow">Selected result</p><h2 id="trace-route-title"></h2><div id="trace-references" class="trace-references"></div><p id="trace-description"></p></section>
+      <section aria-labelledby="trace-route-title" class="trace-route-intro"><h2 id="trace-route-title"></h2><div id="trace-description"></div><div id="trace-references" class="trace-references"></div></section>
       <div class="trace-layout">
         <nav aria-label="Analysis stages" class="trace-stage-nav"><h3>Stages</h3><ol id="trace-stages"></ol></nav>
         <article class="trace-panel" aria-labelledby="trace-title">
-          <p class="eyebrow" id="trace-progress"></p><h3 id="trace-title" tabindex="-1"></h3><p id="trace-detail"></p>
+          <p class="eyebrow" id="trace-progress"></p><h3 id="trace-title" tabindex="-1"></h3><div id="trace-detail"></div>
           <aside id="trace-boundary" class="trace-boundary" hidden></aside><div id="trace-preview"></div><dl class="trace-io"><div><dt>Input</dt><dd id="trace-input"></dd></div><div><dt>Output</dt><dd id="trace-output"></dd></div></dl>
-          <p id="trace-shortcut"></p><section aria-labelledby="trace-source-title"><h4 id="trace-source-title">Sources for this stage</h4><ul id="trace-sources"></ul></section>
+          <p id="trace-shortcut"></p><details id="trace-more"><summary>Additional references</summary><ul id="trace-sources"></ul></details>
           <nav class="trace-pagination" aria-label="Adjacent stages" id="trace-pagination"></nav>
         </article>
       </div>

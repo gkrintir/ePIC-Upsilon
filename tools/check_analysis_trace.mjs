@@ -75,6 +75,22 @@ function replayPath(template, figure) {
   return template;
 }
 
+function checkExplanation(text, data, where) {
+  nonempty(text, where);
+  const parts = data.referenceParts(text);
+  for (const part of parts) {
+    if (typeof part === "string") {
+      assert(!part.includes("]["), where + " contains a malformed reference");
+      continue;
+    }
+    if (Object.hasOwn(data.sources, part.target)) continue;
+    const [route, stage, extra] = part.target.split("/");
+    assert(!extra && data.routes[route]?.steps.some(step => step.id === stage),
+      where + " refers to an unknown source or stage: " + part.target);
+  }
+  return parts.some(part => typeof part !== "string");
+}
+
 function main(args) {
   assert(args.length === 0 || (args.length === 2 && args[0] === "--replay" && args[1]),
     "Usage: node tools/check_analysis_trace.mjs [--replay PATH]");
@@ -89,19 +105,22 @@ function main(args) {
   const filename = resolve(docs, "trace-data.js");
   const sandbox = {window: {}};
   runInNewContext(readFileSync(filename, "utf8"), sandbox, {filename, timeout: 1000});
-  const {referenceRevision, sources, routes} = sandbox.window.UPSiLON_TRACE;
+  const data = sandbox.window.UPSiLON_TRACE;
+  const {referenceRevision, sources, routes} = data;
   assert.match(referenceRevision, /^[a-f0-9]{40}$/, "Pin a full Git commit for trace sources");
   assert.deepEqual(Object.keys(routes).sort(), [...routeIds].sort(), "Unexpected trace routes");
   for (const [key, source] of Object.entries(sources)) checkSource(source, key, referenceRevision);
   const replayFiles = new Set();
   for (const route of routeIds) {
-    const {label, description, steps} = routes[route];
+    const {label, question, description, steps} = routes[route];
     nonempty(label, route + " label");
-    nonempty(description, route + " description");
+    nonempty(question, route + " question");
+    checkExplanation(description, data, route + " description");
     assert.deepEqual(Array.from(steps, step => step.id), stageIds, route + " must contain the five stages in order");
     for (const step of steps) {
       const where = route + "/" + step.id;
-      for (const key of ["title", "detail", "input", "output"]) nonempty(step[key], where + " " + key);
+      for (const key of ["title", "input", "output"]) nonempty(step[key], where + " " + key);
+      assert(checkExplanation(step.detail, data, where), where + " needs a source or stage in its explanation");
       assert(Array.isArray(step.links) && step.links.length, where + " requires source links");
       for (const key of step.links) assert(Object.hasOwn(sources, key), where + " has an unknown source: " + key);
       assert(Array.isArray(step.files ?? []), where + " files must be an array");

@@ -1,7 +1,7 @@
 /* Stages are listed in production order. Source links identify the checked
    implementation. Run files are relative to a local replay or state workspace. */
 (() => {
-  const referenceRevision = "301c1450a3d2cff7af8f7e155b7a06f0790143ae";
+  const referenceRevision = "777c5a04f11e1cf645df1a71c668ebd677f6f05d";
   const git = "https://github.com/gkrintir/ePIC-Upsilon/";
   const src = (label, path) => ({label, url:git+"blob/"+referenceRevision+"/"+path});
   const guide = src;
@@ -30,13 +30,19 @@
     selection: src("Apply the reconstructed proton requirement","analysis/workflow/proton_selection.py#L41-L63"),
     calibrated: src("Build per-state mass spectra and calibrations","analysis/scripts/validation/plot_latest_sample_performance.py#L337-L366"),
     jointFit: src("Fit the combined spectrum",plot+"reconstruction.py#L63-L125"),
+    combineBins: src("Read the three spectra and combine adjacent mass bins",plot+"reconstruction.py#L148-L213"),
     intervals: src("Profile yields and core-width intervals",plot+"mass_fit_intervals.py#L147-L217"),
     nb07: src("Notebook 07 · combined fit and efficiency maps","plotting/07_mass_and_efficiency_w_xv.ipynb"),
     maps: src("Map producer · truth, pretag and tagged masks","extensions/efficiency/diagnostics/final_maps.py#L23-L44"),
+    mapCounts: src("Count the same events before and after selection in each truth bin","extensions/efficiency/diagnostics/final_maps.py#L106-L154"),
     mapRun: src("Run the map producer and set the original 1S input","paper/maps.py#L16-L46"),
     mapCheck: src("Collect both map tables and check their cells","paper/maps.py#L57-L75"),
     load: src("Read the tuples and define the response sample",optimize+"data.py#L420-L448"),
     bins: src("Choose fit bins on training events",optimize+"response.py#L422-L455"),
+    response: src("Count selected events by generated and reconstructed bin",optimize+"response.py#L239-L300"),
+    inferenceChoice: src("Pass the response and held-out sample to the fit","analysis/workflow/run_reoptimization.py#L292-L310"),
+    foldedShape: src("Fold a trial exponential through the detector response",optimize+"inference.py#L119-L143"),
+    fluxScaling: src("Convert fitted yields to cross sections",optimize+"data.py#L174-L224"),
     slope: src("Fit the slope and run its checks",optimize+"inference.py#L571-L651"),
     spectral: src("Infer the spectrum and check coverage",optimize+"inference.py#L921-L960"),
     profile: src("Paper plot settings and display-bin rule","configs/plots_9x275.paper.json"),
@@ -51,6 +57,9 @@
     stats: guide("Validation by observable","docs/validation.md"),
     beamGuide: guide("Run the two-energy comparison","docs/figure-explorer.md#two-energy-kinematics"),
     beamMasks: src("Build truth and reconstructed selections","analysis/scripts/reporting/render_note_kinematics.py#L45-L82"),
+    beamBranches: src("Store the reconstructed meson and lepton kinematics",macro+"#L727-L741"),
+    beamYields: src("Sum selected event weights in each bin","analysis/scripts/reporting/render_note_kinematics.py#L234-L260"),
+    beamWindows: src("Reconstructed W range for each beam","analysis/config/pipeline_note_latest.toml#L40-L57"),
     beamPlot: src("Build the two-energy histogram pages","analysis/scripts/reporting/render_note_kinematics.py#L464-L518"),
     beamTask: src("Inputs and output directory of the comparison task","analysis/config/pipeline_note_latest.toml#L1556-L1601"),
     beamExport: src("Read the original figure PDFs, numerical bins and audit","tools/export_explorer_beams.py"),
@@ -77,82 +86,99 @@
   const tuples = (title,output,detail,files=audits) => step("tuple",title,"Per-job UpsilonTree and h_EventCount",
     output,detail,["input","fetch","normalize","merge","cards"],files);
   const nominalTuples = () => tuples("Merge and normalize the tuples","One normalized 9×275 ROOT file per Υ state",
-    "Merge the per-job files separately for each state. The paper replay starts from those merged files, verifies their SHA-256 values and writes normalized copies using all generated events.");
+    "Each simulation job was weighted to represent the full luminosity. Simply adding the jobs would count the same projected rate several times. After the [per-state merge][merge], the replay [checks the input files][replayInputs] and [sets the weight per generated event][normalize] using the visible dielectron cross section and the total number generated. Events that fail reconstruction still belong in that total.\n\nThe mass and spectrum calculations use these weights for expected event counts. The [1S efficiency maps][efficiency/analysis] use counts of simulated decays before and after selection.");
   const sharedReopt = "Normalized state tuples with generator truth, reconstructed kinematics and the recoil-proton tag";
   const pub = (title,input,output,detail,links,files) => step("publication",title,input,output,detail,links,files);
 
   const routes = {
     mass: {
       label:"Three-state mass fit", section:"AN §2.5 · Fig. 7 (continued), Table 8", paper:"Paper Fig. 18(a)",figure:"viewMass",preview:"plots/mass.webp",
-      description:"How a reconstructed decay pair becomes a fitted yield and core width for each Υ state.",
+      question:"How many events can we assign to each Υ peak in the same dielectron spectrum?",
+      description:"Simulating each state separately lets us calibrate its reconstructed line shape. Fitting those shapes to the summed mass spectrum gives a projected yield for each state in the proton-tagged 9×275 GeV sample at 2.5 fb⁻¹.",
       steps:[
         reco("Build event tuples","Per-job UpsilonTree with reco_mass, reco_topology and reco_tagged_proton_p",
-          "ElectronFinder matches tracks to calorimeter clusters. The tuple macro assigns the scattered electron and an opposite-sign decay pair, then stores the pair’s mass and the proton-candidate branches.",["match","id","decay","tag"]),
+          "The final state contains both a scattered electron and an electron from the Υ decay. After [electron identification][id], the tuple macro [assigns the scattered electron and the decay pair][decay]. It saves the pair’s invariant mass and [records whether a recoil proton was reconstructed][tag], so the analysis can build the mass spectrum for the tagged sample.",["match","id","decay","tag"]),
         nominalTuples(),
         step("analysis","Calibrate each Υ peak","9x275_normalized.root for 1S, 2S and 3S","mass_bins.csv + mass_fit.json for each state",
-          "Apply the tagged selection and fill a mass histogram for each state. The per-state fits supply the tails and relative widths for the joint fit.",["replayInputs","selection","calibrated"],states.flatMap(s=>[perf(s)+"mass_bins.csv",perf(s)+"mass_fit.json"])),
+          "In a sample containing only one generated Υ state, the spread of reconstructed masses measures that state’s line shape. After the [proton tag][selection], the [per-state analysis][calibrated] fits the unweighted selected masses and separately fills a histogram with the expected yield at 2.5 fb⁻¹. For the [combined fit][mass/plot], mass_fit.json supplies the peak widths and tails, while mass_bins.csv supplies the expected events in each bin.",["replayInputs","selection","calibrated"],states.flatMap(s=>[perf(s)+"mass_bins.csv",perf(s)+"mass_fit.json"])),
         step("plot","Combined fit and figure","Three saved mass histograms and their calibrations","Mass panel, mass_fit_table.csv and mass_fit_intervals.json",
-          "Notebook 07 fits the three peaks together with a common mass shift and width scale. It profiles the yields and core widths, writes the fit table and saves the figure.",["nb07","jointFit","intervals"],["@fitDir/mass_fit_table.csv","@fitDir/mass_fit_intervals.json","@figure"]),
+          "An event in the tail of one peak can fall under its neighbour. Notebook 07 [adds the three expected spectra in 50 MeV bins][combineBins] and uses the [single-state calibrations][mass/analysis] to describe the overlap. The [joint fit][jointFit] fixes the mass separations, tail shapes and relative widths. It lets the three yields vary independently, with one common mass shift and one common width scale.\n\nTo get the uncertainty on the 1S yield, the [interval calculation][intervals] holds that yield at a trial value and refits the other four parameters. The points where the Poisson deviance rises by one give the lower and upper errors beside 66.9 events in [Table 8][mass/publication].",["nb07","combineBins","jointFit","intervals"],["@fitDir/mass_fit_table.csv","@fitDir/mass_fit_intervals.json","@figure"]),
         pub("Analysis note and paper","Combined mass panel and fit table","AN Fig. 7 (continued), Table 8 and paper Fig. 18(a)",
-          "The combined fit appears on the final page of Fig. 7 in the analysis note and in Fig. 18(a) of the paper. Table 8 gives the fitted yield and Gaussian core width for each state.",["viewMass","paperRun"],["@figure","paper_replay.json"])
+          "The final page of AN Fig. 7 and [paper Fig. 18(a)][viewMass] show the fitted spectrum. From that same fit, Table 8 gives a Υ(1S) yield of 66.9 (+8.8/−8.1) expected events and a Gaussian core width of 58.4 (+8.9/−7.6) MeV. These are projected statistical uncertainties assuming signal only and fixed MC tail shapes. All three widths depend on the same fitted scale, so their fractional uncertainties are fully correlated.",["viewMass","paperRun"],["@figure","paper_replay.json"])
       ]},
     efficiency: {
       label:"Tagged 1S efficiency maps",section:"AN §2.7 · Fig. 13",paper:"Paper Fig. 18(b,c)",figure:"viewEff",preview:"plots/mass.webp",
-      description:"Follow an eligible simulated 1S decay into the denominator, then through reconstruction and the proton tag into the numerator.",
+      question:"How does the probability of reconstructing a proton-tagged Υ(1S) vary across phase space?",
+      description:"In each bin of generated kinematics, count the eligible decays and how many survive each selection. The fraction that reaches the tagged sample gives the efficiency for that bin.",
       steps:[
         reco("Record truth and reconstructed candidates","true_pT, true_y, true_Q2, true_W; reco_mass and proton tag",
-          "Generator branches locate each decay in a truth bin. The reconstructed pair and proton branches determine whether that same row survives the cuts. Unreconstructed decays remain in the tuple.",["entry","tag","fill"]),
-        tuples("Merge the 1S tuples","Original merged 9×275 1S ROOT file","The map producer reads the original merged 9×275 1S tuple. Each efficiency cell counts simulated events. The mass panel drawn alongside the maps uses normalized weights from the three state inputs.",[audits[0]]),
+          "The denominator must include eligible decays even when reconstruction loses an electron. The tuple macro [writes an event row][fill] with the generated kinematics in either case. When it finds a candidate, it also [records the reconstructed mass and proton information][tag]. This lets the map count a selected event in the same truth bin as its generated decay.",["entry","tag","fill"]),
+        tuples("Merge the 1S tuples","Original merged 9×275 1S ROOT file","The [merge][merge] collects the simulated 1S events across jobs. The [efficiency calculation][efficiency/analysis] needs integer counts in that sample, so it reads the original merged tuple. The [mass fit][mass/analysis] uses luminosity weights because its histogram predicts how many events the experiment would see.",[audits[0]]),
         step("analysis","Count eligible, pretag and tagged events","Original merged 1S tuple and the final-selection definition","final_efficiency_2d.csv and selection_audit.json",
-          "The efficiency extension accumulates integer counts in truth coordinates, including pT and rapidity. A cell with zero eligible entries has undefined efficiency.",["maps","mapRun","selection"],[mapbase+"tables/final_efficiency_2d.csv",mapbase+"selection_audit.json"]),
+          "The [selection code][maps] first identifies eligible decays using generated mass, Q² and W. It then selects reconstructed candidates using the dielectron mass, W and the event’s E − pz balance, and finally requires a reconstructed recoil proton. For each truth bin the [accumulator][mapCounts] saves all three counts, so one can distinguish losses in reconstructing and selecting the leptons from losses at the proton tag.",["maps","mapCounts","mapRun","selection"],[mapbase+"tables/final_efficiency_2d.csv",mapbase+"selection_audit.json"]),
         step("plot","Build the two displayed maps","Saved pT–rapidity counts and the original 1S tuple","reconstruction/efficiency_cells.csv + panels (b,c)",
-          "Notebook 07 reads the saved pT–rapidity map. It reopens the original tuple to calculate W and xᵥ jointly. The replay collects both grids and checks the numerator, pretag count and denominator in every cell.",["nb07","mapCheck"],["reconstruction/efficiency_cells.csv","@figure"]),
+          "[Notebook 07][nb07] can draw the pT–rapidity map directly from the saved bin counts. To find the efficiency at a particular pair of W and xᵥ values, it needs both quantities for the same decay. It therefore reopens the original 1S tuple and counts events on that grid with the same selections. The [replay checks both grids][mapCheck] before exporting the numerator, denominator and pretag count for each cell.",["nb07","mapCheck"],["reconstruction/efficiency_cells.csv","@figure"]),
         pub("Analysis note and paper","Reconstruction figure · panels (b,c)","AN Fig. 13 and paper Fig. 18(b,c)",
-          "Panel (b) uses true pT and laboratory rapidity; panel (c) uses true W and xᵥ. The AN distinguishes the phase-space average from the conditional proton-tag efficiency. Both maps share paper label fig:upsilon_es_reconstruction.",["viewEff","paperRun"],["@figure","reconstruction/efficiency_cells.csv"])
+          "Across the eligible sample, 220,772 of 1,126,936 decays pass the lepton selection and 144,473 also have a recoil-proton tag. Thus 12.82% of eligible decays pass the full selection, and 65.44% of candidates already passing the lepton selection retain a tag. AN Fig. 13 and [paper Fig. 18(b,c)][viewEff] show the first fraction bin by bin, as a function of pT and rapidity or W and xᵥ.",["viewEff","paperRun"],["@figure","reconstruction/efficiency_cells.csv"])
       ]},
     w: {
       label:"Cross section versus W",section:"AN §2.9 · Fig. 14; Appendix B",paper:"Paper Fig. 19",figure:"viewW",preview:"plots/w.webp",
-      description:"Follow the scattered-electron measurement into reco_W, the response matrix, and the flux-normalized spectrum.",
+      question:"How does the Υ production cross section vary with photon–proton energy?",
+      description:"Figure 19 gives a cross section averaged over the photon flux in each W interval. The [mass fit][mass/plot] gives one yield per state integrated over W. For the spectrum, the framework returns to the same simulated events and [infers a separate yield in each W bin][w/analysis].",
       steps:[
         reco("Reconstruct the photon–proton energy","true_W, reco_W, true_Q2, recoil-proton tag",
-          "The recovered macro uses the electron method above yₑ = 0.045 and the double-angle estimate otherwise. It keeps the generated and reconstructed W for the response calculation.",["kine","tag"]),
+          "An event generated in one W interval can be reconstructed in another. The tuple stores both values for the same event. To [estimate reconstructed W][kine], the macro uses the scattered electron when the electron-method inelasticity yₑ exceeds 0.045 and the double-angle estimate otherwise.",["kine","tag"]),
         nominalTuples(),
         step("analysis","Infer the W spectrum",sharedReopt,"Per-state w/result.json, response matrices and validation_status.csv",
-          "Training events define bins and the response. Held-out events and toy studies check inference. The visible dielectron result is converted using the branching fraction and the photon flux in each state’s W bin.",["load","bins","spectral","flags"],[...states.map(s=>reopt+s.toUpperCase()+"/w/result.json"),reopt+"validation_status.csv"]),
+          "This projection starts from the [same normalized tuples as the mass fit][mass/tuple]. Each simulated sample contains one Υ state. The [selection][load] counts tagged dielectron candidates in reconstructed W bins. Training events [set the fit bins][bins] and [determine the response][response]. The [1S efficiency map][efficiency/analysis] gives the fraction of decays that survive in each generated bin. The W response gives the fraction that survives into each reconstructed W bin, separately for each Υ state.\n\nThe [spectrum fit][spectral] varies the generated yields until the predicted reconstructed counts describe the held-out sample. To [obtain a γp cross section][fluxScaling], divide each fitted yield by the luminosity, the dielectron branching fraction and the photon flux integrated over that W bin.",["load","bins","response","spectral","fluxScaling","flags"],[...states.map(s=>reopt+s.toUpperCase()+"/w/result.json"),reopt+"validation_status.csv"]),
         step("plot","Apply the paper’s display bins","Saved W inference, covariance, toys and plot profile","upsilon_es_w_cross_section.pdf and displayed_points.csv",
-          "The replay calls the same renderer as notebook 02. For 1S it keeps the outer fit bins and combines the interior bins with the joint toys; the plotting step does not refit the response.",["wrender","nbw","profile","rebin"],[wPdf,"spectra/w/upsilon_es_w_cross_section_points.csv","spectra/displayed_points.csv"]),
+          "For 1S, the [paper binning][profile] keeps the two outer bins and combines the interior bins into 40–60 GeV. To obtain its cross section, the [plotting code][rebin] adds the fitted yields and divides by the combined flux with the same luminosity and branching fraction. It sums the bins in each simulated repeat of the fit before taking quantiles, preserving correlations in the displayed band.",["wrender","nbw","profile","rebin"],[wPdf,"spectra/w/upsilon_es_w_cross_section_points.csv","spectra/displayed_points.csv"]),
         pub("Analysis note and paper","State-resolved W figure and its validation record","AN Fig. 14, Table 14 and paper Fig. 19",
-          "The projected W spectra reproduce the reference points and bands. All three states failed coverage for alternative injected spectra. The supplied manuscript uses fig:upsilon_es_w.",["viewW","stats","paperCheck"],[wPdf,reopt+"validation_status.csv","spectra/comparison.json"])
+          "In the [W spectrum][viewW], the middle 1S point is 101.7 pb for 40–60 GeV. Its 78.0–125.3 pb band shows the spread of the fitted estimates in repeated signal-only samples. The [replay checks the point and both endpoints][paperCheck]. In a separate [coverage check][stats], the W intervals for all three states failed the required coverage for alternative generated spectra.",["viewW","stats","paperCheck"],[wPdf,reopt+"validation_status.csv","spectra/comparison.json"])
       ]},
     differential: {
       label:"pT² slope and rapidity spectra",section:"AN §2.9 · Fig. 15; Appendices B–C",paper:"Paper Fig. 20(a,b)",figure:"viewDiff",preview:"plots/differential.webp",
-      description:"Distinguish the slope of the dielectron pT² spectrum from a fit targeting true momentum transfer.",
+      question:"How steeply does the Υ spectrum fall with pT², and how does production vary with rapidity?",
+      description:"Both panels use the reconstructed decay pair. Panel (a) extracts a slope from the pT² distribution. Panel (b) estimates the yield separately in each rapidity bin.",
       steps:[
         reco("Reconstruct the Υ four-momentum","true_pT, reco_pT, true_y, reco_y, recoil-proton tag",
-          "The decay-pair four-vector gives the meson pT and rapidity. The proton candidate selects tagged events; it is not the momentum used for the dielectron pT² spectrum.",["decay","tag"]),
+          "The macro [assigns the two decay tracks][decay] and sums their four-momenta. That sum gives the reconstructed Υ pT and laboratory rapidity. The [recoil-proton candidate][tag] selects tagged events. Keeping the generated meson kinematics on the same row lets the analysis measure how often the reconstructed pair lands in a different bin.",["decay","tag"]),
         nominalTuples(),
         step("analysis","Fit the slope and the rapidity bins",sharedReopt,"pt2/result.json, y/result.json and validation_status.csv",
-          "The paper’s slope targets true pT² using reconstructed pT². The separate abs_t_via_pt2 case targets true |t|. Rapidity uses spectrum inference and the paper divides the ep spectrum by the state’s integrated photon flux.",["load","bins","slope","spectral"],[reopt+"1S/pt2/result.json",reopt+"1S/abs_t_via_pt2/result.json",reopt+"1S/y/result.json",reopt+"validation_status.csv"]),
+          "The [analysis driver][inferenceChoice] uses the same training and validation split as the [W analysis][w/analysis] and builds a response for each observable. For each trial slope b, it [folds an exponential in true pT² through the response][foldedShape] to predict the reconstructed shape. The [fit][slope] allows the signal normalization to vary and includes a fixed MC estimate of signal migrating in from outside the fitted true-pT² range.\n\nFor rapidity, the [fit][spectral] allows the yield in each truth bin to vary independently. Dividing by luminosity, the branching fraction and the bin width gives dσ(ep)/dy. For the paper, the [conversion to the plotted quantity][fluxScaling] also divides by the photon flux integrated over that state’s W and Q² window.",["load","bins","inferenceChoice","foldedShape","slope","spectral","fluxScaling"],[reopt+"1S/pt2/result.json",reopt+"1S/abs_t_via_pt2/result.json",reopt+"1S/y/result.json",reopt+"validation_status.csv"]),
         step("plot","Draw the available fits","Saved pT² and rapidity cases + 1S slope profile","upsilon_es_differential.pdf, slopes and per-bin points",
-          "Notebook 03 and the command-line renderer use the saved fits. The rapidity panel merges the interior 1S bins for display. Excited states without a feasible pT² fit have no slope point.",["drender","nbd","profile","rendercli"],[diffPdf,"spectra/differential/upsilon_es_slopes.csv","spectra/differential/upsilon_es_differential_points.csv"]),
+          "In panel (a), the [renderer][drender] reads the saved binwise pT² estimates for the spectrum and the separate exponential fit for the slope inset. Only 1S satisfies the binning criteria for a slope. In rapidity, the [display merge][rebin] sums the interior 1S yields and divides by the merged bin width. The 2S and 3S points keep their fitted bins.",["drender","nbd","profile","rebin","rendercli"],[diffPdf,"spectra/differential/upsilon_es_slopes.csv","spectra/differential/upsilon_es_differential_points.csv"]),
         pub("Analysis note and paper","Differential figure, profile limits and statuses","AN Fig. 15 and paper Fig. 20(a,b)",
-          "The 1S pT² slope passed the conditional, signal-only checks. The rapidity spectra failed coverage; the true-|t| fit failed tail-shape closure. The supplied manuscript uses fig:upsilon_es_t.",["viewDiff","stats","paperCheck"],[diffPdf,reopt+"validation_status.csv","spectra/comparison.json"])
+          "The [1S slope][viewDiff] is 2.46 (+0.66/−0.62) GeV⁻² over 0–1 GeV² in pT². The slope fit profiles the normalization with a fixed detector response. Its interval passed the coverage check in signal-only pseudoexperiments at the tested slopes. A separate fit uses reconstructed pT² to infer true |t| and fails the tail-shape check. The [rapidity checks][stats] also found inadequate interval coverage for alternative generated spectra in all three states.",["viewDiff","stats","paperCheck"],[diffPdf,reopt+"validation_status.csv","spectra/comparison.json"])
       ]},
     beams: {
       label:"Two-energy kinematics",section:"AN §§2.5–2.6 · Figs. 10–12",paper:"AN comparison only",figure:"viewBeams",
-      description:"Compare 9×130 and 9×275 at 10 fb⁻¹ per energy, with no recoil-proton requirement.",
+      question:"At the same luminosity, how do the reconstructed Υ and lepton spectra change with proton beam energy?",
+      description:"Figures 10–12 compare the same Υ state at 9×130 and 9×275 GeV. Both samples represent 10 fb⁻¹, so the bin heights retain the different production rates and the fraction of decays selected at each energy.",
       steps:[
-        reco("Record the decay pair and scattered electron","Reconstructed masses, momenta, track counts and t estimators",
-          "The recovered source shows the branch definitions and electron-identification logic. Its proton-beam energy is fixed at 275 GeV. The original 130 GeV producer revision is still needed to reproduce that upstream job.",["entry","decay","kine","schema"]),
-        tuples("Merge and normalize the tuples","Six normalized ROOT files, one per state and energy","Use all six merged input files. Normalize each state and energy independently, then pass the low- and high-energy tuples for the same state to an inclusive workspace.",[]),
+        reco("Record the decay pair and scattered electron","Meson rapidity, decay-lepton momenta and scattered-electron direction in each tuple",
+          "A change in the meson boost can move its decay leptons into a different part of the detector. The recovered tuple macro [assigns the decay pair and scattered electron][decay], then [saves the pair rapidity and individual lepton directions][beamBranches]. Those branches supply the meson and lepton panels in Figs. 10 and 11.",["decay","beamBranches"]),
+        tuples("Merge and normalize the tuples","One normalized ROOT file for each state and energy","The samples contain different numbers of simulated events. After the [per-job files are merged][merge], the [normalization step][normalize] assigns each generated row its state's visible cross section at that beam energy times 10 fb⁻¹, divided by the number generated. Summing selected rows then gives the expected yield for the same exposure at both energies.",[]),
         step("analysis","Select both energies at equal luminosity","Normalized tuples for the same Υ state at both energies","kinematic_bins.csv and kinematic_selection_audit.json",
-          "The note renderer applies the inclusive reconstructed selection and beam-specific W windows. Its audit records the category, luminosity and masks. In Fig. 12 the projective estimator uses its angular weight.",["beamGuide","beamMasks","beamTask"],["@compare/kinematic_selection_audit.json","@compare/kinematic_bins.csv"]),
+          "The [comparison task][beamTask] pairs the two energies for one Υ state. After the truth cuts, [load_sample][beamMasks] keeps dielectron masses of 8–12 GeV and requires the three leptons’ Σ(E−p_z) to lie within 1.8 GeV of 18 GeV. The [reconstructed W ranges][beamWindows] are 20–70 GeV at 9×130 and 20–100 GeV at 9×275. The [inclusive selection][selection] accepts events with or without a reconstructed recoil proton.",["beamMasks","beamWindows","selection","beamTask"],["@compare/kinematic_selection_audit.json","@compare/kinematic_bins.csv"]),
         step("plot","Overlay the two beam energies","The two selected samples and their histogram definitions","Original per-state PDFs in artifacts/note/compare_9x130_9x275/",
-          "The same renderer writes the bin table and the figure PDFs. Figures 10 and 11 use visible yields per bin. Figure 12 compares projective and dielectron-pT² yield densities for 1S.",["beamPlot","beamExport"],beamPdfs),
+          "For Figs. 10 and 11, [draw_pages][beamYields] sums the selected event weights in the same bins at both energies. For Fig. 12 it divides by the bin width and uses the angular weight only for the projective |t| estimate. The [figure exporter][beamExport] reads the plotted values from the renderer’s bin table and copies its PDFs.",["beamYields","beamPlot","beamExport"],beamPdfs),
         pub("Analysis note","Per-state two-energy plots","AN Fig. 10 (meson), Fig. 11 (leptons and tracking), Fig. 12 (1S estimators)",
-          "These plots answer how the two beams compare at the same luminosity. They are separate from the tagged 9×275 paper figures.",["viewBeams","beamGuide"],beamPdfs)
+          "Use [the beam comparison][viewBeams] to read the Υ rapidity distribution in Fig. 10 alongside the lepton directions in Fig. 11. A difference between the curves can reflect both the available phase space and which decays pass selection. The [paper mass fit][mass/plot] instead gives the expected yields and widths of the three peaks with a reconstructed proton at 9×275 GeV and 2.5 fb⁻¹.",["viewBeams","beamGuide"],beamPdfs)
       ]}
   };
   const boundary = "The recovered producer fixes the proton beam at 275 GeV. The exact per-energy CERN producer, job environment and merge manifest are still missing. Reproduction has been verified starting from the checksum-listed merged tuples.";
-  window.UPSiLON_TRACE = {referenceRevision, boundary, sources, routes};
+  // The text of a reference reads as part of the explanation. Its key identifies
+  // either a pinned source or another stage in this guide.
+  function referenceParts(text) {
+    const parts = [];
+    let start = 0;
+    for (const match of text.matchAll(/\[([^\]\n]+)\]\[([\w/-]+)\]/g)) {
+      parts.push(text.slice(start, match.index), {label: match[1], target: match[2]});
+      start = match.index + match[0].length;
+    }
+    parts.push(text.slice(start));
+    return parts;
+  }
+  window.UPSiLON_TRACE = {referenceRevision, boundary, sources, routes, referenceParts};
 })();
