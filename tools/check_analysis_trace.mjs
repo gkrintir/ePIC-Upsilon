@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // From the repository root: node tools/check_analysis_trace.mjs [--replay PATH]
 import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
 import {readFileSync, statSync} from "node:fs";
 import {dirname, isAbsolute, relative, resolve, sep} from "node:path";
 import {fileURLToPath} from "node:url";
@@ -25,6 +26,19 @@ function within(base, path) {
 
 function fileAt(path) {
   assert(statSync(path).isFile(), "Expected a file: " + path);
+}
+
+function checkGuideAssets() {
+  const html = readFileSync(resolve(docs, "index.html"), "utf8");
+  const references = html.matchAll(/(?:src|href)=["'](\.\/[^"'?#]+\.(?:js|css))([^"']*)["']/g);
+  const checked = new Set();
+  for (const [, path, query] of references) {
+    const content = readFileSync(within(docs, path), "utf8").replaceAll("\r\n", "\n");
+    const version = createHash("sha256").update(content).digest("hex").slice(0, 12);
+    assert.equal(query, "?v=" + version, "In docs/index.html use " + path + "?v=" + version);
+    checked.add(path);
+  }
+  assert(checked.has("./trace.js") && checked.has("./trace-data.js"), "Missing guide scripts in docs/index.html");
 }
 
 function checkSource({label, url}, name, pin) {
@@ -71,6 +85,7 @@ function main(args) {
     assert(!isAbsolute(figure), "paper_replay.json figure must be relative");
     fileAt(within(replay, figure));
   }
+  checkGuideAssets();
   const filename = resolve(docs, "trace-data.js");
   const sandbox = {window: {}};
   runInNewContext(readFileSync(filename, "utf8"), sandbox, {filename, timeout: 1000});

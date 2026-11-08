@@ -12,7 +12,7 @@
   const byId = name => document.getElementById(`trace-${name}`);
   const status = byId('status');
   if (!data || !data.routes || !data.sources || !Object.keys(data.routes).length) {
-    status.textContent = 'The guide could not load. Use the Explorer link above to view the figures.';
+    status.prepend('The interactive guide could not load. ');
     return;
   }
 
