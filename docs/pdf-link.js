@@ -26,10 +26,12 @@
     objectUrl = null;
   }
 
-  function attach({pick, link, page}) {
-    link.target = "_blank";
-    link.rel = "noopener";
-    views.add({pick, link, page});
+  function attach({pick, link, page, extraLinks = []}) {
+    for (const view of [{link, page}, ...extraLinks]) {
+      view.link.target = "_blank";
+      view.link.rel = "noopener";
+      views.add(view);
+    }
     pick.addEventListener("change", async () => {
       const activeRequest = ++request;
       clearPdf();

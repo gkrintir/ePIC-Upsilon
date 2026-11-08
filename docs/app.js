@@ -8,12 +8,11 @@
   const maps = ["pt_y","xv_w"];
   const cellFields = ["map","x_low","x_high","y_low","y_high","denominator","selected_before_proton","selected"];
   const pointFields = ["quantity","state","bin_low","bin_high","central","lower","upper","status"];
-  const base = "https://github.com/gkrintir/ePIC-Upsilon/blob/main/";
   const papers = {
-    mass: {tag:"Signal extraction · Fig. 7 (continued)", title:"Three-state dielectron mass fit", lead:"The three fitted peaks determine the expected Υ(1S), Υ(2S) and Υ(3S) yields. The fit shares a mass shift and width scale across the states.", note:"Figure 7 & Table 8", page:26, about:"The combined fit appears on the final page of Fig. 7. Table 8 reports the state yields and Gaussian core widths.", image:"mass", caption:"Paper panel (a) · expected events per 0.05 GeV vs. reconstructed dielectron mass [GeV].", code:"plotting/07_mass_and_efficiency_w_xv.ipynb",support:"paper/README.md",supportLabel:"Paper replay guide", inspector:"Fitted yields and core widths"},
-    efficiency: {tag:"Detector corrections · Fig. 13", title:"Proton-tagged Υ(1S) efficiency", lead:"For each truth bin, the efficiency is the fraction of eligible simulated decays that pass reconstruction, selection and the recoil-proton tag.", note:"Figure 13", page:45, about:"Read the efficiency against true transverse momentum and laboratory rapidity, or against xᵥ and photon–proton energy.",image:"mass",caption:"Paper panels (b,c) · Υ(1S) reconstruction and selection efficiency [%].",code:"plotting/07_mass_and_efficiency_w_xv.ipynb",support:"docs/efficiency.md",supportLabel:"Efficiency definitions",inspector:"Efficiency by truth bin"},
-    w: {tag:"Energy dependence · Fig. 14", title:"Cross section versus photon–proton energy", lead:"The points give bin-averaged γp cross sections for each Υ state over the photon–proton energy window. The horizontal bars span each W bin.", note:"Figure 14",page:48,about:"The state-specific photon flux converts each visible ep yield into a bin-averaged γp cross section.",image:"w",caption:"Bin-averaged σγp [pb] vs. Wγp [GeV].",code:"plotting/02_w_cross_section.ipynb",support:"docs/validation.md",supportLabel:"Coverage checks",inspector:"Energy-spectrum bins"},
-    differential: {tag:"Differential projections · Fig. 15",title:"Dielectron pT² and laboratory rapidity",lead:"Panel (a) fits the Υ(1S) squared transverse momentum reconstructed from the dielectron. Panel (b) uses the integrated photon flux of each state to normalize its rapidity spectrum.",note:"Figure 15",page:49,about:"The proton tag selects the event independently of the dielectron momentum measurement. Positive rapidity points along the proton beam.",image:"differential",caption:"Panel (a) · dσγp/dpT² [pb/GeV²]. Panel (b) · flux-normalized ep yield density [pb per unit rapidity].",code:"plotting/03_differential.ipynb",support:"docs/validation.md",supportLabel:"Closure and coverage checks",inspector:"Differential-spectrum bins"}
+    mass: {tag:"Signal extraction · Fig. 7 (continued)", title:"Three-state dielectron mass fit", lead:"The three fitted peaks determine the expected Υ(1S), Υ(2S) and Υ(3S) yields. The fit shares a mass shift and width scale across the states.", note:"Figure 7", page:26, about:"Figure 7 shows the three fitted Υ peaks. Table 8 gives the expected yield and Gaussian core width of each peak.", image:"mass", caption:"Paper panel (a) · expected events per 0.05 GeV vs. reconstructed dielectron mass [GeV].", inspector:"Fitted yields and core widths"},
+    efficiency: {tag:"Detector corrections · Fig. 13", title:"Proton-tagged Υ(1S) efficiency", lead:"For each truth bin, the efficiency is the fraction of eligible simulated decays that pass reconstruction, selection and the recoil-proton tag.", note:"Figure 13", page:45, about:"Figure 13 shows the fraction of eligible Υ(1S) decays that pass the full selection, including the proton tag.",image:"mass",caption:"Paper panels (b,c) · Υ(1S) reconstruction and selection efficiency [%].",inspector:"Efficiency by truth bin"},
+    w: {tag:"Energy dependence · Fig. 14", title:"Cross section versus photon–proton energy", lead:"The points give bin-averaged γp cross sections for each Υ state over the photon–proton energy window. The horizontal bars span each W bin.", note:"Figure 14",page:48,about:"Figure 14 shows how the projected cross section varies with photon–proton energy for each Υ state.",image:"w",caption:"Bin-averaged σγp [pb] vs. Wγp [GeV].",inspector:"Energy-spectrum bins"},
+    differential: {tag:"Differential projections · Fig. 15",title:"Dielectron pT² and laboratory rapidity",lead:"Panel (a) fits the Υ(1S) squared transverse momentum reconstructed from the dielectron. Panel (b) uses the integrated photon flux of each state to normalize its rapidity spectrum.",note:"Figure 15",page:49,about:"Figure 15 shows the fitted Υ(1S) pT² slope in panel (a) and the rapidity spectra for the three Υ states in panel (b).",image:"differential",caption:"Panel (a) · dσγp/dpT² [pb/GeV²]. Panel (b) · flux-normalized ep yield density [pb per unit rapidity].",inspector:"Differential-spectrum bins"}
   };
   const make = (tag, content, cls) => {
     const node = document.createElement(tag);
@@ -64,13 +63,9 @@
     $("figure-image").src=images[p.image];$("figure-image").alt=p.title+". "+p.caption;
     $("enlarge").href=images[p.image];$("enlarge").setAttribute("aria-label","Enlarge "+p.title);
     $("open-image").href=images[p.image];
-    $("note-name").textContent=p.note;$("note-description").textContent=p.about;
-    $("note-link").textContent="Open "+(view==="mass"?"Fig. 7":p.note)+" · PDF p. "+p.page+" ↗";
-    $("table-jump").hidden=view!=="mass";
-    $("trace-link").href="./index.html#"+view+"/plot/review";
-    $("code-link").href=base+p.code;$("code-link").textContent="Figure notebook ↗";
-    $("support-link").href=base+p.support;$("support-link").textContent=p.supportLabel+" ↗";
-    if (window.ATLAS_HAS_LOCAL_NOTE===true) $("local-label").textContent="The bundled note opens directly. You can also choose another local copy.";
+    $("note-description").textContent=p.about;
+    $("note-link").textContent=p.note+" · Plot (PDF page "+p.page+")";
+    if (window.ATLAS_HAS_LOCAL_NOTE===true) $("local-label").textContent="Use the bundled note below or choose a different copy.";
     $("inspector-title").textContent=p.inspector;
     $("import-box").hidden=local.efficiency.cells.length>0 && local.spectra.length>0;
     window.notePage.refresh();
@@ -360,12 +355,11 @@
     window.opener.postMessage({type:"epic-run-view-ready"},location.origin);
   }
   $("csv").addEventListener("click",exportCsv);
-  let tableRequested=false;
-  window.notePage.attach({pick:$("local-note"),link:$("note-link"),page:()=>tableRequested?23:papers[view].page});
-  $("table-jump").addEventListener("click",()=>{
-    tableRequested=true;window.notePage.refresh();
-    if($("note-link").getAttribute("href"))$("note-link").click();else $("local-note").focus();
-    tableRequested=false;window.notePage.refresh();
+  window.notePage.attach({
+    pick: $("local-note"),
+    link: $("note-link"),
+    page: () => papers[view].page,
+    extraLinks: [{link: $("table-jump"), page: () => view === "mass" ? 23 : null}]
   });
   window.addEventListener("hashchange",restoreRoute);
   restoreRoute();

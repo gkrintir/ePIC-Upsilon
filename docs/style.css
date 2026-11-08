@@ -67,3 +67,10 @@ hr { border:0; border-top:1px solid var(--rule); margin:18px 0; }
 #import-box .run-inputs details {margin: .8rem 0 .2rem;}
 #import-box .run-inputs summary {color: var(--accent); cursor: pointer; font-size: .85rem;}
 #import-box .run-inputs details label {margin-top: .5rem;}
+
+.note-pages { margin: .8rem 0; }
+.note-pages summary,.workflow-link a { color: var(--accent); font-weight: 650; font-size: .88rem; }
+.note-pages summary { cursor: pointer; }
+.note-page-links a { display: block; margin-top: .5rem; }
+.note-page-links a[aria-disabled="true"] { display: none; }
+.workflow-link { margin-top: 1rem; }
