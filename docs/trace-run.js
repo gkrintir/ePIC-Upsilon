@@ -163,7 +163,7 @@
     if (step.files?.length) appendFileList(step.files.filter(path=>context.kind!=="beams" || context.state==="1S" || !path.endsWith("t_estimators_projective_transverse.pdf")));
     else result.append(node("p","This step has no file in the selected downstream directory."));
   }
-  window.showTraceRun = (key,id,mode) => {
+  window.showTraceRun = (key,id) => {
     const host=document.getElementById("trace-run");
     if (!host) return;
     if (!panel || !host.contains(panel)) {
@@ -176,7 +176,6 @@
       picker.addEventListener("change",readDirectory);
       panel.append(summary,instructions,label,picker,result);host.append(panel);
     }
-    if (!view || view[2]!==mode) panel.open=mode==="review";
-    view=[key,id,mode]; draw();
+    view=[key,id]; draw();
   };
 })();
