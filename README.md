@@ -4,7 +4,11 @@ Follow an exclusive Υ result from reconstructed ePIC events to the analysis not
 
 **New to the analysis?** [Start at the tuple producer](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction). If you already have the merged ROOT files, [start at the inputs](https://gkrintir.github.io/ePIC-Upsilon/#mass/tuple) or run the two replay commands below.
 
-**Reviewing a figure?** [Trace the tagged efficiency backward from the paper](https://gkrintir.github.io/ePIC-Upsilon/#efficiency/publication/review). Switch the result to follow the mass fit, W spectrum, differential projections or inclusive beam comparison. With a completed run, select its output folder to open the actual intermediate files.
+**Reviewing a figure?** Trace a paper result back to its calculation and input tuples.
+
+- Fig. 18 shows the [three-state mass fit (a)](https://gkrintir.github.io/ePIC-Upsilon/#mass/publication) and [tagged Υ(1S) efficiency maps (b, c)](https://gkrintir.github.io/ePIC-Upsilon/#efficiency/publication).
+- [Fig. 19](https://gkrintir.github.io/ePIC-Upsilon/#w/publication) gives the cross section versus W. [Fig. 20](https://gkrintir.github.io/ePIC-Upsilon/#differential/publication) gives the pT² slope and rapidity spectra.
+- The analysis note compares the two beam energies in [Figs. 10–12](https://gkrintir.github.io/ePIC-Upsilon/#beams/publication).
 
 ## Clone and install
 
