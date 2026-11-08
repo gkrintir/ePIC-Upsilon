@@ -35,7 +35,24 @@
 <div class="inspect-head"><div><p class="eyebrow">Numerical results</p><h2 id="inspector-title"></h2></div><button id="csv" class="action" type="button">Download CSV ↓</button></div>
 <div id="results"></div>
 </section>
-<div id="import-box" class="import-box" hidden><div><h2>Open the numerical replay</h2><p>Choose the output folder containing <code>paper_replay.json</code> to inspect your fit, map cells and spectral bins. Your files stay in this browser. An existing <code>paper.json</code> export also works.</p></div><div><label for="replay-folder">Paper replay folder</label><input id="replay-folder" type="file" webkitdirectory multiple><label for="data-file">Or open an exported paper.json</label><input id="data-file" type="file" accept="application/json,.json"><p id="load-status" role="status"></p></div></div>
+<section id="import-box" class="import-box" aria-labelledby="import-title" hidden>
+  <div>
+    <h2 id="import-title">Inspect results from your own run (optional)</h2>
+    <p>You can browse the figures above immediately. To inspect the numbers, choose the output folder from <code>paper/replay_paper.py</code>. With the README commands, this is <code>work/paper-replay/</code>. Your files stay in your browser.</p>
+  </div>
+  <div class="run-inputs">
+    <label for="replay-folder">Choose your results folder</label>
+    <input id="replay-folder" type="file" webkitdirectory multiple aria-describedby="folder-hint">
+    <p id="folder-hint">Select the folder that contains <code>paper_replay.json</code>.</p>
+    <details>
+      <summary>Have a single exported file instead?</summary>
+      <label for="data-file">Choose <code>paper.json</code></label>
+      <input id="data-file" type="file" accept="application/json,.json">
+      <p>This file contains the fit results, efficiency counts and spectrum bins from a completed run.</p>
+    </details>
+    <p id="load-status" role="status"></p>
+  </div>
+</section>
 <noscript>Enable JavaScript to switch between figures or inspect the numerical results.</noscript>
 </main><footer class="shell">ePIC Υ Atlas <span>/</span> Proton-tagged paper projections</footer>
 </body></html>

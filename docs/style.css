@@ -60,3 +60,10 @@ hr { border:0; border-top:1px solid var(--rule); margin:18px 0; }
 @media(max-width:460px){.filters select {width:100%}.heat-side .filters>label {width:100%}}
 
 #panel-zoom {width:100%;max-height:440px;display:none} .panel-filter {margin:3px 8px 12px} #eff-rate {align-self:center;font-variant-numeric:tabular-nums}
+
+/* Keep the usual folder workflow separate from the optional single-file import. */
+#import-box .run-inputs {flex: 1 0 min(100%, 19rem);}
+#import-box .run-inputs input {display: block; margin: .35rem 0;}
+#import-box .run-inputs details {margin: .8rem 0 .2rem;}
+#import-box .run-inputs summary {color: var(--accent); cursor: pointer; font-size: .85rem;}
+#import-box .run-inputs details label {margin-top: .5rem;}
