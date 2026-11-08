@@ -10,4 +10,4 @@ To produce new tuples, start with the [one-file 2S 9×130 pilot](../docs/product
 | [Simulation cards](cards/) and [downloader](download/download_upsilon_fast.py) | Six official July cards and the reconstructed-input download script |
 | [Source inventory](sources.json) | Origin and SHA-256 of each preserved source |
 
-The planner supports both beam energies. The historical raw weights and confidence in the production record vary by sample. [Production evidence](../docs/missing-production-sources.md)
+Two 100-event runs, one at each beam energy, reproduced every saved tuple branch. To compare a fresh pilot with the distributed events, follow the [one-file commands](../docs/production.md#one-file-pilot). [Results and scope by sample](../docs/missing-production-sources.md#two-reconstructed-inputs)

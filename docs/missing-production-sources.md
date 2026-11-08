@@ -33,8 +33,26 @@ python3 production/cern-2026-10/check_beams.py work/paper-inputs
 
 The archive also contained a 100-row 1S output labelled `9x130`. Its six generated quantities (meson mass, pT and rapidity; scattered-electron energy, pT and η) match the final 1S 9×130 file exactly at zero-based entries 228300–228399. This identifies the same generated events. The pilot's stored W follows 18×275 beam settings; the final file uses 9×130. The pilot lacks the electron-ID mode branch and has zero tagged candidates in those rows, compared with seven in the final file. Use the final file for the analysis.
 
+## Two reconstructed inputs
+
+We reran one EICrecon file per beam energy through the [production planner and worker](../production/jobs.py), using reconstructed electron ID and the full fEMC, then merged each output with `hadd`. The runs used ROOT 6.38/04 (C++20) and [podio v01-07](https://github.com/AIDASoft/podio/tree/v01-07), matching the ROOT and podio writer versions recorded in the input files.
+
+| Input | Rows in the distributed tuple (zero-based, inclusive) | Electron-ID tracks (usable / missing / masked-only / ambiguous) | Events with a reconstructed proton tag |
+|---|---:|---:|---:|
+| Υ(1S), 9×275 | 0–99 | 151 / 86 / 0 / 2 | 9 |
+| Υ(2S), 9×130 | 136100–136199 | 148 / 102 / 0 / 2 | 7 |
+
+Each input yielded 100 rows. The [comparison](../production/compare_pilot.py) used six generated observables to find a unique block of 100 consecutive events in each distributed tuple. **All 49 branches matched bit for bit for every event**, including the reconstructed kinematics, proton tag, electron ID and raw weight. Each single-file merge preserved all five histograms. The 2S block also starts where the archived job outputs predict in filename order, and its four track counts reproduce the original log.
+
+The 9×275 input shows how tuple rows contribute to the paper. All 100 generated Υ(1S) decays enter the efficiency denominator. Of these, 13 pass the lepton selection and 8 also have a reconstructed proton tag. Applying the [paper efficiency calculation](../extensions/efficiency/diagnostics/final_maps.py) to the fresh tuple and to the matching reference rows gave identical counts in every rapidity–pT bin. The nine tags in the table count candidates before the paper selection. [Full-sample efficiency maps](https://gkrintir.github.io/ePIC-Upsilon/figures.html#efficiency)
+
+To repeat the check, use the [one-file commands](production.md#one-file-pilot) with the matching merged reference from the [input manifest](../inputs/paper_inputs.csv). The SHA-256 digests identify the two original reconstructed inputs:
+
+| Input | EICrecon file SHA-256 |
+|---|---|
+| Υ(1S), 9×275 | `f2701e1d496d931b117afd5760efe15c909061668890e2d67d6fd28d29856908` |
+| Υ(2S), 9×130 | `b5f8450deba55cc4555532f11f87be1d81713ef3cefc51774f84aa7b756a01ff` |
+
 ## What remains to verify
 
-The ZIP contains processed outputs and generator files. A producer smoke test needs an original reconstructed EDM4eic ROOT file with an `events` tree. For the first 2S 9×130 input in the private CERN list, follow the [one-file pilot](production.md#one-file-pilot). Its worker logged **148 usable, 102 missing, 0 masked and 2 ambiguous matches** over 100 events. A 1S 9×275 reconstructed input and its per-job tuple provide the corresponding direct check for the paper energy.
-
-For the other five state/energy combinations, matching submission records, source or build hashes, and merge manifests are still needed to attribute the final files to specific jobs. The saved 3S submission settings name destinations at both energies; they alone do not identify completed jobs. For new pilots, the [production workflow](production.md) records its source snapshot and explicit merge inputs.
+The two pilots verify one original input per beam energy. Only the 2S 9×130 campaign also has a check covering every 100-event block. For the other four state/energy combinations, an original EICrecon input would enable the same event-level comparison. Identifying every historical input and the exact source revision used for every job would require further submission or merge records.

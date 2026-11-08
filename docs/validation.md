@@ -64,8 +64,7 @@ tested with explicit temporary paths. It did not read CERN event data.
 
 - The event-level comparison above starts with the six merged tuples. The
   9×275 files also match the SHA-256 values in the historical paper runs.
-- Both beam-specific macros compiled and loaded with ROOT ACLiC in separate clean processes under ROOT 6.40.00 and [podio v01-02](https://github.com/AIDASoft/podio/tree/d3f03813d7bf50f87c3aa4f32e619cebeb060113), using the real ObjectID and CollectionIDTable dictionaries. This verifies compilation in that environment. An original EDM4eic event file is needed to exercise the readers and compare their output.
-- ROOT 6.40.00 `hadd` merged two archived 18×275 pilot tuples with 1,666 rows each. All 41 tree branches matched the concatenated input arrays, and `h_EventCount` summed to 3,332. Verifying the current 9-GeV-electron production also requires original reconstructed EDM4eic inputs and a pilot in the intended environment.
+- We ran the tuple producer on original Υ(1S) 9×275 and Υ(2S) 9×130 EICrecon inputs. All 49 branches for each set of 100 events matched the corresponding rows in the distributed tuple bit for bit. Each single-input `hadd` preserved the tree and all five histograms. [Input checksums, matched rows and paper selection](missing-production-sources.md#two-reconstructed-inputs)
 - For the 2S 9×130 CERN campaign, the input list and worker records agree with all
   10,583 blocks of 100 events in the merged tuple. The comparison uses four
   electron-matching counters per input. [Campaign audit](../production/cern-2026-10/README.md)

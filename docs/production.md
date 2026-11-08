@@ -14,9 +14,9 @@ Each recovered macro sets its raw per-job event weight to the state’s visible 
 
 ## Environment
 
-Both macros compile and load with ROOT 6.40.00 and podio v01-02. The private CERN ZIP contains a compiler dependency path for ROOT 6.40.04.
+The two pilot inputs were written with ROOT 6.38/04 and podio 1.7.0. They store collection IDs in `events___CollectionTypeInfo`. The reconstructed electron finder needs the matching podio headers and ROOT dictionaries, including the dictionary for `podio::root_utils::CollectionWriteInfo`, to resolve each track–cluster association. An older podio v01-02 installation compiled the macros but stopped when it read these files. Keep reconstructed electron ID enabled.
 
-The planner needs Python 3.9+. Executing or merging needs `uproot` in that Python environment, plus the user's tested ROOT/podio environment. `root` and `hadd` must be available in it. The C++ source includes `podio/ObjectID.h` and `podio/CollectionIDTable.h`; reconstructed electron ID additionally uses the ROOT-I/O dictionaries and, where available, `podio/utilities/RootHelpers.h`. It loads `libpodio`, `libpodioDict` and `libpodioRootIODict`.
+Use Python 3.9+ with `uproot`. The worker needs `root` on its path, and the merge needs `hadd`. Set up ROOT with C++20 and podio with its ROOT I/O libraries. The [pilot comparison](missing-production-sources.md#two-reconstructed-inputs) records the tested versions.
 
 The archived CERN submit configuration selected `eic_xl:nightly`. Its immutable image digest is unknown. For a new batch, set `PRODUCTION_ENV_LABEL` to your tested release or image digest. Set `PRODUCTION_SETUP` to the absolute path of a noninteractive setup script that works on the execution nodes. The planner records its SHA-256. Python with `uproot` must be available in the launching environment, and the setup script configures the ROOT and `hadd` subprocesses.
 
@@ -24,26 +24,34 @@ The new jobs use a shared filesystem. Workers must be able to read the same inpu
 
 ## One-file pilot
 
-Run this example from the repository root on a host with the CERN EOS files mounted. It selects the first reconstructed input from the original campaign and creates a separate one-file batch.
+Start from one reconstructed `*.eicrecon.edm4eic.root` file. The example uses Υ(2S) at 9×130. For the paper-energy check, set `state=1S` and `beam=9x275` and use the corresponding input. Run from the repository root.
 
 ```bash
+state=2S
+beam=9x130
+input=${PILOT_INPUT:?Set the absolute path to your reconstructed ROOT file}
+batch="$PWD/workspaces/production/$state-$beam-pilot-v1"
 mkdir -p workspaces/manifests
-unzip -p "${CERN_TUPLE_ARCHIVE:?Set the path to your original production ZIP}" eic/list.txt \
-  | sed -n '1p' > workspaces/manifests/2S-9x130-pilot.txt
+list="workspaces/manifests/$state-$beam-pilot.txt"
+printf '%s\n' "$input" > "$list"
 
-PRODUCTION_WORK="$PWD/workspaces/production/2S-9x130-pilot-v1"
 python3 production/jobs.py plan \
-  --input-list workspaces/manifests/2S-9x130-pilot.txt \
-  --work-dir "$PRODUCTION_WORK" --beam 9x130 --state 2S \
+  --input-list "$list" --work-dir "$batch" --beam "$beam" --state "$state" \
   --electron-id reco --femc full --hash-inputs \
   --environment-label "${PRODUCTION_ENV_LABEL:?Set the tested release or digest}" \
   --setup-script "${PRODUCTION_SETUP:?Set the absolute setup script path}" --write
 
-python3 "$PRODUCTION_WORK/snapshot/jobs.py" worker \
-  "$PRODUCTION_WORK/jobs/job_000000/job.json" --execute
+python3 "$batch/snapshot/jobs.py" worker "$batch/jobs/job_000000/job.json" --execute
+python3 "$batch/snapshot/jobs.py" merge --batch "$batch" --output "$batch/merged.root" --execute
 ```
 
-The historical job recorded 100 input events for this file. Check `$PRODUCTION_WORK/jobs/job_000000/result.json` for `DONE` and 100 output rows. If you stage the input elsewhere, put its accessible path in the one-line list and retain the state and beam identifiers. The private ZIP holds the input list. The [CERN campaign record](../production/cern-2026-10/README.md) explains how to verify it locally.
+Check `jobs/job_000000/result.json` and `merged.root.merge.json` in the batch directory for the final status and row count. To identify the historical 2S input from the local production ZIP, see the [CERN campaign record](../production/cern-2026-10/README.md).
+
+If the input belongs to a distributed reference tuple, compare the event rows after merging. This locates the pilot using six generated quantities, then checks every saved branch. Add `--json` for the per-branch differences.
+
+```bash
+python3 production/compare_pilot.py "$batch/merged.root" "${REFERENCE_TUPLE:?Set the matching merged_Upsilon_final.root path}"
+```
 
 ## Optional download
 
