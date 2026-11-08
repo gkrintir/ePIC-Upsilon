@@ -145,13 +145,13 @@ python3 "$PRODUCTION_WORK/snapshot/jobs.py" merge \
 
 The first command verifies and prints the plan. The second invokes `hadd` without `-f`, checks the merged tuple and `h_EventCount` against the summed input counts, and writes `.merge.json` and `.inputs.txt` alongside the output. Partial outputs are retained on failure. No weights are renormalized during merge.
 
-The analysis front end uses these exact paths beneath `input_base`; capitalization matters:
+The analysis front end uses these paths beneath `input_base`. All six [merged input tuples](../inputs/paper_inputs.csv) record `ele_id_mode=1` and `femc_mode=0`, corresponding to reconstructed track–cluster matching and the full forward calorimeter. Use the following settings to match those modes in a new 9×275 pilot.
 
 | State | Expected path beneath the pilot base | Matching production settings |
 | --- | --- | --- |
 | 1S | `Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root` | `--state 1S --electron-id reco --femc full` |
-| 2S | `Upsilon2S/9x275/hiAcc/output/merged_Upsilon_final.root` | `--state 2S --electron-id legacy --femc full` |
-| 3S | `Upsilon3S/9x275/hiAcc/output/merged_Upsilon_final.root` | `--state 3S --electron-id legacy --femc full` |
+| 2S | `Upsilon2S/9x275/hiAcc/output/merged_Upsilon_final.root` | `--state 2S --electron-id reco --femc full` |
+| 3S | `Upsilon3S/9x275/hiAcc/output/merged_Upsilon_final.root` | `--state 3S --electron-id reco --femc full` |
 
 For 2S/3S, create separate production batches using their own input lists and the matching options above, create the corresponding EOS output directory, and run the same merge command with that batch and exact destination. Never place a reduced-fEMC or different-ID sample under one of these baseline paths. Different scenarios require a separate, explicitly configured analysis campaign.
 
