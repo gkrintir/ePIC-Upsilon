@@ -135,7 +135,7 @@
         "This folder is a two-energy comparison. Select a paper replay for this result."));return;
     }
     if (id==="reconstruction") {
-      result.append(node("p","A downstream run cannot identify the historical producer and merge jobs. See the production records listed above."));return;
+      result.append(node("p","This folder starts at the merged tuples. The source guide links to the available CERN production records."));return;
     }
     if (context.kind==="paper" && (id==="plot" || id==="publication")) {
       const r=context.record;

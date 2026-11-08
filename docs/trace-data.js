@@ -1,7 +1,7 @@
 /* Stages are listed in production order. Source links identify the checked
    implementation. Run files are relative to a local replay or state workspace. */
 (() => {
-  const referenceRevision = "777c5a04f11e1cf645df1a71c668ebd677f6f05d";
+  const referenceRevision = "616ce23479e069e418e2e320f61bc02c082087cb";
   const git = "https://github.com/gkrintir/ePIC-Upsilon/";
   const src = (label, path) => ({label, url:git+"blob/"+referenceRevision+"/"+path});
   const guide = src;
@@ -13,7 +13,9 @@
     upstream: page("Upstream detector reconstruction · EICrecon", "https://github.com/eic/EICrecon"),
     cards: page("July simulation cards · pinned source", "https://github.com/eic/Upsilon_Sim_Cards/tree/f62965a1612fc734dbab18e141f4809740d6b234"),
     production: guide("Run a new tuple production", "docs/production.md"),
-    gap: guide("Which CERN production records are missing?", "docs/missing-production-sources.md"),
+    gap: guide("Compare the recovered producers with the six reference tuples", "docs/missing-production-sources.md"),
+    cernCampaign: guide("Trace the 2S 9×130 Condor run into the merged tuple", "production/cern-2026-10/README.md"),
+    producer130: src("9×130 working copy · beam setting", "production/macros/9x130/DVMP_Upsilon_Analysis.C#L35-L42"),
     entry: src("Tuple macro · entry point and ID mode",macro+"#L166-L188"),
     id: src("ElectronFinder · electron identification","production/macros/ElectronFinder.C#L243-L285"),
     match: src("Track–cluster associations","production/macros/ElectronFinder.C#L450-L529"),
@@ -22,7 +24,7 @@
     tag: src("Choose the proton candidate and fill reconstructed branches",macro+"#L707-L758"),
     schema: src("Define UpsilonTree and its branches",macro+"#L267-L345"),
     fill: src("Write the event row",macro+"#L790-L800"),
-    merge: src("Merge explicit per-job files","production/jobs.py#L336-L399"),
+    merge: src("Merge explicit per-job files","production/jobs.py#L353-L420"),
     input: src("Merged input paths and SHA-256 values","inputs/paper_inputs.csv"),
     fetch: guide("Download or verify the merged inputs","inputs/README.md"),
     normalize: src("Reweight all generated rows","analysis/scripts/validation/prepare_latest_sample.py#L60-L135"),
@@ -165,7 +167,7 @@
       description:"Figures 10–12 compare the same Υ state at 9×130 and 9×275 GeV. Both samples represent 10 fb⁻¹, so the bin heights retain the different production rates and the fraction of decays selected at each energy.",
       steps:[
         reco("Record the decay pair and scattered electron","Meson rapidity, decay-lepton momenta and scattered-electron direction in each tuple",
-          "A change in the meson boost can move its decay leptons into a different part of the detector. The recovered tuple macro [assigns the decay pair and scattered electron][decay], then [saves the pair rapidity and individual lepton directions][beamBranches]. Those branches supply the meson and lepton panels in Figs. 10 and 11.",["decay","beamBranches"]),
+          "A change in the meson boost can move its decay leptons into a different part of the detector. The recovered tuple macro [assigns the decay pair and scattered electron][decay], then [saves the pair rapidity and individual lepton directions][beamBranches]. Those branches supply the meson and lepton panels in Figs. 10 and 11. The [9×130 source][producer130] uses the lower proton energy for the event kinematics. For 2S at that energy, the [CERN job record][cernCampaign] connects individual worker counts to the distributed tuple.",["decay","beamBranches"]),
         tuples("Merge and normalize the tuples","One normalized ROOT file for each state and energy","The samples contain different numbers of simulated events. After the [per-job files are merged][merge], the [normalization step][normalize] assigns each generated row its state's visible cross section at that beam energy times 10 fb⁻¹, divided by the number generated. Summing selected rows then gives the expected yield for the same exposure at both energies.",[]),
         step("analysis","Select both energies at equal luminosity","Normalized tuples for the same Υ state at both energies","kinematic_bins.csv and kinematic_selection_audit.json",
           "The [comparison task][beamTask] pairs the two energies for one Υ state. After the truth cuts, [load_sample][beamMasks] keeps dielectron masses of 8–12 GeV and requires the three leptons’ Σ(E−p_z) to lie within 1.8 GeV of 18 GeV. The [reconstructed W ranges][beamWindows] are 20–70 GeV at 9×130 and 20–100 GeV at 9×275. The [inclusive selection][selection] accepts events with or without a reconstructed recoil proton.",["beamMasks","beamWindows","selection","beamTask"],["@compare/kinematic_selection_audit.json","@compare/kinematic_bins.csv"]),
@@ -175,7 +177,7 @@
           "Use [the beam comparison][viewBeams] to read the Υ rapidity distribution in Fig. 10 alongside the lepton directions in Fig. 11. A difference between the curves can reflect both the available phase space and which decays pass selection. The [paper mass fit][mass/plot] instead gives the expected yields and widths of the three peaks with a reconstructed proton at 9×275 GeV and 2.5 fb⁻¹.",["viewBeams","beamGuide"],beamPdfs)
       ]}
   };
-  const boundary = "The recovered producer fixes the proton beam at 275 GeV. The exact per-energy CERN producer, job environment and merge manifest are still missing. Reproduction has been verified starting from the checksum-listed merged tuples.";
+  const boundary = "Separate producer sources are available for 9×130 and 9×275. The 2S 9×130 worker logs match electron-ID counts in all 10,583 blocks of the merged tuple. The other five samples have verified merged inputs and less complete production records.";
   // The text of a reference reads as part of the explanation. Its key identifies
   // either a pinned source or another stage in this guide.
   function referenceParts(text) {
