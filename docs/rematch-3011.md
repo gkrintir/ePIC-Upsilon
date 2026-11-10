@@ -39,6 +39,7 @@ Once the host prints `root`, launch the July ePIC image from the **same lxplus s
     exit 1
   fi
   image=/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable
+  unset -f which 2>/dev/null || true
   apptainer exec --bind /afs,/eos/cms --bind "$ticket:$ticket:ro" \
     --env "KRB5CCNAME=$cache" --env "PILOT_2S=$PILOT_2S" --pwd "$PWD" "$image" eic-shell
 )
@@ -48,7 +49,10 @@ For `KCM`, `DIR` or `KEYRING`, the block requests a separate ticket on lxplus, k
 
 **Inside the ePIC shell**, read the same file again. Continue to the planner only when this also prints `root`. If only this read fails, check that `KRB5CCNAME` points to the mounted file and that `klist -s` succeeds inside. If you renew the ticket on the host, re-enter the container to pick up the current file.
 
+If startup prints `Illegal option --`, check the container name at the current prompt before launching another shell. An exported lxplus `which` function can cause this message. The `unset -f which` above removes that function for the launch only. [EIC example](https://eic-code-browser.sdcc.bnl.gov/lxr/source/epic-lfhcal-tbana/tools/run-in-eic-shell.sh)
+
 ```bash
+printf 'container: %s\n' "${APPTAINER_CONTAINER:-${SINGULARITY_CONTAINER:-host}}"
 head -c 4 -- "$PILOT_2S" && echo
 ```
 
