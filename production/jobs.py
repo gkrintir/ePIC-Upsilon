@@ -71,13 +71,17 @@ def submit_text(info, jobs):
         lines.append('+AccountingGroup = "' + info['accounting_group'] + '"')
     if info.get('job_flavour'):
         lines.append('+JobFlavour = "' + info['job_flavour'] + '"')
-    # Use the frozen job's index even when pending.sub queues only a subset.
+    # Indexes identify the original file or group, including in a sparse pending.sub.
+    group_size = info.get('files_per_job', 1)
     job_dir = work / 'jobs' / 'job_$(batch_index)'
-    log_prefix = work / 'logs' / '$(batch_index)'
-    lines += [f'initialdir = {job_dir}', f'arguments = {job_dir}/job.json',
+    initialdir, argument = (job_dir, f'{job_dir}/job.json') if group_size == 1 else (work, '$(batch_index)')
+    log_prefix = work / 'logs' / ('$(batch_index)' if group_size == 1 else 'group_$(batch_index)')
+    lines += [f'initialdir = {initialdir}', f'arguments = {argument}',
               f'output = {log_prefix}.out', f'error = {log_prefix}.err',
               f'log = {log_prefix}.log', 'queue batch_index from (']
-    lines.extend(Path(path).parent.name.removeprefix('job_') for path in jobs)
+    file_ids = (int(Path(path).parent.name.removeprefix('job_')) for path in jobs)
+    group_ids = sorted({index // group_size for index in file_ids})
+    lines.extend(f'{index:06d}' for index in group_ids)
     lines.append(')')
     return '\n'.join(lines) + '\n'
 
@@ -156,6 +160,8 @@ def build_rematched_reader(selected, expected_hash):
 
 
 def plan(args):
+    if args.files_per_job < 1:
+        raise ValueError('--files-per-job must be at least 1')
     if args.femc in ('keep_xpos', 'keep_yneg') and args.electron_id != 'legacy':
         raise ValueError('The preserved producer supports half-plane modes only with legacy electron ID')
     if not math.isfinite(args.eta_split) or args.eta_split <= 0:
@@ -191,7 +197,8 @@ def plan(args):
                 work_dir=str(work), repository_root=str(REPO), source_hashes=source_hashes,
                 worker_sha256=sha256(__file__), created_utc=datetime.now(timezone.utc).isoformat(),
                 normalization='Historical per-job weights; merge does not normalize. Run framework preparation/audit before yields.',
-                job_count=len(records))
+                job_count=len(records), files_per_job=args.files_per_job,
+                condor_job_count=(len(records) + args.files_per_job - 1) // args.files_per_job)
     if args.electron_id == REMATCH:
         info['accounting_group'] = 'group_u_CMS.CAF.COMM'
         info['producer_identity'] = selected_sources[PRODUCER] + ' with downstream EICrecon #3011 rematching'
@@ -210,8 +217,9 @@ def plan(args):
     shutil.copyfile(__file__, worker_path)
     launcher = work / 'snapshot/run_job.sh'
     # Condor may stage the launcher in the execution slot. Its worker stays on shared storage.
+    command = 'worker "$1"' if args.files_per_job == 1 else f'group-worker --batch {shlex.quote(str(work))} --index "$1"'
     launcher.write_text('#!/usr/bin/env bash\nset -euo pipefail\n'
-                        f'exec python3 -B {shlex.quote(str(worker_path))} worker "$1" --execute\n')
+                        f'exec python3 -B {shlex.quote(str(worker_path))} {command} --execute\n')
     launcher.chmod(0o755)
     (work / 'logs').mkdir()
     jobs = []
@@ -227,6 +235,7 @@ def plan(args):
     save_json(work / 'plan.json', info)
     (work / 'submit.sub').write_text(submit_text(info, jobs))
     print('CREATED:', work)
+    print(f'Condor processes: {info["condor_job_count"]} for {len(records)} inputs (up to {args.files_per_job} files per process).')
     print('Inspect a job: python3 -B %s worker %s' % (work / 'snapshot/jobs.py', jobs[0]))
     print('After a successful local smoke job, submit remaining pending jobs explicitly; see docs/production.md.')
     print('Condor description:', work / 'submit.sub')
@@ -239,7 +248,7 @@ def pending(args):
     info = json.loads((work / 'plan.json').read_text())
     jobs = []
     for path in info['jobs']:
-        job = load_job(path)
+        job = load_job(path, batch=info)
         directory = Path(job['job_dir'])
         result_path = directory / 'result.json'
         if result_path.exists():
@@ -265,7 +274,7 @@ def pending(args):
     return 0
 
 
-def load_job(path):
+def load_job(path, *, batch=None):
     path = Path(path).resolve()
     job = json.loads(path.read_text())
     if job.get('schema_version') != 1 or job.get('kind') != 'new_shared_filesystem_condor_plan':
@@ -273,7 +282,10 @@ def load_job(path):
     if job['beam'] not in PRODUCERS:
         raise ValueError('Unknown production beam: ' + str(job['beam']))
     work = Path(job['work_dir']).resolve()
-    batch = json.loads((work / 'plan.json').read_text())
+    if batch is None:
+        batch = json.loads((work / 'plan.json').read_text())
+    if Path(batch['work_dir']).resolve() != work:
+        raise ValueError('Job work directory differs from its batch manifest')
     index = job['job_id']
     if not isinstance(index, int) or index < 0 or index >= len(batch['jobs']):
         raise ValueError('Invalid job index in batch')
@@ -350,8 +362,8 @@ def root_counts(path, tree):
         return n
 
 
-def worker(args):
-    job = load_job(args.job)
+def worker(args, *, batch=None, resume=False):
+    job = load_job(args.job, batch=batch)
     command = root_command(job)
     print('ROOT command:', shlex.join(command))
     print('Environment:', job['environment_label'])
@@ -360,6 +372,15 @@ def worker(args):
         return 0
     job_dir = Path(job['job_dir'])
     output = Path(job['output'])
+    if resume:
+        if (job_dir / 'execution.lock').exists():
+            raise FileExistsError(f'File job is locked: {job_dir}')
+        if (job_dir / 'result.json').exists():
+            verified_output_rows(job)
+            print('ALREADY DONE:', output, flush=True)
+            return 0
+        if (job_dir / 'root.log').exists():
+            raise FileExistsError(f'Partial file job has a log without a receipt: {job_dir}')
     if output.exists() or output.is_symlink() or (job_dir / 'result.json').exists():
         raise FileExistsError('Existing output/result is preserved; plan a fresh attempt directory')
     lock = job_dir / 'execution.lock'
@@ -397,29 +418,60 @@ def worker(args):
     return 0
 
 
+def group_worker(args):
+    work = Path(args.batch).resolve()
+    batch = json.loads((work / 'plan.json').read_text())
+    width = batch.get('files_per_job', 1)
+    count = len(batch['jobs'])
+    if (Path(batch['work_dir']).resolve() != work or type(width) is not int or width < 1
+            or count != batch['job_count'] or count != len(batch['inputs'])):
+        raise ValueError('Invalid grouped batch manifest')
+    groups = (count + width - 1) // width
+    if groups != batch.get('condor_job_count', count) or not 0 <= args.index < groups:
+        raise ValueError('Invalid Condor group index or count')
+    start = args.index * width
+    members = batch['jobs'][start:start + width]
+    print(f'Condor group {args.index}: {len(members)} file jobs', flush=True)
+    failures = 0
+    for path in members:
+        try:
+            worker(argparse.Namespace(job=path, execute=args.execute), batch=batch, resume=True)
+        except (OSError, ValueError, RuntimeError, ImportError, KeyError) as exc:
+            failures += 1
+            print(f'FAILED {path}: {exc}', file=sys.stderr, flush=True)
+    if failures:
+        raise RuntimeError(f'Condor group {args.index}: {failures} of {len(members)} file jobs failed')
+    return 0
+
+
+def verified_output_rows(job):
+    result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
+    path = Path(job['output'])
+    if result.get('status') != 'DONE' or result.get('output') != str(path):
+        raise ValueError('All declared jobs must have validated DONE outputs before merging or resuming')
+    for key in ('beam', 'state', 'source_hashes'):
+        if result.get(key) != job[key]:
+            raise ValueError('Job result differs from the planned ' + key)
+    if job['electron_id'] == REMATCH and result.get('electron_id') != REMATCH:
+        raise ValueError('Corrected batch requires confirmed rematching in every job result')
+    if sha256(path) != result['output_sha256']:
+        raise ValueError('Output changed after job validation: ' + str(path))
+    rows = result['output_rows']
+    if result.get('input_rows') != rows or root_counts(path, 'UpsilonTree') != rows:
+        raise ValueError('Output count changed or differs from input rows: ' + str(path))
+    return rows
+
+
 def merge(args):
     plan_path = Path(args.batch).expanduser().resolve() / 'plan.json'
     plan_data = json.loads(plan_path.read_text())
-    jobs = [load_job(p) for p in plan_data['jobs']]
+    if Path(plan_data['work_dir']).resolve() != plan_path.parent:
+        raise ValueError('Merge plan belongs to a different batch')
     paths, expected = [], 0
-    for job in jobs:
-        if Path(job['work_dir']).resolve() != plan_path.parent:
-            raise ValueError('Merge input job belongs to a different batch')
-        result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
-        path = Path(job['output'])
-        if result.get('status') != 'DONE' or result.get('output') != str(path):
-            raise ValueError('All declared jobs must have validated DONE outputs before merging')
-        for key in ('beam', 'state', 'source_hashes'):
-            if result.get(key) != job[key]:
-                raise ValueError('Job result differs from the planned ' + key)
-        if job['electron_id'] == REMATCH and result.get('electron_id') != REMATCH:
-            raise ValueError('Corrected batch requires confirmed rematching in every job result')
-        if sha256(path) != result['output_sha256']:
-            raise ValueError('Output changed after job validation: ' + str(path))
-        if root_counts(path, 'UpsilonTree') != result['output_rows']:
-            raise ValueError('Output count changed')
-        paths.append(path)
-        expected += result['output_rows']
+    for job_path in plan_data['jobs']:
+        job = load_job(job_path, batch=plan_data)
+        expected += verified_output_rows(job)
+        paths.append(Path(job['output']))
     if not paths or len(set(paths)) != len(paths):
         raise ValueError('Empty or duplicate merge inputs')
     out = safe_path(args.output)
@@ -489,10 +541,15 @@ def parser():
     a.add_argument('--memory-mb', type=int, default=4096)
     a.add_argument('--disk-mb', type=int, default=8192)
     a.add_argument('--job-flavour', default=None, help='Optional CERN JobFlavour, explicitly supplied')
+    a.add_argument('--files-per-job', type=int, default=1, help='Maximum number of sequential input files per Condor process')
     a.add_argument('--hash-inputs', action='store_true')
     a.add_argument('--write', action='store_true')
     a = sub.add_parser('worker', help='Inspect one frozen job; --execute invokes ROOT')
     a.add_argument('job', type=Path)
+    a.add_argument('--execute', action='store_true')
+    a = sub.add_parser('group-worker', help='Run a group of frozen per-file workers in original input order')
+    a.add_argument('--batch', type=Path, required=True)
+    a.add_argument('--index', type=int, required=True, help='Zero-based group index')
     a.add_argument('--execute', action='store_true')
     a = sub.add_parser('pending', help='List untouched jobs; --write creates pending.sub without submission')
     a.add_argument('--batch', type=Path, required=True)
@@ -506,7 +563,8 @@ def parser():
 
 def main(argv=None):
     args = parser().parse_args(argv)
-    return {'plan': plan, 'worker': worker, 'pending': pending, 'merge': merge}[args.command](args)
+    return {'plan': plan, 'worker': worker, 'group-worker': group_worker,
+            'pending': pending, 'merge': merge}[args.command](args)
 
 
 if __name__ == '__main__':

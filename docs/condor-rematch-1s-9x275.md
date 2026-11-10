@@ -1,6 +1,6 @@
 # Condor rematching for Υ(1S) at 9×275 GeV
 
-Run the test and submit the full July sample from **bare lxplus**, in an AFS checkout of this repository on `main`. Condor reads the EDM4eic files directly from EOS. Plans, worker tuples and logs go under `workspaces/` on AFS. Check the AFS quota before planning one job per input. Keep a separate writable EOS directory for the final corrected tuple.
+Run the test and submit the full July sample from **bare lxplus**, in an AFS checkout of this repository on `main`. Condor reads the EDM4eic files directly from EOS. Plans, worker tuples and logs go under `workspaces/` on AFS. Check your AFS quota for one small tuple and its records per input. The full production groups inputs into Condor jobs. Keep a separate writable EOS directory for the final corrected tuple.
 
 If you already submitted **condor-1S-9x275-check-v2**, go straight to [Check the test output](#check-the-test-output). An earlier successful interactive test verifies the physics on the login node. This Condor test also checks that a batch worker can read EOS and write to AFS.
 
@@ -15,7 +15,7 @@ src="$UPSILON_DATA/Upsilon1S/9x275/hiAcc"
 name=eSTARlight1.3.0-1.0_Upsilon1S_9x275_q2_0to0.01_hiAcc_ab_run000.0000.eicrecon.edm4eic.root
 image=/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable
 trial="$PWD/workspaces/condor-1S-9x275-check-v2"
-full="$PWD/workspaces/condor-1S-9x275-full-v1"
+full="$PWD/workspaces/condor-1S-9x275-full-grouped-v1"
 klist -s || kinit "$USER@CERN.CH"
 head -c 4 "$src/$name" && echo
 ```
@@ -74,60 +74,30 @@ An error about `/srv/jobs.py` identifies the old frozen launcher. Confirm the ol
 
 ## Plan and submit the full sample
 
-Start after the Condor pilot has returned `DONE` with 100 rows. On bare lxplus, rerun [Set the paths](#set-the-paths) if needed. Build a sorted list of the original reconstructed files directly under the input directory. The pilot file belongs in this list once; keep its separate test output out of the full merge.
+The full-sample launcher uses **up to 100 files per Condor job** by default. For example, 11,376 input files require 114 Condor jobs, with 76 files in the last job. The launcher prints the actual count from your EOS inventory. In the archived 2S campaign, most Condor jobs processed 140 files; the 1S pilot and the full sample can have different runtimes.
+
+On bare lxplus, after the one-file Condor pilot is `DONE` with 100 rows, run:
 
 ```bash
-(
-  set -euo pipefail
-  python3 - "$trial/batch/jobs/job_000000/result.json" <<'PY'
-import json, sys
-with open(sys.argv[1]) as stream:
-    pilot = json.load(stream)
-if (pilot.get("status"), pilot.get("output_rows"), pilot.get("electron_id")) != ("DONE", 100, "reco-rematch3011"):
-    raise SystemExit("Complete the one-file Condor test before planning the full sample")
-PY
-  mkdir -p "$PWD/workspaces"
-  mkdir "$full"
-  find "$src" -maxdepth 1 -type f -name 'eSTARlight1.3.0-1.0_Upsilon1S_9x275_*_hiAcc_ab_run*.eicrecon.edm4eic.root' \
-    -print | LC_ALL=C sort > "$full/input.txt"
-  test -s "$full/input.txt"
-  grep -Fx "$src/$name" "$full/input.txt"
-  wc -l "$full/input.txt"
-  head -n 2 "$full/input.txt"
-  tail -n 2 "$full/input.txt"
-)
+git pull --ff-only origin main && bash production/submit_1s_9x275.sh --submit
 ```
 
-Check this list against the intended campaign inventory, including the generation settings. The reference merged tuple contains **1,137,600 generated rows**. Use the actual input list to determine the job count. Run the following block once for that inventory:
+To see the file and job counts first, omit `--submit`. Run the same command with `--submit` afterwards to submit the frozen plan. You can set `FILES_PER_JOB=50`, for example, before the first plan; give the same value when submitting. Use `tmux` if you want to disconnect while the AFS plan is being written. After Condor returns the cluster ID, it owns the jobs.
 
-```bash
-(
-  set -euo pipefail
-  batch="$full/batch"
-  python3 production/jobs.py plan \
-    --input-list "$full/input.txt" --work-dir "$batch" \
-    --state 1S --beam 9x275 --electron-id reco-rematch3011 --femc full \
-    --environment-label eic_xl:26.07.1-stable --job-flavour longlunch \
-    --write > "$full/plan.log"
-  grep -Fx '+AccountingGroup = "group_u_CMS.CAF.COMM"' "$batch/submit.sub"
-  n=$(wc -l < "$full/input.txt")
-  test "$(grep -Ec '^[0-9]+$' "$batch/submit.sub")" -eq "$n"
-  condor_submit -maxjobs "$n" -append 'getenv = False' \
-    -append "+SingularityImage = \"$image\"" "$batch/submit.sub" \
-    | tee "$full/submission.txt"
-)
-```
+The launcher checks the pilot receipt, lists the reconstructed hiAcc 1S 9×275 inputs directly under the EOS sample directory, and writes `input.txt` and `plan.log` in `workspaces/condor-1S-9x275-full-grouped-v1/`. You can override the repository input base with `UPSILON_DATA`. Review `input.txt` against the intended campaign inventory before interpreting the final row count. A given input, including the pilot original, appears once in the full plan. The separate test output is excluded.
 
-The full plan records each input's path, size and modification time. Add `--hash-inputs` before `--write` if you want to read and hash every input at planning time and during later checks. All worker outputs have SHA-256 checksums in either mode. The submit file uses one `queue` statement for all listed inputs. This syntax was checked with HTCondor 25.0.14 and 25.14.1. If a full plan created with an older checkout reports `Extra data found after queue statement`, pull `main` and make a new full plan in a fresh directory. Your completed one-file test can still serve as the pilot.
+The planner records `files_per_job`, `condor_job_count` and the number of per-file work items (`job_count`) in `batch/plan.json`. The submission asks for `group_u_CMS.CAF.COMM`, `longlunch` and `eic_xl:26.07.1-stable`. Each Condor process runs the files in its group sequentially, using the same per-file ROOT invocation and weights as the successful pilot. Every input has its own output and receipt. The final merge follows the original manifest order.
 
-This full batch has its own jobs, so submit its `submit.sub` once. `pending.sub` is for a batch where some jobs already finished and the remaining jobs have never been submitted. The planner cannot see jobs in the queue.
+If you previously ran the one-job-per-file commands, check `workspaces/condor-1S-9x275-full-v1/submission.txt` and `condor_q "$USER"`. A **plan only** can coexist with the new grouped plan. The launcher refuses to submit over a recorded submission or a matching live cluster. If the old batch is running, keep it separate and reconcile its completed files before any replacement. The launcher never cancels jobs. In the new grouped directory it reserves `submission.txt` before submission to prevent a second launch; if submission fails or its outcome is uncertain, inspect that file and the scheduler first.
+
+For a custom campaign, use `production/jobs.py plan ... --files-per-job 100`. Omitting this option keeps one input per Condor process. Grouping is a scheduler setting; the underlying per-file manifest, ROOT selection and merge interface are the same. Unhashed planning records path, size and modification time; `--hash-inputs` additionally reads every original file to record and verify its SHA-256.
 
 ## Check and merge the full sample
 
-Use `condor_q "$USER"` on lxplus to follow the submitted cluster. To see exactly how many declared jobs produced a result, run this from the repository root:
+Use `condor_q "$USER"` on lxplus to follow the submitted cluster. To count completed input files across all groups, run this from the repository root:
 
 ```bash
-batch="$PWD/workspaces/condor-1S-9x275-full-v1/batch"
+batch="$PWD/workspaces/condor-1S-9x275-full-grouped-v1/batch"
 python3 - "$batch/plan.json" <<'PY'
 import json, sys
 from collections import Counter
@@ -148,18 +118,18 @@ for job in plan["jobs"]:
             rows += result["output_rows"]
     else:
         counts["no receipt yet"] += 1
-print("Planned:", len(plan["jobs"]), "  Results:", dict(counts), "  DONE rows:", rows)
+print("Condor jobs:", plan["condor_job_count"], "  Input files:", len(plan["jobs"]), "  File results:", dict(counts), "  DONE rows:", rows)
 PY
 ```
 
-Every job must be `DONE`. For a match to the original sample, the row total should be **1,137,600**. Investigate missing/failed jobs or a different row total before using physics yields. If a job ended before writing its receipt, its numbered `.err` and `.log` files are in `$batch/logs/`.
+Every input file must be `DONE`. For a match to the original sample, the row total should be **1,137,600**. Investigate missing/failed jobs or a different row total before using physics yields. For example, the first group writes `$batch/logs/group_000000.{out,err,log}`. Its first input writes `$batch/jobs/job_000000/root.log` and `result.json`. If Condor restarts a group, its worker verifies completed outputs before skipping them. It preserves partial or failed attempts for inspection and reports a nonzero exit if any input fails.
 
 Merge **inside the pinned ePIC shell** with access to the AFS batch and writable EOS output. Use the [lxplus container launch](rematch-3011.md#start-on-lxplus-and-run-one-file) with the same EOS credentials as the interactive test. The default output base is a separate `rematch3011-v1` directory beneath the July data area. Set `CORRECTED_BASE` to another writable absolute directory if needed. In that shell, from the repo root, run:
 
 ```bash
 (
   set -euo pipefail
-  batch="$PWD/workspaces/condor-1S-9x275-full-v1/batch"
+  batch="$PWD/workspaces/condor-1S-9x275-full-grouped-v1/batch"
   data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
   CORRECTED_BASE="${CORRECTED_BASE:-$data/rematch3011-v1}"
   out="$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root"

@@ -54,6 +54,106 @@ class ProductionPlanTest(unittest.TestCase):
         execute.assert_not_called()
         self.assertFalse(self.work.exists())
 
+    def make_counted_inputs(self, count):
+        sources = []
+        for i in range(count):
+            source = self.input.with_name(f'events-{i}.root')
+            source.write_text(str(i + 1))
+            sources.append(source)
+        self.inputs.write_text('\n'.join(map(str, sources)) + '\n')
+        return sources
+
+    def group(self, index, *options):
+        return jobs.main(['group-worker', '--batch', str(self.work), '--index', str(index), *options])
+
+    def test_grouped_plan_validates_size_and_queues_stable_indices(self):
+        self.make_counted_inputs(5)
+        for invalid in ('0', '-1'):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                jobs.plan(self.args('--files-per-job', invalid, '--write'))
+            self.assertFalse(self.work.exists())
+        self.create('--files-per-job', '2')
+        plan = json.loads((self.work / 'plan.json').read_text())
+        self.assertEqual((plan['job_count'], plan['files_per_job'], plan['condor_job_count']), (5, 2, 3))
+        self.assertEqual(len(plan['jobs']), 5)
+        submit = (self.work / 'submit.sub').read_text()
+        self.assertTrue(submit.endswith('queue batch_index from (\n000000\n000001\n000002\n)\n'))
+        self.assertIn('arguments = $(batch_index)', submit)
+        for index in (-1, 3):
+            with self.subTest(index=index), self.assertRaises(ValueError):
+                self.group(index)
+
+    def test_group_workers_checkpoint_each_input_and_merge_in_input_order(self):
+        sources = self.make_counted_inputs(5)
+        self.create('--files-per-job', '2')
+        records = [Path(p) for p in json.loads((self.work / 'plan.json').read_text())['jobs']]
+        outputs = [p.with_name('output.root') for p in records]
+        calls = []
+
+        # Use the actual worker, locks and receipts. Only ROOT I/O is replaced
+        # by a small count fixture with a distinct count for each input.
+        def fake_run(command, setup, **kwargs):
+            if command[0] == 'root':
+                spec = json.loads((Path(kwargs['cwd']) / 'job.json').read_text())
+                source = Path(spec['inputs'][0]['path'])
+                calls.append(source)
+                Path(spec['output']).write_bytes(source.read_bytes())
+            else:
+                self.assertEqual(command[0], 'hadd')
+                inputs = [Path(p) for p in Path(command[2][1:]).read_text().splitlines()]
+                self.assertEqual(inputs, outputs)
+                Path(command[1]).write_text(str(sum(int(p.read_text()) for p in inputs)))
+            return SimpleNamespace(returncode=0)
+
+        with patch.object(jobs, 'root_counts', side_effect=lambda p, _: int(Path(p).read_text())), \
+             patch.object(jobs, 'run_with_setup', side_effect=fake_run), redirect_stdout(io.StringIO()):
+            self.group(0)
+            self.assertEqual(calls, [])
+            # A previously finished individual file is part of an incomplete group.
+            jobs.worker(SimpleNamespace(job=records[0], execute=True))
+            self.group(1, '--execute')
+            jobs.pending(SimpleNamespace(batch=self.work, write=True))
+            self.assertTrue((self.work / 'pending.sub').read_text().endswith(
+                'queue batch_index from (\n000000\n000002\n)\n'))
+            self.group(2, '--execute')  # final group contains only one file
+            self.group(0, '--execute')
+            receipts = [p.with_name('result.json').read_bytes() for p in records]
+            self.group(0, '--execute')
+            self.assertEqual([p.with_name('result.json').read_bytes() for p in records], receipts)
+            self.assertEqual(calls, [sources[i] for i in (0, 2, 3, 4, 1)])
+            merged = self.base / 'merged.root'
+            jobs.merge(SimpleNamespace(batch=self.work, output=merged, execute=True))
+            self.assertEqual(merged.read_text(), '15')
+            # A corrupt checkpoint must not count as DONE or get overwritten.
+            outputs[-1].write_text('99')
+            with self.assertRaises((ValueError, RuntimeError)):
+                self.group(2, '--execute')
+            self.assertEqual(outputs[-1].read_text(), '99')
+            self.assertEqual(len(calls), 5)
+
+    def test_group_preserves_locked_and_changed_files_and_finishes_independent_input(self):
+        sources = self.make_counted_inputs(3)
+        self.create('--files-per-job', '3')
+        records = [Path(p) for p in json.loads((self.work / 'plan.json').read_text())['jobs']]
+        sources[0].write_text('different input')
+        lock = records[1].with_name('execution.lock')
+        lock.write_text('held by another worker')
+
+        def produce(command, setup, **kwargs):
+            self.assertEqual(Path(kwargs['cwd']), records[2].parent)
+            records[2].with_name('output.root').write_text('3')
+            return SimpleNamespace(returncode=0)
+
+        with patch.object(jobs, 'root_counts', side_effect=lambda p, _: int(Path(p).read_text())), \
+             patch.object(jobs, 'run_with_setup', side_effect=produce) as executed, \
+             redirect_stdout(io.StringIO()), self.assertRaises(RuntimeError):
+            self.group(0, '--execute')
+        self.assertEqual(executed.call_count, 1)
+        self.assertFalse(records[0].with_name('output.root').exists())
+        self.assertFalse(records[1].with_name('output.root').exists())
+        self.assertEqual(lock.read_text(), 'held by another worker')
+        self.assertEqual(json.loads(records[2].with_name('result.json').read_text())['status'], 'DONE')
+
     def test_rematching_freezes_corrected_reader_and_archived_input(self):
         for beam in ('9x130', '9x275'):
             with self.subTest(beam=beam):

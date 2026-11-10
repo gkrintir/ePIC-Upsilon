@@ -69,7 +69,7 @@ Review the selected paths before removing `--dry-run`; `--max-files 1` is availa
 
 ## 1. Prepare an input list for a full batch
 
-Use one mounted reconstructed `.root` path per line, with no wildcards. Keep downloaded input files separate from tuple outputs. Every input path must identify the declared state using `1S`, `2S` or `3S`, because the preserved producer infers its raw rate from that path. Duplicated paths are rejected. One input file becomes one job.
+Use one mounted reconstructed `.root` path per line, with no wildcards. Keep downloaded input files separate from tuple outputs. Every input path must identify the declared state using `1S`, `2S` or `3S`, because the preserved producer infers its raw rate from that path. Duplicated paths are rejected. Each input gets a separate ROOT output and receipt.
 
 Export `RECO_INPUT_BASE` as the absolute path to your downloaded datasets. This example lists the reconstructed files directly under the 1S input directory.
 
@@ -89,6 +89,8 @@ PY
 ```
 
 Input file identity is recorded by path, size and modification time. `--hash-inputs` additionally reads and hashes every input; this can be expensive for a large campaign.
+
+For the full 1S 9×275 rematching campaign, [group the inputs at submission](condor-rematch-1s-9x275.md#plan-and-submit-the-full-sample). The planner option `--files-per-job N` assigns up to N consecutive input files to one Condor process. It defaults to 1 for existing callers. Outputs and completion records stay per file; the frozen `merge` command covers the whole input list.
 
 ## 2. Plan, then create a fresh batch
 
