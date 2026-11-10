@@ -121,6 +121,8 @@ These counts use 8–12 GeV in dielectron mass, 20–100 GeV in reconstructed W 
 
 ## Produce the six corrected tuples
 
+New rematching plans request `+AccountingGroup = "group_u_CMS.CAF.COMM"` in both `submit.sub` and `pending.sub`. To check before submission, run `grep '^+AccountingGroup' "$batch/pending.sub"` after creating the pending file. A `worker --execute` run in your shell uses no Condor account.
+
 Use one full input list for each of the three states at each beam energy. Check the file lists against the campaign inventory. Set `CORRECTED_BASE` to a **fresh absolute directory on shared storage**. For each list, set `state`, `beam` and `list`. For example, for the first production batch:
 
 ```bash

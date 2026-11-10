@@ -67,6 +67,8 @@ def submit_text(info, jobs):
              'executable = ' + str(work / 'snapshot/run_job.sh'),
              'request_cpus = 1', 'request_memory = %dMB' % info['memory_mb'],
              'request_disk = %dMB' % info['disk_mb']]
+    if info.get('accounting_group'):
+        lines.append('+AccountingGroup = "' + info['accounting_group'] + '"')
     if info.get('job_flavour'):
         lines.append('+JobFlavour = "' + info['job_flavour'] + '"')
     for path in jobs:
@@ -190,6 +192,7 @@ def plan(args):
                 normalization='Historical per-job weights; merge does not normalize. Run framework preparation/audit before yields.',
                 job_count=len(records))
     if args.electron_id == REMATCH:
+        info['accounting_group'] = 'group_u_CMS.CAF.COMM'
         info['producer_identity'] = selected_sources[PRODUCER] + ' with downstream EICrecon #3011 rematching'
         info['source_paths'] = selected_sources
     print(json.dumps(info, indent=2))

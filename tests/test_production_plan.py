@@ -85,6 +85,18 @@ class ProductionPlanTest(unittest.TestCase):
                 self.assertFalse((Path(job['macro_dir']) / jobs.REMATCH_ENTRY).exists())
                 rematch.assert_not_called()
 
+    def test_rematch_condor_accounting_in_initial_and_pending_submissions(self):
+        self.create('--electron-id', jobs.REMATCH)
+        account = 'group_u_CMS.CAF.COMM'
+        self.assertEqual(json.loads((self.work / 'plan.json').read_text())['accounting_group'], account)
+        with redirect_stdout(io.StringIO()):
+            jobs.pending(SimpleNamespace(batch=self.work, write=True))
+        for filename in ('submit.sub', 'pending.sub'):
+            lines = (self.work / filename).read_text().splitlines()
+            setting = f'+AccountingGroup = "{account}"'
+            self.assertEqual(lines.count(setting), 1)
+            self.assertLess(lines.index(setting), lines.index('queue 1'))
+
     def test_unsupported_id_and_batch_combinations_fail_before_writes(self):
         for extra in [('--femc', 'keep_xpos'), ('--femc', 'keep_yneg'),
                       ('--job-flavour', 'bad\nqueue 50')]:
