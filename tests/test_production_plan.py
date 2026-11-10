@@ -97,7 +97,7 @@ class ProductionPlanTest(unittest.TestCase):
             lines = (self.work / filename).read_text().splitlines()
             setting = f'+AccountingGroup = "{account}"'
             self.assertEqual(lines.count(setting), 1)
-            self.assertLess(lines.index(setting), lines.index('queue 1'))
+            self.assertLess(lines.index(setting), lines.index('queue batch_index from ('))
 
     def test_unsupported_id_and_batch_combinations_fail_before_writes(self):
         for extra in [('--femc', 'keep_xpos'), ('--femc', 'keep_yneg'),
@@ -205,9 +205,34 @@ class ProductionPlanTest(unittest.TestCase):
         with patch.object(jobs.subprocess, 'run') as execute, redirect_stdout(io.StringIO()):
             jobs.pending(SimpleNamespace(batch=self.work, write=True))
         execute.assert_not_called()
-        self.assertEqual((self.work / 'pending.sub').read_text().count('queue 1'), 1)
+        self.assertTrue((self.work / 'pending.sub').read_text().endswith(
+            'queue batch_index from (\n000000\n)\n'))
         with redirect_stdout(io.StringIO()), self.assertRaises(FileExistsError):
             jobs.pending(SimpleNamespace(batch=self.work, write=True))
+
+    def test_pending_queue_preserves_original_nonconsecutive_job_indices(self):
+        inputs = [self.input, self.input.with_name('second.root'), self.input.with_name('third.root')]
+        for source in inputs[1:]:
+            source.write_bytes(b'planning input')
+        self.inputs.write_text('\n'.join(map(str, inputs)) + '\n')
+        self.create()
+        completed = self.work / 'jobs/job_000001'
+        output = completed / 'output.root'
+        output.write_bytes(b'completed output')
+        (completed / 'result.json').write_text(json.dumps(
+            {'status': 'DONE', 'output_sha256': jobs.sha256(output)}))
+        with redirect_stdout(io.StringIO()):
+            jobs.pending(SimpleNamespace(batch=self.work, write=True))
+        full_file = (self.work / 'submit.sub').read_text()
+        pending_file = (self.work / 'pending.sub').read_text()
+        for text, ids in [(full_file, ['000000', '000001', '000002']),
+                          (pending_file, ['000000', '000002'])]:
+            header, rows = text.split('queue batch_index from (\n')
+            self.assertEqual(rows.splitlines(), [*ids, ')'])
+            self.assertIn(f'initialdir = {self.work}/jobs/job_$(batch_index)\n', header)
+            self.assertIn(f'arguments = {self.work}/jobs/job_$(batch_index)/job.json\n', header)
+            for field, suffix in [('output', 'out'), ('error', 'err'), ('log', 'log')]:
+                self.assertIn(f'{field} = {self.work}/logs/$(batch_index).{suffix}\n', header)
 
     def test_job_cannot_drift_from_batch_selection(self):
         path = self.create()

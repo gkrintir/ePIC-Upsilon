@@ -1,5 +1,7 @@
 # Rerun the Υ analysis with corrected ECAL matches
 
+**Starting with Υ(1S) at 9×275 on lxplus?** Follow the [Condor walkthrough](condor-rematch-1s-9x275.md) for the one-file test, worker logs, full submission and merge.
+
 Start from the July campaign's original `*.eicrecon.edm4eic.root` files. They contain the track projections and ECAL clusters needed to rebuild the associations affected by [EICrecon #3011](https://github.com/eic/EICrecon/issues/3011). The merged `UpsilonTree` files contain the resulting electron candidates and serve as the reference. Generation and detector simulation can be reused.
 
 The producer option `--electron-id reco-rematch3011` replays the original matching with its stored cluster order and verifies the ordered track and cluster IDs against the saved links in each ECAL, event by event. A disagreement stops that job. It then uses the physical track-segment index on every iteration to build the corrected links. The reconstructed electron ID applies the same unique-match, E/p and isolation cuts to those links. The tuple records reconstructed electron ID as `ele_id_mode=1`; the job and merge records distinguish stored from rematched links.
@@ -137,8 +139,10 @@ python3 production/jobs.py plan --input-list "$list" --work-dir "$batch" \
 worker="$batch/snapshot/jobs.py"
 python3 "$worker" worker "$batch/jobs/job_000000/job.json" --execute
 python3 "$worker" pending --batch "$batch" --write
-# Submit once for a multi-file batch after checking the pilot job.
-condor_submit "$batch/pending.sub"
+# On bare lxplus, submit the untouched jobs once using the July image.
+image=/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable
+condor_submit -append 'getenv = False' \
+  -append "+SingularityImage = \"$image\"" "$batch/pending.sub"
 ```
 
 When all jobs in that batch finish, merge them into the layout used by the analysis. The merge validates the generated counts. Compare the final row total with the original state/energy tuple before interpreting a yield change.

@@ -71,13 +71,14 @@ def submit_text(info, jobs):
         lines.append('+AccountingGroup = "' + info['accounting_group'] + '"')
     if info.get('job_flavour'):
         lines.append('+JobFlavour = "' + info['job_flavour'] + '"')
-    for path in jobs:
-        job = json.loads(Path(path).read_text())
-        index = job['job_id']
-        lines += ['initialdir = ' + job['job_dir'], 'arguments = ' + str(path),
-                  'output = ' + str(work / 'logs' / ('%06d.out' % index)),
-                  'error = ' + str(work / 'logs' / ('%06d.err' % index)),
-                  'log = ' + str(work / 'logs' / ('%06d.log' % index)), 'queue 1', '']
+    # Use the frozen job's index even when pending.sub queues only a subset.
+    job_dir = work / 'jobs' / 'job_$(batch_index)'
+    log_prefix = work / 'logs' / '$(batch_index)'
+    lines += [f'initialdir = {job_dir}', f'arguments = {job_dir}/job.json',
+              f'output = {log_prefix}.out', f'error = {log_prefix}.err',
+              f'log = {log_prefix}.log', 'queue batch_index from (']
+    lines.extend(Path(path).parent.name.removeprefix('job_') for path in jobs)
+    lines.append(')')
     return '\n'.join(lines) + '\n'
 
 

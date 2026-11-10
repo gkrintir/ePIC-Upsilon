@@ -116,7 +116,7 @@ The producer arguments are:
 | `--data-version` | Third | `new` (default), `old` |
 | `--femc` | Fourth | `full`, `remove_inner`, `remove_outer`, `keep_xpos`, `keep_yneg` |
 | `--eta-split` | Fifth | Positive finite number; default 1.68 |
-| `--electron-id` | Sixth | `legacy` or `reco`, explicitly required |
+| `--electron-id` | Sixth, or rematching wrapper | `legacy`, `reco` or [`reco-rematch3011`](condor-rematch-1s-9x275.md), explicitly required |
 
 `reco` selects the new reconstructed matching mode. The preserved half-plane scenarios support only `legacy`; unsupported combinations are rejected. These options do not implement a new proton-tag analysis category.
 

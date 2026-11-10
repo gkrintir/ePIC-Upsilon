@@ -4,7 +4,7 @@ Follow an exclusive Υ result from reconstructed ePIC events to the analysis not
 
 **New to the analysis?** [Start at the tuple producer](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction). If you already have the merged ROOT files, [start at the inputs](https://gkrintir.github.io/ePIC-Upsilon/#mass/tuple) or run the two replay commands below.
 
-**Reprocessing the July samples for EICrecon #3011?** [Run the two matching pilots, produce corrected tuples and repeat the fits](docs/rematch-3011.md).
+**Reprocessing the July samples for EICrecon #3011?** [Submit the 1S 9×275 Condor test and full sample](docs/condor-rematch-1s-9x275.md). The [rematching guide](docs/rematch-3011.md) also covers the interactive EOS setup, the second pilot and the analysis fits.
 
 **Reviewing a figure?** Trace a paper result back to its calculation and input tuples.
 
