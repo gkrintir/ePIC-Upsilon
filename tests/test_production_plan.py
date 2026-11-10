@@ -52,6 +52,39 @@ class ProductionPlanTest(unittest.TestCase):
         execute.assert_not_called()
         self.assertFalse(self.work.exists())
 
+    def test_rematching_freezes_corrected_reader_and_archived_input(self):
+        for beam in ('9x130', '9x275'):
+            with self.subTest(beam=beam):
+                self.work = self.base / ('rematch-' + beam)
+                path = self.create('--beam', beam, '--electron-id', jobs.REMATCH)
+                job = jobs.load_job(path)
+                macros = Path(job['macro_dir'])
+                self.assertEqual((macros / jobs.PRODUCER).read_bytes(),
+                                 (jobs.PRODUCTION / jobs.PRODUCERS[beam]).read_bytes())
+                self.assertEqual((macros / jobs.ARCHIVED_READER).read_bytes(),
+                                 (jobs.PRODUCTION / 'macros/ElectronFinder.C').read_bytes())
+                self.assertNotEqual((macros / jobs.ARCHIVED_READER).read_bytes(),
+                                    (macros / 'ElectronFinder.C').read_bytes())
+                self.assertIn(str(macros / jobs.REMATCH_ENTRY) + '(', jobs.root_command(job)[-1])
+                self.assertEqual(job['electron_id'], jobs.REMATCH)
+                wrapper = (macros / jobs.REMATCH_ENTRY).read_text()
+                self.assertLess(wrapper.index('#define UPSILON_REMATCH_3011'), wrapper.index('#include'))
+                self.assertIn('femc_eta_split, "reco")', wrapper)
+                with (macros / jobs.REMATCH_ENTRY).open('a') as output:
+                    output.write('// changed\n')
+                with self.assertRaisesRegex(ValueError, 'snapshot hash mismatch'):
+                    jobs.load_job(path)
+
+    def test_preserved_electron_ids_do_not_apply_the_patch(self):
+        for mode in ('legacy', 'reco'):
+            with self.subTest(mode=mode), patch.object(jobs, 'build_rematched_reader') as rematch:
+                self.work = self.base / mode
+                path = self.create('--electron-id', mode)
+                job = jobs.load_job(path)
+                self.assertTrue(jobs.root_command(job)[-1].endswith(',"' + mode + '")'))
+                self.assertFalse((Path(job['macro_dir']) / jobs.REMATCH_ENTRY).exists())
+                rematch.assert_not_called()
+
     def test_unsupported_id_and_batch_combinations_fail_before_writes(self):
         for extra in [('--femc', 'keep_xpos'), ('--femc', 'keep_yneg'),
                       ('--job-flavour', 'bad\nqueue 50')]:

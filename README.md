@@ -4,6 +4,8 @@ Follow an exclusive Υ result from reconstructed ePIC events to the analysis not
 
 **New to the analysis?** [Start at the tuple producer](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction). If you already have the merged ROOT files, [start at the inputs](https://gkrintir.github.io/ePIC-Upsilon/#mass/tuple) or run the two replay commands below.
 
+**Reprocessing the July samples for EICrecon #3011?** [Run the two matching pilots, produce corrected tuples and repeat the fits](docs/rematch-3011.md).
+
 **Reviewing a figure?** Trace a paper result back to its calculation and input tuples.
 
 - Fig. 18 shows the [three-state mass fit (a)](https://gkrintir.github.io/ePIC-Upsilon/#mass/publication) and [tagged Υ(1S) efficiency maps (b, c)](https://gkrintir.github.io/ePIC-Upsilon/#efficiency/publication).

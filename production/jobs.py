@@ -22,6 +22,10 @@ REPO = PRODUCTION.parent
 PRODUCER = 'DVMP_Upsilon_Analysis.C'
 PRODUCERS = {'9x275': 'macros/' + PRODUCER, '9x130': 'macros/9x130/' + PRODUCER}
 MACROS = (PRODUCER, 'ElectronFinder.C', 'ePICStyle.C', 'ePICStyle.h')
+REMATCH = 'reco-rematch3011'
+REMATCH_ENTRY = 'RunRematch3011.C'
+REMATCH_PATCH = 'ElectronFinder.patch'
+ARCHIVED_READER = 'ElectronFinder.stored.C'
 SCENARIOS = ('full', 'remove_inner', 'remove_outer', 'keep_xpos', 'keep_yneg')
 
 
@@ -118,16 +122,34 @@ def verify_beam_constants(path, beam):
             raise ValueError(f'Producer beam constant {name} conflicts with {beam}: {path}')
 
 
-def verify_macro_sources(beam='9x275'):
+def verify_macro_sources(beam='9x275', electron_id='reco'):
     sources = json.loads((PRODUCTION / 'sources.json').read_text())
     expected = {row['path']: row['sha256'] for row in sources['files']}
     selected = {name: 'macros/' + name for name in MACROS}
     selected[PRODUCER] = PRODUCERS[beam]
+    if electron_id == REMATCH:
+        selected[ARCHIVED_READER] = selected.pop('ElectronFinder.C')
+        for name in (REMATCH_ENTRY, REMATCH_PATCH):
+            selected[name] = 'rematch3011/' + name
     for relative in selected.values():
         if sha256(PRODUCTION / relative) != expected[relative]:
             raise ValueError('Recovered macro changed; audit a new producer revision before planning: ' + relative)
     verify_beam_constants(PRODUCTION / selected[PRODUCER], beam)
-    return selected, {name: expected[relative] for name, relative in selected.items()}
+    hashes = {name: expected[relative] for name, relative in selected.items()}
+    if electron_id == REMATCH:
+        hashes['ElectronFinder.C'] = sources['rematch3011_reader_sha256']
+    return selected, hashes
+
+
+def build_rematched_reader(selected, expected_hash):
+    # Emit the patched bytes to stdout. Neither source in the checkout is modified.
+    result = subprocess.run(
+        ['patch', '--batch', '--fuzz=0', '--silent', '--output=-', '--reject-file=-',
+         str(PRODUCTION / selected[ARCHIVED_READER]), str(PRODUCTION / selected[REMATCH_PATCH])],
+        capture_output=True, check=False)
+    if result.returncode or hashlib.sha256(result.stdout).hexdigest() != expected_hash:
+        raise ValueError('Cannot reproduce the reviewed EICrecon #3011 reader from the archived source and patch')
+    return result.stdout
 
 
 def plan(args):
@@ -146,7 +168,10 @@ def plan(args):
         raise FileExistsError('Use a fresh work directory; existing work is unchanged: ' + str(work))
     validate_work_location(work)
     records = input_records(args.input_list, args.state, args.hash_inputs, beam=args.beam)
-    selected_sources, source_hashes = verify_macro_sources(args.beam)
+    selected_sources, source_hashes = verify_macro_sources(args.beam, args.electron_id)
+    rematched_reader = None
+    if args.electron_id == REMATCH:
+        rematched_reader = build_rematched_reader(selected_sources, source_hashes['ElectronFinder.C'])
     setup = None
     if args.setup_script:
         setup_path = safe_path(args.setup_script).resolve()
@@ -164,6 +189,9 @@ def plan(args):
                 worker_sha256=sha256(__file__), created_utc=datetime.now(timezone.utc).isoformat(),
                 normalization='Historical per-job weights; merge does not normalize. Run framework preparation/audit before yields.',
                 job_count=len(records))
+    if args.electron_id == REMATCH:
+        info['producer_identity'] = selected_sources[PRODUCER] + ' with downstream EICrecon #3011 rematching'
+        info['source_paths'] = selected_sources
     print(json.dumps(info, indent=2))
     if not args.write:
         print('PLAN ONLY. Add --write to create the fresh work directory. No ROOT or Condor command executed.')
@@ -172,6 +200,8 @@ def plan(args):
     (work / 'snapshot/macros').mkdir(parents=True)
     for name, relative in selected_sources.items():
         shutil.copyfile(PRODUCTION / relative, work / 'snapshot/macros' / name)
+    if rematched_reader is not None:
+        (work / 'snapshot/macros/ElectronFinder.C').write_bytes(rematched_reader)
     shutil.copyfile(__file__, work / 'snapshot/jobs.py')
     launcher = work / 'snapshot/run_job.sh'
     launcher.write_text('#!/usr/bin/env bash\nset -euo pipefail\nexec python3 -B "$(dirname "$0")/jobs.py" worker "$1" --execute\n')
@@ -255,7 +285,12 @@ def load_job(path):
     macro_dir = work / 'snapshot/macros'
     if Path(job['macro_dir']).resolve() != macro_dir:
         raise ValueError('Macro snapshot path mismatch')
-    for name in MACROS:
+    expected_sources = set(MACROS)
+    if job['electron_id'] == REMATCH:
+        expected_sources.update((ARCHIVED_READER, REMATCH_ENTRY, REMATCH_PATCH))
+    if set(job['source_hashes']) != expected_sources:
+        raise ValueError('Unexpected source list for electron ID ' + job['electron_id'])
+    for name in expected_sources:
         if sha256(macro_dir / name) != job['source_hashes'][name]:
             raise ValueError('Macro snapshot hash mismatch: ' + name)
     verify_beam_constants(macro_dir / PRODUCER, job['beam'])
@@ -275,9 +310,14 @@ def load_job(path):
 
 def root_command(job):
     quote = lambda text: json.dumps(str(text), ensure_ascii=True)
-    call = str(Path(job['macro_dir']) / 'DVMP_Upsilon_Analysis.C') + '(' + ','.join([
-        quote(job['inputs'][0]['path']), quote(job['output']), quote(job['data_version']),
-        quote(job['femc']), format(job['eta_split'], '.17g'), quote(job['electron_id'])]) + ')'
+    args = [quote(job['inputs'][0]['path']), quote(job['output']), quote(job['data_version']),
+            quote(job['femc']), format(job['eta_split'], '.17g')]
+    entry = PRODUCER
+    if job['electron_id'] == REMATCH:
+        entry = REMATCH_ENTRY
+    else:
+        args.append(quote(job['electron_id']))
+    call = str(Path(job['macro_dir']) / entry) + '(' + ','.join(args) + ')'
     return ['root', '-l', '-b', '-q', call]
 
 
@@ -319,7 +359,7 @@ def worker(args):
     fd = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     os.close(fd)
     result = dict(schema_version=1, status='FAILED', job=str(Path(args.job).resolve()),
-                  beam=job['beam'], state=job['state'], source_hashes=job['source_hashes'],
+                  beam=job['beam'], state=job['state'], electron_id=job['electron_id'], source_hashes=job['source_hashes'],
                   command=command, environment_label=job['environment_label'],
                   normalization=job['normalization'], started_utc=datetime.now(timezone.utc).isoformat())
     try:
@@ -365,6 +405,8 @@ def merge(args):
         for key in ('beam', 'state', 'source_hashes'):
             if result.get(key) != job[key]:
                 raise ValueError('Job result differs from the planned ' + key)
+        if job['electron_id'] == REMATCH and result.get('electron_id') != REMATCH:
+            raise ValueError('Corrected batch requires confirmed rematching in every job result')
         if sha256(path) != result['output_sha256']:
             raise ValueError('Output changed after job validation: ' + str(path))
         if root_counts(path, 'UpsilonTree') != result['output_rows']:
@@ -396,6 +438,7 @@ def merge(args):
     os.close(lock_fd)
     result = dict(status='FAILED', command=command, expected_rows=expected, inputs=list(map(str, paths)),
                   beam=plan_data['beam'], state=plan_data['state'], source_hashes=plan_data['source_hashes'],
+                  electron_id=plan_data['electron_id'],
                   normalization='Unchanged raw per-job weights. Normalize the complete merged sample in the framework.',
                   plan_sha256=sha256(plan_path))
     try:
@@ -430,7 +473,7 @@ def parser():
     a.add_argument('--work-dir', type=Path, required=True)
     a.add_argument('--beam', choices=sorted(PRODUCERS), required=True)
     a.add_argument('--state', choices=('1S', '2S', '3S'), required=True)
-    a.add_argument('--electron-id', choices=('legacy', 'reco'), required=True)
+    a.add_argument('--electron-id', choices=('legacy', 'reco', REMATCH), required=True)
     a.add_argument('--femc', choices=SCENARIOS, default='full')
     a.add_argument('--eta-split', type=float, default=1.68)
     a.add_argument('--data-version', choices=('old', 'new'), default='new')

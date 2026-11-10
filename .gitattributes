@@ -11,6 +11,7 @@
 # Imported scientific sources retain their recorded byte-level identities.
 analysis/** -text
 production/macros/** -text
+production/rematch3011/*.patch -text
 production/cards/** -text
 production/download/** -text
 extensions/** -text

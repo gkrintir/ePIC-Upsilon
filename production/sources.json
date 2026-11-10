@@ -102,6 +102,16 @@
       "blob_sha": "ecdf1b175a21cc42b6ba394e3981e3c4afe6a454",
       "url": "https://github.com/eic/Upsilon_Sim_Cards/blob/f62965a1612fc734dbab18e141f4809740d6b234/Jul26_Campaign_Input/slight_Upsilon3S_9To275.in",
       "blob_verified": true
+    },
+    {
+      "path": "rematch3011/RunRematch3011.C",
+      "origin": "Analysis-level EICrecon #3011 correction",
+      "sha256": "796a762cb959fb764c6b9ab2936ad9e0bdf5e11c2692b96a2e8ad9019531a49c"
+    },
+    {
+      "path": "rematch3011/ElectronFinder.patch",
+      "origin": "Analysis-level EICrecon #3011 correction",
+      "sha256": "3620b6c4fb6a5ff193c7920073870909d344dc6307299a0abb8ab0338f521c85"
     }
   ],
   "missing": [
@@ -119,5 +129,6 @@
     "working_copy": "lAger_JPsi_MuMu_Dataset/",
     "job_records": "cern-2026-10/campaign.json",
     "scope": "Verified input paths, Condor worker messages and merged electron-ID counters for Upsilon2S/9x130."
-  }
+  },
+  "rematch3011_reader_sha256": "e1291bf85819a2bde282af055bcbcff5bf31367d3117e0e494e398f78ec2c055"
 }

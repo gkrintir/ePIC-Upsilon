@@ -1,0 +1,162 @@
+--- ElectronFinder.C
++++ ElectronFinder.C
+@@ -40,0 +41,49 @@ struct RecoLink { ObjectKey track, clust
++#ifdef UPSILON_REMATCH_3011
++// EICrecon v1.39.2 TrackClusterMatch, using the July 2026 detector geometry.
++// The old path is replayed as an event-level check on the geometry and ordering.
++struct CaloDirection { double eta, phi; };
++inline CaloDirection Direction(float x, float y, float z) {
++    // edm4hep v01-00 vector_utils.h on Vector3f: anglePolar/angleAzimuthal
++    // perform the coordinate operations on floats before angleToEta takes a double.
++    const double theta = std::atan2(std::hypot(x, y), z);
++    return {-std::log(std::tan(0.5 * theta)), std::atan2(y, x)};
++}
++struct SurfacePoint { std::uint32_t system; CaloDirection direction; };
++struct ProjectedSegment { ObjectKey track; std::vector<SurfacePoint> points; };
++
++inline std::vector<RecoLink> ReplayClusterMatches(
++    const std::vector<ProjectedSegment>& segments, std::uint32_t system,
++    std::uint32_t collection, const std::vector<CaloDirection>& clusters,
++    bool corrected) {
++    std::vector<bool> used(segments.size(), false);
++    std::vector<RecoLink> result;
++    const double twoPi = 2 * std::acos(-1.0);
++    for (std::size_t c = 0; c < clusters.size(); ++c) {
++        double closest = 0.5;
++        std::size_t best = segments.size();
++        for (std::size_t s = 0; s < segments.size(); ++s) {
++            if (used[s]) {
++                // The v1.39.2 manual index stalls at the first used segment:
++                // its continue also skips the increment on every later iteration.
++                if (!corrected) break;
++                continue;
++            }
++            for (const auto& point : segments[s].points) {
++                if (point.system != system) continue;
++                const auto& d = point.direction;
++                const double dphi = std::remainder(clusters[c].phi - d.phi, twoPi);
++                const double distance = std::hypot(clusters[c].eta - d.eta, dphi);
++                if (distance < closest) {
++                    closest = distance;
++                    best = s;
++                }
++            }
++        }
++        if (best != segments.size()) {
++            used[best] = true;
++            result.push_back({segments[best].track, {collection, static_cast<int>(c)}});
++        }
++    }
++    return result;
++}
++#endif
+@@ -331,0 +381,6 @@ inline void RequireRecoBranches(TTree* t
++#ifdef UPSILON_REMATCH_3011
++    for (const char* name : {"CalorimeterTrackProjections", "_CalorimeterTrackProjections_points",
++                             "_CalorimeterTrackProjections_track"})
++        if (!tree->GetBranch(name))
++            throw std::runtime_error(std::string("EICrecon #3011 replay needs branch ") + name);
++#endif
+@@ -449,0 +505,89 @@ inline CollectionIDs RequiredCollectionI
++#ifdef UPSILON_REMATCH_3011
++struct PositionReader {
++    TTreeReaderArray<float> x, y, z;
++    PositionReader(TTreeReader& r, const std::string& collection)
++        : x(r, (collection + ".position.x").c_str()), y(r, (collection + ".position.y").c_str()),
++          z(r, (collection + ".position.z").c_str()) {}
++    void RequireSize(std::size_t count) {
++        if (x.GetSetupStatus() < 0 || y.GetSetupStatus() < 0 || z.GetSetupStatus() < 0 ||
++            x.GetSize() != count || y.GetSize() != count || z.GetSize() != count)
++            throw std::runtime_error(std::string("EICrecon #3011 replay: unreadable or inconsistent positions for ") +
++                x.GetBranchName());
++    }
++    CaloDirection At(std::size_t i) { return Direction(x[i], y[i], z[i]); }
++};
++
++class TrackProjectionReplay {
++public:
++    explicit TrackProjectionReplay(TTreeReader& r)
++        : reader_(r), begin_(r, "CalorimeterTrackProjections.points_begin"),
++          end_(r, "CalorimeterTrackProjections.points_end"),
++          tracks_(r, "_CalorimeterTrackProjections_track"),
++          system_(r, "_CalorimeterTrackProjections_points.system"),
++          surface_(r, "_CalorimeterTrackProjections_points.surface"),
++          points_(r, "_CalorimeterTrackProjections_points"),
++          barrel_(r, "EcalBarrelClusters"), backward_(r, "EcalEndcapNClusters"),
++          forward_(r, "EcalEndcapPClusters") {}
++
++    std::vector<RecoLink> CheckedLinks(const CollectionIDs& ids, const std::set<ObjectKey>& tracks,
++                                       const std::vector<RecoLink>& stored, std::size_t barrelSize,
++                                       std::size_t backwardSize, std::size_t forwardSize) {
++        if (begin_.GetSetupStatus() < 0 || end_.GetSetupStatus() < 0 ||
++            tracks_.GetSetupStatus() < 0 || system_.GetSetupStatus() < 0 || surface_.GetSetupStatus() < 0 ||
++            system_.GetSize() != surface_.GetSize() ||
++            begin_.GetSize() != end_.GetSize() || begin_.GetSize() != tracks_.GetSize())
++            throw std::runtime_error("EICrecon #3011 replay: unreadable or inconsistent track projections.");
++        points_.RequireSize(system_.GetSize());
++        std::vector<ProjectedSegment> segments;
++        segments.reserve(begin_.GetSize());
++        for (std::size_t s = 0; s < begin_.GetSize(); ++s) {
++            const auto track = Key(tracks_[s]);
++            if (!tracks.count(track) || begin_[s] > end_[s] || end_[s] > system_.GetSize())
++                throw std::runtime_error("EICrecon #3011 replay: invalid segment track or point range.");
++            segments.push_back({track, {}});
++            for (std::size_t p = begin_[s]; p < end_[s]; ++p) {
++                if (surface_[p] == 1)
++                    segments.back().points.push_back({system_[p], points_.At(p)});
++            }
++        }
++        std::vector<RecoLink> corrected;
++        const auto append = [&](const char* name, std::uint32_t system,
++                                PositionReader& reader, std::size_t count) {
++            const auto id = ids.at(name);
++            reader.RequireSize(count);
++            std::vector<CaloDirection> directions;
++            directions.reserve(count);
++            for (std::size_t i = 0; i < count; ++i) directions.push_back(reader.At(i));
++            const auto old = ReplayClusterMatches(segments, system, id, directions, false);
++            std::size_t i = 0;
++            const auto mismatch = [&] {
++                return std::runtime_error(std::string("EICrecon #3011 replay does not reproduce stored ") +
++                    name + " links at event " + std::to_string(reader_.GetCurrentEntry()) +
++                    ". Check the input campaign, geometry and matcher before proceeding.");
++            };
++            for (const auto& link : stored) {
++                if (link.cluster.collection != id) continue;
++                if (i == old.size() || !(link.track == old[i].track) || !(link.cluster == old[i].cluster))
++                    throw mismatch();
++                ++i;
++            }
++            if (i != old.size()) throw mismatch();
++            const auto fixed = ReplayClusterMatches(segments, system, id, directions, true);
++            corrected.insert(corrected.end(), fixed.begin(), fixed.end());
++        };
++        // These are detector-system numbers, distinct from per-file PODIO collection IDs.
++        append("EcalBarrelClusters",   101, barrel_,   barrelSize);
++        append("EcalEndcapNClusters",  103, backward_, backwardSize);
++        append("EcalEndcapPClusters",  102, forward_,  forwardSize);
++        return corrected;
++    }
++private:
++    TTreeReader& reader_;
++    TTreeReaderArray<unsigned int> begin_, end_;
++    TTreeReaderArray<podio::ObjectID> tracks_;
++    TTreeReaderArray<UInt_t> system_;
++    TTreeReaderArray<ULong_t> surface_; // On-disk type in both July pilot files.
++    PositionReader points_, barrel_, backward_, forward_;
++};
++#endif
++
+@@ -453,0 +598,3 @@ public:
++#ifdef UPSILON_REMATCH_3011
++          replay_(reader),
++#endif
+@@ -528,0 +676,4 @@ public:
++#ifdef UPSILON_REMATCH_3011
++        links = replay_.CheckedLinks(ids_, tracks, links, barrelEnergy.GetSize(),
++                                     backwardEnergy.GetSize(), forwardEnergy.GetSize());
++#endif
+@@ -536,0 +688,3 @@ private:
++#ifdef UPSILON_REMATCH_3011
++    TrackProjectionReplay replay_;
++#endif

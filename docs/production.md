@@ -4,6 +4,8 @@
 
 Use the existing merged samples for the analysis and plotting workflow. This guide is for **new tuple production** from downloaded ePIC reconstructed `events` trees. It does not run eSTARlight, detector simulation or EICrecon.
 
+For the July samples affected by EICrecon #3011, follow the [ECAL rematching pilot and production instructions](rematch-3011.md).
+
 ## Production sources
 
 Choose `--beam 9x130` or `--beam 9x275`. The planner selects the corresponding preserved C++ macro, checks its beam constants and freezes it with the electron finder and style files in the batch. The beam setting also determines the proton-candidate momentum threshold, half the proton-beam energy. The tuple stores the candidate information for downstream selections. [Source paths and SHA-256 values](../production/sources.json)
