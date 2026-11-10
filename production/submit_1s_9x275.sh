@@ -4,23 +4,37 @@ set -euo pipefail
 die() { echo "$*" >&2; exit 1; }
 submit=false
 after_removal=false
-for option in "$@"; do
-  case "$option" in
+run_label=
+while (( $# )); do
+  case "$1" in
     --submit) submit=true ;;
     --after-removal) after_removal=true ;;
-    *) die "Usage: $0 [--after-removal] [--submit] (FILES_PER_JOB defaults to 100)" ;;
+    --new-run)
+      [[ -z "$run_label" && ${2:-} =~ ^[A-Za-z0-9][A-Za-z0-9_-]{0,47}$ && "$2" != v1 ]] ||
+        die 'Supply one new run label (1–48 letters, digits, underscores or hyphens, starting with a letter or digit; v1 is reserved).'
+      run_label=$2
+      shift ;;
+    *) die "Usage: $0 [--after-removal | --new-run LABEL] [--submit] (FILES_PER_JOB defaults to 100)" ;;
   esac
+  shift
 done
+if [[ -n "$run_label" ]] && "$after_removal"; then die 'Choose either --new-run or --after-removal.'; fi
 cd "$(dirname "$0")/.."
 repo=$(pwd -P)
 single="$repo/workspaces/condor-1S-9x275-full-v1"
 grouped="$repo/workspaces/condor-1S-9x275-full-grouped-v1"
-full="$repo/workspaces/condor-1S-9x275-full-grouped-eos-v1"
+full="$repo/workspaces/condor-1S-9x275-full-grouped-eos-${run_label:-v1}"
 trial="$repo/workspaces/condor-1S-9x275-check-v2"
 batch="$full/batch"
 data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
 corrected="${CORRECTED_BASE:-$data/rematch3011-v1}"
-tuple_dir="${TUPLE_OUTPUT_DIR:-$corrected/Upsilon1S/9x275/hiAcc/output_newID/intermediate}"
+output_dir="$corrected/Upsilon1S/9x275/hiAcc/output_newID"
+predecessors=("$single" "$grouped")
+if [[ -n "$run_label" ]]; then
+  output_dir="$output_dir/runs/$run_label"
+  predecessors=()
+fi
+tuple_dir="${TUPLE_OUTPUT_DIR:-$output_dir/intermediate}"
 [[ "$tuple_dir" == /* ]] || die 'The tuple output directory must be an absolute mounted path.'
 group_size=${FILES_PER_JOB:-100}
 [[ "$group_size" =~ ^[1-9][0-9]*$ ]] || die 'FILES_PER_JOB must be a positive integer.'
@@ -32,7 +46,7 @@ old="$single"
 old_clusters=()
 unknown=()
 shopt -s nullglob
-for previous in "$single" "$grouped"; do
+for previous in "${predecessors[@]}"; do
   [[ ! -d "$previous/recovery.lock" ]] || die "Earlier recovery is in progress or interrupted at $previous/recovery.lock. Inspect it before switching."
   records=("$previous"/batch/retries/attempt-*/submission.txt)
   [[ ! -e "$previous/submission.txt" ]] || records+=("$previous/submission.txt")
@@ -63,11 +77,13 @@ if "$after_removal"; then
 fi
 
 check_queue() {
-  local active id
+  local active id campaign
   active=$(condor_q "$(id -un)" -af ClusterId Iwd Cmd) || die 'Could not check the Condor queue.'
-  if [[ "$active" == *"/workspaces/condor-1S-9x275-full-"* ]]; then
-    die 'A 1S 9x275 full-sample batch is still in the queue. If already removed, retry after Condor finishes cleanup.'
-  fi
+  for campaign in "$full" "${predecessors[@]}"; do
+    if [[ "$active" == *"/workspaces/${campaign##*/}/"* ]]; then
+      die "Condor still lists jobs for $campaign. Check that campaign's queue before submitting."
+    fi
+  done
   if "$after_removal"; then
     for id in "${old_clusters[@]}"; do
       if grep -Eq "^[[:space:]]*${id}([[:space:]]|$)" <<< "$active"; then
@@ -100,7 +116,7 @@ PY
   n=$(wc -l < "$full/input.txt")
   (( n > 1 )) || die "Found only $n file(s); check the EOS inventory."
   grep -Fxq "$src/$name" "$full/input.txt" || die 'The input list is missing the validated pilot file.'
-  if [[ -f "$old/input.txt" ]]; then
+  if [[ -z "$run_label" && -f "$old/input.txt" ]]; then
     cmp -s "$old/input.txt" "$full/input.txt" || die "The previous inventory and the current EOS list differ. Inspect $full/input.txt."
   fi
   echo "Planning $n input files with up to $group_size per Condor job. Details: $full/plan.log"
@@ -127,6 +143,9 @@ PY
 )
 echo "$n files -> $groups Condor jobs (maximum $group_size files/job, group_u_CMS.CAF.COMM)"
 echo "Per-file ROOT tuples: $tuple_dir/job_XXXXXX.root"
+if [[ -n "$run_label" ]]; then
+  echo "Monitor run $run_label: python3 production/rematch_status.py --batch '$batch' --queue-only"
+fi
 submit_file="$batch/submit.sub"
 limit=$groups
 if "$after_removal"; then
@@ -156,5 +175,6 @@ if "$submit"; then
 else
   options=()
   if "$after_removal"; then options+=(--after-removal); fi
+  if [[ -n "$run_label" ]]; then options+=(--new-run "$run_label"); fi
   echo "Plan ready. To submit, run: FILES_PER_JOB=$group_size bash production/submit_1s_9x275.sh ${options[*]} --submit"
 fi

@@ -2,7 +2,7 @@
 
 Run from **bare lxplus**, in an AFS checkout on `main`. Each worker reads an original EDM4eic file from EOS and writes its corrected ROOT tuple directly to EOS. The merge reads those tuples from EOS. The plan, logs and completion receipts live under `workspaces/` on AFS.
 
-If the one-file Condor test (`condor-1S-9x275-check-v2`) already succeeded, keep its receipt. If you also submitted the full sample with AFS outputs, go to [Switch an existing AFS campaign to EOS](#switch-an-existing-afs-campaign-to-eos).
+If the one-file Condor test (`condor-1S-9x275-check-v2`) already succeeded, keep its receipt. To process the full sample from the original files while an earlier campaign is active, [start an independent EOS run](#start-an-independent-eos-run). To reuse finished AFS tuples after the older campaign leaves the queue, [switch that campaign to EOS](#switch-an-existing-afs-campaign-to-eos).
 
 ## Set the paths
 
@@ -104,7 +104,40 @@ cat "$full/batch/jobs/job_000000/result.json"
 
 The planner records `files_per_job`, `condor_job_count` and the number of per-file work items (`job_count`) in `batch/plan.json`. The submission asks for `group_u_CMS.CAF.COMM`, `longlunch` and `eic_xl:26.07.1-stable`. Each Condor process runs the files in its group sequentially, using the same per-file ROOT invocation and weights as the successful pilot. Every input has its own output and receipt. The final merge follows the original manifest order.
 
-Already submitted jobs keep the output paths frozen when they were planned. Pulling new code or exporting a new variable affects future plans. To switch an earlier AFS submission, use the recovery command below.
+Already submitted jobs use the output paths in their frozen plans. Choose a named run below for independent reprocessing, or the AFS-to-EOS switch to reuse completed work.
+
+### Start an independent EOS run
+
+After the one-file pilot succeeds, run this from the repository root on bare lxplus. `fresh-01` identifies a new full pass over the original EDM4eic files. It can start while the earlier campaign is running.
+
+```bash
+git pull --ff-only origin main && bash production/submit_1s_9x275.sh --new-run fresh-01 --submit
+```
+
+The AFS plan is `workspaces/condor-1S-9x275-full-grouped-eos-fresh-01/batch/plan.json`. Each worker writes its ROOT output directly to `$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/runs/fresh-01/intermediate/` (for example, `job_000000.root`). If you previously exported `TUPLE_OUTPUT_DIR`, unset it before planning to use this default, or point it to a fresh absolute EOS directory dedicated to this run.
+
+Select this run explicitly for status and retries:
+
+```bash
+batch="$PWD/workspaces/condor-1S-9x275-full-grouped-eos-fresh-01/batch"
+python3 production/rematch_status.py --batch "$batch" --queue-only
+python3 production/rematch_status.py --batch "$batch"
+```
+
+Once this run's queue drains, preview any retry with `python3 production/retry_rematch_1s_9x275.py --batch "$batch"`. Add `--submit` to submit it. When every input is DONE, merge **inside the pinned ePIC shell** into this run's own directory:
+
+```bash
+(
+  set -euo pipefail
+  batch="$PWD/workspaces/condor-1S-9x275-full-grouped-eos-fresh-01/batch"
+  data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
+  run_dir="${CORRECTED_BASE:-$data/rematch3011-v1}/Upsilon1S/9x275/hiAcc/output_newID/runs/fresh-01"
+  mkdir -p "$run_dir"
+  python3 "$batch/snapshot/jobs.py" merge --batch "$batch" --output "$run_dir/merged_Upsilon_final.root" --execute
+)
+```
+
+For the full July inventory, check for `"status": "DONE"` and `"output_rows": 1137600` in `runs/fresh-01/merged_Upsilon_final.root.merge.json`.
 
 ### Switch an existing AFS campaign to EOS
 
@@ -120,7 +153,7 @@ For a custom campaign, use `production/jobs.py plan ... --files-per-job 100`. Om
 
 ## Monitor the grouped campaign
 
-On bare lxplus, the queue-only command prints once and returns to the prompt. For per-input counts, run the full report:
+On bare lxplus, the queue-only command prints once and returns to the prompt. These commands use the default campaign. For a named run, add its explicit `--batch` argument as [shown above](#start-an-independent-eos-run).
 
 ```bash
 git pull --ff-only origin main
@@ -140,6 +173,8 @@ Ctrl+C stops the display. If a process is held, inspect its stated reason or use
 
 ## Retry failed or unfinished files
 
+For a named run, pass its `--batch` path on both commands below.
+
 Use the same bare lxplus submit scheduler as the initial grouped run. Inspect the reported errors first; repeated permission or input-format errors need their cause fixed. A running group can continue processing other inputs after an individual file fails. A started/partial file can still be running. Once the campaign's queue has drained (including held, transferring and removing processes), preview what would be retried:
 
 ```bash
@@ -155,6 +190,8 @@ python3 production/retry_rematch_1s_9x275.py --submit
 The retry checks completed tuples and queues only groups containing unfinished inputs. Each retry records its submission and logs in `batch/retries/attempt-…/` on AFS. It archives any partial EOS tuples under `.retries/attempt-…/` inside the tuple directory, and records that directory in `tuple-archive.txt` on AFS. Run the same status command to follow the retry. Leave submission records, worker locks and results in place. Resolve any missing cluster ID on the scheduler and finish manually launched workers before retrying.
 
 ## Check and merge the full sample
+
+The commands below merge the default campaign. For a named run, use its [run-specific batch and merge path](#start-an-independent-eos-run).
 
 For the original July 1S 9×275 inventory, require **all input files DONE and 1,137,600 generated rows** in the status report. Investigate a different total. An empty Condor queue alone can also mean that a launcher exited before it opened its first file.
 
