@@ -104,37 +104,44 @@ Recovery checks the old and new plans describe the same input inventory and reco
 
 For a custom campaign, use `production/jobs.py plan ... --files-per-job 100`. Omitting this option keeps one input per Condor process. Grouping is a scheduler setting; the underlying per-file manifest, ROOT selection and merge interface are the same. Unhashed planning records path, size and modification time; `--hash-inputs` additionally reads every original file to record and verify its SHA-256.
 
-## Check and merge the full sample
+## Monitor the grouped campaign
 
-Use `condor_q "$USER"` on lxplus to follow the submitted cluster. To count completed input files across all groups, run this from the repository root:
+On bare lxplus, in the repository root, run:
 
 ```bash
-batch="$PWD/workspaces/condor-1S-9x275-full-grouped-v1/batch"
-python3 - "$batch/plan.json" <<'PY'
-import json, sys
-from collections import Counter
-from pathlib import Path
-plan = json.loads(Path(sys.argv[1]).read_text())
-counts = Counter()
-rows = 0
-for job in plan["jobs"]:
-    receipt = Path(job).with_name("result.json")
-    if receipt.is_file():
-        try:
-            result = json.loads(receipt.read_text())
-        except json.JSONDecodeError:
-            counts["unreadable receipt; recheck"] += 1
-            continue
-        counts[result["status"]] += 1
-        if result["status"] == "DONE":
-            rows += result["output_rows"]
-    else:
-        counts["no receipt yet"] += 1
-print("Condor jobs:", plan["condor_job_count"], "  Input files:", len(plan["jobs"]), "  File results:", dict(counts), "  DONE rows:", rows)
-PY
+git pull --ff-only origin main
+python3 production/rematch_status.py
 ```
 
-Every input file must be `DONE`. For a match to the original sample, the row total should be **1,137,600**. Investigate missing/failed jobs or a different row total before using physics yields. For example, the first group writes `$batch/logs/group_000000.{out,err,log}`. Its first input writes `$batch/jobs/job_000000/root.log` and `result.json`. If Condor restarts a group, its worker verifies completed outputs before skipping them. It preserves partial or failed attempts for inspection and reports a nonzero exit if any input fails.
+This reads the grouped campaign's recorded cluster IDs and worker receipts. It shows idle, running and held **Condor processes** separately from **input files** marked DONE, FAILED, untouched or started without a final receipt. One process can handle up to 100 files. The report includes hold reasons and example file names, errors and log paths. The row total comes from the DONE receipts. The final merge verifies the ROOT contents.
+
+Run the report periodically; it scans each file's job directory on AFS. For a lightweight live view of just this campaign, run:
+
+```bash
+watch -n 60 'python3 production/rematch_status.py --queue-only'
+```
+
+Ctrl+C stops the display. If a process is held, inspect its stated reason or use `condor_q -hold CLUSTER_ID` with the cluster ID from the report. For a file-only report without a scheduler query, run `python3 production/rematch_status.py --no-queue`.
+
+## Retry failed or unfinished files
+
+Use the same bare lxplus submit scheduler as the initial grouped run. Inspect the reported errors first; repeated permission or input-format errors need their cause fixed. A running group can continue processing other inputs after an individual file fails. A started/partial file can still be running. Once the campaign's queue has drained (including held, transferring and removing processes), preview what would be retried:
+
+```bash
+python3 production/retry_rematch_1s_9x275.py
+```
+
+To submit that retry:
+
+```bash
+python3 production/retry_rematch_1s_9x275.py --submit
+```
+
+The retry checks the preserved outputs, archives the evidence from failed or interrupted attempts and queues only groups containing unfinished files. These groups skip verified completed inputs, including outputs carried over from a removed cluster. Each retry has a new directory under `batch/retries/attempt-…/` containing its submission receipt and Condor logs. Run the same status command to follow it. Leave the original `submission.txt`, worker locks and results in place. If a submission receipt lacks a cluster ID, first reconcile its outcome on the scheduler. Finish any manually launched workers before using the retry command.
+
+## Check and merge the full sample
+
+For the original July 1S 9×275 inventory, require **all input files DONE and 1,137,600 generated rows** in the status report. Investigate a different total. An empty Condor queue alone can also mean that a launcher exited before it opened its first file.
 
 Merge **inside the pinned ePIC shell** with access to the AFS batch and writable EOS output. Use the [lxplus container launch](rematch-3011.md#start-on-lxplus-and-run-one-file) with the same EOS credentials as the interactive test. The default output base is a separate `rematch3011-v1` directory beneath the July data area. Set `CORRECTED_BASE` to another writable absolute directory if needed. In that shell, from the repo root, run:
 

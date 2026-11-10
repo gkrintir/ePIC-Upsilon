@@ -59,7 +59,7 @@ def validate_work_location(path, repository=None):
         raise ValueError('Inside the repository, generated work must live under ignored workspaces/')
 
 
-def submit_text(info, jobs):
+def submit_text(info, jobs, *, log_dir=None):
     work = Path(info['work_dir'])
     lines = ['# Newly generated wrapper, not the historical CERN submission.',
              'universe = vanilla', 'should_transfer_files = NO',
@@ -75,7 +75,8 @@ def submit_text(info, jobs):
     group_size = info.get('files_per_job', 1)
     job_dir = work / 'jobs' / 'job_$(batch_index)'
     initialdir, argument = (job_dir, f'{job_dir}/job.json') if group_size == 1 else (work, '$(batch_index)')
-    log_prefix = work / 'logs' / ('$(batch_index)' if group_size == 1 else 'group_$(batch_index)')
+    log_dir = Path(log_dir) if log_dir is not None else work / 'logs'
+    log_prefix = log_dir / ('$(batch_index)' if group_size == 1 else 'group_$(batch_index)')
     lines += [f'initialdir = {initialdir}', f'arguments = {argument}',
               f'output = {log_prefix}.out', f'error = {log_prefix}.err',
               f'log = {log_prefix}.log', 'queue batch_index from (']
