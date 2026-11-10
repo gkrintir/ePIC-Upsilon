@@ -7,10 +7,28 @@ from unittest import TestCase
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'production'))
-from rematch_condor import queue_rows, recorded_clusters
+from rematch_condor import default_batch, queue_rows, recorded_clusters
 
 
 class ReadCondorTest(TestCase):
+    def test_default_batch_tracks_switch_from_afs_to_eos(self):
+        with TemporaryDirectory() as temp, patch('rematch_condor.__file__', temp + '/production/rematch_condor.py'):
+            base = Path(temp) / 'workspaces'
+            afs = base / 'condor-1S-9x275-full-grouped-v1/batch'
+            eos = base / 'condor-1S-9x275-full-grouped-eos-v1/batch'
+            self.assertEqual(default_batch(), eos)
+            afs.mkdir(parents=True)
+            (afs / 'plan.json').touch()
+            (afs.parent / 'submission.txt').touch()
+            eos.mkdir(parents=True)
+            (eos / 'plan.json').touch()
+            self.assertEqual(default_batch(), afs)
+            (eos / 'after-removal.sub').touch()
+            self.assertEqual(default_batch(), eos)
+            (eos / 'after-removal.sub').unlink()
+            (eos.parent / 'submission.txt').touch()
+            self.assertEqual(default_batch(), eos)
+
     def test_collect_only_grouped_attempts_and_fail_closed_on_ambiguous_submission(self):
         with TemporaryDirectory() as temp:
             root = Path(temp)

@@ -13,33 +13,53 @@ for option in "$@"; do
 done
 cd "$(dirname "$0")/.."
 repo=$(pwd -P)
-full="$repo/workspaces/condor-1S-9x275-full-grouped-v1"
-old="$repo/workspaces/condor-1S-9x275-full-v1"
+single="$repo/workspaces/condor-1S-9x275-full-v1"
+grouped="$repo/workspaces/condor-1S-9x275-full-grouped-v1"
+full="$repo/workspaces/condor-1S-9x275-full-grouped-eos-v1"
 trial="$repo/workspaces/condor-1S-9x275-check-v2"
 batch="$full/batch"
+data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
+corrected="${CORRECTED_BASE:-$data/rematch3011-v1}"
+tuple_dir="${TUPLE_OUTPUT_DIR:-$corrected/Upsilon1S/9x275/hiAcc/output_newID/intermediate}"
+[[ "$tuple_dir" == /* ]] || die 'The tuple output directory must be an absolute mounted path.'
 group_size=${FILES_PER_JOB:-100}
 [[ "$group_size" =~ ^[1-9][0-9]*$ ]] || die 'FILES_PER_JOB must be a positive integer.'
-if ! "$after_removal" && [[ -e "$old/submission.txt" ]]; then
-  die "The earlier one-file-per-job batch has a submission record. After removing that cluster, use --after-removal to verify and resume."
-fi
 [[ ! -e "$full/submission.txt" ]] || die "Submission already attempted; check $full/submission.txt and condor_q."
-for previous in "$old" "$full"; do
-  if "$after_removal" && [[ "$previous" == "$old" ]]; then continue; fi
-  if [[ -d "$previous/batch/logs" && -n "$(find "$previous/batch/logs" -maxdepth 1 -type f -print -quit)" ]]; then
-    die "Found previous Condor logs in $previous/batch/logs. Check the cluster before submitting."
+
+has_logs() { [[ -d "$1/batch/logs" && -n "$(find "$1/batch/logs" -maxdepth 1 -type f -print -quit)" ]]; }
+has_logs "$full" && die "Found prior EOS-campaign Condor logs under $batch/logs. Check the scheduler before submitting."
+old="$single"
+old_clusters=()
+unknown=()
+shopt -s nullglob
+for previous in "$single" "$grouped"; do
+  [[ ! -d "$previous/recovery.lock" ]] || die "Earlier recovery is in progress or interrupted at $previous/recovery.lock. Inspect it before switching."
+  records=("$previous"/batch/retries/attempt-*/submission.txt)
+  [[ ! -e "$previous/submission.txt" ]] || records+=("$previous/submission.txt")
+  if (( ${#records[@]} )) || has_logs "$previous" || [[ -e "$previous/batch/after-removal.sub" ]]; then
+    "$after_removal" || die "Found an earlier campaign at $previous. Once its jobs have left the queue, use --after-removal to reuse its finished tuples on EOS."
+    old="$previous"  # the old grouped campaign already carried over the one-file campaign
+    if (( ${#records[@]} == 0 )) && has_logs "$previous"; then unknown+=("$previous/batch/logs"); fi
+    for record in "${records[@]}"; do
+      ids=$(sed -nE 's/.*submitted to cluster ([0-9]+)\.[[:space:]]*$/\1/p' "$record" | sort -u)
+      if [[ -z "$ids" ]]; then
+        unknown+=("$record")
+      else
+        while read -r id; do old_clusters+=("$id"); done <<< "$ids"
+      fi
+    done
   fi
 done
-
 if "$after_removal"; then
   [[ -f "$old/batch/plan.json" && -f "$old/input.txt" ]] || die "Cannot locate the old plan and inventory under $old."
-  old_clusters=""
-  if [[ -f "$old/submission.txt" ]]; then
-    old_clusters=$(sed -nE 's/.*submitted to cluster ([0-9]+)\.[[:space:]]*$/\1/p' "$old/submission.txt" | sort -u)
+  if (( ${#old_clusters[@]} == 0 && ${#unknown[@]} == 0 )) && [[ ! -e "$old/batch/after-removal.sub" ]]; then
+    unknown+=("$old/submission.txt")
   fi
-  if [[ -z "$old_clusters" ]]; then
-    [[ "${OLD_CLUSTER_ID:-}" =~ ^[0-9]+$ ]] || die "No cluster ID in $old/submission.txt. Set OLD_CLUSTER_ID to the ID you removed."
-    old_clusters=$OLD_CLUSTER_ID
+  if (( ${#unknown[@]} )); then
+    (( ${#unknown[@]} == 1 )) && [[ "${OLD_CLUSTER_ID:-}" =~ ^[1-9][0-9]*$ ]] || die "Missing cluster ID in ${unknown[*]}. Reconcile these records with the submit scheduler. For one missing ID set OLD_CLUSTER_ID."
+    old_clusters+=("$OLD_CLUSTER_ID")
   fi
+  echo "Reusing verified outputs from $old/batch."
 fi
 
 check_queue() {
@@ -49,7 +69,7 @@ check_queue() {
     die 'A 1S 9x275 full-sample batch is still in the queue. If already removed, retry after Condor finishes cleanup.'
   fi
   if "$after_removal"; then
-    for id in $old_clusters; do
+    for id in "${old_clusters[@]}"; do
       if grep -Eq "^[[:space:]]*${id}([[:space:]]|$)" <<< "$active"; then
         die "Old cluster $id still has queue entries; retry after removal finishes."
       fi
@@ -70,7 +90,6 @@ r = json.loads(path.read_text())
 if (r.get("status"), r.get("state"), r.get("beam"), r.get("output_rows"), r.get("electron_id")) != ("DONE", "1S", "9x275", 100, "reco-rematch3011"):
     raise SystemExit("The expected 100-row 1S 9x275 Condor pilot must be DONE")
 PY
-  data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
   src="$data/Upsilon1S/9x275/hiAcc"
   name=eSTARlight1.3.0-1.0_Upsilon1S_9x275_q2_0to0.01_hiAcc_ab_run000.0000.eicrecon.edm4eic.root
   head -c 4 "$src/$name" | grep -qx root || die "Cannot read the expected ROOT file under $src"
@@ -88,15 +107,18 @@ PY
   python3 production/jobs.py plan --input-list "$full/input.txt" --work-dir "$batch" \
     --state 1S --beam 9x275 --electron-id reco-rematch3011 --femc full \
     --environment-label eic_xl:26.07.1-stable --job-flavour longlunch \
-    --files-per-job "$group_size" --write > "$full/plan.log"
+    --files-per-job "$group_size" --tuple-output-dir "$tuple_dir" --write > "$full/plan.log"
 fi
 
 n=$(wc -l < "$full/input.txt")
-groups=$(python3 - "$batch/plan.json" "$group_size" "$n" <<'PY'
+groups=$(python3 - "$batch/plan.json" "$group_size" "$n" "$tuple_dir" <<'PY'
 import json, sys
+from pathlib import Path
 with open(sys.argv[1]) as f:
     plan = json.load(f)
-width, count = map(int, sys.argv[2:])
+width, count = map(int, sys.argv[2:4])
+if plan.get("tuple_output_dir") != str(Path(sys.argv[4]).resolve()):
+    raise SystemExit(f"The frozen plan writes tuples to {plan.get('tuple_output_dir')}. Check TUPLE_OUTPUT_DIR or CORRECTED_BASE.")
 groups = (count + width - 1) // width
 if (plan["files_per_job"], plan["job_count"], plan["condor_job_count"]) != (width, count, groups):
     raise SystemExit("The existing plan's grouping or input count differs from this request.")
@@ -104,6 +126,7 @@ print(groups)
 PY
 )
 echo "$n files -> $groups Condor jobs (maximum $group_size files/job, group_u_CMS.CAF.COMM)"
+echo "Per-file ROOT tuples: $tuple_dir/job_XXXXXX.root"
 submit_file="$batch/submit.sub"
 limit=$groups
 if "$after_removal"; then
@@ -125,7 +148,7 @@ fi
 grep -Fxq '+AccountingGroup = "group_u_CMS.CAF.COMM"' "$submit_file" || die 'Accounting group mismatch.'
 [[ $(grep -Ec '^[0-9]+$' "$submit_file") -eq $limit ]] || die 'Queue and plan sizes differ.'
 if "$submit"; then
-  if "$after_removal"; then check_queue; fi
+  check_queue
   ( set -C; : > "$full/submission.txt" ) || die 'Another submission attempt already owns this batch.'
   condor_submit -maxjobs "$limit" -append 'getenv = False' \
     -append '+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable"' \

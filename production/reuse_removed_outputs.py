@@ -6,10 +6,11 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import tempfile
 
-from jobs import root_command, sha256, submit_text
+from jobs import expected_output_path, root_command, sha256, submit_text
 
 
 WORK_SETTINGS = ("producer_identity", "beam", "state", "data_version", "electron_id",
@@ -48,6 +49,10 @@ def read_plan(root):
     for i, p in enumerate(plan["jobs"]):
         if p != str(root / "jobs" / f"job_{i:06d}" / "job.json"):
             raise ValueError(f"Unexpected job path at index {i}: {p}")
+    if "tuple_output_dir" in plan:
+        destination = Path(plan["tuple_output_dir"])
+        if destination.resolve() != destination or not destination.is_dir():
+            raise ValueError(f"Tuple output directory is unavailable or redirected: {destination}")
     return plan
 
 
@@ -56,12 +61,46 @@ def checked_job(plan, index):
     job = read_json(path)
     folder = path.parent
     if (folder.resolve() != folder or path.is_symlink() or job["job_id"] != index
-            or job["job_dir"] != str(folder) or job["output"] != str(folder / "output.root")
+            or job["job_dir"] != str(folder) or job["output"] != str(expected_output_path(plan, index))
             or job["macro_dir"] != str(Path(plan["work_dir"]) / "snapshot/macros")
             or job["inputs"] != [plan["inputs"][index]]
             or any(job.get(k) != v for k, v in plan.items() if k not in ("jobs", "inputs"))):
         raise ValueError(f"Job differs from the batch plan: {path}")
     return job
+
+
+def check_done(job, job_path, receipt):
+    """Verify the tuple and the original ROOT invocation, also after successive imports."""
+    rows = receipt.get("output_rows")
+    output = Path(job["output"])
+    expected = dict(job=str(job_path), output=str(output), status="DONE", root_returncode=0)
+    for key in ("state", "beam", "electron_id", "source_hashes", "environment_label", "normalization"):
+        expected[key] = job[key]
+    execution = dict(job)
+    source = receipt
+    while "reused_from" in source:
+        source = source["reused_from"]
+        if not isinstance(source, dict) or not re.fullmatch(r"[0-9a-f]{64}", str(source.get("result_sha256"))):
+            raise ValueError(f"Invalid imported receipt provenance: {job_path}")
+        old_job = Path(source.get("job", ""))
+        if (not old_job.is_absolute() or ".." in old_job.parts or old_job.name != "job.json"
+                or old_job.parent.name != job_path.parent.name or old_job.parent.parent.name != "jobs"):
+            raise ValueError(f"Invalid imported job path: {job_path}")
+        origin_plan = dict(work_dir=str(old_job.parents[2]))
+        if "tuple_output_dir" in source:
+            directory = Path(source["tuple_output_dir"])
+            if not directory.is_absolute() or ".." in directory.parts:
+                raise ValueError(f"Invalid imported tuple directory: {job_path}")
+            origin_plan["tuple_output_dir"] = str(directory)
+        if source.get("output") != str(expected_output_path(origin_plan, job["job_id"])):
+            raise ValueError(f"Invalid imported output path: {job_path}")
+        execution.update(output=source["output"], macro_dir=str(old_job.parents[2] / "snapshot/macros"))
+    expected["command"] = root_command(execution)
+    if (type(rows) is not int or rows <= 0 or type(receipt.get("input_rows")) is not int
+            or receipt["input_rows"] != rows or any(receipt.get(k) != v for k, v in expected.items())
+            or output.is_symlink() or not output.is_file() or output.stat().st_size == 0
+            or sha256(output) != receipt.get("output_sha256")):
+        raise ValueError(f"DONE receipt or tuple failed validation: {job_path}")
 
 
 def carry_file(old, new, index):
@@ -70,7 +109,9 @@ def carry_file(old, new, index):
     old_names, new_names = set(os.listdir(old_dir)), set(os.listdir(new_dir))
     new_result = new_dir / "result.json"
     pending = new_dir / "reuse-pending.json"
-    new_output = new_dir / "output.root"
+    new_output = expected_output_path(new, index)
+    if "tuple_output_dir" in new and "output.root" in new_names:
+        raise ValueError(f"Unexpected workspace tuple: {new_dir / 'output.root'}")
     if new_names.intersection({"execution.lock", "root.log"}):
         raise ValueError(f"Grouped worker already started: {new_dir}")
 
@@ -86,23 +127,14 @@ def carry_file(old, new, index):
         elif status["status"] != "FAILED":
             raise ValueError(f"Unrecognized worker status: {source}")
     if receipt is None:
-        if new_names.intersection({"result.json", "output.root", "reuse-pending.json"}):
+        if new_names.intersection({"result.json", "reuse-pending.json"}) or os.path.lexists(new_output):
             raise ValueError(f"New attempt has evidence but no reusable source: {new_dir}")
         return False
 
     old_job = checked_job(old, index)
     checked_job(new, index)
-    original = old_dir / "output.root"
-    rows = receipt["input_rows"]
-    if (receipt.get("job") != str(old_path) or receipt.get("output") != str(original)
-            or type(rows) is not int or rows <= 0 or type(receipt["output_rows"]) is not int
-            or rows != receipt["output_rows"] or receipt.get("root_returncode") != 0
-            or receipt.get("command") != root_command(old_job)
-            or any(receipt.get(k) != old_job[k] for k in
-                   ("state", "beam", "electron_id", "source_hashes", "normalization", "environment_label"))
-            or original.is_symlink() or not original.is_file() or original.stat().st_size == 0
-            or sha256(original) != receipt["output_sha256"]):
-        raise ValueError(f"DONE receipt or output failed validation: {source}")
+    original = Path(old_job["output"])
+    check_done(old_job, old_path, receipt)
     record = old["inputs"][index]
     raw = Path(record["path"])
     st = raw.stat()
@@ -111,9 +143,13 @@ def carry_file(old, new, index):
             or (input_hash and sha256(raw) != input_hash)):
         raise ValueError(f"Original input changed: {raw}")
 
-    imported = dict(receipt, job=str(new_path), output=str(new_output),
-                    reused_from={"job": str(old_path), "output": str(original),
-                                 "result_sha256": hashlib.sha256(source_bytes).hexdigest()})
+    origin = {"job": str(old_path), "output": str(original),
+              "result_sha256": hashlib.sha256(source_bytes).hexdigest()}
+    if "tuple_output_dir" in old:
+        origin["tuple_output_dir"] = old["tuple_output_dir"]
+    if "reused_from" in receipt:
+        origin["reused_from"] = receipt["reused_from"]
+    imported = dict(receipt, job=str(new_path), output=str(new_output), reused_from=origin)
     if any(path.is_symlink() for path in (new_result, new_output, pending)):
         raise ValueError(f"Unexpected symlink in grouped output: {new_dir}")
     if "result.json" in new_names:
@@ -124,7 +160,7 @@ def carry_file(old, new, index):
         if read_json(pending) != imported:
             raise ValueError(f"Unrecognized import in progress: {pending}")
     else:
-        if "output.root" in new_names:
+        if new_output.exists():
             raise ValueError(f"Refusing to replace an existing grouped output: {new_output}")
         replace_atomically(pending, lambda f: f.write((json.dumps(imported, indent=2) + "\n").encode()))
     if not new_output.exists():
@@ -143,6 +179,8 @@ def reuse(old_root, new_root):
     if old_root == new_root or old_root in new_root.parents or new_root in old_root.parents:
         raise ValueError("Source and destination must be separate batch directories")
     old, new = read_plan(old_root), read_plan(new_root)
+    if "tuple_output_dir" in new and new["tuple_output_dir"] == old.get("tuple_output_dir"):
+        raise ValueError("Source and destination tuple output directories must be separate")
     if any(old[k] != new[k] for k in WORK_SETTINGS):
         raise ValueError("Incompatible source and destination production settings")
     if len(old["inputs"]) != len(new["inputs"]):

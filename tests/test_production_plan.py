@@ -54,6 +54,53 @@ class ProductionPlanTest(unittest.TestCase):
         execute.assert_not_called()
         self.assertFalse(self.work.exists())
 
+    def test_external_tuple_directory_is_reserved_only_on_write(self):
+        destination = self.base / 'shared/tuples'
+        with redirect_stdout(io.StringIO()):
+            jobs.plan(self.args('--tuple-output-dir', str(destination)))
+        self.assertFalse(destination.parent.exists())
+        self.assertFalse(self.work.exists())
+        path = self.create('--tuple-output-dir', str(destination))
+        job = jobs.load_job(path)
+        plan = json.loads((self.work / 'plan.json').read_text())
+        output = destination / 'job_000000.root'
+        self.assertEqual(plan['tuple_output_dir'], str(destination))
+        self.assertEqual(job['output'], str(output))
+        self.assertIn(',"' + str(output) + '",', jobs.root_command(job)[-1])
+        self.assertEqual(list(destination.iterdir()), [])
+        self.assertNotIn(str(destination), (self.work / 'submit.sub').read_text())
+        # A failed duplicate reservation must leave the first campaign intact.
+        self.work = self.base / 'other-batch'
+        with self.assertRaises(FileExistsError):
+            self.create('--tuple-output-dir', str(destination))
+        self.assertFalse(self.work.exists())
+        self.assertEqual(jobs.load_job(path), job)
+
+    def test_external_tuple_directory_rejects_overlaps_and_aliases(self):
+        dangling = self.base / 'dangling'
+        dangling.symlink_to(self.base / 'missing')
+        self.work = self.base / 'controls/batch'
+        for destination in ('relative', self.base / 'Upsilon1S/9x130/tuples',
+                            self.work, self.work / 'child', self.work.parent,
+                            self.input.parent, dangling):
+            with self.subTest(destination=destination), self.assertRaises((ValueError, FileExistsError)):
+                self.create('--tuple-output-dir', str(destination))
+            self.assertFalse(self.work.exists())
+        destination = self.base / 'tuples'
+        path = self.create('--tuple-output-dir', str(destination))
+        output = destination / 'job_000000.root'
+        output.symlink_to(self.input)
+        with self.assertRaisesRegex(ValueError, 'frozen destination'):
+            jobs.worker(SimpleNamespace(job=path, execute=True))
+        self.assertEqual(self.input.read_bytes(), b'planning does not open ROOT')
+        output.unlink()
+        destination.rename(self.base / 'moved')
+        with self.assertRaisesRegex(FileNotFoundError, 'unavailable'):
+            jobs.load_job(path)
+        destination.symlink_to(self.base / 'moved', target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'frozen destination'):
+            jobs.load_job(path)
+
     def make_counted_inputs(self, count):
         sources = []
         for i in range(count):
@@ -85,9 +132,10 @@ class ProductionPlanTest(unittest.TestCase):
 
     def test_group_workers_checkpoint_each_input_and_merge_in_input_order(self):
         sources = self.make_counted_inputs(5)
-        self.create('--files-per-job', '2')
+        external = self.base / 'shared-tuples'
+        self.create('--files-per-job', '2', '--tuple-output-dir', str(external))
         records = [Path(p) for p in json.loads((self.work / 'plan.json').read_text())['jobs']]
-        outputs = [p.with_name('output.root') for p in records]
+        outputs = [external / (p.parent.name + '.root') for p in records]
         calls = []
 
         # Use the actual worker, locks and receipts. Only ROOT I/O is replaced
@@ -96,6 +144,7 @@ class ProductionPlanTest(unittest.TestCase):
             if command[0] == 'root':
                 spec = json.loads((Path(kwargs['cwd']) / 'job.json').read_text())
                 source = Path(spec['inputs'][0]['path'])
+                self.assertIn(json.dumps(spec['output']), command[-1])
                 calls.append(source)
                 Path(spec['output']).write_bytes(source.read_bytes())
             else:
@@ -118,6 +167,8 @@ class ProductionPlanTest(unittest.TestCase):
             self.group(2, '--execute')  # final group contains only one file
             self.group(0, '--execute')
             receipts = [p.with_name('result.json').read_bytes() for p in records]
+            self.assertEqual([json.loads(receipt)['output'] for receipt in receipts], list(map(str, outputs)))
+            self.assertFalse(any(p.with_name('output.root').exists() for p in records))
             self.group(0, '--execute')
             self.assertEqual([p.with_name('result.json').read_bytes() for p in records], receipts)
             self.assertEqual(calls, [sources[i] for i in (0, 2, 3, 4, 1)])
@@ -320,7 +371,7 @@ class ProductionPlanTest(unittest.TestCase):
         output = completed / 'output.root'
         output.write_bytes(b'completed output')
         (completed / 'result.json').write_text(json.dumps(
-            {'status': 'DONE', 'output_sha256': jobs.sha256(output)}))
+            {'status': 'DONE', 'output': str(output), 'output_sha256': jobs.sha256(output)}))
         with redirect_stdout(io.StringIO()):
             jobs.pending(SimpleNamespace(batch=self.work, write=True))
         full_file = (self.work / 'submit.sub').read_text()

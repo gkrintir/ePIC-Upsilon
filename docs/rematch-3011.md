@@ -123,7 +123,7 @@ These counts use 8–12 GeV in dielectron mass, 20–100 GeV in reconstructed W 
 
 ## Produce the six corrected tuples
 
-For the full 1S 9×275 sample, [submit up to 100 input files per Condor job](condor-rematch-1s-9x275.md#plan-and-submit-the-full-sample). For the other samples, add `--files-per-job 100` to the full-sample planner command below if appropriate for the worker runtime.
+For the full 1S 9×275 sample, the [Condor launcher](condor-rematch-1s-9x275.md#plan-and-submit-the-full-sample) writes each per-input tuple directly to EOS and groups up to 100 inputs per Condor job. For the other samples, add `--files-per-job 100` to the planner command below if appropriate for the worker runtime.
 
 New rematching plans request `+AccountingGroup = "group_u_CMS.CAF.COMM"` in both `submit.sub` and `pending.sub`. To check before submission, run `grep '^+AccountingGroup' "$batch/pending.sub"` after creating the pending file. A `worker --execute` run in your shell uses no Condor account.
 
@@ -134,7 +134,11 @@ state=1S
 beam=9x275
 list="$PWD/workspaces/manifests/9x275-1S-inputs.txt"
 batch="$PWD/workspaces/production/rematch3011-$state-$beam"
+: "${CORRECTED_BASE:?Set the absolute corrected output base on EOS}"
+if [ "$state" = 1S ]; then subdir=output_newID; else subdir=output; fi
+out="$CORRECTED_BASE/Upsilon$state/$beam/hiAcc/$subdir"
 python3 production/jobs.py plan --input-list "$list" --work-dir "$batch" \
+  --tuple-output-dir "$out/intermediate" \
   --beam "$beam" --state "$state" --electron-id reco-rematch3011 --femc full \
   --setup-script "$PRODUCTION_SETUP" --environment-label "$PRODUCTION_ENV_LABEL" \
   --hash-inputs --write
@@ -150,10 +154,6 @@ condor_submit -append 'getenv = False' \
 When all jobs in that batch finish, merge them into the layout used by the analysis. The merge validates the generated counts. Compare the final row total with the original state/energy tuple before interpreting a yield change.
 
 ```bash
-: "${CORRECTED_BASE:?Set a new shared output directory}"
-if [ "$state" = 1S ]; then subdir=output_newID; else subdir=output; fi
-out="$CORRECTED_BASE/Upsilon$state/$beam/hiAcc/$subdir"
-mkdir -p "$out"
 python3 "$worker" merge --batch "$batch" --output "$out/merged_Upsilon_final.root" --execute
 ```
 

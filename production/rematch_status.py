@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import subprocess
 
+from jobs import expected_output_path
 from rematch_condor import default_batch, recorded_clusters, queue_rows
 
 
@@ -16,10 +17,15 @@ JOB_STATES = {1: "idle", 2: "running", 3: "removing", 4: "completed",
               5: "held", 6: "transferring", 7: "suspended"}
 
 
-def file_state(directory):
+def file_state(directory, output=None, external_files=None):
     """Inspect one directory; leave ROOT I/O and checksum validation to retry and merge."""
     try:
         names = set(os.listdir(directory))
+        if output is None:
+            output = directory / "output.root"
+        if external_files is not None and "output.root" in names:
+            return "unreadable", 0, "unexpected output.root in the job control directory"
+        has_tuple = output.name in (names if external_files is None else external_files)
         if "result.json" in names:
             result = json.loads((directory / "result.json").read_text())
             if not isinstance(result, dict):
@@ -28,14 +34,16 @@ def file_state(directory):
                 return "FAILED", 0, str(result.get("error", "worker reported failure"))
             rows = result.get("output_rows")
             if (result.get("status") == "DONE" and type(rows) is int and rows > 0
-                    and result.get("input_rows") == rows and "output.root" in names
+                    and result.get("input_rows") == rows and has_tuple
                     and result.get("job") == str(directory / "job.json")
-                    and result.get("output") == str(directory / "output.root")):
+                    and result.get("output") == str(output)):
                 return "DONE", rows, ""
-            return "unreadable", 0, "unexpected receipt, row count or missing output.root"
+            return "unreadable", 0, f"unexpected receipt, row count or missing tuple {output}"
         if "job.json" not in names:
             return "unreadable", 0, "missing job.json"
-        evidence = sorted(names.intersection({"execution.lock", "root.log", "output.root", "reuse-pending.json"}))
+        evidence = sorted(names.intersection({"execution.lock", "root.log", "reuse-pending.json"}))
+        if has_tuple:
+            evidence.append(output.name)
         if evidence:
             return "started/partial", 0, ", ".join(evidence)
         return "untouched", 0, ""
@@ -49,8 +57,11 @@ def scan_files(plan, limit, show_untouched=False):
     examples = {"FAILED": [], "unreadable": [], "started/partial": []}
     if show_untouched:
         examples["untouched"] = []
+    # One EOS listing per report instead of opening or statting each tuple.
+    external_files = set(os.listdir(plan["tuple_output_dir"])) if "tuple_output_dir" in plan else None
     for index, job in enumerate(plan["jobs"]):
-        state, rows, reason = file_state(Path(job).parent)
+        output = expected_output_path(plan, index)
+        state, rows, reason = file_state(Path(job).parent, output, external_files)
         counts[state] += 1
         total_rows += rows
         if state in examples and len(examples[state]) < limit:
@@ -108,6 +119,8 @@ def report(batch, limit, query_queue=True, queue_only=False):
             or count != len(plan.get("inputs", [])) or type(width) is not int or width < 1):
         raise ValueError(f"Invalid plan: {batch / 'plan.json'}")
     print(f"{plan['state']} {plan['beam']}: {count:,} input files, up to {width} per Condor process")
+    if "tuple_output_dir" in plan:
+        print("Tuple directory:", plan["tuple_output_dir"])
     live = show_queue(batch, limit) if query_queue else None
     if queue_only:
         return

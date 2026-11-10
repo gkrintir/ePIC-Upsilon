@@ -8,8 +8,15 @@ import subprocess
 
 
 def default_batch():
-    repo = Path(__file__).resolve().parents[1]
-    return repo / 'workspaces' / 'condor-1S-9x275-full-grouped-v1' / 'batch'
+    workspaces = Path(__file__).resolve().parents[1] / 'workspaces'
+    afs = workspaces / 'condor-1S-9x275-full-grouped-v1' / 'batch'
+    eos = workspaces / 'condor-1S-9x275-full-grouped-eos-v1' / 'batch'
+    if (eos.parent / 'submission.txt').exists() or (eos / 'after-removal.sub').exists():
+        return eos
+    if (afs / 'plan.json').is_file() and (
+            (afs.parent / 'submission.txt').exists() or not (eos / 'plan.json').is_file()):
+        return afs
+    return eos
 
 
 def recorded_clusters(batch):

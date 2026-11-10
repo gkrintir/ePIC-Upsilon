@@ -22,7 +22,7 @@ Use Python 3.9+ with `uproot`. The worker needs `root` on its path, and the merg
 
 The archived CERN submit configuration selected `eic_xl:nightly`. Its immutable image digest is unknown. For a new batch, set `PRODUCTION_ENV_LABEL` to your tested release or image digest. Set `PRODUCTION_SETUP` to the absolute path of a noninteractive setup script that works on the execution nodes. The planner records its SHA-256. Python with `uproot` must be available in the launching environment, and the setup script configures the ROOT and `hadd` subprocesses.
 
-The new jobs use a shared filesystem. Workers must be able to read the same input paths, work directory and setup script. The generated submit file sets `should_transfer_files=NO`. Check node access and authentication with a pilot before a full submission.
+The jobs use mounted shared filesystems. Workers need read access to the inputs and setup script, and write access to the work and tuple directories. The generated submit file sets `should_transfer_files=NO`. An EOS-output pilot tests the worker's write permissions at the chosen destination.
 
 ## One-file pilot
 
@@ -110,6 +110,8 @@ python3 production/jobs.py plan \
 ```
 
 The command above prints the plan without creating a directory. Repeat it with `--write` to create the batch. It refuses an existing directory; old jobs and results stay intact. Resource defaults are one CPU, 4096 MB memory and 8192 MB disk; adjust `--memory-mb` and `--disk-mb` after a representative job. `--job-flavour` is optional and must be supplied explicitly for the chosen CERN queue.
+
+To write every intermediate tuple directly to EOS, add `--tuple-output-dir "$TUPLE_OUTPUT_DIR"` when planning. Set `TUPLE_OUTPUT_DIR` to a fresh absolute EOS path, separate from `PRODUCTION_WORK`. On `--write`, the planner creates that directory. Workers write one tuple per input (`job_000000.root`, `job_000001.root`, …) and record each path in its `result.json` under `$PRODUCTION_WORK/jobs/`. The merge reads the EOS tuples in manifest order. Omitting this option selects the original `jobs/job_000000/output.root` layout. The [1S 9×275 full-sample launcher](condor-rematch-1s-9x275.md#plan-and-submit-the-full-sample) selects EOS by default.
 
 The producer arguments are:
 

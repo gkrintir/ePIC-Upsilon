@@ -126,6 +126,25 @@ class RemovedBatchReuseTest(unittest.TestCase):
         self.adopt(False)
         self.assertEqual(output.read_text(), 'existing target')
 
+    def test_external_source_and_foreign_target(self):
+        self.complete_old(0)
+        first, second = self.base / 'tuples1', self.base / 'tuples2'
+        self.new = self.base / 'first-external'
+        self.plan(self.new, 2, '--tuple-output-dir', str(first))
+        self.adopt()
+        self.old, self.new = self.new, self.base / 'second-external'
+        self.plan(self.new, 2, '--tuple-output-dir', str(second))
+        self.adopt()
+        self.adopt()
+        self.assertEqual((second / 'job_000000.root').read_bytes(), (first / 'job_000000.root').read_bytes())
+        receipt = json.loads((self.directory(self.new, 0) / 'result.json').read_text())
+        self.assertEqual(receipt['reused_from']['tuple_output_dir'], str(first))
+        self.assertFalse((self.directory(self.new, 0) / 'output.root').exists())
+        foreign = second / 'job_000001.root'
+        foreign.write_text('already there')
+        self.adopt(False)
+        self.assertEqual(foreign.read_text(), 'already there')
+
     def test_interrupted_import_finishes_without_rerunning_root(self):
         self.complete_old(0)
         self.adopt()

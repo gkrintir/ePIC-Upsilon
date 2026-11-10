@@ -100,6 +100,25 @@ class RematchStatusTest(unittest.TestCase):
         status_name, rows, _ = status.file_state(self.jobs[0])
         self.assertEqual((status_name, rows), ("unreadable", 0))
 
+    def test_external_tuple_health_and_partial_state(self):
+        tuples = self.batch.parent / "tuples"
+        tuples.mkdir()
+        path = self.batch / "plan.json"
+        plan = json.loads(path.read_text())
+        plan["tuple_output_dir"] = str(tuples)
+        path.write_text(json.dumps(plan))
+        for i in (0, 1):
+            output = tuples / f"job_{i:06d}.root"
+            record = {"status": "DONE", "job": str(self.jobs[i] / "job.json"), "output": str(output),
+                      "input_rows": 100, "output_rows": 100}
+            (self.jobs[i] / "result.json").write_text(json.dumps(record))
+        (tuples / "job_000000.root").write_text("verified tuple")
+        (tuples / "job_000002.root").write_text("partial tuple without receipt")
+        report = self.printed(query_queue=False)
+        self.assertIn(str(tuples), report)
+        self.assertIn("1/6 DONE (16.7%), FAILED=0, started/partial=1, untouched=3, unreadable=1", report)
+        self.assertIn("Reported generated rows: 100 ", report)
+
     def test_queue_only_does_not_read_worker_directories(self):
         with patch.object(status, "queue_rows", return_value=[]), patch.object(status, "scan_files") as scan:
             with redirect_stdout(io.StringIO()):

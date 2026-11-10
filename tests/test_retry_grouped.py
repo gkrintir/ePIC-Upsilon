@@ -34,13 +34,9 @@ class GroupedRetryTest(unittest.TestCase):
             p = src / f'input_{i}.root'
             p.write_text(str(100 + i))
             inputs.append(p)
-        manifest = self.base / 'input.txt'
-        manifest.write_text('\n'.join(map(str, inputs)) + '\n')
-        with redirect_stdout(io.StringIO()):
-            jobs.main(['plan', '--input-list', str(manifest), '--work-dir', str(self.batch),
-                       '--state', '1S', '--beam', '9x275', '--electron-id', jobs.REMATCH,
-                       '--environment-label', 'eic_xl:26.07.1-stable', '--femc', 'full',
-                       '--job-flavour', 'longlunch', '--files-per-job', '2', '--write'])
+        self.manifest = self.base / 'input.txt'
+        self.manifest.write_text('\n'.join(map(str, inputs)) + '\n')
+        self.plan(self.batch)
         self.record = self.full / 'submission.txt'
         self.record.write_text('3 job(s) submitted to cluster 7301.\n')
         self.bin = self.base / 'bin'
@@ -57,6 +53,13 @@ sequence=$(wc -l < "$RETRY_SUBMITS")
 echo "2 job(s) submitted to cluster $((7301 + sequence))."
 """)
 
+    def plan(self, batch, *extra):
+        with redirect_stdout(io.StringIO()):
+            jobs.main(['plan', '--input-list', str(self.manifest), '--work-dir', str(batch),
+                       '--state', '1S', '--beam', '9x275', '--electron-id', jobs.REMATCH,
+                       '--environment-label', 'eic_xl:26.07.1-stable', '--femc', 'full',
+                       '--job-flavour', 'longlunch', '--files-per-job', '2', '--write', *extra])
+
     def stub(self, name, body):
         p = self.bin / name
         p.write_text('#!/bin/sh\n' + body + '\n')
@@ -68,7 +71,7 @@ echo "2 job(s) submitted to cluster $((7301 + sequence))."
     def complete(self, i, batch=None):
         path = (batch or self.batch) / 'jobs' / f'job_{i:06d}' / 'job.json'
         def run(command, setup, **unused):
-            (path.parent / 'output.root').write_text(str(100 + i))
+            Path(json.loads(path.read_text())['output']).write_text(str(100 + i))
             return SimpleNamespace(returncode=0)
         with patch.object(jobs, 'run_with_setup', side_effect=run), \
                 patch.object(jobs, 'root_counts', side_effect=lambda p, _: int(Path(p).read_text())), \
@@ -142,10 +145,51 @@ echo "2 job(s) submitted to cluster $((7301 + sequence))."
                         str(old), str(self.batch)], check=True, capture_output=True)
         imported = self.unit(0) / 'result.json'
         original_bytes = imported.read_bytes()
+        # The first grouped batch can itself be a source for an EOS replan.
+        grouped = self.batch
+        self.complete(2, grouped)
+        self.batch = self.full / 'batch-eos'
+        tuples = self.base / 'tuples'
+        self.plan(self.batch, '--tuple-output-dir', str(tuples))
+        subprocess.run([sys.executable, str(ROOT / 'production' / 'reuse_removed_outputs.py'),
+                        str(grouped), str(self.batch)], check=True, capture_output=True)
+        migrated = json.loads((self.unit(0) / 'result.json').read_text())
+        middle = migrated['reused_from']
+        self.assertEqual(migrated['command'], json.loads(original_bytes)['command'])
+        self.assertEqual(middle['job'], str(imported.with_name('job.json')))
+        self.assertEqual(middle['result_sha256'], jobs.sha256(imported))
+        self.assertEqual(middle['reused_from'], json.loads(original_bytes)['reused_from'])
+        self.assertEqual((tuples / 'job_000002.root').read_bytes(), (grouped / 'jobs/job_000002/output.root').read_bytes())
+        self.assertEqual(list(self.batch.rglob('*.root')), [])
         self.retry('--submit')
         submit = (self.batch / 'retries/attempt-0001/retry.sub').read_text()
         self.assertEqual([s for s in submit.splitlines() if s.isdigit()], ['000001', '000002'])
         self.assertEqual(imported.read_bytes(), original_bytes)
+
+    def test_external_retry_archives_payloads_on_tuple_filesystem(self):
+        self.batch = self.full / 'batch-external'
+        tuples = self.base / 'tuples'
+        self.plan(self.batch, '--tuple-output-dir', str(tuples))
+        self.complete(0)
+        verified = (tuples / 'job_000000.root').read_bytes()
+        (tuples / 'job_000001.root').write_text('orphaned partial')
+        (tuples / 'job_000002.root').write_text('failed partial')
+        (self.unit(2) / 'result.json').write_text('{"status": "FAILED"}')
+        (self.unit(2) / 'root.log').write_text('failed to finish')
+        preview = self.retry()
+        self.assertIn('Verified 1 DONE. Unfinished inputs: 1 failed, 1 partial, 3 untouched.', preview.stdout)
+        self.assertFalse((tuples / '.retries').exists())
+
+        self.retry('--submit')
+        attempt = self.batch / 'retries/attempt-0001'
+        saved = tuples / '.retries/attempt-0001'
+        self.assertEqual((attempt / 'tuple-archive.txt').read_text().strip(), str(saved))
+        self.assertEqual((saved / 'job_000001.root').read_text(), 'orphaned partial')
+        self.assertEqual((saved / 'job_000002.root').read_text(), 'failed partial')
+        self.assertFalse((tuples / 'job_000002.root').exists())
+        self.assertEqual((tuples / 'job_000000.root').read_bytes(), verified)
+        self.assertEqual(list(self.batch.rglob('*.root')), [])
+        self.assertEqual((attempt / 'files/job_000002/root.log').read_text(), 'failed to finish')
 
     def test_a_second_failed_retry_keeps_the_preceding_attempt(self):
         for i in range(5):

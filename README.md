@@ -4,7 +4,7 @@ Follow an exclusive Υ result from reconstructed ePIC events to the analysis not
 
 **New to the analysis?** [Start at the tuple producer](https://gkrintir.github.io/ePIC-Upsilon/#mass/reconstruction). If you already have the merged ROOT files, [start at the inputs](https://gkrintir.github.io/ePIC-Upsilon/#mass/tuple) or run the two replay commands below.
 
-**Reprocessing the July samples for EICrecon #3011?** [Submit the 1S 9×275 Condor test and full sample](docs/condor-rematch-1s-9x275.md), [monitor progress](docs/condor-rematch-1s-9x275.md#monitor-the-grouped-campaign) or [retry failed inputs](docs/condor-rematch-1s-9x275.md#retry-failed-or-unfinished-files). The [rematching guide](docs/rematch-3011.md) also covers the interactive EOS setup, the second pilot and the analysis fits.
+**Reprocessing the July samples for EICrecon #3011?** The [1S 9×275 Condor walkthrough](docs/condor-rematch-1s-9x275.md) writes each worker tuple directly to EOS and keeps job records on AFS. Use it to [switch an existing AFS campaign to EOS](docs/condor-rematch-1s-9x275.md#switch-an-existing-afs-campaign-to-eos), [monitor progress](docs/condor-rematch-1s-9x275.md#monitor-the-grouped-campaign) or [retry failed inputs](docs/condor-rematch-1s-9x275.md#retry-failed-or-unfinished-files). The [rematching guide](docs/rematch-3011.md) covers the interactive setup, the second pilot and the analysis fits.
 
 **Reviewing a figure?** Trace a paper result back to its calculation and input tuples.
 

@@ -1,8 +1,8 @@
 # Condor rematching for Υ(1S) at 9×275 GeV
 
-Run the test and submit the full July sample from **bare lxplus**, in an AFS checkout of this repository on `main`. Condor reads the EDM4eic files directly from EOS. Plans, worker tuples and logs go under `workspaces/` on AFS. Check your AFS quota for one small tuple and its records per input. The full production groups inputs into Condor jobs. Keep a separate writable EOS directory for the final corrected tuple.
+Run from **bare lxplus**, in an AFS checkout on `main`. Each worker reads an original EDM4eic file from EOS and writes its corrected ROOT tuple directly to EOS. The merge reads those tuples from EOS. The plan, logs and completion receipts live under `workspaces/` on AFS.
 
-If you already submitted **condor-1S-9x275-check-v2**, go straight to [Check the test output](#check-the-test-output). An earlier successful interactive test verifies the physics on the login node. This Condor test also checks that a batch worker can read EOS and write to AFS.
+If the one-file Condor test (`condor-1S-9x275-check-v2`) already succeeded, keep its receipt. If you also submitted the full sample with AFS outputs, go to [Switch an existing AFS campaign to EOS](#switch-an-existing-afs-campaign-to-eos).
 
 ## Set the paths
 
@@ -11,16 +11,17 @@ Run this block again from the repository root after reconnecting. The example co
 ```bash
 git pull --ff-only origin main
 export UPSILON_DATA="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
+export CORRECTED_BASE="${CORRECTED_BASE:-$UPSILON_DATA/rematch3011-v1}"
 src="$UPSILON_DATA/Upsilon1S/9x275/hiAcc"
 name=eSTARlight1.3.0-1.0_Upsilon1S_9x275_q2_0to0.01_hiAcc_ab_run000.0000.eicrecon.edm4eic.root
 image=/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable
 trial="$PWD/workspaces/condor-1S-9x275-check-v2"
-full="$PWD/workspaces/condor-1S-9x275-full-grouped-v1"
+full="$PWD/workspaces/condor-1S-9x275-full-grouped-eos-v1"
 klist -s || kinit "$USER@CERN.CH"
 head -c 4 "$src/$name" && echo
 ```
 
-The last command should print `root`. Resolve an EOS read error on bare lxplus before submitting. For interactive Apptainer access, see the [Kerberos cache and EOS instructions](rematch-3011.md#start-on-lxplus-and-run-one-file).
+The last command should print `root`. Workers also need write access to `CORRECTED_BASE`. For interactive Apptainer access, see the [Kerberos cache and EOS instructions](rematch-3011.md#start-on-lxplus-and-run-one-file).
 
 ## Submit the one-file test
 
@@ -37,6 +38,7 @@ Run this block once. It creates its own input list. If an earlier attempt report
   printf '%s\n' "$src/$name" > "$trial/input.txt"
   python3 production/jobs.py plan \
     --input-list "$trial/input.txt" --work-dir "$trial/batch" \
+    --tuple-output-dir "$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/pilot-check-v2" \
     --state 1S --beam 9x275 --electron-id reco-rematch3011 --femc full \
     --environment-label eic_xl:26.07.1-stable --job-flavour longlunch \
     --hash-inputs --write
@@ -59,7 +61,7 @@ condor_q "$USER"
 cat "$batch/jobs/job_000000/result.json"
 ```
 
-Look for `"status": "DONE"` and `"output_rows": 100`. The recorded input hash in `plan.json` is `f2701e1d496d931b117afd5760efe15c909061668890e2d67d6fd28d29856908`. In this file, 23 events pass the analysis cuts before the proton tag and 13 after it. Those are physics selection counts; `result.json` counts all generated rows.
+Look for `"status": "DONE"`, `"output_rows": 100` and the `"output"` path. A test planned with the command above records an EOS path. Earlier tests wrote their tuple to AFS and verified EOS reads. The recorded input hash is `f2701e1d496d931b117afd5760efe15c909061668890e2d67d6fd28d29856908`. Of the 100 rows, 23 pass the analysis cuts before the proton tag and 13 after it.
 
 If the result file is missing or the worker failed, check the job history and logs. Some files appear only after the job starts.
 
@@ -84,38 +86,51 @@ git pull --ff-only origin main && bash production/submit_1s_9x275.sh --submit
 
 To see the file and job counts first, omit `--submit`. Run the same command with `--submit` afterwards to submit the frozen plan. You can set `FILES_PER_JOB=50`, for example, before the first plan; give the same value when submitting. Use `tmux` if you want to disconnect while the AFS plan is being written. After Condor returns the cluster ID, it owns the jobs.
 
-The launcher checks the pilot receipt, lists the reconstructed hiAcc 1S 9×275 inputs directly under the EOS sample directory, and writes `input.txt` and `plan.log` in `workspaces/condor-1S-9x275-full-grouped-v1/`. You can override the repository input base with `UPSILON_DATA`. Review `input.txt` against the intended campaign inventory before interpreting the final row count. A given input, including the pilot original, appears once in the full plan. The separate test output is excluded.
+The launcher checks the pilot receipt and writes the full input list and plan log under `workspaces/condor-1S-9x275-full-grouped-eos-v1/`. Each original input appears once in the full plan. In the default configuration:
+
+| File | Location |
+| --- | --- |
+| First per-input tuple (EOS) | `$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/intermediate/job_000000.root` |
+| Its receipt (AFS) | `$full/batch/jobs/job_000000/result.json` |
+| Condor logs (AFS) | `$full/batch/logs/` |
+| Final merged tuple (EOS) | `$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root` |
+
+`CORRECTED_BASE` defaults to `/eos/cms/store/group/phys_top/gkrintir/upsilon_data/rematch3011-v1` with the repository configuration. To change just the per-input directory, export `TUPLE_OUTPUT_DIR` to a fresh absolute EOS path before the first plan. The planner creates this directory. If you override either variable, use the same exported values when you return to the campaign. Inspect the frozen destination or the first completed receipt on lxplus:
+
+```bash
+python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["tuple_output_dir"])' "$full/batch/plan.json"
+cat "$full/batch/jobs/job_000000/result.json"
+```
 
 The planner records `files_per_job`, `condor_job_count` and the number of per-file work items (`job_count`) in `batch/plan.json`. The submission asks for `group_u_CMS.CAF.COMM`, `longlunch` and `eic_xl:26.07.1-stable`. Each Condor process runs the files in its group sequentially, using the same per-file ROOT invocation and weights as the successful pilot. Every input has its own output and receipt. The final merge follows the original manifest order.
 
-If you previously ran the one-job-per-file commands, a **plan only** can coexist with the new grouped plan. An earlier submission is protected even after its jobs leave the queue. The launcher never cancels jobs. For a removed one-file-per-job cluster, follow the recovery steps below. For a new grouped submission it reserves `submission.txt` before calling Condor; if the outcome is uncertain, inspect that file and the scheduler before retrying.
+Already submitted jobs keep the output paths frozen when they were planned. Pulling new code or exporting a new variable affects future plans. To switch an earlier AFS submission, use the recovery command below.
 
-### Switch after removing the one-file-per-job cluster
+### Switch an existing AFS campaign to EOS
 
-Keep the old batch, its submission record and its logs at their original paths. From bare lxplus, using the same CERN scheduler as the original submission, run:
+Both earlier layouts wrote per-input tuples to AFS: the one-file campaign in `condor-1S-9x275-full-v1` and the grouped campaign in `condor-1S-9x275-full-grouped-v1`. Keep these directories, submission records and logs in place. On the original lxplus submit scheduler, check `condor_q "$USER"`. Once the old campaign and its retries have finished or been removed, run:
 
 ```bash
 git pull --ff-only origin main && bash production/submit_1s_9x275.sh --after-removal --submit
 ```
 
-The launcher reads the cluster ID from the earlier `submission.txt`. If the record lacks an ID, set `OLD_CLUSTER_ID` to the ID you removed. It stops if Condor still lists the old cluster, including jobs in the removing state. In that case rerun the command once the queue clears.
-
-Recovery checks the old and new plans describe the same input inventory and reconstruction. It carries verified `DONE` outputs into the grouped plan. Interrupted inputs run again; their previous files stay in the old batch. The launcher reports how many files it reused and submits only groups with outstanding work. A group containing both completed and outstanding files skips the verified ones. Use `--after-removal` without `--submit` to preview this recovery and prepare the grouped outputs without submitting to the scheduler.
+The launcher checks the scheduler and refuses to switch while old jobs are active, including those in the removing state. Recovery checks the inventories and reconstruction settings, copies verified completed tuples to EOS, and queues groups with outstanding files. Verified files in a partially completed group are skipped. To prepare the EOS plan and copy the completed tuples now, omit `--submit`. Add it when ready to submit the remaining groups.
 
 For a custom campaign, use `production/jobs.py plan ... --files-per-job 100`. Omitting this option keeps one input per Condor process. Grouping is a scheduler setting; the underlying per-file manifest, ROOT selection and merge interface are the same. Unhashed planning records path, size and modification time; `--hash-inputs` additionally reads every original file to record and verify its SHA-256.
 
 ## Monitor the grouped campaign
 
-On bare lxplus, in the repository root, run:
+On bare lxplus, the queue-only command prints once and returns to the prompt. For per-input counts, run the full report:
 
 ```bash
 git pull --ff-only origin main
+python3 production/rematch_status.py --queue-only
 python3 production/rematch_status.py
 ```
 
 This reads the grouped campaign's recorded cluster IDs and worker receipts. It shows idle, running and held **Condor processes** separately from **input files** marked DONE, FAILED, untouched or started without a final receipt. One process can handle up to 100 files. The report includes hold reasons and example file names, errors and log paths. The row total comes from the DONE receipts. The final merge verifies the ROOT contents.
 
-Run the report periodically; it scans each file's job directory on AFS. For a lightweight live view of just this campaign, run:
+The full report scans per-input receipts on AFS and checks the tuple directory. To inspect a particular frozen plan, pass `--batch "$full/batch"` or the earlier AFS batch's path. For a continuously refreshed scheduler display, run:
 
 ```bash
 watch -n 60 'python3 production/rematch_status.py --queue-only'
@@ -137,7 +152,7 @@ To submit that retry:
 python3 production/retry_rematch_1s_9x275.py --submit
 ```
 
-The retry checks the preserved outputs, archives the evidence from failed or interrupted attempts and queues only groups containing unfinished files. These groups skip verified completed inputs, including outputs carried over from a removed cluster. Each retry has a new directory under `batch/retries/attempt-…/` containing its submission receipt and Condor logs. Run the same status command to follow it. Leave the original `submission.txt`, worker locks and results in place. If a submission receipt lacks a cluster ID, first reconcile its outcome on the scheduler. Finish any manually launched workers before using the retry command.
+The retry checks completed tuples and queues only groups containing unfinished inputs. Each retry records its submission and logs in `batch/retries/attempt-…/` on AFS. It archives any partial EOS tuples under `.retries/attempt-…/` inside the tuple directory, and records that directory in `tuple-archive.txt` on AFS. Run the same status command to follow the retry. Leave submission records, worker locks and results in place. Resolve any missing cluster ID on the scheduler and finish manually launched workers before retrying.
 
 ## Check and merge the full sample
 
@@ -148,7 +163,7 @@ Merge **inside the pinned ePIC shell** with access to the AFS batch and writable
 ```bash
 (
   set -euo pipefail
-  batch="$PWD/workspaces/condor-1S-9x275-full-grouped-v1/batch"
+  batch="$PWD/workspaces/condor-1S-9x275-full-grouped-eos-v1/batch"
   data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
   CORRECTED_BASE="${CORRECTED_BASE:-$data/rematch3011-v1}"
   out="$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root"

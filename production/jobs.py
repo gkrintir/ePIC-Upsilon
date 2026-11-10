@@ -59,6 +59,13 @@ def validate_work_location(path, repository=None):
         raise ValueError('Inside the repository, generated work must live under ignored workspaces/')
 
 
+def expected_output_path(batch, index):
+    name = f'job_{index:06d}'
+    if 'tuple_output_dir' in batch:
+        return Path(batch['tuple_output_dir']) / (name + '.root')
+    return Path(batch['work_dir']) / 'jobs' / name / 'output.root'
+
+
 def submit_text(info, jobs, *, log_dir=None):
     work = Path(info['work_dir'])
     lines = ['# Newly generated wrapper, not the historical CERN submission.',
@@ -177,6 +184,19 @@ def plan(args):
     if work.exists() or work.is_symlink():
         raise FileExistsError('Use a fresh work directory; existing work is unchanged: ' + str(work))
     validate_work_location(work)
+    tuple_dir = args.tuple_output_dir
+    if tuple_dir is not None:
+        if not tuple_dir.is_absolute():
+            raise ValueError('--tuple-output-dir requires an absolute mounted filesystem path')
+        tuple_dir = safe_path(tuple_dir)
+        if tuple_dir.is_symlink() or tuple_dir.exists():
+            raise FileExistsError('Use a fresh tuple output directory: ' + str(tuple_dir))
+        tuple_dir = safe_path(tuple_dir.resolve())
+        check_beam_label(tuple_dir, args.beam)
+        validate_work_location(tuple_dir)
+        control_dir = work.resolve()
+        if tuple_dir.is_relative_to(control_dir) or control_dir.is_relative_to(tuple_dir):
+            raise ValueError('Tuple output and work directories must be separate, non-overlapping paths')
     records = input_records(args.input_list, args.state, args.hash_inputs, beam=args.beam)
     selected_sources, source_hashes = verify_macro_sources(args.beam, args.electron_id)
     rematched_reader = None
@@ -200,6 +220,8 @@ def plan(args):
                 normalization='Historical per-job weights; merge does not normalize. Run framework preparation/audit before yields.',
                 job_count=len(records), files_per_job=args.files_per_job,
                 condor_job_count=(len(records) + args.files_per_job - 1) // args.files_per_job)
+    if tuple_dir is not None:
+        info['tuple_output_dir'] = str(tuple_dir)
     if args.electron_id == REMATCH:
         info['accounting_group'] = 'group_u_CMS.CAF.COMM'
         info['producer_identity'] = selected_sources[PRODUCER] + ' with downstream EICrecon #3011 rematching'
@@ -209,6 +231,12 @@ def plan(args):
         print('PLAN ONLY. Add --write to create the fresh work directory. No ROOT or Condor command executed.')
         return 0
     work.mkdir(parents=True, exist_ok=False)
+    if tuple_dir is not None:
+        try:
+            tuple_dir.mkdir(parents=True, exist_ok=False)
+        except OSError:
+            work.rmdir()  # Only our newly created, still-empty control directory.
+            raise
     (work / 'snapshot/macros').mkdir(parents=True)
     for name, relative in selected_sources.items():
         shutil.copyfile(PRODUCTION / relative, work / 'snapshot/macros' / name)
@@ -228,7 +256,7 @@ def plan(args):
         job_dir = work / 'jobs' / ('job_%06d' % index)
         job_dir.mkdir(parents=True)
         job = {**info, 'inputs': [record], 'job_id': index, 'job_dir': str(job_dir),
-               'macro_dir': str(work / 'snapshot/macros'), 'output': str(job_dir / 'output.root')}
+               'macro_dir': str(work / 'snapshot/macros'), 'output': str(expected_output_path(info, index))}
         job_path = job_dir / 'job.json'
         save_json(job_path, job)
         jobs.append(str(job_path))
@@ -254,7 +282,8 @@ def pending(args):
         result_path = directory / 'result.json'
         if result_path.exists():
             result = json.loads(result_path.read_text())
-            if result.get('status') != 'DONE' or sha256(job['output']) != result.get('output_sha256'):
+            if (result.get('status') != 'DONE' or result.get('output') != job['output']
+                    or sha256(job['output']) != result.get('output_sha256')):
                 raise ValueError('Failed or changed job requires a fresh attempt; refusing to silently skip it: ' + str(path))
             continue
         if (directory / 'execution.lock').exists() or Path(job['output']).exists() or (directory / 'root.log').exists():
@@ -300,7 +329,15 @@ def load_job(path, *, batch=None):
     expected = work / 'jobs' / ('job_%06d' % job['job_id'])
     if path != expected / 'job.json' or Path(job['job_dir']).resolve() != expected:
         raise ValueError('Job paths do not match the declared work directory')
-    if Path(job['output']).resolve() != expected / 'output.root':
+    output = Path(job['output'])
+    if 'tuple_output_dir' in batch:
+        planned_output = expected_output_path(batch, index)
+        # A redirected file or parent would put data outside the frozen destination.
+        if output != planned_output or output.resolve() != planned_output:
+            raise ValueError('Tuple output path differs from its frozen destination')
+        if not planned_output.parent.is_dir():
+            raise FileNotFoundError('Tuple output directory is unavailable: ' + str(planned_output.parent))
+    elif output.resolve() != expected / 'output.root' or 'tuple_output_dir' in job:
         raise ValueError('Output must be this job output.root')
     macro_dir = work / 'snapshot/macros'
     if Path(job['macro_dir']).resolve() != macro_dir:
@@ -531,6 +568,9 @@ def parser():
     a = sub.add_parser('plan', help='Inspect a production plan; --write creates job/Condor files')
     a.add_argument('--input-list', type=Path, required=True)
     a.add_argument('--work-dir', type=Path, required=True)
+    a.add_argument('--tuple-output-dir', type=Path,
+                   help='Fresh absolute directory on a mounted filesystem for per-input ROOT files; '
+                        'Condor logs and job records stay under --work-dir')
     a.add_argument('--beam', choices=sorted(PRODUCERS), required=True)
     a.add_argument('--state', choices=('1S', '2S', '3S'), required=True)
     a.add_argument('--electron-id', choices=('legacy', 'reco', REMATCH), required=True)

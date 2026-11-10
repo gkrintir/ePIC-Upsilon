@@ -48,7 +48,7 @@ def verify(stored_job, rematched_job):
             if job["electron_id"] != mode or job["femc"] != "full":
                 raise ValueError(f"Expected {mode} and full fEMC in {path}")
             first_digest = digest
-            stream = files.enter_context((path.parent / "output.root").open("rb"))
+            stream = files.enter_context(Path(job["output"]).open("rb"))
             root = files.enter_context(uproot.open(stream))
             tree = root["UpsilonTree"]
             if tree.num_entries != 100 or root["h_EventCount"].values().sum() != 100:
