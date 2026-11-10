@@ -205,9 +205,12 @@ def plan(args):
         shutil.copyfile(PRODUCTION / relative, work / 'snapshot/macros' / name)
     if rematched_reader is not None:
         (work / 'snapshot/macros/ElectronFinder.C').write_bytes(rematched_reader)
-    shutil.copyfile(__file__, work / 'snapshot/jobs.py')
+    worker_path = work / 'snapshot/jobs.py'
+    shutil.copyfile(__file__, worker_path)
     launcher = work / 'snapshot/run_job.sh'
-    launcher.write_text('#!/usr/bin/env bash\nset -euo pipefail\nexec python3 -B "$(dirname "$0")/jobs.py" worker "$1" --execute\n')
+    # Condor may stage the launcher in the execution slot. Its worker stays on shared storage.
+    launcher.write_text('#!/usr/bin/env bash\nset -euo pipefail\n'
+                        f'exec python3 -B {shlex.quote(str(worker_path))} worker "$1" --execute\n')
     launcher.chmod(0o755)
     (work / 'logs').mkdir()
     jobs = []

@@ -4,6 +4,8 @@ import importlib.util
 import io
 import json
 from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -173,6 +175,20 @@ class ProductionPlanTest(unittest.TestCase):
             jobs.plan(self.args('--write'))
         self.assertEqual(protected.read_text(), 'old result')
         self.assertEqual(list(self.work.iterdir()), [protected])
+
+    def test_relocated_condor_launcher_reaches_frozen_worker(self):
+        job = self.create()
+        slot = self.base / 'execute'
+        slot.mkdir()
+        executable = slot / 'condor_exec.exe'
+        shutil.copy2(self.work / 'snapshot/run_job.sh', executable)
+        # Exercise the real worker up to its overwrite guard without invoking ROOT.
+        output = job.parent / 'output.root'
+        output.write_bytes(b'keep this tuple')
+        result = subprocess.run([str(executable), str(job)], cwd=slot, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn('Existing output/result is preserved', result.stderr)
+        self.assertEqual(output.read_bytes(), b'keep this tuple')
 
     def test_changed_inputs_or_macros_block_execution(self):
         path = self.create()
