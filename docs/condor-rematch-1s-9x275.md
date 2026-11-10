@@ -88,7 +88,19 @@ The launcher checks the pilot receipt, lists the reconstructed hiAcc 1S 9×275 i
 
 The planner records `files_per_job`, `condor_job_count` and the number of per-file work items (`job_count`) in `batch/plan.json`. The submission asks for `group_u_CMS.CAF.COMM`, `longlunch` and `eic_xl:26.07.1-stable`. Each Condor process runs the files in its group sequentially, using the same per-file ROOT invocation and weights as the successful pilot. Every input has its own output and receipt. The final merge follows the original manifest order.
 
-If you previously ran the one-job-per-file commands, check `workspaces/condor-1S-9x275-full-v1/submission.txt` and `condor_q "$USER"`. A **plan only** can coexist with the new grouped plan. The launcher refuses to submit over a recorded submission or a matching live cluster. If the old batch is running, keep it separate and reconcile its completed files before any replacement. The launcher never cancels jobs. In the new grouped directory it reserves `submission.txt` before submission to prevent a second launch; if submission fails or its outcome is uncertain, inspect that file and the scheduler first.
+If you previously ran the one-job-per-file commands, a **plan only** can coexist with the new grouped plan. An earlier submission is protected even after its jobs leave the queue. The launcher never cancels jobs. For a removed one-file-per-job cluster, follow the recovery steps below. For a new grouped submission it reserves `submission.txt` before calling Condor; if the outcome is uncertain, inspect that file and the scheduler before retrying.
+
+### Switch after removing the one-file-per-job cluster
+
+Keep the old batch, its submission record and its logs at their original paths. From bare lxplus, using the same CERN scheduler as the original submission, run:
+
+```bash
+git pull --ff-only origin main && bash production/submit_1s_9x275.sh --after-removal --submit
+```
+
+The launcher reads the cluster ID from the earlier `submission.txt`. If the record lacks an ID, set `OLD_CLUSTER_ID` to the ID you removed. It stops if Condor still lists the old cluster, including jobs in the removing state. In that case rerun the command once the queue clears.
+
+Recovery checks the old and new plans describe the same input inventory and reconstruction. It carries verified `DONE` outputs into the grouped plan. Interrupted inputs run again; their previous files stay in the old batch. The launcher reports how many files it reused and submits only groups with outstanding work. A group containing both completed and outstanding files skips the verified ones. Use `--after-removal` without `--submit` to preview this recovery and prepare the grouped outputs without submitting to the scheduler.
 
 For a custom campaign, use `production/jobs.py plan ... --files-per-job 100`. Omitting this option keeps one input per Condor process. Grouping is a scheduler setting; the underlying per-file manifest, ROOT selection and merge interface are the same. Unhashed planning records path, size and modification time; `--hash-inputs` additionally reads every original file to record and verify its SHA-256.
 
