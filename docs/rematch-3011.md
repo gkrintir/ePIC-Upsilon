@@ -6,17 +6,53 @@ The producer option `--electron-id reco-rematch3011` replays the original matchi
 
 ## Start on lxplus and run one file
 
-Start in the root of the checkout to which you applied the rematching patch. On the lxplus host, check the patched option and enter the July ePIC software release. Keep your checkout on AFS or on the bound EOS mount.
+From the repository root on **bare lxplus**, read the original Υ(2S), 9×130 file under `/eos/cms`. If you are already at the ePIC shell prompt, type `exit` first. Enter the mounted path to your campaign's `upsilon_data` directory at the prompt. The expected four bytes are `root`.
 
 ```bash
-python3 production/jobs.py plan --help | grep reco-rematch3011
-image=/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable
-apptainer exec --bind /afs,/eos/cms --pwd "$PWD" "$image" eic-shell
+read -r -p "Absolute /eos/cms path to upsilon_data: " RECO_INPUT_BASE
+name=eSTARlight1.3.0-1.0_Upsilon2S_9x130_q2_0to0.01_hiAcc_ab_run015.0927.eicrecon.edm4eic.root
+PILOT_2S="${RECO_INPUT_BASE%/}/Upsilon2S/9x130/hiAcc/$name"
+head -c 4 -- "$PILOT_2S" && echo
 ```
 
-The last line opens a new shell in the same directory with ROOT and podio loaded. This uses the [EIC shell](https://github.com/eic/EICrecon/blob/main/docs/tutorial/02-work-environment.md) and the [published July image](https://hub.docker.com/r/eicweb/eic_xl/tags?name=26.07.1-stable). Its [release manifest](https://github.com/eic/containers/blob/2def1e04f273ffa1c87f388f5c65e8d4b89180ec/spack-environment/packages.yaml) specifies ROOT 6.38.04, podio 1.7 and C++20. The archived October jobs used the floating `nightly` tag. The interactive example uses the named release.
+If the host reports `Permission denied`, check the host ticket with `klist -s`. If it has expired, run `kinit "$USER@CERN.CH"` on lxplus and repeat the read. If a valid ticket still gets denied, check the account with `eos root://eoscms.cern.ch whoami` and the read/traverse permissions for this group path with its owner.
 
-Inside that shell, run one original Υ(2S), 9×130 file. The following block downloads the public copy into a fresh working directory and checks its identity. If you have the original mounted on EOS, you can instead set `input` to its absolute filename and skip the download.
+Once the host prints `root`, launch the July ePIC image from the **same lxplus shell**. This block mounts the CMS EOS filesystem and passes the host's Kerberos FILE cache at exactly the path the session uses. The ticket is mounted read-only for this interactive session. [Reported lxplus fix](https://github.com/apptainer/apptainer/issues/1217#issuecomment-3690453554)
+
+```bash
+(
+  set -e
+  cache=$(LC_ALL=C klist | sed -n 's/^Ticket cache: //p')
+  case "$cache" in
+    FILE:/*) ticket=${cache#FILE:} ;;
+    DIR:*|KCM:*|KEYRING:*)
+      private_dir=$(mktemp -d /tmp/eos-pilot-krb.XXXXXXXX)
+      ticket="$private_dir/krb5cc"
+      cache="FILE:$ticket"
+      trap 'kdestroy -c "$cache" 2>/dev/null || :; rmdir -- "$private_dir" 2>/dev/null || :' EXIT
+      kinit -c "$cache" "$USER@CERN.CH"
+      ;;
+    *) echo 'Could not identify a supported ticket cache. Run klist on lxplus.' >&2; exit 1 ;;
+  esac
+  if ! [[ -f "$ticket" && -r "$ticket" && -O "$ticket" ]]; then
+    echo 'The host ticket file is not readable or does not belong to this user.' >&2
+    exit 1
+  fi
+  image=/cvmfs/singularity.opensciencegrid.org/eicweb/eic_xl:26.07.1-stable
+  apptainer exec --bind /afs,/eos/cms --bind "$ticket:$ticket:ro" \
+    --env "KRB5CCNAME=$cache" --env "PILOT_2S=$PILOT_2S" --pwd "$PWD" "$image" eic-shell
+)
+```
+
+For `KCM`, `DIR` or `KEYRING`, the block requests a separate ticket on lxplus, keeps it in a private temporary directory, and destroys it when you exit the container. The [EIC shell](https://github.com/eic/EICrecon/blob/main/docs/tutorial/02-work-environment.md) starts in your checkout. The [July release](https://github.com/eic/containers/blob/2def1e04f273ffa1c87f388f5c65e8d4b89180ec/spack-environment/packages.yaml) specifies ROOT 6.38.04, podio 1.7 and C++20.
+
+**Inside the ePIC shell**, read the same file again. Continue to the planner only when this also prints `root`. If only this read fails, check that `KRB5CCNAME` points to the mounted file and that `klist -s` succeeds inside. If you renew the ticket on the host, re-enter the container to pick up the current file.
+
+```bash
+head -c 4 -- "$PILOT_2S" && echo
+```
+
+Run the tuple worker on that EOS path. Only the tuple output and job records go into the checkout's `workspaces` directory.
 
 ```bash
 (
@@ -26,9 +62,7 @@ Inside that shell, run one original Υ(2S), 9×130 file. The following block dow
   patch --version | head -1
   mkdir -p workspaces
   trial=$(mktemp -d "$PWD/workspaces/rematch-2S-9x130.XXXXXX")
-  name=eSTARlight1.3.0-1.0_Upsilon2S_9x130_q2_0to0.01_hiAcc_ab_run015.0927.eicrecon.edm4eic.root
-  input="$trial/$name"
-  curl -fL --retry 2 "https://cernbox.cern.ch/remote.php/dav/public-files/XVLz7BDkpAHgy17/$name" -o "$input"
+  input="${PILOT_2S:?Set the original EOS pilot path when entering the container}"
   printf '%s  %s\n' b5f8450deba55cc4555532f11f87be1d81713ef3cefc51774f84aa7b756a01ff "$input" | sha256sum -c -
   printf '%s\n' "$input" > "$trial/input.txt"
   batch="$trial/corrected"
