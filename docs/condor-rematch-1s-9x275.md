@@ -4,6 +4,8 @@ Run from **bare lxplus**, in an AFS checkout on `main`. Each worker reads an ori
 
 If the one-file Condor test (`condor-1S-9x275-check-v2`) already succeeded, keep its receipt. To process the full sample from the original files while an earlier campaign is active, [start an independent EOS run](#start-an-independent-eos-run). To reuse finished AFS tuples after the older campaign leaves the queue, [switch that campaign to EOS](#switch-an-existing-afs-campaign-to-eos).
 
+After the pilot, you can also [submit the remaining five state and energy combinations in parallel](rematch-3011.md#submit-the-remaining-five-samples-in-parallel).
+
 ## Set the paths
 
 Run this block again from the repository root after reconnecting. The example configuration points to the July campaign; set `UPSILON_DATA` yourself if your mounted copy is elsewhere.

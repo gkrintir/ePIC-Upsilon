@@ -15,6 +15,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 RETRY = ROOT / 'production' / 'retry_rematch_1s_9x275.py'
+GENERIC_RETRY = ROOT / 'production' / 'retry_rematch.py'
 SPEC = importlib.util.spec_from_file_location('production_jobs', ROOT / 'production' / 'jobs.py')
 jobs = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(jobs)
@@ -86,6 +87,33 @@ echo "2 job(s) submitted to cluster $((7301 + sequence))."
         else:
             self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
         return r
+
+    def test_generic_retry_requires_explicit_batch_and_supports_all_six_cells(self):
+        no_batch = subprocess.run([sys.executable, str(GENERIC_RETRY), '--submit'],
+                                  capture_output=True, text=True, env=self.env)
+        self.assertNotEqual(no_batch.returncode, 0)
+        self.assertFalse(self.calls.exists())
+        for state in ('1S', '2S', '3S'):
+            for beam in ('9x130', '9x275'):
+                with self.subTest(state=state, beam=beam):
+                    cell = self.base / 'matrix' / f'Upsilon{state}' / beam
+                    cell.mkdir(parents=True)
+                    src = cell / 'input.root'
+                    src.write_text('100')
+                    manifest = cell / 'input.txt'
+                    manifest.write_text(str(src) + '\n')
+                    batch = cell / 'batch'
+                    self.plan(batch, '--state', state, '--beam', beam, '--input-list', str(manifest))
+                    (cell / 'submission.txt').write_text('1 job(s) submitted to cluster 8001.\n')
+                    command = [sys.executable, str(GENERIC_RETRY), '--batch', str(batch)]
+                    if (state, beam) == ('3S', '9x275'):
+                        command.append('--submit')
+                    result = subprocess.run(command, capture_output=True, text=True, env=self.env)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertIn('Retry: 1 files across 1 Condor groups.', result.stdout)
+        calls = self.calls.read_text().splitlines()
+        self.assertEqual(len(calls), 1)
+        self.assertIn('/Upsilon3S/9x275/batch/retries/attempt-0001/retry.sub', calls[0])
 
     def test_preview_then_submit_only_unfinished_groups(self):
         for i in (0, 1, 2):

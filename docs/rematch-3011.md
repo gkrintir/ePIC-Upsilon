@@ -123,7 +123,40 @@ These counts use 8–12 GeV in dielectron mass, 20–100 GeV in reconstructed W 
 
 ## Produce the six corrected tuples
 
-For the full 1S 9×275 sample, the [Condor launcher](condor-rematch-1s-9x275.md#plan-and-submit-the-full-sample) writes each per-input tuple directly to EOS and groups up to 100 inputs per Condor job. For the other samples, add `--files-per-job 100` to the planner command below if appropriate for the worker runtime.
+For the first sample, use the [1S 9×275 Condor walkthrough](condor-rematch-1s-9x275.md#plan-and-submit-the-full-sample).
+
+### Submit the remaining five samples in parallel
+
+Once the one-file 1S 9×275 Condor pilot has succeeded, run this from the repository root on **bare lxplus**. The launcher uses that pilot receipt to check the shared runtime.
+
+```bash
+git pull --ff-only origin main &&
+env -u TUPLE_OUTPUT_DIR bash production/submit_rematch.sh --remaining --new-run rest-01 --submit
+```
+
+This submits five independent Condor clusters covering 1S at 9×130 and both 2S and 3S at 9×130 and 9×275. Your existing 1S 9×275 run can finish independently. Each cluster uses the matching beam macro, `reco-rematch3011` with full fEMC, and up to 100 inputs per job by default. The submissions request `group_u_CMS.CAF.COMM` and `eic_xl:26.07.1-stable`.
+
+Omit `--submit` to prepare the five plans only. To continue an interrupted submission, rerun the same command with the same label. The launcher skips campaigns with a confirmed submission and stops that campaign if its submission record is ambiguous. Check its `submission.txt` and queue before taking further action.
+
+The launcher lists originals in `$UPSILON_DATA/Upsilon$state/$beam/hiAcc/` and writes separate plans and logs under `workspaces/condor-$state-$beam-full-grouped-eos-rest-01/`. Workers write directly to `$CORRECTED_BASE/Upsilon$state/$beam/hiAcc/$subdir/runs/rest-01/intermediate/`, where `subdir=output_newID` for 1S and `subdir=output` for 2S and 3S. The default `CORRECTED_BASE` is `$UPSILON_DATA/rematch3011-v1`. To change the common EOS base, set `CORRECTED_BASE` before planning. The command clears a single-directory `TUPLE_OUTPUT_DIR` override so each sample gets its own destination.
+
+Check all five queues once from the same lxplus submit scheduler:
+
+```bash
+python3 production/rematch_status.py --queue-only \
+  --batch workspaces/condor-*-full-grouped-eos-rest-01/batch
+```
+
+Omit `--queue-only` to read the per-input receipts. To retry an individual campaign after its queue drains, select its batch explicitly. This example previews the 2S 9×130 retry. Add `--submit` to submit it.
+
+```bash
+batch="$PWD/workspaces/condor-2S-9x130-full-grouped-eos-rest-01/batch"
+python3 production/retry_rematch.py --batch "$batch"
+```
+
+Merge each batch separately with `production/jobs.py merge` in an environment with `uproot`, `hadd` and EOS access. Put the final ROOT file beside that sample’s `intermediate/` directory. [Merge options and confirmed unreadable inputs](condor-rematch-1s-9x275.md#merge-the-readable-inputs) · [Historical generated-row totals by state and beam](../inputs/paper_inputs.csv)
+
+### Plan a custom sample from an input list
 
 New rematching plans request `+AccountingGroup = "group_u_CMS.CAF.COMM"` in both `submit.sub` and `pending.sub`. To check before submission, run `grep '^+AccountingGroup' "$batch/pending.sub"` after creating the pending file. A `worker --execute` run in your shell uses no Condor account.
 

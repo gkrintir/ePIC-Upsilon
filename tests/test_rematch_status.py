@@ -87,6 +87,21 @@ class RematchStatusTest(unittest.TestCase):
         clusters.assert_not_called()
         self.assertIn("1/6 DONE", report)
 
+    def test_queue_overview_accepts_multiple_dirs_and_repeated_batch_flags(self):
+        paths = [self.batch.parent / f'camp-{i}/batch' for i in range(3)]
+        with patch.object(status, 'report') as report:
+            status.main(['--queue-only', '--batch', str(paths[0]), str(paths[1]), '--batch', str(paths[2])])
+        self.assertEqual([call.args[0] for call in report.call_args_list], paths)
+        self.assertTrue(all(call.args[3] for call in report.call_args_list))
+
+    def test_overview_continues_past_an_unplanned_cell_but_exits_nonzero(self):
+        with patch.object(status, 'report', side_effect=[FileNotFoundError('missing plan'), None]) as report, \
+             patch.object(sys, 'stderr', io.StringIO()) as errors, self.assertRaises(SystemExit) as exc:
+            status.main(['--batch', 'not-yet-planned', str(self.batch), '--queue-only'])
+        self.assertEqual(exc.exception.code, 2)
+        self.assertEqual(report.call_count, 2)
+        self.assertIn('not-yet-planned', errors.getvalue())
+
     def test_empty_queue_is_not_completion_and_limits_examples(self):
         with patch.object(status, "queue_rows", return_value=[]):
             report = self.printed(1)

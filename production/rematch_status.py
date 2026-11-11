@@ -163,23 +163,28 @@ def report(batch, limit, query_queue=True, queue_only=False, check_workers=DEFAU
             print("    Condor event log:", prefix.with_suffix(".log"))
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--batch", type=Path, default=default_batch(), help="Directory containing plan.json")
+    parser.add_argument("--batch", type=Path, nargs="+", action="extend",
+                        help="One or more batch directories containing plan.json")
     parser.add_argument("--limit", type=int, default=2, help="Maximum examples per problem category (default: 2)")
     add_check_workers(parser)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--queue-only", action="store_true", help="Show scheduler status without scanning per-file directories")
     mode.add_argument("--no-queue", action="store_true", help="Read worker receipts without querying Condor")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.check_workers < 1:
         parser.error("--check-workers must be positive")
     if args.limit < 0:
         parser.error("--limit must be nonnegative")
-    try:
-        report(args.batch, args.limit, not args.no_queue, args.queue_only, args.check_workers)
-    except (OSError, ValueError, TypeError, KeyError) as error:
-        parser.exit(2, f"Cannot read batch status: {error}\n")
+    errors = []
+    for batch in args.batch or [default_batch()]:
+        try:
+            report(batch, args.limit, not args.no_queue, args.queue_only, args.check_workers)
+        except (OSError, ValueError, TypeError, KeyError) as error:
+            errors.append(f"Cannot read batch status for {batch}: {error}")
+    if errors:
+        parser.exit(2, "\n".join(errors) + "\n")
 
 
 if __name__ == "__main__":
