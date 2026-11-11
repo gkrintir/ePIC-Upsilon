@@ -16,6 +16,8 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
+import zlib
 
 PRODUCTION = Path(__file__).resolve().parent
 REPO = PRODUCTION.parent
@@ -304,7 +306,7 @@ def pending(args):
     return 0
 
 
-def load_job(path, *, batch=None):
+def load_job(path, *, batch=None, worker_hash=None):
     path = Path(path).resolve()
     job = json.loads(path.read_text())
     if job.get('schema_version') != 1 or job.get('kind') != 'new_shared_filesystem_condor_plan':
@@ -351,7 +353,7 @@ def load_job(path, *, batch=None):
         if sha256(macro_dir / name) != job['source_hashes'][name]:
             raise ValueError('Macro snapshot hash mismatch: ' + name)
     verify_beam_constants(macro_dir / PRODUCER, job['beam'])
-    if sha256(__file__) != job['worker_sha256']:
+    if (worker_hash if worker_hash is not None else sha256(__file__)) != job['worker_sha256']:
         raise ValueError('Worker differs from the recorded plan')
     record = job['inputs'][0]
     stat = Path(record['path']).stat()
@@ -385,9 +387,9 @@ def run_with_setup(command, setup, **kwargs):
     return subprocess.run(command, **kwargs)
 
 
-def root_counts(path, tree):
+def root_counts(path, tree, **options):
     import uproot
-    with uproot.open(path) as source:
+    with uproot.open(path, **options) as source:
         n = int(source[tree].num_entries)
         if n <= 0:
             raise ValueError('Empty event tree in ' + str(path))
@@ -428,8 +430,10 @@ def worker(args, *, batch=None, resume=False):
                   beam=job['beam'], state=job['state'], electron_id=job['electron_id'], source_hashes=job['source_hashes'],
                   command=command, environment_label=job['environment_label'],
                   normalization=job['normalization'], started_utc=datetime.now(timezone.utc).isoformat())
+    stage = 'input_read'
     try:
         n_input = root_counts(job['inputs'][0]['path'], 'events')
+        stage = 'tuple_production'
         # Reserve our output exclusively. ROOT RECREATE writes this owned placeholder.
         out_fd = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         os.close(out_fd)
@@ -444,7 +448,9 @@ def worker(args, *, batch=None, resume=False):
         result.update(status='DONE', input_rows=n_input, output_rows=n_output,
                       output=str(output), output_sha256=sha256(output))
     except Exception as exc:
-        result['error'] = str(exc)
+        result.update(error=str(exc), failure_stage=stage, failure_type=type(exc).__name__)
+        if getattr(exc, 'errno', None) is not None:
+            result['failure_errno'] = exc.errno
         raise
     finally:
         result['finished_utc'] = datetime.now(timezone.utc).isoformat()
@@ -482,11 +488,14 @@ def group_worker(args):
     return 0
 
 
-def verified_output_rows(job):
-    result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
+def verified_output_rows(job, result=None):
+    if result is None:
+        result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
     path = Path(job['output'])
     if result.get('status') != 'DONE' or result.get('output') != str(path):
-        raise ValueError('All declared jobs must have validated DONE outputs before merging or resuming')
+        detail = result.get('error') or f"recorded output {result.get('output')!r}, expected {path}"
+        raise ValueError(f"Input {job['job_id']:06d} has no validated DONE output "
+                         f"(status={result.get('status')!r}): {detail}")
     for key in ('beam', 'state', 'source_hashes'):
         if result.get(key) != job[key]:
             raise ValueError('Job result differs from the planned ' + key)
@@ -500,15 +509,100 @@ def verified_output_rows(job):
     return rows
 
 
+def is_short_read(message):
+    match = re.search(r'expected Chunk of length (\d+),\s*received (\d+) bytes', message)
+    return bool(match and int(match[2]) < int(match[1]))
+
+
+def confirm_input_damage(record):
+    """Read a separate local copy. Source access and interrupted copies must fail the merge."""
+    import uproot
+
+    src = Path(record['path'])
+    with tempfile.TemporaryDirectory(prefix='upsilon-merge-check-') as tmp:
+        copy = Path(tmp) / 'input.root'
+        shutil.copyfile(src, copy)
+        size = copy.stat().st_size
+        stat = src.stat()
+        if size != record['size_bytes'] or (stat.st_size, stat.st_mtime_ns) != (size, record['mtime_ns']):
+            raise ValueError(f'Cannot confirm a complete copy of the planned input: {src}')
+        digest = sha256(copy)
+        if record.get('sha256') and digest != record['sha256']:
+            raise ValueError(f'Diagnostic copy differs from the planned input checksum: {src}')
+        with copy.open('rb') as stream:
+            header = stream.read(20)
+            if len(header) < 20 or header[:4] != b'root':
+                reason = 'Missing or incomplete ROOT header'
+            else:
+                width = 8 if int.from_bytes(header[4:8], 'big') >= 1_000_000 else 4
+                end = int.from_bytes(header[12:12 + width], 'big')
+                stream.seek(0)
+                try:
+                    root_counts(stream, 'events', handler=uproot.source.object.ObjectSource)
+                except (OSError, EOFError, ValueError, zlib.error) as exc:
+                    if getattr(exc, 'errno', None) is not None:
+                        raise
+                    if end > size:
+                        reason = f'ROOT header declares {end} bytes; file has {size}'
+                    elif is_short_read(str(exc)) or isinstance(exc, EOFError):
+                        reason = 'Unexpected end of file reading the events tree from a verified local copy'
+                    elif isinstance(exc, zlib.error) and str(exc).startswith('Error -3 '):
+                        reason = f'Corrupt compressed ROOT data in the local copy: {exc}'
+                    else:
+                        raise ValueError(f'Cannot confirm input corruption in {src}: {exc}') from exc
+                else:
+                    raise ValueError(f'Original input now has a readable events tree; retry this job: {src}')
+    return dict(confirmation=reason, size_bytes=size, sha256=digest)
+
+
+def excluded_input(job, result):
+    folder = Path(job['job_dir'])
+    record = job['inputs'][0]
+    error = result.get('error')
+    identity = ('beam', 'state', 'electron_id', 'source_hashes', 'environment_label', 'normalization')
+    if (not isinstance(error, str) or not error or result.get('job') != str(folder / 'job.json')
+            or any(result.get(key) != job[key] for key in identity) or result.get('command') != root_command(job)):
+        raise ValueError(f'Cannot verify failed worker receipt: {folder}')
+    stage = result.get('failure_stage')
+    if stage is None:
+        # Old workers did not label the read stage. Accept only uproot errors naming this exact input.
+        src = record['path']
+        named_input = any(line.strip() in (f'for file path {src}', f'in file {src}') for line in error.splitlines())
+        if named_input and (is_short_read(error) or 'not a ROOT file' in error):
+            stage = 'input_read'
+    evidence = (folder / 'execution.lock', folder / 'reuse-pending.json', folder / 'root.log', Path(job['output']))
+    if (stage != 'input_read' or result.get('failure_errno') is not None
+            or result.get('failure_type') in ('ImportError', 'ModuleNotFoundError')
+            or any(os.path.lexists(p) for p in evidence)
+            or any(key in result for key in ('output', 'input_rows', 'root_returncode'))):
+        raise ValueError(f'Only a failed original-input read can be excluded: {folder}: {error}')
+    confirmation = confirm_input_damage(record)
+    return dict(job_id=job['job_id'], input=record['path'], error=error, **confirmation)
+
+
 def merge(args):
     plan_path = Path(args.batch).expanduser().resolve() / 'plan.json'
     plan_data = json.loads(plan_path.read_text())
     if Path(plan_data['work_dir']).resolve() != plan_path.parent:
         raise ValueError('Merge plan belongs to a different batch')
-    paths, expected = [], 0
-    for job_path in plan_data['jobs']:
-        job = load_job(job_path, batch=plan_data)
-        expected += verified_output_rows(job)
+    worker_hash = sha256(plan_path.parent / 'snapshot/jobs.py')
+    paths, excluded, expected = [], [], 0
+    if len(plan_data['inputs']) != len(plan_data['jobs']):
+        raise ValueError('Merge plan inputs and jobs differ in length')
+    print(f"Checking {plan_data['job_count']:,} planned inputs before merge.", flush=True)
+    for index, job_path in enumerate(plan_data['jobs']):
+        if index and index % 1000 == 0:
+            print(f"Checked {index:,} inputs, {len(excluded)} excluded.", flush=True)
+        job = load_job(job_path, batch=plan_data, worker_hash=worker_hash)
+        if job['job_id'] != index:
+            raise ValueError('Unexpected job order in merge plan')
+        result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
+        if result.get('status') == 'FAILED' and getattr(args, 'skip_unreadable_inputs', False):
+            skipped = excluded_input(job, result)
+            excluded.append(skipped)
+            print(f"EXCLUDED {index:06d}: {skipped['input']} ({skipped['confirmation']})", flush=True)
+            continue
+        expected += verified_output_rows(job, result)
         paths.append(Path(job['output']))
     if not paths or len(set(paths)) != len(paths):
         raise ValueError('Empty or duplicate merge inputs')
@@ -523,6 +617,8 @@ def merge(args):
     command = ['hadd', str(out), '@' + str(input_list)]
     print('Merge command:', shlex.join(command))
     print('Expected all-generated rows:', expected)
+    if excluded:
+        print(f'Merging {len(paths)} of {plan_data["job_count"]} inputs; {len(excluded)} confirmed unreadable.')
     if not args.execute:
         print('PLAN ONLY. Add --execute to merge. Weights and histograms are summed, not renormalized.')
         return 0
@@ -537,7 +633,8 @@ def merge(args):
                   beam=plan_data['beam'], state=plan_data['state'], source_hashes=plan_data['source_hashes'],
                   electron_id=plan_data['electron_id'],
                   normalization='Unchanged raw per-job weights. Normalize the complete merged sample in the framework.',
-                  plan_sha256=sha256(plan_path))
+                  plan_sha256=sha256(plan_path), merge_driver_sha256=sha256(__file__),
+                  planned_input_count=plan_data['job_count'], included_input_count=len(paths), excluded_inputs=excluded)
     try:
         with input_list.open('x') as stream:
             stream.write('\n'.join(map(str, paths)) + '\n')
@@ -548,7 +645,8 @@ def merge(args):
         count = root_counts(out, 'UpsilonTree')
         if count != expected:
             raise ValueError('Merged tuple/generated count differs from the sum of all declared jobs')
-        result.update(status='DONE', output=str(out), output_rows=count, sha256=sha256(out))
+        result.update(status='DONE_WITH_EXCLUSIONS' if excluded else 'DONE',
+                      output=str(out), output_rows=count, sha256=sha256(out))
     except Exception as exc:
         result['error'] = str(exc)
         raise
@@ -557,7 +655,7 @@ def merge(args):
             save_json(result_path, result)
         finally:
             lock.unlink()
-    print('DONE:', out)
+    print(result['status'] + ':', out)
     print('Next: framework normalization and input audit; this ROOT file still has raw per-job weights.')
     return 0
 
@@ -598,6 +696,8 @@ def parser():
     a = sub.add_parser('merge', help='Verify a complete batch; --execute invokes hadd without -f')
     a.add_argument('--batch', type=Path, required=True)
     a.add_argument('--output', type=Path, required=True)
+    a.add_argument('--skip-unreadable-inputs', action='store_true',
+                   help='Exclude only failed original-input reads with confirmed ROOT file damage; record each exclusion')
     a.add_argument('--execute', action='store_true')
     return p
 

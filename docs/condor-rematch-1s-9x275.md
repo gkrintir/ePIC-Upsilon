@@ -76,7 +76,7 @@ An error about `/srv/jobs.py` identifies the old frozen launcher. Confirm the ol
 
 ## Plan and submit the full sample
 
-The full-sample launcher uses **up to 100 files per Condor job** by default. For example, 11,376 input files require 114 Condor jobs, with 76 files in the last job. The launcher prints the actual count from your EOS inventory. In the archived 2S campaign, most Condor jobs processed 140 files; the 1S pilot and the full sample can have different runtimes.
+The full-sample launcher uses **up to 100 files per Condor job** by default. For example, the 11,377 inputs in `fresh-01` occupy 114 Condor jobs, with 77 files in group 113. The launcher prints the actual count from your EOS inventory. In the archived 2S campaign, most Condor jobs processed 140 files; the 1S pilot and the full sample can have different runtimes.
 
 On bare lxplus, after the one-file Condor pilot is `DONE` with 100 rows, run:
 
@@ -137,7 +137,7 @@ Once this run's queue drains, preview any retry with `python3 production/retry_r
 )
 ```
 
-For the full July inventory, check for `"status": "DONE"` and `"output_rows": 1137600` in `runs/fresh-01/merged_Upsilon_final.root.merge.json`.
+For a complete merge, check for `"status": "DONE"` in `runs/fresh-01/merged_Upsilon_final.root.merge.json` and compare the row count with the historical July total of 1,137,600. If an original file is corrupt, see [Merge the readable inputs](#merge-the-readable-inputs).
 
 ### Switch an existing AFS campaign to EOS
 
@@ -188,6 +188,33 @@ python3 production/retry_rematch_1s_9x275.py --submit
 ```
 
 The retry checks completed tuples and queues only groups containing unfinished inputs. Each retry records its submission and logs in `batch/retries/attempt-…/` on AFS. It archives any partial EOS tuples under `.retries/attempt-…/` inside the tuple directory, and records that directory in `tuple-archive.txt` on AFS. Run the same status command to follow the retry. Leave submission records, worker locks and results in place. Resolve any missing cluster ID on the scheduler and finish manually launched workers before retrying.
+
+## Merge the readable inputs
+
+The usual merge requires a validated `DONE` receipt for every input. Once the queue drains, add `--skip-unreadable-inputs` to have the merger inspect failed inputs and exclude originals it can confirm are structurally corrupt. It discovers the affected files from the batch. Other failures and unfinished jobs still block the merge. The option applies to every state and beam setting.
+
+For the `fresh-01` example, run `git pull --ff-only origin main` from the repo root on bare lxplus. Then run the following from the repo root inside the pinned ePIC shell. Use the updated `production/jobs.py` because the copy frozen in this batch predates the option. It reads the original batch plan and verifies the checksum and row count of each included tuple.
+
+```bash
+(
+  set -euo pipefail
+  batch="$PWD/workspaces/condor-1S-9x275-full-grouped-eos-fresh-01/batch"
+  data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
+  run_dir="${CORRECTED_BASE:-$data/rematch3011-v1}/Upsilon1S/9x275/hiAcc/output_newID/runs/fresh-01"
+  out="$run_dir/merged_Upsilon_readable_inputs.root"
+  python3 production/jobs.py merge --batch "$batch" --output "$out" \
+    --skip-unreadable-inputs --execute
+  python3 - "$out.merge.json" <<'PY'
+import json, sys
+with open(sys.argv[1]) as stream:
+    result = json.load(stream)
+for key in ("status", "planned_input_count", "included_input_count", "output_rows", "excluded_inputs"):
+    print(key, result[key])
+PY
+)
+```
+
+For the reported `fresh-01` failure, if the merger confirms the short read on `run013.0667.eicrecon.edm4eic.root`, expect `DONE_WITH_EXCLUSIONS`, 11,377 planned inputs, 11,376 included inputs and 1,137,600 generated rows. Check `excluded_inputs` for input `011376`, its original path and the read error. Use the merged row count as the generated count for this file. The historical tuple has the same number of rows, but its per-file membership is unknown.
 
 ## Check and merge the full sample
 

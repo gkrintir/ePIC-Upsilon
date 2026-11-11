@@ -153,6 +153,8 @@ The planner never invokes `condor_submit`. `pending` checks recorded files, not 
 
 ## 4. Merge exactly the completed batch
 
+For any state or beam setting, the optional [readable-input merge](condor-rematch-1s-9x275.md#merge-the-readable-inputs) can exclude confirmed corrupt original files and record them in a separate merge receipt.
+
 All jobs declared in the batch must have validated `DONE` results. The helper checks their frozen configuration, input identities, output SHA256 and generated-row totals. It uses an explicit `hadd @filelist`, so a large number of jobs does not overflow the shell argument limit. Existing outputs and provenance files are never replaced.
 
 For the **1S, reconstructed electron ID, full fEMC** batch above, write directly to a fresh writable EOS pilot area with the directory layout expected by the analysis front end. Keep this base separate from the current production inputs:
