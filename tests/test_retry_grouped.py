@@ -191,6 +191,20 @@ echo "2 job(s) submitted to cluster $((7301 + sequence))."
         self.assertEqual(list(self.batch.rglob('*.root')), [])
         self.assertEqual((attempt / 'files/job_000002/root.log').read_text(), 'failed to finish')
 
+    def test_serial_and_parallel_retry_scans_select_the_same_files(self):
+        for i in (0, 2, 3):
+            self.complete(i)
+        (self.unit(4) / 'execution.lock').touch()
+        (self.unit(1) / 'result.json').write_text('{"status":"FAILED"}')
+        serial = self.retry('--check-workers', '1').stdout
+        self.assertEqual(self.retry('--check-workers', '3').stdout, serial)
+        self.assertFalse(self.calls.exists())
+        self.retry('--check-workers', '0', '--submit', ok=False)
+        self.assertFalse((self.batch / 'retries').exists())
+        self.retry('--check-workers', '3', '--submit')
+        pending = (self.batch / 'retries/attempt-0001/file_jobs.txt').read_text().splitlines()
+        self.assertEqual(pending, [str(self.unit(i) / 'job.json') for i in (1, 4, 5)])
+
     def test_a_second_failed_retry_keeps_the_preceding_attempt(self):
         for i in range(5):
             self.complete(i)

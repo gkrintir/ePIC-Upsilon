@@ -154,7 +154,10 @@ class ProductionPlanTest(unittest.TestCase):
                 Path(command[1]).write_text(str(sum(int(p.read_text()) for p in inputs)))
             return SimpleNamespace(returncode=0)
 
-        with patch.object(jobs, 'root_counts', side_effect=lambda p, _: int(Path(p).read_text())), \
+        def fake_counts(source, _tree):
+            return int(source.read() if hasattr(source, 'read') else Path(source).read_text())
+
+        with patch.object(jobs, 'root_counts', side_effect=fake_counts), \
              patch.object(jobs, 'run_with_setup', side_effect=fake_run), redirect_stdout(io.StringIO()):
             self.group(0)
             self.assertEqual(calls, [])

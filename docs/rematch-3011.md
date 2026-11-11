@@ -154,7 +154,7 @@ condor_submit -append 'getenv = False' \
 When all jobs in that batch finish, merge them into the layout used by the analysis. The merge validates the generated counts. Compare the final row total with the original state/energy tuple before interpreting a yield change.
 
 ```bash
-python3 "$worker" merge --batch "$batch" --output "$out/merged_Upsilon_final.root" --execute
+python3 production/jobs.py merge --batch "$batch" --output "$out/merged_Upsilon_final.root" --execute
 ```
 
 ## Recalculate the physics results

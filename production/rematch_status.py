@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import subprocess
 
-from jobs import expected_output_path
+from jobs import DEFAULT_CHECK_WORKERS, add_check_workers, expected_output_path, ordered_checks
 from rematch_condor import default_batch, recorded_clusters, queue_rows
 
 
@@ -51,21 +51,29 @@ def file_state(directory, output=None, external_files=None):
         return "unreadable", 0, str(error)
 
 
-def scan_files(plan, limit, show_untouched=False):
+def scan_files(plan, limit, show_untouched=False, check_workers=DEFAULT_CHECK_WORKERS):
     counts = Counter()
     total_rows = 0
     examples = {"FAILED": [], "unreadable": [], "started/partial": []}
     if show_untouched:
         examples["untouched"] = []
+    count = len(plan["jobs"])
+    if count >= 1000:
+        print(f"Scanning {count:,} worker receipts with up to {check_workers} concurrent checks.", flush=True)
     # One EOS listing per report instead of opening or statting each tuple.
     external_files = set(os.listdir(plan["tuple_output_dir"])) if "tuple_output_dir" in plan else None
-    for index, job in enumerate(plan["jobs"]):
-        output = expected_output_path(plan, index)
-        state, rows, reason = file_state(Path(job).parent, output, external_files)
+
+    def inspect(index):
+        directory = Path(plan["jobs"][index]).parent
+        return file_state(directory, expected_output_path(plan, index), external_files)
+
+    for index, (state, rows, reason) in enumerate(ordered_checks(inspect, range(count), check_workers)):
         counts[state] += 1
         total_rows += rows
         if state in examples and len(examples[state]) < limit:
             examples[state].append((index, reason))
+        if (index + 1) % 1000 == 0:
+            print(f"Scanned {index + 1:,}/{count:,} receipts.", flush=True)
     return counts, total_rows, examples
 
 
@@ -110,7 +118,7 @@ def show_queue(batch, limit):
     return len(rows)
 
 
-def report(batch, limit, query_queue=True, queue_only=False):
+def report(batch, limit, query_queue=True, queue_only=False, check_workers=DEFAULT_CHECK_WORKERS):
     batch = batch.resolve()
     plan = json.loads((batch / "plan.json").read_text())
     count = len(plan["jobs"])
@@ -124,7 +132,7 @@ def report(batch, limit, query_queue=True, queue_only=False):
     live = show_queue(batch, limit) if query_queue else None
     if queue_only:
         return
-    counts, rows, examples = scan_files(plan, limit, show_untouched=(live == 0))
+    counts, rows, examples = scan_files(plan, limit, show_untouched=(live == 0), check_workers=check_workers)
     done = counts["DONE"]
     print(f"Input files: {done:,}/{count:,} DONE ({100 * done / count:.1f}%), "
           + ", ".join(f"{name}={counts[name]:,}" for name in FILE_STATES[1:]))
@@ -159,14 +167,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--batch", type=Path, default=default_batch(), help="Directory containing plan.json")
     parser.add_argument("--limit", type=int, default=2, help="Maximum examples per problem category (default: 2)")
+    add_check_workers(parser)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--queue-only", action="store_true", help="Show scheduler status without scanning per-file directories")
     mode.add_argument("--no-queue", action="store_true", help="Read worker receipts without querying Condor")
     args = parser.parse_args()
+    if args.check_workers < 1:
+        parser.error("--check-workers must be positive")
     if args.limit < 0:
         parser.error("--limit must be nonnegative")
     try:
-        report(args.batch, args.limit, not args.no_queue, args.queue_only)
+        report(args.batch, args.limit, not args.no_queue, args.queue_only, args.check_workers)
     except (OSError, ValueError, TypeError, KeyError) as error:
         parser.exit(2, f"Cannot read batch status: {error}\n")
 

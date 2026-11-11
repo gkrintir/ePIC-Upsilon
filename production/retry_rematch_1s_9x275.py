@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from jobs import REMATCH, submit_text
+from jobs import DEFAULT_CHECK_WORKERS, REMATCH, add_check_workers, ordered_checks, submit_text
 from rematch_condor import default_batch, queue_rows, recorded_clusters
 from reuse_removed_outputs import check_done, checked_job, read_plan
 
@@ -32,11 +32,16 @@ def require_drained(batch):
     return clusters
 
 
-def scan(plan):
+def scan(plan, check_workers=DEFAULT_CHECK_WORKERS):
     pending, archive, counts = [], {}, Counter()
+    count = len(plan["jobs"])
+    if count >= 1000:
+        print(f"Checking {count:,} input records and completed tuple checksums "
+              f"with up to {check_workers} concurrent checks.", flush=True)
     external_files = set(os.listdir(plan["tuple_output_dir"])) if "tuple_output_dir" in plan else None
-    for index, filename in enumerate(plan["jobs"]):
-        path = Path(filename)
+
+    def inspect(index):
+        path = Path(plan["jobs"][index])
         folder = path.parent
         if folder.resolve() != folder:
             raise ValueError(f"Unexpected job directory: {folder}")
@@ -60,20 +65,24 @@ def scan(plan):
                 pass   # Truncated evidence is archived intact before rerunning the input.
         if isinstance(receipt, dict) and receipt.get("status") == "DONE":
             check_done(job, path, receipt)
-            counts["DONE"] += 1
-            if "execution.lock" in names:
-                archive[folder] = [folder / "execution.lock"]
-            continue
+            return "DONE", [folder / "execution.lock"] if "execution.lock" in names else []
         if isinstance(receipt, dict) and receipt.get("status") not in (None, "FAILED"):
             raise ValueError(f"Unknown status in {folder}/result.json")
         if isinstance(receipt, dict) and receipt.get("status") == "FAILED":
             state = "FAILED"
         else:
             state = "partial" if evidence else "untouched"
+        return state, evidence
+
+    for index, (state, evidence) in enumerate(ordered_checks(inspect, range(count), check_workers)):
+        filename = plan["jobs"][index]
         counts[state] += 1
-        pending.append(filename)
+        if state != "DONE":
+            pending.append(filename)
         if evidence:
-            archive[folder] = evidence
+            archive[Path(filename).parent] = evidence
+        if (index + 1) % 1000 == 0:
+            print(f"Checked {index + 1:,}/{count:,} inputs.", flush=True)
     return pending, archive, counts
 
 
@@ -86,7 +95,7 @@ def new_attempt(batch):
     return attempt
 
 
-def retry(batch, submit):
+def retry(batch, submit, check_workers=DEFAULT_CHECK_WORKERS):
     plan = read_plan(batch)
     if (plan["state"], plan["beam"], plan["electron_id"], plan.get("accounting_group"),
             plan["environment_label"]) != ("1S", "9x275", REMATCH, "group_u_CMS.CAF.COMM", "eic_xl:26.07.1-stable"):
@@ -95,7 +104,7 @@ def retry(batch, submit):
     if type(width) is not int or width < 1 or plan.get("condor_job_count") != (plan["job_count"] + width - 1) // width:
         raise ValueError("Expected a grouped plan with consistent Condor and input counts.")
     clusters = require_drained(batch)
-    pending, archive, counts = scan(plan)
+    pending, archive, counts = scan(plan, check_workers)
     groups = {int(Path(path).parent.name.removeprefix("job_")) // width for path in pending}
     print(f"Verified {counts['DONE']} DONE. Unfinished inputs: {counts['FAILED']} failed, "
           f"{counts['partial']} partial, {counts['untouched']} untouched.")
@@ -144,10 +153,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--batch", type=Path, default=default_batch(), help="Grouped batch directory containing plan.json")
     parser.add_argument("--submit", action="store_true", help="Archive failed/partial evidence and submit outstanding groups")
+    add_check_workers(parser)
     args = parser.parse_args(argv)
+    if args.check_workers < 1:
+        parser.error("--check-workers must be positive")
     batch = args.batch.resolve()
     if not args.submit:
-        retry(batch, False)
+        retry(batch, False, args.check_workers)
         return
     # Check the scheduler before creating an archive or persistent lock file.
     require_drained(batch)
@@ -155,7 +167,7 @@ def main(argv=None):
     root.mkdir(exist_ok=True)
     with (root / ".retry.lock").open("a") as lock:
         fcntl.lockf(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        retry(batch, True)
+        retry(batch, True, args.check_workers)
 
 
 if __name__ == "__main__":

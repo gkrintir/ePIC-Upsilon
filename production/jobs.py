@@ -5,10 +5,15 @@ Each beam uses its own recovered, byte-exact tuple macro. Each batch freezes
 the selected macro, its shared helpers and the worker script.
 """
 import argparse
+from collections import deque
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
+from itertools import islice
+import io
 import json
 import math
+import multiprocessing
 import os
 from pathlib import Path
 import re
@@ -17,6 +22,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
+from typing import NamedTuple
 import zlib
 
 PRODUCTION = Path(__file__).resolve().parent
@@ -29,6 +36,34 @@ REMATCH_ENTRY = 'RunRematch3011.C'
 REMATCH_PATCH = 'ElectronFinder.patch'
 ARCHIVED_READER = 'ElectronFinder.stored.C'
 SCENARIOS = ('full', 'remove_inner', 'remove_outer', 'keep_xpos', 'keep_yneg')
+DEFAULT_CHECK_WORKERS = min(4, len(os.sched_getaffinity(0)) if hasattr(os, 'sched_getaffinity') else (os.cpu_count() or 1))
+IN_MEMORY_TUPLE_BYTES = 4 * 1024 * 1024
+
+
+def ordered_checks(check, items, workers, *, executor=ThreadPoolExecutor, **executor_options):
+    """Overlap filesystem reads, preserving manifest order and bounding outstanding work."""
+    if workers < 1:
+        raise ValueError('The number of check workers must be positive')
+    if workers == 1:
+        yield from map(check, items)
+        return
+    items = iter(items)
+    with executor(max_workers=workers, **executor_options) as pool:
+        pending = deque(pool.submit(check, item) for item in islice(items, 2 * workers))
+        try:
+            for item in items:
+                yield pending.popleft().result()
+                pending.append(pool.submit(check, item))
+            while pending:
+                yield pending.popleft().result()
+        finally:
+            for future in pending:
+                future.cancel()
+
+
+def add_check_workers(parser):
+    parser.add_argument('--check-workers', type=int, default=DEFAULT_CHECK_WORKERS,
+                        help='Concurrent per-file checks (default: %(default)s; 1 for serial checks)')
 
 
 def sha256(path):
@@ -306,22 +341,74 @@ def pending(args):
     return 0
 
 
-def load_job(path, *, batch=None, worker_hash=None):
-    path = Path(path).resolve()
+class BatchSnapshot(NamedTuple):
+    plan: dict
+    work: Path
+
+
+def validate_batch_snapshot(batch, *, worker_hash=None):
+    """Check the artifacts shared by all jobs before processing the batch."""
+    work = Path(batch['work_dir']).resolve()
+    jobs_dir = work / 'jobs'
+    if jobs_dir.resolve() != jobs_dir:
+        raise ValueError('Job directory differs from its frozen location')
+    if 'tuple_output_dir' in batch:
+        tuple_dir = Path(batch['tuple_output_dir'])
+        if tuple_dir.resolve() != tuple_dir:
+            raise ValueError('Tuple output directory differs from its frozen destination')
+        if not tuple_dir.is_dir():
+            raise FileNotFoundError('Tuple output directory is unavailable: ' + str(tuple_dir))
+    macro_dir = work / 'snapshot/macros'
+    if macro_dir.resolve() != macro_dir:
+        raise ValueError('Macro snapshot path mismatch')
+    expected_sources = set(MACROS)
+    if batch['electron_id'] == REMATCH:
+        expected_sources.update((ARCHIVED_READER, REMATCH_ENTRY, REMATCH_PATCH))
+    if set(batch['source_hashes']) != expected_sources:
+        raise ValueError('Unexpected source list for electron ID ' + batch['electron_id'])
+    for name in expected_sources:
+        if sha256(macro_dir / name) != batch['source_hashes'][name]:
+            raise ValueError('Macro snapshot hash mismatch: ' + name)
+    verify_beam_constants(macro_dir / PRODUCER, batch['beam'])
+    if worker_hash is None:
+        worker_hash = sha256(work / 'snapshot/jobs.py')
+    if worker_hash != batch['worker_sha256']:
+        raise ValueError('Worker differs from the recorded plan')
+    setup = batch.get('setup_script')
+    if setup and sha256(setup['path']) != setup['sha256']:
+        raise ValueError('Environment setup script changed after planning')
+    return BatchSnapshot(batch, work)
+
+
+def load_job(path, *, batch=None, worker_hash=None, snapshot=None):
+    path = Path(path)
+    # The snapshot already resolved the common parents. Only the two job-specific
+    # components can add a symlink for canonical manifests written by the planner.
+    if (snapshot is None or path.parent.parent != snapshot.work / 'jobs'
+            or path.parent.is_symlink() or path.is_symlink()):
+        path = path.resolve()
     job = json.loads(path.read_text())
     if job.get('schema_version') != 1 or job.get('kind') != 'new_shared_filesystem_condor_plan':
         raise ValueError('Unrecognized job format')
     if job['beam'] not in PRODUCERS:
         raise ValueError('Unknown production beam: ' + str(job['beam']))
-    work = Path(job['work_dir']).resolve()
-    if batch is None:
-        batch = json.loads((work / 'plan.json').read_text())
-    if Path(batch['work_dir']).resolve() != work:
-        raise ValueError('Job work directory differs from its batch manifest')
+    if snapshot is None:
+        if batch is None:
+            batch = json.loads((Path(job['work_dir']) / 'plan.json').read_text())
+        if worker_hash is None:
+            worker_hash = sha256(__file__)
+        snapshot = validate_batch_snapshot(batch, worker_hash=worker_hash)
+    else:
+        if batch is not None and batch is not snapshot.plan:
+            raise ValueError('Snapshot belongs to another batch')
+        batch = snapshot.plan
+    work = snapshot.work
     index = job['job_id']
     if not isinstance(index, int) or index < 0 or index >= len(batch['jobs']):
         raise ValueError('Invalid job index in batch')
-    if Path(batch['jobs'][index]).resolve() != path or batch['job_count'] != len(batch['jobs']):
+    declared_path = Path(batch['jobs'][index])
+    if ((declared_path != path and declared_path.resolve() != path)
+            or batch['job_count'] != len(batch['jobs'])):
         raise ValueError('Job does not belong to the declared complete batch')
     for key, value in batch.items():
         if key not in ('inputs', 'jobs') and job.get(key) != value:
@@ -329,41 +416,28 @@ def load_job(path, *, batch=None, worker_hash=None):
     if job['inputs'] != [batch['inputs'][index]]:
         raise ValueError('Job input differs from its batch manifest')
     expected = work / 'jobs' / ('job_%06d' % job['job_id'])
-    if path != expected / 'job.json' or Path(job['job_dir']).resolve() != expected:
+    directory = Path(job['job_dir'])
+    if path != expected / 'job.json' or (directory != expected and directory.resolve() != expected):
         raise ValueError('Job paths do not match the declared work directory')
     output = Path(job['output'])
     if 'tuple_output_dir' in batch:
         planned_output = expected_output_path(batch, index)
-        # A redirected file or parent would put data outside the frozen destination.
-        if output != planned_output or output.resolve() != planned_output:
+        if output != planned_output or output.is_symlink():
             raise ValueError('Tuple output path differs from its frozen destination')
-        if not planned_output.parent.is_dir():
-            raise FileNotFoundError('Tuple output directory is unavailable: ' + str(planned_output.parent))
-    elif output.resolve() != expected / 'output.root' or 'tuple_output_dir' in job:
-        raise ValueError('Output must be this job output.root')
+    else:
+        planned_output = expected / 'output.root'
+        redirected = output.is_symlink() if output == planned_output else output.resolve() != planned_output
+        if redirected or 'tuple_output_dir' in job:
+            raise ValueError('Output must be this job output.root')
     macro_dir = work / 'snapshot/macros'
-    if Path(job['macro_dir']).resolve() != macro_dir:
+    if Path(job['macro_dir']) != macro_dir and Path(job['macro_dir']).resolve() != macro_dir:
         raise ValueError('Macro snapshot path mismatch')
-    expected_sources = set(MACROS)
-    if job['electron_id'] == REMATCH:
-        expected_sources.update((ARCHIVED_READER, REMATCH_ENTRY, REMATCH_PATCH))
-    if set(job['source_hashes']) != expected_sources:
-        raise ValueError('Unexpected source list for electron ID ' + job['electron_id'])
-    for name in expected_sources:
-        if sha256(macro_dir / name) != job['source_hashes'][name]:
-            raise ValueError('Macro snapshot hash mismatch: ' + name)
-    verify_beam_constants(macro_dir / PRODUCER, job['beam'])
-    if (worker_hash if worker_hash is not None else sha256(__file__)) != job['worker_sha256']:
-        raise ValueError('Worker differs from the recorded plan')
     record = job['inputs'][0]
     stat = Path(record['path']).stat()
     if (stat.st_size, stat.st_mtime_ns) != (record['size_bytes'], record['mtime_ns']):
         raise ValueError('Input changed after planning')
     if record.get('sha256') and sha256(record['path']) != record['sha256']:
         raise ValueError('Input SHA256 mismatch')
-    setup = job.get('setup_script')
-    if setup and sha256(setup['path']) != setup['sha256']:
-        raise ValueError('Environment setup script changed after planning')
     return job
 
 
@@ -389,6 +463,9 @@ def run_with_setup(command, setup, **kwargs):
 
 def root_counts(path, tree, **options):
     import uproot
+    if hasattr(path, 'read'):
+        options.setdefault('handler', uproot.source.object.ObjectSource)
+        options.setdefault('use_threads', False)
     with uproot.open(path, **options) as source:
         n = int(source[tree].num_entries)
         if n <= 0:
@@ -501,11 +578,22 @@ def verified_output_rows(job, result=None):
             raise ValueError('Job result differs from the planned ' + key)
     if job['electron_id'] == REMATCH and result.get('electron_id') != REMATCH:
         raise ValueError('Corrected batch requires confirmed rematching in every job result')
-    if sha256(path) != result['output_sha256']:
-        raise ValueError('Output changed after job validation: ' + str(path))
     rows = result['output_rows']
-    if result.get('input_rows') != rows or root_counts(path, 'UpsilonTree') != rows:
-        raise ValueError('Output count changed or differs from input rows: ' + str(path))
+    with path.open('rb') as stream:
+        data = stream.read(IN_MEMORY_TUPLE_BYTES + 1)
+        digest = hashlib.sha256(data)
+        if len(data) <= IN_MEMORY_TUPLE_BYTES:
+            # Typical intermediate tuples fit here: inspect the exact bytes already read from EOS.
+            source = io.BytesIO(data)
+        else:
+            for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b''):
+                digest.update(chunk)
+            stream.seek(0)
+            source = stream
+        if digest.hexdigest() != result['output_sha256']:
+            raise ValueError('Output changed after job validation: ' + str(path))
+        if result.get('input_rows') != rows or root_counts(source, 'UpsilonTree') != rows:
+            raise ValueError('Output count changed or differs from input rows: ' + str(path))
     return rows
 
 
@@ -580,32 +668,38 @@ def excluded_input(job, result):
     return dict(job_id=job['job_id'], input=record['path'], error=error, **confirmation)
 
 
+def check_merge_input(index, snapshot, skip_unreadable):
+    job = load_job(snapshot.plan['jobs'][index], snapshot=snapshot)
+    if job['job_id'] != index:
+        raise ValueError('Unexpected job order in merge plan')
+    result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
+    if result.get('status') == 'FAILED' and skip_unreadable:
+        return None, 0, excluded_input(job, result)
+    return Path(job['output']), verified_output_rows(job, result), None
+
+
+def _init_merge_process(snapshot, skip_unreadable):
+    # Transfer the full plan once per process. Individual tasks carry just a file index.
+    global _merge_context
+    _merge_context = (snapshot, skip_unreadable)
+
+
+def _check_in_merge_process(index):
+    return check_merge_input(index, *_merge_context)
+
+
 def merge(args):
+    started = time.monotonic()
+    check_workers = getattr(args, 'check_workers', DEFAULT_CHECK_WORKERS)
+    hadd_jobs = getattr(args, 'hadd_jobs', 1)
+    if min(check_workers, hadd_jobs) < 1:
+        raise ValueError('--check-workers and --hadd-jobs must both be positive')
     plan_path = Path(args.batch).expanduser().resolve() / 'plan.json'
-    plan_data = json.loads(plan_path.read_text())
+    plan_bytes = plan_path.read_bytes()
+    plan_hash = hashlib.sha256(plan_bytes).hexdigest()
+    plan_data = json.loads(plan_bytes)
     if Path(plan_data['work_dir']).resolve() != plan_path.parent:
         raise ValueError('Merge plan belongs to a different batch')
-    worker_hash = sha256(plan_path.parent / 'snapshot/jobs.py')
-    paths, excluded, expected = [], [], 0
-    if len(plan_data['inputs']) != len(plan_data['jobs']):
-        raise ValueError('Merge plan inputs and jobs differ in length')
-    print(f"Checking {plan_data['job_count']:,} planned inputs before merge.", flush=True)
-    for index, job_path in enumerate(plan_data['jobs']):
-        if index and index % 1000 == 0:
-            print(f"Checked {index:,} inputs, {len(excluded)} excluded.", flush=True)
-        job = load_job(job_path, batch=plan_data, worker_hash=worker_hash)
-        if job['job_id'] != index:
-            raise ValueError('Unexpected job order in merge plan')
-        result = json.loads((Path(job['job_dir']) / 'result.json').read_text())
-        if result.get('status') == 'FAILED' and getattr(args, 'skip_unreadable_inputs', False):
-            skipped = excluded_input(job, result)
-            excluded.append(skipped)
-            print(f"EXCLUDED {index:06d}: {skipped['input']} ({skipped['confirmation']})", flush=True)
-            continue
-        expected += verified_output_rows(job, result)
-        paths.append(Path(job['output']))
-    if not paths or len(set(paths)) != len(paths):
-        raise ValueError('Empty or duplicate merge inputs')
     out = safe_path(args.output)
     check_beam_label(out, plan_data['beam'])
     validate_work_location(out, plan_data['repository_root'])
@@ -614,8 +708,52 @@ def merge(args):
     if not out.parent.is_dir():
         raise FileNotFoundError('Create the intended output directory first: ' + str(out.parent))
     input_list = out.with_name(out.name + '.inputs.txt')
-    command = ['hadd', str(out), '@' + str(input_list)]
-    print('Merge command:', shlex.join(command))
+    result_path = out.with_name(out.name + '.merge.json')
+    lock = out.with_name(out.name + '.merge.lock')
+    if args.execute and any(os.path.lexists(p) for p in (input_list, result_path, lock)):
+        raise FileExistsError('Existing merge records or lock: inspect the previous attempt or use a fresh output name')
+    hadd_temp = Path(getattr(args, 'hadd_temp_dir', None) or out.parent).expanduser().resolve()
+    if not hadd_temp.is_dir():
+        raise FileNotFoundError(f'Missing hadd temporary directory: {hadd_temp}')
+    snapshot = validate_batch_snapshot(plan_data)
+    paths, excluded, expected = [], [], 0
+    total = plan_data['job_count']
+    if len(plan_data['inputs']) != total or len(plan_data['jobs']) != total:
+        raise ValueError('Merge plan inputs and jobs differ in length')
+    # Small pilots finish faster in the current process than starting additional Python interpreters.
+    check_workers = min(check_workers, max(1, total // 32))
+    skip_unreadable = getattr(args, 'skip_unreadable_inputs', False)
+    if check_workers == 1:
+        checks = (check_merge_input(i, snapshot, skip_unreadable) for i in range(total))
+    else:
+        checks = ordered_checks(_check_in_merge_process, range(total), check_workers,
+                                executor=ProcessPoolExecutor, mp_context=multiprocessing.get_context('spawn'),
+                                initializer=_init_merge_process, initargs=(snapshot, skip_unreadable))
+    print(f"Checking {total:,} planned inputs with {check_workers} validation process(es).", flush=True)
+    last_progress = started
+    for count, (path, rows, skipped) in enumerate(checks, 1):
+        if skipped is not None:
+            excluded.append(skipped)
+            print(f"EXCLUDED {skipped['job_id']:06d}: {skipped['input']} ({skipped['confirmation']})", flush=True)
+        else:
+            paths.append(path)
+            expected += rows
+        now = time.monotonic()
+        if count % 1000 == 0 or now - last_progress >= 15:
+            print(f"Checked {count:,}/{total:,} inputs in {now - started:.1f} s; {len(excluded)} excluded.", flush=True)
+            last_progress = now
+    if not paths or len(set(paths)) != len(paths):
+        raise ValueError('Empty or duplicate merge inputs')
+    if sha256(plan_path) != plan_hash:
+        raise ValueError('Batch plan changed during merge validation')
+    validate_batch_snapshot(plan_data)
+    # For a small list, launching a subprocess per few inputs costs more than the merge.
+    processes = min(hadd_jobs, max(1, len(paths) // 3))
+    parallel_flags = ['-j', str(processes), '-d', str(hadd_temp)] if processes > 1 else []
+    command = ['hadd', *parallel_flags, str(out), '@' + str(input_list)]
+    validation_seconds = time.monotonic() - started
+    print(f"Validated {len(paths):,} tuples in {validation_seconds:.1f} s.", flush=True)
+    print('Merge command:', shlex.join(command), flush=True)
     print('Expected all-generated rows:', expected)
     if excluded:
         print(f'Merging {len(paths)} of {plan_data["job_count"]} inputs; {len(excluded)} confirmed unreadable.')
@@ -623,30 +761,34 @@ def merge(args):
         print('PLAN ONLY. Add --execute to merge. Weights and histograms are summed, not renormalized.')
         return 0
     # hadd without -f refuses an existing output; never overwrite an older file.
-    result_path = out.with_name(out.name + '.merge.json')
-    if result_path.exists() or input_list.exists():
+    if any(os.path.lexists(p) for p in (out, result_path, input_list)):
         raise FileExistsError('Existing merge provenance is preserved; use a fresh output name')
-    lock = out.with_name(out.name + '.merge.lock')
     lock_fd = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     os.close(lock_fd)
     result = dict(status='FAILED', command=command, expected_rows=expected, inputs=list(map(str, paths)),
                   beam=plan_data['beam'], state=plan_data['state'], source_hashes=plan_data['source_hashes'],
                   electron_id=plan_data['electron_id'],
                   normalization='Unchanged raw per-job weights. Normalize the complete merged sample in the framework.',
-                  plan_sha256=sha256(plan_path), merge_driver_sha256=sha256(__file__),
-                  planned_input_count=plan_data['job_count'], included_input_count=len(paths), excluded_inputs=excluded)
+                  plan_sha256=plan_hash, merge_driver_sha256=sha256(__file__),
+                  planned_input_count=plan_data['job_count'], included_input_count=len(paths), excluded_inputs=excluded,
+                  check_workers=check_workers, hadd_jobs=processes, validation_seconds=validation_seconds)
     try:
         with input_list.open('x') as stream:
             stream.write('\n'.join(map(str, paths)) + '\n')
         result['input_list_sha256'] = sha256(input_list)
+        hadd_started = time.monotonic()
         process = run_with_setup(command, plan_data.get('setup_script'), check=False)
+        result['hadd_seconds'] = time.monotonic() - hadd_started
         if process.returncode != 0:
             raise RuntimeError('hadd failed; any partial output remains for inspection')
+        print(f"hadd finished in {result['hadd_seconds']:.1f} s. Checking merged output.", flush=True)
+        final_check_started = time.monotonic()
         count = root_counts(out, 'UpsilonTree')
         if count != expected:
             raise ValueError('Merged tuple/generated count differs from the sum of all declared jobs')
         result.update(status='DONE_WITH_EXCLUSIONS' if excluded else 'DONE',
                       output=str(out), output_rows=count, sha256=sha256(out))
+        result['final_check_seconds'] = time.monotonic() - final_check_started
     except Exception as exc:
         result['error'] = str(exc)
         raise
@@ -696,6 +838,11 @@ def parser():
     a = sub.add_parser('merge', help='Verify a complete batch; --execute invokes hadd without -f')
     a.add_argument('--batch', type=Path, required=True)
     a.add_argument('--output', type=Path, required=True)
+    add_check_workers(a)
+    a.add_argument('--hadd-jobs', type=int, default=DEFAULT_CHECK_WORKERS,
+                   help='Maximum ROOT merge processes (default: %(default)s; 1 for serial hadd)')
+    a.add_argument('--hadd-temp-dir', type=Path,
+                   help='Existing directory for temporary parallel hadd files (default: final output directory)')
     a.add_argument('--skip-unreadable-inputs', action='store_true',
                    help='Exclude only failed original-input reads with confirmed ROOT file damage; record each exclusion')
     a.add_argument('--execute', action='store_true')

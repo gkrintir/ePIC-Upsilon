@@ -44,7 +44,7 @@ python3 production/jobs.py plan \
   --setup-script "${PRODUCTION_SETUP:?Set the absolute setup script path}" --write
 
 python3 "$batch/snapshot/jobs.py" worker "$batch/jobs/job_000000/job.json" --execute
-python3 "$batch/snapshot/jobs.py" merge --batch "$batch" --output "$batch/merged.root" --execute
+python3 production/jobs.py merge --batch "$batch" --output "$batch/merged.root" --execute
 ```
 
 Check `jobs/job_000000/result.json` and `merged.root.merge.json` in the batch directory for the final status and row count. To identify the historical 2S input from the local production ZIP, see the [CERN campaign record](../production/cern-2026-10/README.md).
@@ -155,7 +155,7 @@ The planner never invokes `condor_submit`. `pending` checks recorded files, not 
 
 For any state or beam setting, the optional [readable-input merge](condor-rematch-1s-9x275.md#merge-the-readable-inputs) can exclude confirmed corrupt original files and record them in a separate merge receipt.
 
-All jobs declared in the batch must have validated `DONE` results. The helper checks their frozen configuration, input identities, output SHA256 and generated-row totals. It uses an explicit `hadd @filelist`, so a large number of jobs does not overflow the shell argument limit. Existing outputs and provenance files are never replaced.
+A strict merge requires validated `DONE` results for every planned job. The helper checks their frozen configuration, input identities, output SHA256 and generated-row totals. It uses an explicit `hadd @filelist`, so a large number of jobs does not overflow the shell argument limit. Existing outputs and provenance files are never replaced.
 
 For the **1S, reconstructed electron ID, full fEMC** batch above, write directly to a fresh writable EOS pilot area with the directory layout expected by the analysis front end. Keep this base separate from the current production inputs:
 
@@ -163,17 +163,15 @@ For the **1S, reconstructed electron ID, full fEMC** batch above, write directly
 export PILOT_INPUT_BASE="${PILOT_INPUT_BASE:?Set a fresh absolute output directory on shared storage}"
 mkdir -p "$PILOT_INPUT_BASE/Upsilon1S/9x275/hiAcc/output_newID"
 
-python3 "$PRODUCTION_WORK/snapshot/jobs.py" merge \
-  --batch "$PRODUCTION_WORK" \
-  --output "$PILOT_INPUT_BASE/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root"
-
-python3 "$PRODUCTION_WORK/snapshot/jobs.py" merge \
+python3 production/jobs.py merge \
   --batch "$PRODUCTION_WORK" \
   --output "$PILOT_INPUT_BASE/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root" \
   --execute
 ```
 
-The first command verifies and prints the plan. The second invokes `hadd` without `-f`, checks the merged tuple and `h_EventCount` against the summed input counts, and writes `.merge.json` and `.inputs.txt` alongside the output. Partial outputs are retained on failure. No weights are renormalized during merge.
+Use the current checkout’s `production/jobs.py` to merge an existing frozen plan. A single invocation with `--execute` verifies the inputs and then runs `hadd`. Omit `--execute` for a validation-only preview, which repeats the checks if you later execute. The merger checks the final tree and `h_EventCount` against the summed input counts and writes `.merge.json` and `.inputs.txt` alongside the output. Partial outputs are retained on failure. No weights are renormalized during merge.
+
+For large batches, use `--check-workers N` for concurrent validation and `--hadd-jobs N` for ROOT multiprocessing. Both limits default to at most four processes, bounded by visible CPUs. Choose values within your CPU allocation. Small merges use fewer processes. The input list stays in manifest order. Temporary `hadd` partials go to the final output directory unless you choose another existing directory with `--hadd-temp-dir`. Use `--check-workers 1 --hadd-jobs 1` for serial operation. The receipt records timings for both stages and the final check.
 
 The analysis front end uses these paths beneath `input_base`. All six [merged input tuples](../inputs/paper_inputs.csv) record `ele_id_mode=1` and `femc_mode=0`, corresponding to reconstructed track–cluster matching and the full forward calorimeter. Use the following settings to match those modes in a new 9×275 pilot.
 

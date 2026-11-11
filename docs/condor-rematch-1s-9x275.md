@@ -133,7 +133,7 @@ Once this run's queue drains, preview any retry with `python3 production/retry_r
   data="${UPSILON_DATA:-$(python3 -c 'import json; print(json.load(open("configs/local.example.json"))["input_base"])')}"
   run_dir="${CORRECTED_BASE:-$data/rematch3011-v1}/Upsilon1S/9x275/hiAcc/output_newID/runs/fresh-01"
   mkdir -p "$run_dir"
-  python3 "$batch/snapshot/jobs.py" merge --batch "$batch" --output "$run_dir/merged_Upsilon_final.root" --execute
+  python3 production/jobs.py merge --batch "$batch" --output "$run_dir/merged_Upsilon_final.root" --execute
 )
 ```
 
@@ -163,7 +163,7 @@ python3 production/rematch_status.py
 
 This reads the grouped campaign's recorded cluster IDs and worker receipts. It shows idle, running and held **Condor processes** separately from **input files** marked DONE, FAILED, untouched or started without a final receipt. One process can handle up to 100 files. The report includes hold reasons and example file names, errors and log paths. The row total comes from the DONE receipts. The final merge verifies the ROOT contents.
 
-The full report scans per-input receipts on AFS and checks the tuple directory. To inspect a particular frozen plan, pass `--batch "$full/batch"` or the earlier AFS batch's path. For a continuously refreshed scheduler display, run:
+The full report scans per-input receipts on AFS and checks the tuple directory. It checks up to four inputs concurrently by default. Both the full report and the retry script accept `--check-workers N`. The queue-only report skips the filesystem scan. To inspect a particular frozen plan, pass `--batch "$full/batch"` or the earlier AFS batch's path. For a continuously refreshed scheduler display, run:
 
 ```bash
 watch -n 60 'python3 production/rematch_status.py --queue-only'
@@ -203,7 +203,7 @@ For the `fresh-01` example, run `git pull --ff-only origin main` from the repo r
   run_dir="${CORRECTED_BASE:-$data/rematch3011-v1}/Upsilon1S/9x275/hiAcc/output_newID/runs/fresh-01"
   out="$run_dir/merged_Upsilon_readable_inputs.root"
   python3 production/jobs.py merge --batch "$batch" --output "$out" \
-    --skip-unreadable-inputs --execute
+    --skip-unreadable-inputs --check-workers 4 --hadd-jobs 4 --execute
   python3 - "$out.merge.json" <<'PY'
 import json, sys
 with open(sys.argv[1]) as stream:
@@ -213,6 +213,8 @@ for key in ("status", "planned_input_count", "included_input_count", "output_row
 PY
 )
 ```
+
+The merge reports progress during validation and records separate timings for input checks (`validation_seconds`), ROOT merging (`hadd_seconds`), and final output verification (`final_check_seconds`). Its temporary parallel ROOT files go beside the final tuple by default. Pass `--hadd-temp-dir "${TMPDIR:-/tmp}"` to put those temporary files on node-local storage if it has enough space.
 
 For the reported `fresh-01` failure, if the merger confirms the short read on `run013.0667.eicrecon.edm4eic.root`, expect `DONE_WITH_EXCLUSIONS`, 11,377 planned inputs, 11,376 included inputs and 1,137,600 generated rows. Check `excluded_inputs` for input `011376`, its original path and the read error. Use the merged row count as the generated count for this file. The historical tuple has the same number of rows, but its per-file membership is unknown.
 
@@ -232,7 +234,7 @@ Merge **inside the pinned ePIC shell** with access to the AFS batch and writable
   CORRECTED_BASE="${CORRECTED_BASE:-$data/rematch3011-v1}"
   out="$CORRECTED_BASE/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root"
   mkdir -p "$(dirname "$out")"
-  python3 "$batch/snapshot/jobs.py" merge --batch "$batch" --output "$out" --execute
+  python3 production/jobs.py merge --batch "$batch" --output "$out" --execute
   python3 - "$out.merge.json" <<'PY'
 import json, sys
 with open(sys.argv[1]) as stream:

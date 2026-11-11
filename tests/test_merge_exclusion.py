@@ -15,7 +15,12 @@ def short_read(path):
 
 
 @pytest.fixture
-def campaign(tmp_path, monkeypatch, request):
+def number_of_inputs(request):
+    return getattr(request, "param", 4)
+
+
+@pytest.fixture
+def campaign(tmp_path, monkeypatch, request, number_of_inputs):
     uproot = pytest.importorskip('uproot')
     import numpy as np
 
@@ -29,7 +34,7 @@ def campaign(tmp_path, monkeypatch, request):
     # Include another state/beam to exercise the generic merge entry point.
     dataset = tmp_path / 'Upsilon2S/9x130'
     dataset.mkdir(parents=True)
-    sources = [dataset / f'file{i}.root' for i in range(4)]
+    sources = [dataset / f'file{i}.root' for i in range(number_of_inputs)]
     broken = getattr(request, 'param', (1, 3))
     for i, path in enumerate(sources):
         write_tree(path, 'events', i + 1)
@@ -61,7 +66,7 @@ def campaign(tmp_path, monkeypatch, request):
 
         worker.setattr(jobs, 'root_counts', count)
         worker.setattr(jobs, 'run_with_setup', produce)
-        for i in range(4):
+        for i in range(number_of_inputs):
             job = batch / 'jobs' / f'job_{i:06d}' / 'job.json'
             if i in broken:
                 with pytest.raises(OSError, match='expected Chunk'):
@@ -78,9 +83,11 @@ def campaign(tmp_path, monkeypatch, request):
 
     def hadd(command, setup, **kwargs):
         assert command[0] == 'hadd'
-        inputs = [Path(path) for path in Path(command[2][1:]).read_text().splitlines()]
-        assert inputs == [tuples / f'job_{i:06d}.root' for i in range(4) if i not in broken]
-        write_tree(command[1], 'UpsilonTree', sum(jobs.root_counts(p, 'UpsilonTree') for p in inputs))
+        target, manifest = command[-2:]
+        assert manifest.startswith('@') and '-k' not in command and '-f' not in command
+        inputs = [Path(path) for path in Path(manifest[1:]).read_text().splitlines()]
+        assert inputs == [tuples / f'job_{i:06d}.root' for i in range(number_of_inputs) if i not in broken]
+        write_tree(target, 'UpsilonTree', sum(jobs.root_counts(p, 'UpsilonTree') for p in inputs))
         return SimpleNamespace(returncode=0)
 
     monkeypatch.setattr(jobs, 'run_with_setup', hadd)
@@ -161,3 +168,52 @@ def test_opt_in_still_blocks_other_problems(campaign, problem):
     with pytest.raises((ValueError, OSError, RuntimeError)):
         merge(batch, output, '--skip-unreadable-inputs', '--execute')
     assert not output.exists()
+
+
+@pytest.mark.parametrize("number_of_inputs", [14], indirect=True)
+@pytest.mark.parametrize("processes", [1, 2, 4])
+def test_hadd_parallelism_keeps_checked_manifest_and_records_stage_times(campaign, tmp_path, processes):
+    batch, sources, output = campaign
+    temp_dir = tmp_path / "merge-scratch"
+    temp_dir.mkdir()
+    merge(batch, output, "--skip-unreadable-inputs", "--check-workers", "1",
+          "--hadd-jobs", str(processes), "--hadd-temp-dir", str(temp_dir), "--execute")
+    r = json.loads(output.with_suffix(".root.merge.json").read_text())
+    flags = ["-j", str(processes), "-d", str(temp_dir)] if processes > 1 else []
+    assert r["command"] == ["hadd", *flags, str(output), "@" + str(output) + ".inputs.txt"]
+    assert (r["check_workers"], r["hadd_jobs"]) == (1, processes)
+    assert (r["status"], r["included_input_count"], r["planned_input_count"]) == (
+        "DONE_WITH_EXCLUSIONS", len(sources) - 2, len(sources))
+    assert [item["job_id"] for item in r["excluded_inputs"]] == [1, 3]
+    assert r["output_rows"] == sum(i + 1 for i in range(len(sources)) if i not in (1, 3))
+    for phase in ("validation_seconds", "hadd_seconds", "final_check_seconds"):
+        assert r[phase] >= 0
+
+
+@pytest.mark.parametrize("existing", ["", ".merge.json", ".inputs.txt", ".merge.lock"])
+def test_merge_preserves_existing_outputs_before_checking_inputs(campaign, existing, monkeypatch):
+    batch, _, output = campaign
+    artifact = Path(str(output) + existing)
+    artifact.write_bytes(b"existing production result")
+
+    def unexpected(plan):
+        pytest.fail("Existing merge artifacts must be checked before reading the batch snapshot")
+    monkeypatch.setattr(jobs, "validate_batch_snapshot", unexpected)
+    with pytest.raises(FileExistsError):
+        merge(batch, output, "--skip-unreadable-inputs", "--execute")
+    assert list(output.parent.glob(output.name + "*")) == [artifact]
+    assert artifact.read_bytes() == b"existing production result"
+
+
+@pytest.mark.parametrize("opt, value, error", [
+    ("--check-workers", "0", ValueError),
+    ("--hadd-jobs", "-1", ValueError),
+    ("--hadd-temp-dir", "missing", FileNotFoundError),
+])
+def test_invalid_merge_options_create_no_artifacts(campaign, tmp_path, opt, value, error):
+    batch, _, output = campaign
+    if opt == "--hadd-temp-dir":
+        value = str(tmp_path / value)
+    with pytest.raises(error):
+        merge(batch, output, "--skip-unreadable-inputs", opt, value, "--execute")
+    assert not list(output.parent.glob(output.name + "*"))

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+from threading import Event
 import unittest
 from unittest.mock import patch
 
@@ -118,6 +119,23 @@ class RematchStatusTest(unittest.TestCase):
         self.assertIn(str(tuples), report)
         self.assertIn("1/6 DONE (16.7%), FAILED=0, started/partial=1, untouched=3, unreadable=1", report)
         self.assertIn("Reported generated rows: 100 ", report)
+
+    def test_parallel_status_preserves_manifest_order_for_bounded_examples(self):
+        plan = json.loads((self.batch / 'plan.json').read_text())
+        later = Event()
+
+        def probe(directory, output, external_files):
+            index = int(directory.name.split('_')[-1])
+            if index == 0:
+                self.assertTrue(later.wait(5))
+            elif index == 1:
+                later.set()
+            return "FAILED", 0, f"input {index}"
+
+        with patch.object(status, "file_state", probe):
+            counts, rows, examples = status.scan_files(plan, 2, check_workers=2)
+        self.assertEqual((counts["FAILED"], rows), (6, 0))
+        self.assertEqual(examples["FAILED"], [(0, "input 0"), (1, "input 1")])
 
     def test_queue_only_does_not_read_worker_directories(self):
         with patch.object(status, "queue_rows", return_value=[]), patch.object(status, "scan_files") as scan:
