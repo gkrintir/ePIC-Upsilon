@@ -228,7 +228,7 @@ def draw_mass(ax, mass, panel="a"):
 
 def draw_slope_inset(ax, differential):
     states = [state for state in STATES if state in differential["slopes"]]
-    inset = ax.inset_axes([.615, .53, .365, .40])
+    inset = ax.inset_axes([.56, .47, .42, .46])
     inset.set_facecolor("white")
     for position, state in enumerate(states):
         fit = differential["slopes"][state]
@@ -247,7 +247,7 @@ def draw_slope_inset(ax, differential):
     inset.set_xticks(range(len(labels)), labels, fontsize=10.5)
     for label, state in zip(inset.get_xticklabels(), states):
         label.set_color(COLORS[state])
-    inset.text((len(states) - 1) / 2, -.30, "ePIC", transform=inset.get_xaxis_transform(),
+    inset.text((len(states) - 1) / 2, -.20, "ePIC", transform=inset.get_xaxis_transform(),
                fontsize=11.5, ha="center", va="top")
     inset.set_ylabel(r"$b$ [GeV$^{-2}$]", fontsize=12, labelpad=3)
     inset.set_xlim(-.55, len(labels) - .45)
