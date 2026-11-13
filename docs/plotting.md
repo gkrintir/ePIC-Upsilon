@@ -86,6 +86,30 @@ listed in its saved scope. The original figure styling has been preserved,
 including the absence of a footer, so the numerical audit must accompany
 any diagnostic figure shared outside this workflow.
 
+## Paper Figure 28
+
+The dedicated renderer combines the corrected three-state mass fit in panel (a)
+with the saved transverse-momentum spectra and slope inset in panel (b). Install
+the dependencies in `plotting/requirements.txt`, then run from the repository root
+
+```bash
+python3 tools/render_paper_figure28.py \
+  --results-dir paper/figure28_inputs \
+  --output-dir work/figure28
+```
+
+Choose a new output directory for each run. The checked inputs are included in
+`paper/figure28_inputs`, with their source-archive provenance and SHA-256 manifest.
+The renderer verifies the saved mass and exponential models against their binned
+predictions and uses the saved intervals at 9×275 GeV and 2.5 fb⁻¹.
+
+The output directory contains `upsilon_es_figure28.pdf` and its PNG preview,
+`note_mass_panel.pdf`, `note_differential.pdf`, and `figure28_audit.json`. The note
+outputs use the same panel-drawing functions. Both paper panels carry
+`26.07.1 Campaign`, with common state colors and a shared ePIC label for the
+Υ(1S)/Υ(2S) slope comparison. The Υ(2S) slope retains its diagnostic status in the
+audit and the figure caption.
+
 ## SWAN notebooks
 
 Open the notebooks in `plotting/` with a fresh kernel and run all cells. Every

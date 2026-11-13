@@ -1,0 +1,4 @@
+state,x_low,x_high,included_in_fit,fit_bin_average_pb_per_GeV2,overall_status,status,stage_status,publication_ready,proton_selection_mode
+2S,0.0,0.15,True,69.44282127972426,NOT_VALIDATED,NOT_VALIDATED,OK_CONDITIONAL,False,required
+2S,0.15,0.4,True,42.82564705355801,NOT_VALIDATED,NOT_VALIDATED,OK_CONDITIONAL,False,required
+2S,0.4,1.0,True,16.15801093195804,NOT_VALIDATED,NOT_VALIDATED,OK_CONDITIONAL,False,required

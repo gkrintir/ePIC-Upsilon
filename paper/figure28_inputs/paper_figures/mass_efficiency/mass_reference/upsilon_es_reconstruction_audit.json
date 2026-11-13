@@ -1,0 +1,346 @@
+{
+  "converged": true,
+  "optimizer_message": "`ftol` termination condition is satisfied.",
+  "fit_kind": "Simultaneous three-state fit to expected histogram means",
+  "objective": "Expected extended-Poisson deviance (Asimov); not observed counts",
+  "background": "none; no continuum or background sample supplied",
+  "mass_differences": "Fixed to the nominal Upsilon masses recorded below",
+  "nominal_masses_GeV": {
+    "1S": 9.4603,
+    "2S": 10.02326,
+    "3S": 10.3552
+  },
+  "fixed_shape_parameters": "State-specific DSCB tails and relative core widths from independent MC fits",
+  "common_shape_floating": true,
+  "floating_parameter_order": [
+    "log_yield_1S",
+    "log_yield_2S",
+    "log_yield_3S",
+    "common_mass_offset_GeV",
+    "log_common_width_scale"
+  ],
+  "common_mass_offset_GeV": -0.005659635057487749,
+  "common_width_scale": 0.9915246517211276,
+  "fit_interval_GeV": [
+    8.0,
+    12.0
+  ],
+  "poisson_deviance": 0.710077052731465,
+  "nominal_ndof": 75,
+  "at_parameter_bound": false,
+  "states": {
+    "1S": {
+      "expected_selected_yield": 91.5581356363798,
+      "fitted_yield": 91.79031696559893,
+      "fitted_mean_GeV": 9.454640364942513,
+      "fitted_sigma_core_GeV": 0.05443765798060709,
+      "upstream_shape_mismatch_flag": true
+    },
+    "2S": {
+      "expected_selected_yield": 27.339592619471723,
+      "fitted_yield": 27.081328140062976,
+      "fitted_mean_GeV": 10.017600364942513,
+      "fitted_sigma_core_GeV": 0.06025937975206944,
+      "upstream_shape_mismatch_flag": true
+    },
+    "3S": {
+      "expected_selected_yield": 22.685416608913624,
+      "fitted_yield": 22.71149995565881,
+      "fitted_mean_GeV": 10.349540364942513,
+      "fitted_sigma_core_GeV": 0.06319692168997673,
+      "upstream_shape_mismatch_flag": true
+    }
+  },
+  "uncertainties": "No fit-parameter errors quoted; fixed-tail conditional model and known MC shape mismatch require validation before yield inference",
+  "deviance_interpretation": "Descriptive expected discrepancy; nominal ndof is not a calibrated goodness-of-fit test at low expected counts",
+  "target_luminosity_invfb": 2.5,
+  "energy": "9x275",
+  "input_files": {
+    "1S": [
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-1only-L2p5-1s/artifacts/performance/9x275/mass_bins.csv",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-1only-L2p5-1s/artifacts/performance/9x275/mass_fit.json",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-1only-L2p5-1s/artifacts/performance/9x275/selection_efficiency.csv",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-1only-L2p5-1s/artifacts/performance/9x275/performance_audit.json"
+    ],
+    "2S": [
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-2s/artifacts/performance/9x275/mass_bins.csv",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-2s/artifacts/performance/9x275/mass_fit.json",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-2s/artifacts/performance/9x275/selection_efficiency.csv",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-2s/artifacts/performance/9x275/performance_audit.json"
+    ],
+    "3S": [
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-3s/artifacts/performance/9x275/mass_bins.csv",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-3s/artifacts/performance/9x275/mass_fit.json",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-3s/artifacts/performance/9x275/selection_efficiency.csv",
+      "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-3s/artifacts/performance/9x275/performance_audit.json"
+    ]
+  },
+  "source_luminosities_invfb": {
+    "1S": 2.5,
+    "2S": 2.5,
+    "3S": 2.5
+  },
+  "yield_scale_factors": {
+    "1S": 1.0,
+    "2S": 1.0,
+    "3S": 1.0
+  },
+  "truth_selections": {
+    "1S": {
+      "mass_window_GeV": [
+        9.2603,
+        9.6603
+      ],
+      "Q2_GeV2": [
+        0,
+        1.0
+      ],
+      "W_GeV": [
+        20.0,
+        100.0
+      ]
+    },
+    "2S": {
+      "mass_window_GeV": [
+        9.823260000000001,
+        10.22326
+      ],
+      "Q2_GeV2": [
+        0,
+        0.01
+      ],
+      "W_GeV": [
+        20.0,
+        100.0
+      ]
+    },
+    "3S": {
+      "mass_window_GeV": [
+        10.1552,
+        10.5552
+      ],
+      "Q2_GeV2": [
+        0,
+        0.01
+      ],
+      "W_GeV": [
+        20.0,
+        100.0
+      ]
+    }
+  },
+  "reconstruction_selections": {
+    "1S": {
+      "mass_GeV": [
+        8,
+        12
+      ],
+      "W_GeV": [
+        20.0,
+        100.0
+      ],
+      "sigma_epz_GeV": [
+        16.2,
+        19.8
+      ]
+    },
+    "2S": {
+      "mass_GeV": [
+        8,
+        12
+      ],
+      "W_GeV": [
+        20.0,
+        100.0
+      ],
+      "sigma_epz_GeV": [
+        16.2,
+        19.8
+      ]
+    },
+    "3S": {
+      "mass_GeV": [
+        8,
+        12
+      ],
+      "W_GeV": [
+        20.0,
+        100.0
+      ],
+      "sigma_epz_GeV": [
+        16.2,
+        19.8
+      ]
+    }
+  },
+  "electron_id_labels": {
+    "1S": "new electron ID",
+    "2S": "standard electron ID",
+    "3S": "standard electron ID"
+  },
+  "mass_rebin_factor": 2,
+  "displayed_fit_table": [
+    {
+      "state": "1S",
+      "fitted_yield": 91.79031696559893,
+      "fitted_sigma_core_MeV": 54.43765798060709
+    },
+    {
+      "state": "2S",
+      "fitted_yield": 27.081328140062976,
+      "fitted_sigma_core_MeV": 60.25937975206944
+    },
+    {
+      "state": "3S",
+      "fitted_yield": 22.71149995565881,
+      "fitted_sigma_core_MeV": 63.19692168997673
+    }
+  ],
+  "displayed_resolution_definition": "Fitted DSCB Gaussian-core sigma, converted from GeV to MeV; not the full RMS. Relative state widths retain the fit constraints.",
+  "displayed_fit_table_uncertainties": "No parameter uncertainties supplied by this conditional fit; none invented for display.",
+  "publication_footer_displayed": false,
+  "input_validation": {
+    "1S": {
+      "proton_selection": {
+        "applies_to": "reconstructed selection only",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "mode": "required",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee",
+        "truth_denominator": "unchanged; untagged generated events retained"
+      },
+      "proton_selection_mode": "required",
+      "proton_contract_source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-1only-L2p5-1s/proton_selection.json",
+      "proton_contract_sha256": "355bf35cae7e54fb0da6538ea6aa5283a7338597b5e3da25321b7a7702618c1d",
+      "saved_category": "new electron ID",
+      "category": "new electron ID",
+      "category_source": "saved sample category; tuple electron-ID mode unverified",
+      "state": "1S",
+      "q2_max": 1.0,
+      "w_range": [
+        20.0,
+        100.0
+      ],
+      "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-1only-L2p5-1s/artifacts/performance/9x275/performance_audit.json",
+      "sha256": "dee47da1c686a364bf67d4607b63a60bf11e0da1bf5b76d983f432a3bb6e28a3",
+      "flux_selection_check": "cross-checked against normalization audit settings",
+      "normalization_audit_status": "WARN",
+      "normalization_audit_warnings": [
+        {
+          "id": "merged_total_vs_assigned",
+          "status": "WARN",
+          "detail": "Literal raw sum(weight)/(assigned sigma*L). A mismatch is diagnostic, not proof that either rate is correct.",
+          "evidence": 17734.20824608825
+        },
+        {
+          "id": "rate_provenance",
+          "status": "WARN",
+          "detail": "Assigned visible rate and generator-source description are explicit inputs. This audit checks their numerical consistency but does not authenticate the executable used for the supplied EOS production. The rate and branching fraction must belong to the selected 1S state and its generated Q2 phase space."
+        }
+      ],
+      "denominator_caveat": "Eligible stored UpsilonTree rows only; not a claim of full generation or simulation efficiency",
+      "source_lumi": 2.5
+    },
+    "2S": {
+      "proton_selection": {
+        "applies_to": "reconstructed selection only",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "mode": "required",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee",
+        "truth_denominator": "unchanged; untagged generated events retained"
+      },
+      "proton_selection_mode": "required",
+      "proton_contract_source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-2s/proton_selection.json",
+      "proton_contract_sha256": "355bf35cae7e54fb0da6538ea6aa5283a7338597b5e3da25321b7a7702618c1d",
+      "saved_category": "standard electron ID",
+      "category": "standard electron ID",
+      "category_source": "saved sample category; tuple electron-ID mode unverified",
+      "state": "2S",
+      "q2_max": 0.01,
+      "w_range": [
+        20.0,
+        100.0
+      ],
+      "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-2s/artifacts/performance/9x275/performance_audit.json",
+      "sha256": "4dc9ab1917298c8c013253da00571eede653478511dc4d120a3ed97beb11628b",
+      "flux_selection_check": "cross-checked against normalization audit settings",
+      "normalization_audit_status": "WARN",
+      "normalization_audit_warnings": [
+        {
+          "id": "merged_total_vs_assigned",
+          "status": "WARN",
+          "detail": "Literal raw sum(weight)/(assigned sigma*L). A mismatch is diagnostic, not proof that either rate is correct.",
+          "evidence": 20430.299813675112
+        },
+        {
+          "id": "rate_provenance",
+          "status": "WARN",
+          "detail": "Assigned visible rate and generator-source description are explicit inputs. This audit checks their numerical consistency but does not authenticate the executable used for the supplied EOS production. The rate and branching fraction must belong to the selected 2S state and its generated Q2 phase space."
+        }
+      ],
+      "denominator_caveat": "Eligible stored UpsilonTree rows only; not a claim of full generation or simulation efficiency",
+      "source_lumi": 2.5
+    },
+    "3S": {
+      "proton_selection": {
+        "applies_to": "reconstructed selection only",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "mode": "required",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee",
+        "truth_denominator": "unchanged; untagged generated events retained"
+      },
+      "proton_selection_mode": "required",
+      "proton_contract_source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-3s/proton_selection.json",
+      "proton_contract_sha256": "355bf35cae7e54fb0da6538ea6aa5283a7338597b5e3da25321b7a7702618c1d",
+      "saved_category": "standard electron ID",
+      "category": "standard electron ID",
+      "category_source": "saved sample category; tuple electron-ID mode unverified",
+      "state": "3S",
+      "q2_max": 0.01,
+      "w_range": [
+        20.0,
+        100.0
+      ],
+      "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/r275-L2p5-3s/artifacts/performance/9x275/performance_audit.json",
+      "sha256": "3de37cbff525bfc6dd82ff9b1981d692cdeaca1058e4b19a89458fc455a8107f",
+      "flux_selection_check": "cross-checked against normalization audit settings",
+      "normalization_audit_status": "WARN",
+      "normalization_audit_warnings": [
+        {
+          "id": "merged_total_vs_assigned",
+          "status": "WARN",
+          "detail": "Literal raw sum(weight)/(assigned sigma*L). A mismatch is diagnostic, not proof that either rate is correct.",
+          "evidence": 20130.55972910703
+        },
+        {
+          "id": "rate_provenance",
+          "status": "WARN",
+          "detail": "Assigned visible rate and generator-source description are explicit inputs. This audit checks their numerical consistency but does not authenticate the executable used for the supplied EOS production. The rate and branching fraction must belong to the selected 3S state and its generated Q2 phase space."
+        }
+      ],
+      "denominator_caveat": "Eligible stored UpsilonTree rows only; not a claim of full generation or simulation efficiency",
+      "source_lumi": 2.5
+    }
+  },
+  "displayed_mass_intervals": "not drawn",
+  "mass_interval_coverage": 0.6826894921370859,
+  "zero_mean_mass_bins": "Shown in histogram; interval bars omitted because empty finite-MC bins do not establish a zero physical expectation",
+  "efficiency_intervals": "Original finite-MC Wilson intervals; no luminosity rescaling",
+  "efficiency_variables": [
+    "true_W",
+    "true_pT"
+  ],
+  "warnings": [
+    "The states have different Q2 and/or electron-ID settings. Efficiency differences do not isolate the state-mass dependence.",
+    "At least one upstream DSCB calibration has significant shape mismatch. The combined fit is a conditional descriptive baseline, not a validated yield-extraction model.",
+    "Efficiencies are conditional on eligible stored tuple rows; a complete generated-event denominator is not independently established here."
+  ]
+}

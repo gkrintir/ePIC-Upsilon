@@ -1,0 +1,579 @@
+{
+  "state": "3S",
+  "nominal_mass_GeV": 10.3552,
+  "model": "signal-only double-sided Crystal Ball, normalized in fit interval",
+  "likelihood": "binned Poisson likelihood of unweighted MC event counts",
+  "fit_interval_GeV": [
+    8.0,
+    12.0
+  ],
+  "bin_width_GeV": 0.025000000000000355,
+  "mc_events_fitted": 265009,
+  "converged": true,
+  "optimizer_message": "`ftol` termination condition is satisfied.",
+  "poisson_deviance": 3753.4263949572464,
+  "ndof": 153,
+  "deviance_per_ndof": 24.532198659851282,
+  "asymptotic_deviance_pvalue": 0.0,
+  "pvalue_caveat": "asymptotic approximation; sparse tail bins can invalidate chi-square calibration",
+  "covariance_rank": 6,
+  "mc_covariance_parameter_order": [
+    "mean_GeV",
+    "sigma_core_GeV",
+    "alpha_left",
+    "n_left",
+    "alpha_right",
+    "n_right"
+  ],
+  "mc_covariance": [
+    [
+      8.270315992318091e-08,
+      -6.174656585874399e-08,
+      -1.284230520829715e-06,
+      3.251573948493924e-06,
+      -4.195678064221714e-07,
+      -2.0181962142231356e-06
+    ],
+    [
+      -6.174656585874442e-08,
+      2.1563863336369028e-07,
+      2.7317488583831164e-06,
+      -3.7301676321001042e-06,
+      4.363701486096441e-06,
+      -9.512351800362919e-06
+    ],
+    [
+      -1.284230520829739e-06,
+      2.7317488583831312e-06,
+      5.475020390060696e-05,
+      -0.00014912493173751865,
+      5.3705491456010214e-05,
+      -0.00010476504212663476
+    ],
+    [
+      3.2515739484939306e-06,
+      -3.7301676321001665e-06,
+      -0.0001491249317375192,
+      0.0007316262484322597,
+      -6.317494901055051e-05,
+      7.250647997914726e-05
+    ],
+    [
+      -4.1956780642215786e-07,
+      4.363701486096441e-06,
+      5.370549145601012e-05,
+      -6.317494901054936e-05,
+      0.00015097935017023868,
+      -0.0006237849757500831
+    ],
+    [
+      -2.0181962142231432e-06,
+      -9.51235180036291e-06,
+      -0.00010476504212663469,
+      7.250647997914728e-05,
+      -0.0006237849757500831,
+      0.004376167482605824
+    ]
+  ],
+  "mc_covariance_method": "unscaled Gauss-Newton inverse of the Poisson-deviance residual Jacobian; no chi-square/ndf rescaling",
+  "uncertainty_interpretation": "approximate local likelihood curvature from finite MC sample, not projected-data precision",
+  "parameters": {
+    "mean_GeV": {
+      "value": 10.349538879692622,
+      "mc_stat_error": 0.00028758157090324983,
+      "at_bound": false,
+      "bounds": [
+        10.094899999999999,
+        10.594899999999999
+      ]
+    },
+    "sigma_core_GeV": {
+      "value": 0.06373711594590918,
+      "mc_stat_error": 0.0004643690702056827,
+      "at_bound": false,
+      "bounds": [
+        0.005,
+        0.3
+      ]
+    },
+    "alpha_left": {
+      "value": 0.7858113664869865,
+      "mc_stat_error": 0.007399338071787703,
+      "at_bound": false,
+      "bounds": [
+        0.1,
+        8.0
+      ]
+    },
+    "n_left": {
+      "value": 2.9585402447532325,
+      "mc_stat_error": 0.0270485905073122,
+      "at_bound": false,
+      "bounds": [
+        1.01,
+        100.0
+      ]
+    },
+    "alpha_right": {
+      "value": 1.1877255596188465,
+      "mc_stat_error": 0.012287365469059617,
+      "at_bound": false,
+      "bounds": [
+        0.1,
+        8.0
+      ]
+    },
+    "n_right": {
+      "value": 3.9577364372023793,
+      "mc_stat_error": 0.06615260752688305,
+      "at_bound": false,
+      "bounds": [
+        1.01,
+        100.0
+      ]
+    }
+  },
+  "model_adequacy": "DSCB is a descriptive baseline only; significant shape mismatch",
+  "shape_mismatch_flag": true,
+  "projected_forecast": {
+    "status": "ok_conditional_model",
+    "valid_local_covariance": true,
+    "model": "extended signal-only DSCB Poisson model, lambda_i = N * p_i(theta)",
+    "asimov_definition": "Expected bin counts from the MC-calibrated DSCB at the projected selected yield",
+    "shape_mode": "floating",
+    "parameter_order": [
+      "yield_events",
+      "mean_GeV",
+      "sigma_core_GeV",
+      "alpha_left",
+      "n_left",
+      "alpha_right",
+      "n_right"
+    ],
+    "floating_parameters": [
+      "yield_events",
+      "mean_GeV",
+      "sigma_core_GeV",
+      "alpha_left",
+      "n_left",
+      "alpha_right",
+      "n_right"
+    ],
+    "fixed_parameters": [],
+    "expected_selected_yield": 22.685416608893146,
+    "background_model": "none",
+    "calibration_shape_mismatch_flag": true,
+    "calibration_covariance_added": false,
+    "MC_shape_constraint_applied": false,
+    "chi_square_rescaling_applied": false,
+    "interpretation": "Conditional expected data-statistical precision assuming the calibrated signal model and no background; not total experimental precision",
+    "limitations": [
+      "Model and calibration uncertainty, finite-MC template uncertainty, background, efficiencies, luminosity, and detector systematics are excluded",
+      "Local Fisher approximation can be inaccurate at small projected yields or near parameter boundaries",
+      "The MC calibration shows significant DSCB shape mismatch; this forecast does not validate that model"
+    ],
+    "asimov_expected_bin_counts": [
+      0.0017025825037796484,
+      0.0017534111966239579,
+      0.001806290901988157,
+      0.0018613263550298171,
+      0.0019186287846429196,
+      0.001978316388590444,
+      0.0020405148488175204,
+      0.002105357890814707,
+      0.002172987891314427,
+      0.0022435565390702033,
+      0.002317225554003945,
+      0.002394167470580804,
+      0.002474566491947639,
+      0.002558619422112676,
+      0.002646536684280119,
+      0.002738543434419465,
+      0.002834880780200933,
+      0.002935807116664374,
+      0.0030415995913541834,
+      0.0031525557132194323,
+      0.003268995121360801,
+      0.003391261531721694,
+      0.0035197248821356576,
+      0.0036547836987765574,
+      0.00379686771006556,
+      0.00394644073756518,
+      0.0041040038973269985,
+      0.004270099149746141,
+      0.004445313241222312,
+      0.004630282086975206,
+      0.004825695651404695,
+      0.0050323033904781725,
+      0.00525092033007429,
+      0.005482433865185796,
+      0.005727811377648632,
+      0.005988108785049093,
+      0.0062644801508991935,
+      0.006558188506754735,
+      0.006870618061071841,
+      0.007203287998091095,
+      0.007557868103742658,
+      0.007936196495435362,
+      0.008340299780106145,
+      0.008772416021419671,
+      0.009235020964613866,
+      0.00973085804856235,
+      0.01026297283203561,
+      0.010834752578725019,
+      0.01144997188790168,
+      0.012112845430299696,
+      0.012828089059479032,
+      0.013600990826384652,
+      0.014437493741091146,
+      0.015344292515453427,
+      0.01632894700276456,
+      0.017400015650076116,
+      0.01856721302728378,
+      0.019841596435792037,
+      0.021235787782518188,
+      0.022764238403140007,
+      0.024443546426032962,
+      0.02629283871001642,
+      0.028334232532829455,
+      0.030593396279078963,
+      0.033100233683510775,
+      0.03588972314868278,
+      0.03900295285535186,
+      0.04248840462700522,
+      0.04640355592949413,
+      0.05081689158751456,
+      0.055810447076785105,
+      0.06148304691931512,
+      0.0679544596130192,
+      0.07537077182218722,
+      0.08391139994665801,
+      0.09379832290102111,
+      0.10530836090487929,
+      0.11878968021649591,
+      0.13468423470966978,
+      0.15355866148317954,
+      0.17614739280053746,
+      0.20341370476144513,
+      0.23663756420775447,
+      0.27754428468362735,
+      0.328496647245621,
+      0.3927880422410984,
+      0.4751006302632032,
+      0.5822409977628987,
+      0.7243579715281966,
+      0.9170299946292548,
+      1.1849892868955458,
+      1.5690833628236,
+      2.0650621627794914,
+      2.3970685076460336,
+      2.3903624525582514,
+      2.047778735633728,
+      1.5070797337667603,
+      0.9811325073665528,
+      0.6449413544264523,
+      0.4414238868726049,
+      0.31235004538930183,
+      0.22726813211896152,
+      0.1693302616763473,
+      0.1287646981978412,
+      0.0996718508254299,
+      0.07836469434045339,
+      0.062468626895478586,
+      0.05041335670547171,
+      0.041135882840503867,
+      0.03390143147232639,
+      0.028192499305255296,
+      0.023638387860429017,
+      0.019969449767994977,
+      0.016986778264873895,
+      0.014541757052486472,
+      0.01252203036921798,
+      0.010841728940765981,
+      0.009434563944374287,
+      0.008248883292735308,
+      0.007244089555405651,
+      0.006388015112193223,
+      0.0056549784575761685,
+      0.005024330720484258,
+      0.004479358740979862,
+      0.0040064500740863195,
+      0.0035944522074175065,
+      0.003234177053010831,
+      0.0029180150082194043,
+      0.002639632303790466,
+      0.0023937321307167677,
+      0.0021758649497818834,
+      0.0019822769807448038,
+      0.0018097885171064463,
+      0.0016556956805352143,
+      0.0015176907018583782,
+      0.001393796925332078,
+      0.0012823155745935496,
+      0.0011817819613551084,
+      0.0010909293110943539,
+      0.0010086587611213265,
+      0.0009340143821840931,
+      0.0008661623058223553,
+      0.0008043732207498671,
+      0.0007480076445692249,
+      0.000696503490116944,
+      0.0006493655358859337,
+      0.00060615648181606,
+      0.0005664893295291516,
+      0.0005300208725479503,
+      0.0004964461195976618,
+      0.00046549350473431433,
+      0.00043692076273515144,
+      0.00041051136867688884,
+      0.0003860714571430122,
+      0.00036342715037296765,
+      0.00034242223581625167,
+      0.00032291614311168203,
+      0.0003047821781095842,
+      0.00028790597820691296,
+      0.00027218415854712825
+    ],
+    "low_expected_statistics_flag": true,
+    "calibration_boundary_parameters": [],
+    "fisher_parameter_order": [
+      "yield_events",
+      "mean_GeV",
+      "sigma_core_GeV",
+      "alpha_left",
+      "n_left",
+      "alpha_right",
+      "n_right"
+    ],
+    "fisher_parameter_scales": [
+      22.685416608893146,
+      0.06373711594590918,
+      0.06373711594590918,
+      1.0,
+      2.9585402447532325,
+      1.1877255596188465,
+      3.9577364372023793
+    ],
+    "fisher_scaled": [
+      [
+        22.685416608893146,
+        -1.2902234836076332e-11,
+        -5.5715432267788856e-12,
+        -1.1909140340549129e-11,
+        4.7826881344192884e-12,
+        1.3676837440357303e-11,
+        -7.476311236764843e-13
+      ],
+      [
+        -1.2902234836076332e-11,
+        8.668586845512925,
+        1.847233577271137,
+        5.27805614216278,
+        1.1407793508221737,
+        -3.3547996984041992,
+        -0.6208972386939983
+      ],
+      [
+        -5.5715432267788856e-12,
+        1.847233577271137,
+        14.651218823933931,
+        -10.278744214322654,
+        -4.496863574342169,
+        -6.723088748652445,
+        -2.0437016114335846
+      ],
+      [
+        -1.1909140340549129e-11,
+        5.27805614216278,
+        -10.278744214322654,
+        21.907641424130965,
+        9.326471588103928,
+        -2.7355598286569576,
+        -0.6634188737028817
+      ],
+      [
+        4.7826881344192884e-12,
+        1.1407793508221737,
+        -4.496863574342169,
+        9.326471588103928,
+        5.427426063492671,
+        -0.830611473750454,
+        -0.2014371327679259
+      ],
+      [
+        1.3676837440357303e-11,
+        -3.3547996984041992,
+        -6.723088748652445,
+        -2.7355598286569576,
+        -0.830611473750454,
+        9.059848409324717,
+        3.068148624783414
+      ],
+      [
+        -7.476311236764843e-13,
+        -0.6208972386939983,
+        -2.0437016114335846,
+        -0.6634188737028817,
+        -0.2014371327679259,
+        3.068148624783414,
+        1.434780952320586
+      ]
+    ],
+    "fisher_rank": 7,
+    "fisher_condition_scaled": 138.92224924475403,
+    "covariance": [
+      [
+        22.685416608893146,
+        -4.56863727027005e-14,
+        -8.599300033408408e-14,
+        2.325568799748406e-12,
+        -1.915597747125607e-11,
+        -9.234814761978647e-12,
+        5.969041625182305e-11
+      ],
+      [
+        -4.568637270270034e-14,
+        0.0009611663229685765,
+        -0.0007174848261574473,
+        -0.014627960059709844,
+        0.03487825093446498,
+        -0.0049748115443056734,
+        -0.02240203355869184
+      ],
+      [
+        -8.599300033408445e-14,
+        -0.0007174848261574471,
+        0.002506145996774464,
+        0.031373703294006725,
+        -0.03990517565609504,
+        0.05019987671630161,
+        -0.10540239476445458
+      ],
+      [
+        2.325568799748398e-12,
+        -0.014627960059709847,
+        0.03137370329400673,
+        0.6119839196040683,
+        -1.5606048085790614,
+        0.6121500282133963,
+        -1.15325390179354
+      ],
+      [
+        -1.915597747125606e-11,
+        0.034878250934465,
+        -0.03990517565609511,
+        -1.5606048085790625,
+        7.436002030791885,
+        -0.672067136493114,
+        0.737263947410253
+      ],
+      [
+        -9.234814761978658e-12,
+        -0.004974811544305669,
+        0.05019987671630161,
+        0.6121500282133959,
+        -0.672067136493112,
+        1.7100928422573693,
+        -6.885051769968918
+      ],
+      [
+        5.969041625182306e-11,
+        -0.022402033558691855,
+        -0.1054023947644546,
+        -1.1532539017935397,
+        0.7372639474102469,
+        -6.885051769968918,
+        48.08071489509552
+      ]
+    ],
+    "parameters": {
+      "yield_events": {
+        "value": 22.685416608893146,
+        "projected_stat_error": 4.762921016444966,
+        "fixed": false
+      },
+      "mean_GeV": {
+        "value": 10.349538879692622,
+        "projected_stat_error": 0.031002682512462958,
+        "fixed": false
+      },
+      "sigma_core_GeV": {
+        "value": 0.06373711594590918,
+        "projected_stat_error": 0.050061422240827956,
+        "fixed": false
+      },
+      "alpha_left": {
+        "value": 0.7858113664869865,
+        "projected_stat_error": 0.7822940109729003,
+        "fixed": false
+      },
+      "n_left": {
+        "value": 2.9585402447532325,
+        "projected_stat_error": 2.7269033776046934,
+        "fixed": false
+      },
+      "alpha_right": {
+        "value": 1.1877255596188465,
+        "projected_stat_error": 1.3077051817047178,
+        "fixed": false
+      },
+      "n_right": {
+        "value": 3.9577364372023793,
+        "projected_stat_error": 6.934025879321155,
+        "fixed": false
+      }
+    }
+  },
+  "statistical_configuration": {
+    "stat_mode": "projected",
+    "source_weight_luminosity_invfb": 10.0,
+    "requested_projection_luminosity_invfb": 2.5,
+    "projection_luminosity_invfb": 2.5,
+    "active_luminosity_invfb": 2.5,
+    "projection_luminosity_ignored_in_mc_mode": false,
+    "yield_weight_scale": 0.25,
+    "projection_shape_mode": "floating",
+    "displayed_yield_variance": "expected_count",
+    "efficiency_uncertainty": "finite MC Wilson intervals, unaffected by statistical mode or luminosity",
+    "resolution_calibration": "finite MC quantities, unaffected by statistical mode or luminosity",
+    "components_combined": false,
+    "normalization": "Input weights already represent source luminosity; only target/source scaling is applied",
+    "count_interval": {
+      "method": "median_garwood",
+      "coverage": 0.6826894921370859,
+      "applied": true,
+      "covariance_changed": false
+    }
+  },
+  "projected_yield_interval": {
+    "central_expected_yield": 22.685416608893146,
+    "lower": 18.239283378927695,
+    "upper": 28.865234695689697,
+    "reference_count": 23.0,
+    "method": "median_garwood",
+    "coverage": 0.6826894921370859,
+    "poisson_standard_deviation": 4.762921016444966,
+    "interpretation": "Median expected endpoints of exact central Garwood confidence intervals over hypothetical integer-count experiments; the expected-mean marker is not an observed count"
+  },
+  "mass_residual_unweighted_quantiles_GeV": {
+    "q025": -0.7374789036391665,
+    "q16": -0.18820519470117483,
+    "q50": -0.024975554935869226,
+    "q84": 0.06771088980920965,
+    "q975": 0.2480026987665902
+  },
+  "mass_residual_central68_halfwidth_GeV": 0.12795804225519225,
+  "mass_residual_rms_GeV": 0.22919580502695328,
+  "proton_selection": {
+    "mode": "required",
+    "contract": "jul26-reco-topology-v1",
+    "label": "Proton tagged",
+    "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+    "applies_to": "reconstructed selection only",
+    "truth_denominator": "unchanged; untagged generated events retained",
+    "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+    "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+  },
+  "constant_selected_weights": true,
+  "selected_projected_yield": 22.685416608893146
+}

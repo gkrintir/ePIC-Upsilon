@@ -1,0 +1,94 @@
+{
+  "method": "conditional_asymptotic_profile_likelihood",
+  "target_luminosity_invfb": 2.5,
+  "nominal_coverage": 0.6826894921370859,
+  "delta_poisson_deviance_threshold": 0.9999999999999993,
+  "coverage_validated": false,
+  "publication_ready": false,
+  "interpretation": "Expected conditional statistical profile widths from projected histogram means; nominal asymptotic coverage, not an interval for observed data or validated low-count coverage.",
+  "assumptions": [
+    "Independent signal-only Poisson mass-bin counts at target luminosity",
+    "Three yields and (if enabled) common mass offset and common width scale profiled jointly",
+    "Fixed state mass differences, DSCB tails and relative widths from upstream MC calibration",
+    "No background, calibration-MC, luminosity, branching-fraction or other systematic uncertainty",
+    "Known template/DSCB shape mismatch is not covered by these statistical intervals"
+  ],
+  "resolution_correlation": "All core widths share one scale: fractional width intervals are identical and their width-scale uncertainty is fully correlated.",
+  "upstream_shape_mismatch_flags": {
+    "1S": true,
+    "2S": true,
+    "3S": true
+  },
+  "states": {
+    "1S": {
+      "fitted_yield": {
+        "value": 91.79031696559893,
+        "lower": 82.31121438870748,
+        "upper": 101.94523560421203,
+        "error_low": 9.47910257689145,
+        "error_high": 10.154918638613097,
+        "status": "TWO_SIDED"
+      },
+      "fitted_sigma_core_MeV": {
+        "value": 54.43765798060709,
+        "lower": 48.353761805636566,
+        "upper": 61.368257553451095,
+        "error_low": 6.083896174970526,
+        "error_high": 6.930599572844002,
+        "status": "TWO_SIDED"
+      }
+    },
+    "2S": {
+      "fitted_yield": {
+        "value": 27.081328140062976,
+        "lower": 21.364920609036684,
+        "upper": 33.5500417037702,
+        "error_low": 5.716407531026292,
+        "error_high": 6.468713563707222,
+        "status": "TWO_SIDED"
+      },
+      "fitted_sigma_core_MeV": {
+        "value": 60.25937975206944,
+        "lower": 53.52485399215682,
+        "upper": 67.93115783845067,
+        "error_low": 6.734525759912621,
+        "error_high": 7.671778086381231,
+        "status": "TWO_SIDED"
+      }
+    },
+    "3S": {
+      "fitted_yield": {
+        "value": 22.71149995565881,
+        "lower": 17.672643634367336,
+        "upper": 28.54024018578297,
+        "error_low": 5.0388563212914725,
+        "error_high": 5.828740230124161,
+        "status": "TWO_SIDED"
+      },
+      "fitted_sigma_core_MeV": {
+        "value": 63.19692168997673,
+        "lower": 56.13409929088436,
+        "upper": 71.24268586715054,
+        "error_low": 7.062822399092376,
+        "error_high": 8.045764177173808,
+        "status": "TWO_SIDED"
+      }
+    }
+  },
+  "common_width_scale": {
+    "value": 0.9915246517211276,
+    "lower": 0.8807128853856965,
+    "upper": 1.1177582294060968,
+    "error_low": 0.1108117663354311,
+    "error_high": 0.12623357768496923,
+    "status": "TWO_SIDED"
+  },
+  "diagnostics": {
+    "nominal_deviance": 0.7100770527314688,
+    "profile_fit_evaluations": 77,
+    "failed_optimizer_starts": 0,
+    "nominal_parameter_on_bound": false,
+    "profile_solutions_with_nuisance_on_bound": 0,
+    "nominal_values_preserved": true
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "source_archive_manifest_sha256": "a498cff716d623fb5736f4a9a16cd931114723baa536b6d65c904acd8afb251a",
+  "analysis_commit": "072c1fdc1c642a5cf21242b0363f24bcd89f84d5",
+  "source_note_commit": "0641ce90b3480cbd5c6e29cedfd922851009e97b",
+  "description": "Exact consumed files from the verified full-sample ECAL-rematched result archive for Figure 28 and the matching note panels.",
+  "copied_files": [
+    {
+      "path": "README.md",
+      "sha256": "96c4a7742d20fbe993d1c0023da746537700758af1fdbd1465ef078562f5930c",
+      "bytes": 6176
+    },
+    {
+      "path": "paper_figures/mass_efficiency/mass_reference/upsilon_es_reconstruction_mass.csv",
+      "sha256": "ffafa708d4fb1beb6cbcc09c79ae5688f1940d900b542da954068ca46f4cb7e6",
+      "bytes": 15314
+    },
+    {
+      "path": "paper_figures/mass_efficiency/mass_reference/upsilon_es_reconstruction_audit.json",
+      "sha256": "7d45ef7eafec5516942a35aa8178c31c205f4fc78106715e77bcd3b733727eea",
+      "bytes": 14680
+    },
+    {
+      "path": "paper_figures/mass_efficiency/mass_fit_intervals.json",
+      "sha256": "2811d9b7a5c200a91d7dff34ea20d58dde542a0179c2de8cb550b90d07cee61a",
+      "bytes": 3299
+    },
+    {
+      "path": "framework/full_state_runs/r275-1only-L2p5-1s/artifacts/performance/9x275/mass_fit.json",
+      "sha256": "1a2b550a24b7fa44cf60dabad1b4b43fe427f3b7e182b222e4c824f38f39d33d",
+      "bytes": 16572
+    },
+    {
+      "path": "framework/full_state_runs/r275-L2p5-2s/artifacts/performance/9x275/mass_fit.json",
+      "sha256": "f29e972659843c61ef5d6614193aeadc0a9631967569596a317a5f91f37bbe80",
+      "bytes": 16618
+    },
+    {
+      "path": "framework/full_state_runs/r275-L2p5-3s/artifacts/performance/9x275/mass_fit.json",
+      "sha256": "47da2814b226947b9b2762ad17fc7b94eb5323cdc1bf41f0f18d102e98eeb404",
+      "bytes": 16620
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_differential_points.csv",
+      "sha256": "e472ae815ff55c46347a44411e9d434f7cf682c6b55d16e9556c5cb299d22573",
+      "bytes": 19438
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_differential_audit.json",
+      "sha256": "8d79399fe0ef0a353e25b6961cbd9b7c583a89740d23af9e1832f18887724c6e",
+      "bytes": 112893
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_slopes.csv",
+      "sha256": "d03e739bec806d4d67288e1c1124c8c63814ad801d707b06f3906d094c9a8df4",
+      "bytes": 24424
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_1s_pt2_fit_bins.csv",
+      "sha256": "aa30491a607ff4ab7867ea82f6f56ca527db49618031aca66ea6cb023b8f62d9",
+      "bytes": 637
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_2s_pt2_fit_bins.csv",
+      "sha256": "b3c9a40ccbb6ec26b1618be2b11e01584f3511cd08528fb87a2729ca10228b42",
+      "bytes": 416
+    }
+  ]
+}

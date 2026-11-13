@@ -1,0 +1,3218 @@
+{
+  "figure": "upsilon_es_differential",
+  "energy": "9x275",
+  "target_lumi_invfb": 2.5,
+  "uncertainty": "Saved central toy sampling quantiles, not confidence limits; full covariance retained in validation metadata",
+  "source_files": [
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/effective_config.json",
+      "sha256": "6123851d756747e51d3ca74148ea9991e18fb35ca118c7b5f58b4f4fa43e0e0d"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S/pt2/result.json",
+      "sha256": "3ec2a2d9c0ef8a236a8bba4f9fd2e739be8c62c9511bc1dbab16b4d6cadda466"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/validation_status.csv",
+      "sha256": "50a704d60fe1bd12a464711447cc5792c944eeb0133c58ded429b3ddef84168a"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/differential_results.csv",
+      "sha256": "66a9f7dec371988af7bc93c8685f573dc42b77502815c1902c6f4c2def6d932d"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S_pt2_cross_section_covariance.csv",
+      "sha256": "c3686228678a3f653c890da924101584f4c12e2b65f6655f6b938ba0c7860d8f"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S_pt2_covariance_metadata.json",
+      "sha256": "db6727b28e98b8c29cf9d3529495990a85bd9f7f88ac4157d6f20608517a658f"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/effective_config.json",
+      "sha256": "6123851d756747e51d3ca74148ea9991e18fb35ca118c7b5f58b4f4fa43e0e0d"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S/y/result.json",
+      "sha256": "db939fb400de524dc2c692f1e9b5b62878d2a4138b27a630f337e71cea97df65"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/validation_status.csv",
+      "sha256": "50a704d60fe1bd12a464711447cc5792c944eeb0133c58ded429b3ddef84168a"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/differential_results.csv",
+      "sha256": "66a9f7dec371988af7bc93c8685f573dc42b77502815c1902c6f4c2def6d932d"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S_y_alternate_cross_section_covariance.csv",
+      "sha256": "d90ef6bbcd8de12e9dcae9adcdb0b92a18d6ddd4c52841d914ef36fac0f97ad3"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S_y_covariance_metadata.json",
+      "sha256": "c9a9734b8f631e225a0881fc06ea2b482fc35d89c7b7b199ab26aa213758a506"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/effective_config.json",
+      "sha256": "4661548687d8cc6791d1d85e8c5218d7af857fc2c65ffd2ebe39969a5e660883"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S/pt2/result.json",
+      "sha256": "329c45a772f0bc6df71ee10942bd395d9ade29a8a8d084993621c342a4ad4e82"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/validation_status.csv",
+      "sha256": "7b521b4361b8354b8d31a5d9d24335433e59aaa15d806df591d9b738bc217e09"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/differential_results.csv",
+      "sha256": "23f227ee237d7928012eafbe0010123e19a46f333dc4a87b160caa54b9cb5837"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S_pt2_cross_section_covariance.csv",
+      "sha256": "2cee2b4a40a5e5249fb034dca7b02a3a13c05d99bc8a20ef02e75439de507237"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S_pt2_covariance_metadata.json",
+      "sha256": "1343c52b085dbb9a135deda4e54b20804d4ad509b96d1886fcf8a2fd9a120c4a"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/effective_config.json",
+      "sha256": "4661548687d8cc6791d1d85e8c5218d7af857fc2c65ffd2ebe39969a5e660883"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S/y/result.json",
+      "sha256": "89bc229ebec7d2852dd0c207152f3673e941a2d7f5c68f952ee694acf8cf86a5"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/validation_status.csv",
+      "sha256": "7b521b4361b8354b8d31a5d9d24335433e59aaa15d806df591d9b738bc217e09"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/differential_results.csv",
+      "sha256": "23f227ee237d7928012eafbe0010123e19a46f333dc4a87b160caa54b9cb5837"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S_y_alternate_cross_section_covariance.csv",
+      "sha256": "836c245a9c86fe4d59573b84d662d893ce0d46ffdadae477642fa8e19a90ed6a"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S_y_covariance_metadata.json",
+      "sha256": "c4d2ed935fc60de258b52713f2ab4d7b5510164e8b601bcec400a9a27e695c36"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/effective_config.json",
+      "sha256": "4661548687d8cc6791d1d85e8c5218d7af857fc2c65ffd2ebe39969a5e660883"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S/pt2/result.json",
+      "sha256": "4e7d45b2bf50a27b2449532ebf7bd4936ddf94eb29eaa35c7788e7d0a37835f0"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/validation_status.csv",
+      "sha256": "7b521b4361b8354b8d31a5d9d24335433e59aaa15d806df591d9b738bc217e09"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/differential_results.csv",
+      "sha256": "23f227ee237d7928012eafbe0010123e19a46f333dc4a87b160caa54b9cb5837"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/effective_config.json",
+      "sha256": "4661548687d8cc6791d1d85e8c5218d7af857fc2c65ffd2ebe39969a5e660883"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S/y/result.json",
+      "sha256": "473ea328900ced07a029e9585b46e27e7781b197b1516d8a756278cad723bec7"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/validation_status.csv",
+      "sha256": "7b521b4361b8354b8d31a5d9d24335433e59aaa15d806df591d9b738bc217e09"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/differential_results.csv",
+      "sha256": "23f227ee237d7928012eafbe0010123e19a46f333dc4a87b160caa54b9cb5837"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S_y_alternate_cross_section_covariance.csv",
+      "sha256": "309b9b721736c5d75c2059055463655b43855e770eefb3c2bcc09e8032a7b021"
+    },
+    {
+      "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S_y_covariance_metadata.json",
+      "sha256": "08961f565b645aba36b8ff946d3fc3cd43e0251ab0ae1bd28722371fdd5489e9"
+    }
+  ],
+  "samples": {
+    "1S": {
+      "state": "1S",
+      "observable": "y",
+      "available": true,
+      "diagnostic_rendering_explicit": true,
+      "q2_max": 1.0,
+      "q2_cut_events": 1.0,
+      "q2_max_flux": 1.0,
+      "saved_category": "new electron ID",
+      "category": "new electron ID",
+      "category_source": "saved sample category; tuple electron-ID mode unverified",
+      "w_range": [
+        20.0,
+        100.0
+      ],
+      "w_min": 20.0,
+      "w_max": 100.0,
+      "source_lumi": 2.5,
+      "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S/y/result.json",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+      "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+      "cross_section_scaling": {
+        "observable": "y",
+        "bin_edges": [
+          -1.0,
+          0.25,
+          1.0,
+          3.0
+        ],
+        "luminosity_invfb": 2.5,
+        "branching_fraction_ee": 0.0238,
+        "conversion_from_fb_to_pb": 0.001,
+        "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+        "quantity": "dsigma_ep_dy",
+        "quantity_label": "Inclusive ep differential cross section",
+        "units": "pb",
+        "observable_units": "dimensionless",
+        "bin_flux": null,
+        "factors": [
+          0.013445378151260503,
+          0.022408963585434174,
+          0.008403361344537815
+        ],
+        "formula": "N_i / (1000 * L * B_ee * Delta y_i); no photon-flux division",
+        "photon_flux_applied": false,
+        "bin_width_applied": true,
+        "alternate_factors": [
+          0.13283492440108965,
+          0.22139154066848277,
+          0.08302182775068104
+        ],
+        "alternate_quantity": "flux_normalized_ep_rapidity",
+        "alternate_label": "(1/Phi) d sigma_ep / d y",
+        "alternate_units": "pb",
+        "alternate_flux_integral": 0.1012186984099357,
+        "alternate_interpretation": "Legacy flux-normalized ep rapidity spectrum; not a universal gamma-p rapidity distribution",
+        "x_units": "dimensionless",
+        "ylabel": "$d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]",
+        "alternate_ylabel": "$(1/\\Phi)\\,d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]"
+      },
+      "displayed_quantity": "flux_normalized_ep_rapidity",
+      "covariance": [
+        [
+          19.363347613367868,
+          -0.15016210752425668,
+          -0.29651347369006664
+        ],
+        [
+          -0.15016210752425674,
+          34.59511012132801,
+          -0.23290087210287783
+        ],
+        [
+          -0.29651347369006664,
+          -0.23290087210287783,
+          14.590683833231937
+        ]
+      ],
+      "yield_luminosity_rescaled": false,
+      "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+      "proton_selection": {
+        "mode": "required",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "applies_to": "reconstructed selection only",
+        "truth_denominator": "unchanged; untagged generated events retained",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+      },
+      "proton_selection_mode": "required",
+      "source_covariance_metadata": {
+        "state": "1S",
+        "observable": "y",
+        "status": "NOT_VALIDATED",
+        "files": {
+          "truth_yield": "1S_y_truth_yield_covariance.csv",
+          "cross_section": "1S_y_cross_section_covariance.csv",
+          "alternate_cross_section": "1S_y_alternate_cross_section_covariance.csv",
+          "response_mc_truth_yield": "1S_y_response_mc_truth_yield_covariance.csv",
+          "response_mc_cross_section": "1S_y_response_mc_cross_section_covariance.csv"
+        },
+        "response_mc_stage_status": "PASS_CONDITIONAL",
+        "quantity": "dsigma_ep_dy",
+        "quantity_units": "pb",
+        "truth_edges": [
+          -1.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0,
+          3.0
+        ],
+        "conversion_factors": [
+          0.013445378151260503,
+          0.06722689075630252,
+          0.06722689075630252,
+          0.06722689075630252,
+          0.008403361344537815
+        ],
+        "alternate_quantity": "flux_normalized_ep_rapidity",
+        "alternate_units": "pb",
+        "alternate_conversion_factors": [
+          0.13283492440108965,
+          0.6641746220054483,
+          0.6641746220054483,
+          0.6641746220054483,
+          0.08302182775068104
+        ],
+        "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "failed_checks": [
+          "inference.injected_spectrum_coverage",
+          "robustness.shape_only_closure",
+          "robustness.combined_closure"
+        ],
+        "publication_ready": false
+      },
+      "covariance_metadata": {
+        "overall_status": "NOT_VALIDATED",
+        "publication_ready": false,
+        "truth_edges": [
+          -1.0,
+          0.25,
+          1.0,
+          3.0
+        ],
+        "conversion_factors": [
+          0.013445378151260503,
+          0.022408963585434174,
+          0.008403361344537815
+        ],
+        "interpretation": "Saved full sampling covariance propagated by H C H^T; not an interval",
+        "truth_yield_covariance": [
+          [
+            1097.3771077306678,
+            -5.106073470434882,
+            -26.88684660592811
+          ],
+          [
+            -5.106073470434882,
+            705.8179066996038,
+            -12.671201638200774
+          ],
+          [
+            -26.88684660592811,
+            -12.671201638200774,
+            2116.854782847431
+          ]
+        ],
+        "primary_cross_section_covariance": [
+          [
+            0.19838185126689564,
+            -0.0015384445642154857,
+            -0.003037847226148222
+          ],
+          [
+            -0.0015384445642154857,
+            0.3544346839031663,
+            -0.0023861218159171005
+          ],
+          [
+            -0.003037847226148222,
+            -0.0023861218159171005,
+            0.1494848374300848
+          ]
+        ]
+      },
+      "rebinning": {
+        "edge_selection": "explicit_saved_edges",
+        "kind": "Adjacent-bin aggregation of original estimator; no three-parameter refit",
+        "source_edges": [
+          -1.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0,
+          3.0
+        ],
+        "display_edges": [
+          -1.0,
+          0.25,
+          1.0,
+          3.0
+        ],
+        "yield_merge_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "cross_section_merge_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.3333333333333333,
+            0.3333333333333333,
+            0.3333333333333333,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "uncertainties": "Central quantiles of summed joint Poisson toy estimates; not sums of marginal endpoints",
+        "replay": {
+          "solver_source_sha256": "bdbd2e989594311fdb7311ea342ef6fb0bbb95a1ab71af39a18b347835699c39",
+          "seed": 20261023,
+          "rng": "default_rng(SeedSequence(seed).spawn(3)[0])",
+          "n_toys": 1000,
+          "successful_toys": 1000,
+          "failed_toys": 0,
+          "failed_fraction": 0.0,
+          "saved_summary_reproduced": true,
+          "comparison_rtol": 2e-06,
+          "comparison_atol": 2e-07,
+          "original_bin_count": 5,
+          "coverage": 0.6826894921370859,
+          "numpy_version": "2.3.5",
+          "scipy_version": "1.17.0",
+          "cache_hit": false,
+          "cache_key": "b7a9dc0a432a4639bc151375c982a857df983225d0eb9a1c1387c57282e3edff",
+          "cache_path": "/workspace/scratch/59c457e0bf3e/run-corrected/paper275/spectra/differential/rebin_cache/joint-toys-b7a9dc0a432a4639bc151375c982a857df983225d0eb9a1c1387c57282e3edff.npz",
+          "values_sha256": "a015319c65dc7d32b584a72748bc7dc6669d89f24f8955fd580b22b8931af01c",
+          "overall_status": "NOT_VALIDATED",
+          "publication_ready": false,
+          "interpretation": "Replay of original-bin fixed-response/fixed-feed Poisson sampling ensemble; no new coverage validation"
+        },
+        "validation_status_changed": false,
+        "additional_validation": "No new binning optimization, coverage or stress validation is claimed"
+      },
+      "unsupported_bins": {
+        "pT2": [],
+        "y": []
+      }
+    },
+    "2S": {
+      "state": "2S",
+      "observable": "y",
+      "available": true,
+      "diagnostic_rendering_explicit": true,
+      "q2_max": 0.01,
+      "q2_cut_events": 0.01,
+      "q2_max_flux": 0.01,
+      "saved_category": "standard electron ID",
+      "category": "standard electron ID",
+      "category_source": "saved sample category; tuple electron-ID mode unverified",
+      "w_range": [
+        20.0,
+        100.0
+      ],
+      "w_min": 20.0,
+      "w_max": 100.0,
+      "source_lumi": 2.5,
+      "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S/y/result.json",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+      "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+      "cross_section_scaling": {
+        "observable": "y",
+        "bin_edges": [
+          -1.0,
+          0.5,
+          1.0,
+          3.0
+        ],
+        "luminosity_invfb": 2.5,
+        "branching_fraction_ee": 0.0191,
+        "conversion_from_fb_to_pb": 0.001,
+        "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+        "quantity": "dsigma_ep_dy",
+        "quantity_label": "Inclusive ep differential cross section",
+        "units": "pb",
+        "observable_units": "dimensionless",
+        "bin_flux": null,
+        "factors": [
+          0.013961605584642234,
+          0.041884816753926704,
+          0.010471204188481676
+        ],
+        "formula": "N_i / (1000 * L * B_ee * Delta y_i); no photon-flux division",
+        "photon_flux_applied": false,
+        "bin_width_applied": true,
+        "alternate_factors": [
+          0.18748895841590776,
+          0.5624668752477233,
+          0.14061671881193083
+        ],
+        "alternate_quantity": "flux_normalized_ep_rapidity",
+        "alternate_label": "(1/Phi) d sigma_ep / d y",
+        "alternate_units": "pb",
+        "alternate_flux_integral": 0.07446628165521689,
+        "alternate_interpretation": "Legacy flux-normalized ep rapidity spectrum; not a universal gamma-p rapidity distribution",
+        "x_units": "dimensionless",
+        "ylabel": "$d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]",
+        "alternate_ylabel": "$(1/\\Phi)\\,d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]"
+      },
+      "displayed_quantity": "flux_normalized_ep_rapidity",
+      "covariance": [
+        [
+          10.668006521848975,
+          -0.03910218347254216,
+          0.4176047615501979
+        ],
+        [
+          -0.03910218347254216,
+          34.1300199533916,
+          -0.18876739296994235
+        ],
+        [
+          0.4176047615501979,
+          -0.18876739296994235,
+          9.252721499594152
+        ]
+      ],
+      "covariance_metadata": {
+        "state": "2S",
+        "observable": "y",
+        "status": "NOT_VALIDATED",
+        "files": {
+          "truth_yield": "2S_y_truth_yield_covariance.csv",
+          "cross_section": "2S_y_cross_section_covariance.csv",
+          "alternate_cross_section": "2S_y_alternate_cross_section_covariance.csv",
+          "response_mc_truth_yield": "2S_y_response_mc_truth_yield_covariance.csv",
+          "response_mc_cross_section": "2S_y_response_mc_cross_section_covariance.csv"
+        },
+        "response_mc_stage_status": "PASS_CONDITIONAL",
+        "quantity": "dsigma_ep_dy",
+        "quantity_units": "pb",
+        "truth_edges": [
+          -1.0,
+          0.5,
+          1.0,
+          3.0
+        ],
+        "conversion_factors": [
+          0.013961605584642234,
+          0.041884816753926704,
+          0.010471204188481676
+        ],
+        "alternate_quantity": "flux_normalized_ep_rapidity",
+        "alternate_units": "pb",
+        "alternate_conversion_factors": [
+          0.18748895841590776,
+          0.5624668752477233,
+          0.14061671881193083
+        ],
+        "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "failed_checks": [
+          "inference.injected_spectrum_coverage"
+        ],
+        "publication_ready": false
+      },
+      "yield_luminosity_rescaled": false,
+      "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+      "proton_selection": {
+        "mode": "required",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "applies_to": "reconstructed selection only",
+        "truth_denominator": "unchanged; untagged generated events retained",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+      },
+      "proton_selection_mode": "required",
+      "unsupported_bins": {
+        "pT2": [],
+        "y": []
+      }
+    },
+    "3S": {
+      "state": "3S",
+      "observable": "y",
+      "available": true,
+      "diagnostic_rendering_explicit": true,
+      "q2_max": 0.01,
+      "q2_cut_events": 0.01,
+      "q2_max_flux": 0.01,
+      "saved_category": "standard electron ID",
+      "category": "standard electron ID",
+      "category_source": "saved sample category; tuple electron-ID mode unverified",
+      "w_range": [
+        20.0,
+        100.0
+      ],
+      "w_min": 20.0,
+      "w_max": 100.0,
+      "source_lumi": 2.5,
+      "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S/y/result.json",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+      "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+      "cross_section_scaling": {
+        "observable": "y",
+        "bin_edges": [
+          -1.0,
+          0.5,
+          3.0
+        ],
+        "luminosity_invfb": 2.5,
+        "branching_fraction_ee": 0.0218,
+        "conversion_from_fb_to_pb": 0.001,
+        "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+        "quantity": "dsigma_ep_dy",
+        "quantity_label": "Inclusive ep differential cross section",
+        "units": "pb",
+        "observable_units": "dimensionless",
+        "bin_flux": null,
+        "factors": [
+          0.012232415902140673,
+          0.007339449541284404
+        ],
+        "formula": "N_i / (1000 * L * B_ee * Delta y_i); no photon-flux division",
+        "photon_flux_applied": false,
+        "bin_width_applied": true,
+        "alternate_factors": [
+          0.16426784888733204,
+          0.09856070933239922
+        ],
+        "alternate_quantity": "flux_normalized_ep_rapidity",
+        "alternate_label": "(1/Phi) d sigma_ep / d y",
+        "alternate_units": "pb",
+        "alternate_flux_integral": 0.07446628165521689,
+        "alternate_interpretation": "Legacy flux-normalized ep rapidity spectrum; not a universal gamma-p rapidity distribution",
+        "x_units": "dimensionless",
+        "ylabel": "$d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]",
+        "alternate_ylabel": "$(1/\\Phi)\\,d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]"
+      },
+      "displayed_quantity": "flux_normalized_ep_rapidity",
+      "covariance": [
+        [
+          6.036179379049257,
+          -0.07406289886411573
+        ],
+        [
+          -0.07406289886411573,
+          4.43086219573509
+        ]
+      ],
+      "covariance_metadata": {
+        "state": "3S",
+        "observable": "y",
+        "status": "NOT_VALIDATED",
+        "files": {
+          "truth_yield": "3S_y_truth_yield_covariance.csv",
+          "cross_section": "3S_y_cross_section_covariance.csv",
+          "alternate_cross_section": "3S_y_alternate_cross_section_covariance.csv",
+          "response_mc_truth_yield": "3S_y_response_mc_truth_yield_covariance.csv",
+          "response_mc_cross_section": "3S_y_response_mc_cross_section_covariance.csv"
+        },
+        "response_mc_stage_status": "PASS_CONDITIONAL",
+        "quantity": "dsigma_ep_dy",
+        "quantity_units": "pb",
+        "truth_edges": [
+          -1.0,
+          0.5,
+          3.0
+        ],
+        "conversion_factors": [
+          0.012232415902140673,
+          0.007339449541284404
+        ],
+        "alternate_quantity": "flux_normalized_ep_rapidity",
+        "alternate_units": "pb",
+        "alternate_conversion_factors": [
+          0.16426784888733204,
+          0.09856070933239922
+        ],
+        "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "failed_checks": [
+          "inference.injected_spectrum_coverage"
+        ],
+        "publication_ready": false
+      },
+      "yield_luminosity_rescaled": false,
+      "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+      "proton_selection": {
+        "mode": "required",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "applies_to": "reconstructed selection only",
+        "truth_denominator": "unchanged; untagged generated events retained",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+      },
+      "proton_selection_mode": "required",
+      "unsupported_bins": {
+        "y": []
+      }
+    }
+  },
+  "slope_fits": {
+    "1S": {
+      "status": "PASS_CONDITIONAL",
+      "b": 2.4600347576089283,
+      "amplitude": 1164.5884149828273,
+      "expected_signal_reco": 67.07368132219497,
+      "deviance": 0.06157854083285308,
+      "ndof": 4,
+      "fitted_reco": [
+        9.297435272620659,
+        14.053213307921062,
+        19.695010212326814,
+        14.246100257704766,
+        9.787876950795766,
+        6.837873379898198
+      ],
+      "observed_asimov_reco": [
+        9.706968002812983,
+        14.082030555552853,
+        19.344666490851942,
+        13.760620007029848,
+        10.214020850913931,
+        6.7089834036575065
+      ],
+      "at_lower_boundary": false,
+      "at_search_boundary": false,
+      "interval_interpretation": "Conditional Asimov profile-deviance forecast; chi-square threshold, not a toy-calibrated confidence interval.",
+      "interval_low": 1.9317364022726842,
+      "interval_high": 3.012795217197828,
+      "lower_at_boundary": false,
+      "upper_unbounded": false,
+      "upper_limit_not_found_within_search": false,
+      "upper_limit_search_max": 1000.0,
+      "upper_search_limited": false,
+      "delta_deviance_threshold": 0.9999999999999993,
+      "nominal_coverage": 0.6826894921370859,
+      "profile": [
+        {
+          "b": 0.0,
+          "delta_deviance": 24.628054519446515
+        },
+        {
+          "b": 0.041666666666666664,
+          "delta_deviance": 23.74947557788198
+        },
+        {
+          "b": 0.08333333333333333,
+          "delta_deviance": 22.887986992591834
+        },
+        {
+          "b": 0.125,
+          "delta_deviance": 22.04356197105602
+        },
+        {
+          "b": 0.16666666666666666,
+          "delta_deviance": 21.21617075608001
+        },
+        {
+          "b": 0.20833333333333331,
+          "delta_deviance": 20.40578064902045
+        },
+        {
+          "b": 0.25,
+          "delta_deviance": 19.61235603503937
+        },
+        {
+          "b": 0.29166666666666663,
+          "delta_deviance": 18.835858410339704
+        },
+        {
+          "b": 0.3333333333333333,
+          "delta_deviance": 18.076246411330906
+        },
+        {
+          "b": 0.375,
+          "delta_deviance": 17.33347584567015
+        },
+        {
+          "b": 0.41666666666666663,
+          "delta_deviance": 16.60749972512292
+        },
+        {
+          "b": 0.4583333333333333,
+          "delta_deviance": 15.898268300183227
+        },
+        {
+          "b": 0.5,
+          "delta_deviance": 15.205729096392396
+        },
+        {
+          "b": 0.5416666666666666,
+          "delta_deviance": 14.529826952292499
+        },
+        {
+          "b": 0.5833333333333333,
+          "delta_deviance": 13.870504058948192
+        },
+        {
+          "b": 0.625,
+          "delta_deviance": 13.227700000970481
+        },
+        {
+          "b": 0.6666666666666666,
+          "delta_deviance": 12.601351798972427
+        },
+        {
+          "b": 0.7083333333333333,
+          "delta_deviance": 11.991393953387027
+        },
+        {
+          "b": 0.75,
+          "delta_deviance": 11.397758489575116
+        },
+        {
+          "b": 0.7916666666666666,
+          "delta_deviance": 10.820375004151046
+        },
+        {
+          "b": 0.8333333333333333,
+          "delta_deviance": 10.259170712452411
+        },
+        {
+          "b": 0.875,
+          "delta_deviance": 9.714070497080034
+        },
+        {
+          "b": 0.9166666666666666,
+          "delta_deviance": 9.184996957433256
+        },
+        {
+          "b": 0.9583333333333333,
+          "delta_deviance": 8.671870460166367
+        },
+        {
+          "b": 1.0,
+          "delta_deviance": 8.174609190490559
+        },
+        {
+          "b": 1.0416666666666665,
+          "delta_deviance": 7.693129204247427
+        },
+        {
+          "b": 1.0833333333333333,
+          "delta_deviance": 7.227344480678713
+        },
+        {
+          "b": 1.125,
+          "delta_deviance": 6.777166975819034
+        },
+        {
+          "b": 1.1666666666666665,
+          "delta_deviance": 6.342506676437074
+        },
+        {
+          "b": 1.2083333333333333,
+          "delta_deviance": 5.923271654453265
+        },
+        {
+          "b": 1.25,
+          "delta_deviance": 5.519368121761458
+        },
+        {
+          "b": 1.2916666666666665,
+          "delta_deviance": 5.130700485383828
+        },
+        {
+          "b": 1.3333333333333333,
+          "delta_deviance": 4.757171402889073
+        },
+        {
+          "b": 1.375,
+          "delta_deviance": 4.398681838005112
+        },
+        {
+          "b": 1.4166666666666665,
+          "delta_deviance": 4.055131116359295
+        },
+        {
+          "b": 1.4583333333333333,
+          "delta_deviance": 3.7264169812800354
+        },
+        {
+          "b": 1.5,
+          "delta_deviance": 3.4124356495953165
+        },
+        {
+          "b": 1.5416666666666665,
+          "delta_deviance": 3.1130818673662404
+        },
+        {
+          "b": 1.5833333333333333,
+          "delta_deviance": 2.828248965493346
+        },
+        {
+          "b": 1.625,
+          "delta_deviance": 2.557828915137984
+        },
+        {
+          "b": 1.6666666666666665,
+          "delta_deviance": 2.30171238289995
+        },
+        {
+          "b": 1.7083333333333333,
+          "delta_deviance": 2.059788785697073
+        },
+        {
+          "b": 1.75,
+          "delta_deviance": 1.831946345292728
+        },
+        {
+          "b": 1.7916666666666665,
+          "delta_deviance": 1.618072142419983
+        },
+        {
+          "b": 1.8333333333333333,
+          "delta_deviance": 1.418052170452837
+        },
+        {
+          "b": 1.875,
+          "delta_deviance": 1.2317713885773625
+        },
+        {
+          "b": 1.9166666666666665,
+          "delta_deviance": 1.0591137744172467
+        },
+        {
+          "b": 1.9583333333333333,
+          "delta_deviance": 0.8999623760710271
+        },
+        {
+          "b": 2.0,
+          "delta_deviance": 0.7541993635196445
+        },
+        {
+          "b": 2.0416666666666665,
+          "delta_deviance": 0.6217060793655094
+        },
+        {
+          "b": 2.083333333333333,
+          "delta_deviance": 0.5023630888665576
+        },
+        {
+          "b": 2.125,
+          "delta_deviance": 0.39605022923069555
+        },
+        {
+          "b": 2.1666666666666665,
+          "delta_deviance": 0.3026466581377747
+        },
+        {
+          "b": 2.208333333333333,
+          "delta_deviance": 0.22203090145951165
+        },
+        {
+          "b": 2.25,
+          "delta_deviance": 0.1540809001485588
+        },
+        {
+          "b": 2.2916666666666665,
+          "delta_deviance": 0.09867405627081816
+        },
+        {
+          "b": 2.333333333333333,
+          "delta_deviance": 0.05568727815699859
+        },
+        {
+          "b": 2.375,
+          "delta_deviance": 0.024997024651298716
+        },
+        {
+          "b": 2.4166666666666665,
+          "delta_deviance": 0.006479348437101962
+        },
+        {
+          "b": 2.458333333333333,
+          "delta_deviance": 9.938422318001017e-06
+        },
+        {
+          "b": 2.4600347576089283,
+          "delta_deviance": 0.0
+        },
+        {
+          "b": 2.5,
+          "delta_deviance": 0.005464161167129333
+        },
+        {
+          "b": 2.5416666666666665,
+          "delta_deviance": 0.022717101341211077
+        },
+        {
+          "b": 2.583333333333333,
+          "delta_deviance": 0.051643601197156386
+        },
+        {
+          "b": 2.625,
+          "delta_deviance": 0.09211829905037128
+        },
+        {
+          "b": 2.6666666666666665,
+          "delta_deviance": 0.14401566675625155
+        },
+        {
+          "b": 2.708333333333333,
+          "delta_deviance": 0.20721004617783834
+        },
+        {
+          "b": 2.75,
+          "delta_deviance": 0.281575684639078
+        },
+        {
+          "b": 2.7916666666666665,
+          "delta_deviance": 0.3669867693594071
+        },
+        {
+          "b": 2.833333333333333,
+          "delta_deviance": 0.4633174608685078
+        },
+        {
+          "b": 2.875,
+          "delta_deviance": 0.5704419254000612
+        },
+        {
+          "b": 2.9166666666666665,
+          "delta_deviance": 0.6882343662661228
+        },
+        {
+          "b": 2.958333333333333,
+          "delta_deviance": 0.8165690542146358
+        },
+        {
+          "b": 3.0,
+          "delta_deviance": 0.9553203567738695
+        },
+        {
+          "b": 3.0416666666666665,
+          "delta_deviance": 1.1043627665890163
+        },
+        {
+          "b": 3.083333333333333,
+          "delta_deviance": 1.263570928758515
+        },
+        {
+          "b": 3.125,
+          "delta_deviance": 1.432819667176652
+        },
+        {
+          "b": 3.1666666666666665,
+          "delta_deviance": 1.611984009892856
+        },
+        {
+          "b": 3.208333333333333,
+          "delta_deviance": 1.800939213497573
+        },
+        {
+          "b": 3.25,
+          "delta_deviance": 1.9995607865460396
+        },
+        {
+          "b": 3.2916666666666665,
+          "delta_deviance": 2.2077245120328897
+        },
+        {
+          "b": 3.333333333333333,
+          "delta_deviance": 2.4253064689310904
+        },
+        {
+          "b": 3.375,
+          "delta_deviance": 2.652183052809683
+        },
+        {
+          "b": 3.4166666666666665,
+          "delta_deviance": 2.8882309955461896
+        },
+        {
+          "b": 3.458333333333333,
+          "delta_deviance": 3.133327384149913
+        },
+        {
+          "b": 3.5,
+          "delta_deviance": 3.387349678713724
+        },
+        {
+          "b": 3.5416666666666665,
+          "delta_deviance": 3.6501757295121084
+        },
+        {
+          "b": 3.583333333333333,
+          "delta_deviance": 3.9216837932650375
+        },
+        {
+          "b": 3.625,
+          "delta_deviance": 4.2017525485868
+        },
+        {
+          "b": 3.6666666666666665,
+          "delta_deviance": 4.490261110640311
+        },
+        {
+          "b": 3.708333333333333,
+          "delta_deviance": 4.787089045018371
+        },
+        {
+          "b": 3.75,
+          "delta_deviance": 5.09211638087295
+        },
+        {
+          "b": 3.7916666666666665,
+          "delta_deviance": 5.405223623315111
+        },
+        {
+          "b": 3.833333333333333,
+          "delta_deviance": 5.726291765108568
+        },
+        {
+          "b": 3.875,
+          "delta_deviance": 6.055202297679726
+        },
+        {
+          "b": 3.9166666666666665,
+          "delta_deviance": 6.391837221468398
+        },
+        {
+          "b": 3.958333333333333,
+          "delta_deviance": 6.7360790556435575
+        },
+        {
+          "b": 4.0,
+          "delta_deviance": 7.087810847208287
+        },
+        {
+          "b": 4.041666666666666,
+          "delta_deviance": 7.446916179519755
+        },
+        {
+          "b": 4.083333333333333,
+          "delta_deviance": 7.813279180248882
+        },
+        {
+          "b": 4.125,
+          "delta_deviance": 8.186784528806037
+        },
+        {
+          "b": 4.166666666666666,
+          "delta_deviance": 8.567317463258403
+        },
+        {
+          "b": 4.208333333333333,
+          "delta_deviance": 8.954763786765419
+        },
+        {
+          "b": 4.25,
+          "delta_deviance": 9.349009873559085
+        },
+        {
+          "b": 4.291666666666666,
+          "delta_deviance": 9.749942674495129
+        },
+        {
+          "b": 4.333333333333333,
+          "delta_deviance": 10.157449722203006
+        },
+        {
+          "b": 4.375,
+          "delta_deviance": 10.571419135860403
+        },
+        {
+          "b": 4.416666666666666,
+          "delta_deviance": 10.99173962562073
+        },
+        {
+          "b": 4.458333333333333,
+          "delta_deviance": 11.418300496719748
+        },
+        {
+          "b": 4.5,
+          "delta_deviance": 11.850991653289158
+        },
+        {
+          "b": 4.541666666666666,
+          "delta_deviance": 12.289703601904302
+        },
+        {
+          "b": 4.583333333333333,
+          "delta_deviance": 12.73432745489321
+        },
+        {
+          "b": 4.625,
+          "delta_deviance": 13.184754933433966
+        },
+        {
+          "b": 4.666666666666666,
+          "delta_deviance": 13.640878370468213
+        },
+        {
+          "b": 4.708333333333333,
+          "delta_deviance": 14.102590713457131
+        },
+        {
+          "b": 4.75,
+          "delta_deviance": 14.56978552700703
+        },
+        {
+          "b": 4.791666666666666,
+          "delta_deviance": 15.04235699539166
+        },
+        {
+          "b": 4.833333333333333,
+          "delta_deviance": 15.52019992499718
+        },
+        {
+          "b": 4.875,
+          "delta_deviance": 16.003209746716337
+        },
+        {
+          "b": 4.916666666666666,
+          "delta_deviance": 16.49128251831815
+        },
+        {
+          "b": 4.958333333333333,
+          "delta_deviance": 16.984314926818413
+        },
+        {
+          "b": 5.0,
+          "delta_deviance": 17.482204290876453
+        }
+      ],
+      "fine_truth_edges": [
+        0.0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.05,
+        0.07,
+        0.09,
+        0.10999999999999999,
+        0.13,
+        0.15,
+        0.16999999999999998,
+        0.19,
+        0.21,
+        0.22999999999999998,
+        0.24999999999999997,
+        0.26999999999999996,
+        0.29,
+        0.30999999999999994,
+        0.32999999999999996,
+        0.35,
+        0.3692307692307692,
+        0.3884615384615384,
+        0.4076923076923077,
+        0.4269230769230769,
+        0.4461538461538461,
+        0.4653846153846154,
+        0.4846153846153846,
+        0.5038461538461538,
+        0.523076923076923,
+        0.5423076923076923,
+        0.5615384615384615,
+        0.5807692307692307,
+        0.6,
+        0.62,
+        0.64,
+        0.6599999999999999,
+        0.6799999999999999,
+        0.7,
+        0.72,
+        0.74,
+        0.76,
+        0.78,
+        0.8,
+        0.82,
+        0.84,
+        0.86,
+        0.88,
+        0.8999999999999999,
+        0.9199999999999999,
+        0.94,
+        0.96,
+        0.98,
+        1.0
+      ],
+      "fit_input": "Independent held-out reconstructed expected counts",
+      "fixed_feed_in": [
+        0.0,
+        0.0,
+        0.0,
+        0.0018471870604781998,
+        0.461796765119545,
+        6.380184106892277
+      ],
+      "heldout_feed_in": [
+        0.0,
+        0.0,
+        0.0009235935302390999,
+        0.0009235935302390999,
+        0.4202350562587866,
+        6.176069936709368
+      ],
+      "feed_in_fraction": 0.08938491566990621,
+      "zero_efficiency_fine_truth_cells": [],
+      "profile_set_components_on_display_grid": 1,
+      "stage_status": "OK_CONDITIONAL",
+      "overall_status": "PASS_CONDITIONAL",
+      "state": "1S",
+      "publication_ready": false,
+      "failed_checks": [],
+      "b_slope_GeVminus2": 2.4600347576089283,
+      "b_interval_low": 1.9317364022726842,
+      "b_interval_high": 3.012795217197828,
+      "b_slope_err_low": 0.5282983553362441,
+      "b_slope_err_high": 0.5527604595888995,
+      "amplitude_pb_per_GeV2": 193.37251757828588,
+      "lumi_invfb": 2.5,
+      "requested_fit_range_GeV2": [
+        0.0,
+        1.0
+      ],
+      "used_fit_bins_GeV2": [
+        [
+          0.0,
+          0.05
+        ],
+        [
+          0.05,
+          0.15
+        ],
+        [
+          0.15,
+          0.35
+        ],
+        [
+          0.35,
+          0.6
+        ],
+        [
+          0.6,
+          1.0
+        ]
+      ],
+      "fit_statistic": "Saved fine-response forward-folded Poisson fit; no notebook refit",
+      "source_files": [
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/effective_config.json",
+          "sha256": "6123851d756747e51d3ca74148ea9991e18fb35ca118c7b5f58b4f4fa43e0e0d"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S/pt2/result.json",
+          "sha256": "3ec2a2d9c0ef8a236a8bba4f9fd2e739be8c62c9511bc1dbab16b4d6cadda466"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/validation_status.csv",
+          "sha256": "50a704d60fe1bd12a464711447cc5792c944eeb0133c58ded429b3ddef84168a"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/differential_results.csv",
+          "sha256": "66a9f7dec371988af7bc93c8685f573dc42b77502815c1902c6f4c2def6d932d"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S_pt2_cross_section_covariance.csv",
+          "sha256": "c3686228678a3f653c890da924101584f4c12e2b65f6655f6b938ba0c7860d8f"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S_pt2_covariance_metadata.json",
+          "sha256": "db6727b28e98b8c29cf9d3529495990a85bd9f7f88ac4157d6f20608517a658f"
+        }
+      ],
+      "proton_selection": {
+        "mode": "required",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "applies_to": "reconstructed selection only",
+        "truth_denominator": "unchanged; untagged generated events retained",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+      }
+    },
+    "2S": {
+      "status": "NOT_VALIDATED",
+      "b": 2.4673470778564948,
+      "amplitude": 295.42769844534496,
+      "expected_signal_reco": 19.839110955587472,
+      "deviance": 0.0076793426673726906,
+      "ndof": 2,
+      "fitted_reco": [
+        7.115623459661345,
+        6.894263017262115,
+        5.824117980906638,
+        1.7847134213751816
+      ],
+      "observed_asimov_reco": [
+        7.226942842084229,
+        6.72316697516691,
+        5.881603994847039,
+        1.829196063730347
+      ],
+      "at_lower_boundary": false,
+      "at_search_boundary": false,
+      "interval_interpretation": "Conditional Asimov profile-deviance forecast; chi-square threshold, not a toy-calibrated confidence interval.",
+      "interval_low": 1.4541699288451788,
+      "interval_high": 3.579096856319235,
+      "lower_at_boundary": false,
+      "upper_unbounded": false,
+      "upper_limit_not_found_within_search": false,
+      "upper_limit_search_max": 1000.0,
+      "upper_search_limited": false,
+      "delta_deviance_threshold": 0.9999999999999993,
+      "nominal_coverage": 0.6826894921370859,
+      "profile": [
+        {
+          "b": 0.0,
+          "delta_deviance": 6.553688552720665
+        },
+        {
+          "b": 0.041666666666666664,
+          "delta_deviance": 6.318897716646433
+        },
+        {
+          "b": 0.08333333333333333,
+          "delta_deviance": 6.0887479740870205
+        },
+        {
+          "b": 0.125,
+          "delta_deviance": 5.86322918725457
+        },
+        {
+          "b": 0.16666666666666666,
+          "delta_deviance": 5.642330388568876
+        },
+        {
+          "b": 0.20833333333333331,
+          "delta_deviance": 5.4260397898999155
+        },
+        {
+          "b": 0.25,
+          "delta_deviance": 5.214344792399036
+        },
+        {
+          "b": 0.29166666666666663,
+          "delta_deviance": 5.007231996899831
+        },
+        {
+          "b": 0.3333333333333333,
+          "delta_deviance": 4.804687214869151
+        },
+        {
+          "b": 0.375,
+          "delta_deviance": 4.606695479887886
+        },
+        {
+          "b": 0.41666666666666663,
+          "delta_deviance": 4.41324105964045
+        },
+        {
+          "b": 0.4583333333333333,
+          "delta_deviance": 4.224307468391292
+        },
+        {
+          "b": 0.5,
+          "delta_deviance": 4.0398774799261545
+        },
+        {
+          "b": 0.5416666666666666,
+          "delta_deviance": 3.8599331409352042
+        },
+        {
+          "b": 0.5833333333333333,
+          "delta_deviance": 3.6844557848150594
+        },
+        {
+          "b": 0.625,
+          "delta_deviance": 3.5134260458658892
+        },
+        {
+          "b": 0.6666666666666666,
+          "delta_deviance": 3.3468238738599427
+        },
+        {
+          "b": 0.7083333333333333,
+          "delta_deviance": 3.1846285489573467
+        },
+        {
+          "b": 0.75,
+          "delta_deviance": 3.0268186969448885
+        },
+        {
+          "b": 0.7916666666666666,
+          "delta_deviance": 2.8733723047735444
+        },
+        {
+          "b": 0.8333333333333333,
+          "delta_deviance": 2.724266736370382
+        },
+        {
+          "b": 0.875,
+          "delta_deviance": 2.579478748700392
+        },
+        {
+          "b": 0.9166666666666666,
+          "delta_deviance": 2.4389845080542956
+        },
+        {
+          "b": 0.9583333333333333,
+          "delta_deviance": 2.3027596065378897
+        },
+        {
+          "b": 1.0,
+          "delta_deviance": 2.1707790787393586
+        },
+        {
+          "b": 1.0416666666666665,
+          "delta_deviance": 2.0430174185508134
+        },
+        {
+          "b": 1.0833333333333333,
+          "delta_deviance": 1.9194485961207755
+        },
+        {
+          "b": 1.125,
+          "delta_deviance": 1.8000460749146114
+        },
+        {
+          "b": 1.1666666666666665,
+          "delta_deviance": 1.6847828288606
+        },
+        {
+          "b": 1.2083333333333333,
+          "delta_deviance": 1.5736313595591378
+        },
+        {
+          "b": 1.25,
+          "delta_deviance": 1.4665637135339233
+        },
+        {
+          "b": 1.2916666666666665,
+          "delta_deviance": 1.3635514995037137
+        },
+        {
+          "b": 1.3333333333333333,
+          "delta_deviance": 1.2645659056542016
+        },
+        {
+          "b": 1.375,
+          "delta_deviance": 1.1695777168901316
+        },
+        {
+          "b": 1.4166666666666665,
+          "delta_deviance": 1.0785573320481272
+        },
+        {
+          "b": 1.4583333333333333,
+          "delta_deviance": 0.9914747810517293
+        },
+        {
+          "b": 1.5,
+          "delta_deviance": 0.90829974199033
+        },
+        {
+          "b": 1.5416666666666665,
+          "delta_deviance": 0.829001558104765
+        },
+        {
+          "b": 1.5833333333333333,
+          "delta_deviance": 0.7535492546627203
+        },
+        {
+          "b": 1.625,
+          "delta_deviance": 0.6819115557080555
+        },
+        {
+          "b": 1.6666666666666665,
+          "delta_deviance": 0.614056900668539
+        },
+        {
+          "b": 1.7083333333333333,
+          "delta_deviance": 0.549953460807465
+        },
+        {
+          "b": 1.75,
+          "delta_deviance": 0.48956915550521085
+        },
+        {
+          "b": 1.7916666666666665,
+          "delta_deviance": 0.43287166835760216
+        },
+        {
+          "b": 1.8333333333333333,
+          "delta_deviance": 0.37982846307844786
+        },
+        {
+          "b": 1.875,
+          "delta_deviance": 0.33040679919459714
+        },
+        {
+          "b": 1.9166666666666665,
+          "delta_deviance": 0.2845737475223955
+        },
+        {
+          "b": 1.9583333333333333,
+          "delta_deviance": 0.24229620541519337
+        },
+        {
+          "b": 2.0,
+          "delta_deviance": 0.2035409117721687
+        },
+        {
+          "b": 2.0416666666666665,
+          "delta_deviance": 0.16827446179954197
+        },
+        {
+          "b": 2.083333333333333,
+          "delta_deviance": 0.13646332151578422
+        },
+        {
+          "b": 2.125,
+          "delta_deviance": 0.10807384199323788
+        },
+        {
+          "b": 2.1666666666666665,
+          "delta_deviance": 0.08307227332902745
+        },
+        {
+          "b": 2.208333333333333,
+          "delta_deviance": 0.06142477833898541
+        },
+        {
+          "b": 2.25,
+          "delta_deviance": 0.04309744596868059
+        },
+        {
+          "b": 2.2916666666666665,
+          "delta_deviance": 0.028056304416570477
+        },
+        {
+          "b": 2.333333333333333,
+          "delta_deviance": 0.01626733396448632
+        },
+        {
+          "b": 2.375,
+          "delta_deviance": 0.007696479511559939
+        },
+        {
+          "b": 2.4166666666666665,
+          "delta_deviance": 0.0023096628081513693
+        },
+        {
+          "b": 2.458333333333333,
+          "delta_deviance": 7.279438667273652e-05
+        },
+        {
+          "b": 2.4673470778564948,
+          "delta_deviance": 0.0
+        },
+        {
+          "b": 2.5,
+          "delta_deviance": 0.0009517851870710636
+        },
+        {
+          "b": 2.5416666666666665,
+          "delta_deviance": 0.00491255787495426
+        },
+        {
+          "b": 2.583333333333333,
+          "delta_deviance": 0.011921057850862837
+        },
+        {
+          "b": 2.625,
+          "delta_deviance": 0.02194326394979429
+        },
+        {
+          "b": 2.6666666666666665,
+          "delta_deviance": 0.03494519883033753
+        },
+        {
+          "b": 2.708333333333333,
+          "delta_deviance": 0.05089293905328729
+        },
+        {
+          "b": 2.75,
+          "delta_deviance": 0.06975262485006262
+        },
+        {
+          "b": 2.7916666666666665,
+          "delta_deviance": 0.09149046958145357
+        },
+        {
+          "b": 2.833333333333333,
+          "delta_deviance": 0.11607276888786755
+        },
+        {
+          "b": 2.875,
+          "delta_deviance": 0.14346590953227478
+        },
+        {
+          "b": 2.9166666666666665,
+          "delta_deviance": 0.1736363779375325
+        },
+        {
+          "b": 2.958333333333333,
+          "delta_deviance": 0.20655076842031095
+        },
+        {
+          "b": 3.0,
+          "delta_deviance": 0.24217579112356447
+        },
+        {
+          "b": 3.0416666666666665,
+          "delta_deviance": 0.28047827965038197
+        },
+        {
+          "b": 3.083333333333333,
+          "delta_deviance": 0.3214251984018781
+        },
+        {
+          "b": 3.125,
+          "delta_deviance": 0.36498364962230845
+        },
+        {
+          "b": 3.1666666666666665,
+          "delta_deviance": 0.41112088015462467
+        },
+        {
+          "b": 3.208333333333333,
+          "delta_deviance": 0.45980428790996
+        },
+        {
+          "b": 3.25,
+          "delta_deviance": 0.5110014280548683
+        },
+        {
+          "b": 3.2916666666666665,
+          "delta_deviance": 0.5646800189201149
+        },
+        {
+          "b": 3.333333333333333,
+          "delta_deviance": 0.6208079476350568
+        },
+        {
+          "b": 3.375,
+          "delta_deviance": 0.6793532754919607
+        },
+        {
+          "b": 3.4166666666666665,
+          "delta_deviance": 0.7402842430444916
+        },
+        {
+          "b": 3.458333333333333,
+          "delta_deviance": 0.8035692749449579
+        },
+        {
+          "b": 3.5,
+          "delta_deviance": 0.8691769845248563
+        },
+        {
+          "b": 3.5416666666666665,
+          "delta_deviance": 0.9370761781235433
+        },
+        {
+          "b": 3.583333333333333,
+          "delta_deviance": 1.007235859169708
+        },
+        {
+          "b": 3.625,
+          "delta_deviance": 1.0796252320207516
+        },
+        {
+          "b": 3.6666666666666665,
+          "delta_deviance": 1.1542137055647843
+        },
+        {
+          "b": 3.708333333333333,
+          "delta_deviance": 1.2309708965906427
+        },
+        {
+          "b": 3.75,
+          "delta_deviance": 1.3098666329306479
+        },
+        {
+          "b": 3.7916666666666665,
+          "delta_deviance": 1.3908709563815642
+        },
+        {
+          "b": 3.833333333333333,
+          "delta_deviance": 1.4739541254087687
+        },
+        {
+          "b": 3.875,
+          "delta_deviance": 1.5590866176388998
+        },
+        {
+          "b": 3.9166666666666665,
+          "delta_deviance": 1.6462391321463157
+        },
+        {
+          "b": 3.958333333333333,
+          "delta_deviance": 1.7353825915383556
+        },
+        {
+          "b": 4.0,
+          "delta_deviance": 1.8264881438450526
+        },
+        {
+          "b": 4.041666666666666,
+          "delta_deviance": 1.9195271642181222
+        },
+        {
+          "b": 4.083333333333333,
+          "delta_deviance": 2.014471256444895
+        },
+        {
+          "b": 4.125,
+          "delta_deviance": 2.111292254282101
+        },
+        {
+          "b": 4.166666666666666,
+          "delta_deviance": 2.2099622226149136
+        },
+        {
+          "b": 4.208333333333333,
+          "delta_deviance": 2.3104534584464407
+        },
+        {
+          "b": 4.25,
+          "delta_deviance": 2.4127384917226427
+        },
+        {
+          "b": 4.291666666666666,
+          "delta_deviance": 2.51679008599818
+        },
+        {
+          "b": 4.333333333333333,
+          "delta_deviance": 2.6225812389478147
+        },
+        {
+          "b": 4.375,
+          "delta_deviance": 2.7300851827288457
+        },
+        {
+          "b": 4.416666666666666,
+          "delta_deviance": 2.8392753841993
+        },
+        {
+          "b": 4.458333333333333,
+          "delta_deviance": 2.9501255449969506
+        },
+        {
+          "b": 4.5,
+          "delta_deviance": 3.06260960148399
+        },
+        {
+          "b": 4.541666666666666,
+          "delta_deviance": 3.176701724562306
+        },
+        {
+          "b": 4.583333333333333,
+          "delta_deviance": 3.2923763193640587
+        },
+        {
+          "b": 4.625,
+          "delta_deviance": 3.409608024822172
+        },
+        {
+          "b": 4.666666666666666,
+          "delta_deviance": 3.5283717131256624
+        },
+        {
+          "b": 4.708333333333333,
+          "delta_deviance": 3.6486424890641156
+        },
+        {
+          "b": 4.75,
+          "delta_deviance": 3.7703956892659103
+        },
+        {
+          "b": 4.791666666666666,
+          "delta_deviance": 3.893606881334709
+        },
+        {
+          "b": 4.833333333333333,
+          "delta_deviance": 4.018251862888498
+        },
+        {
+          "b": 4.875,
+          "delta_deviance": 4.144306660505382
+        },
+        {
+          "b": 4.916666666666666,
+          "delta_deviance": 4.271747528580546
+        },
+        {
+          "b": 4.958333333333333,
+          "delta_deviance": 4.400550948098353
+        },
+        {
+          "b": 5.0,
+          "delta_deviance": 4.53069362532367
+        }
+      ],
+      "fine_truth_edges": [
+        0.0,
+        0.01875,
+        0.0375,
+        0.056249999999999994,
+        0.075,
+        0.09375,
+        0.11249999999999999,
+        0.13125,
+        0.15,
+        0.16923076923076924,
+        0.18846153846153846,
+        0.20769230769230768,
+        0.22692307692307692,
+        0.24615384615384617,
+        0.2653846153846154,
+        0.2846153846153846,
+        0.3038461538461539,
+        0.32307692307692304,
+        0.3423076923076923,
+        0.3615384615384616,
+        0.38076923076923075,
+        0.4,
+        0.42000000000000004,
+        0.44,
+        0.46,
+        0.48000000000000004,
+        0.5,
+        0.52,
+        0.54,
+        0.56,
+        0.5800000000000001,
+        0.6000000000000001,
+        0.62,
+        0.64,
+        0.66,
+        0.68,
+        0.7,
+        0.72,
+        0.74,
+        0.76,
+        0.78,
+        0.8,
+        0.8200000000000001,
+        0.8400000000000001,
+        0.8600000000000001,
+        0.88,
+        0.9,
+        0.92,
+        0.9400000000000001,
+        0.9600000000000001,
+        0.98,
+        1.0
+      ],
+      "fit_input": "Independent held-out reconstructed expected counts",
+      "fixed_feed_in": [
+        0.0002074859418931584,
+        0.0,
+        0.14358027179006422,
+        1.6358191658858499
+      ],
+      "heldout_feed_in": [
+        0.0,
+        0.0,
+        0.13382843252108598,
+        1.6627923383319707
+      ],
+      "feed_in_fraction": 0.08294299644623475,
+      "zero_efficiency_fine_truth_cells": [],
+      "profile_set_components_on_display_grid": 1,
+      "stage_status": "OK_CONDITIONAL",
+      "overall_status": "NOT_VALIDATED",
+      "state": "2S",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_slope_coverage"
+      ],
+      "b_slope_GeVminus2": 2.4673470778564948,
+      "b_interval_low": 1.4541699288451788,
+      "b_interval_high": 3.579096856319235,
+      "b_slope_err_low": 1.013177149011316,
+      "b_slope_err_high": 1.1117497784627401,
+      "amplitude_pb_per_GeV2": 83.08414720308993,
+      "lumi_invfb": 2.5,
+      "requested_fit_range_GeV2": [
+        0.0,
+        1.0
+      ],
+      "used_fit_bins_GeV2": [
+        [
+          0.0,
+          0.15
+        ],
+        [
+          0.15,
+          0.4
+        ],
+        [
+          0.4,
+          1.0
+        ]
+      ],
+      "fit_statistic": "Saved fine-response forward-folded Poisson fit; no notebook refit",
+      "source_files": [
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/effective_config.json",
+          "sha256": "4661548687d8cc6791d1d85e8c5218d7af857fc2c65ffd2ebe39969a5e660883"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S/pt2/result.json",
+          "sha256": "329c45a772f0bc6df71ee10942bd395d9ade29a8a8d084993621c342a4ad4e82"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/validation_status.csv",
+          "sha256": "7b521b4361b8354b8d31a5d9d24335433e59aaa15d806df591d9b738bc217e09"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/differential_results.csv",
+          "sha256": "23f227ee237d7928012eafbe0010123e19a46f333dc4a87b160caa54b9cb5837"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S_pt2_cross_section_covariance.csv",
+          "sha256": "2cee2b4a40a5e5249fb034dca7b02a3a13c05d99bc8a20ef02e75439de507237"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S_pt2_covariance_metadata.json",
+          "sha256": "1343c52b085dbb9a135deda4e54b20804d4ad509b96d1886fcf8a2fd9a120c4a"
+        }
+      ],
+      "proton_selection": {
+        "mode": "required",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "applies_to": "reconstructed selection only",
+        "truth_denominator": "unchanged; untagged generated events retained",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+      }
+    },
+    "3S": {
+      "state": "3S",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "overall_status": "NO_FEASIBLE_SLOPE_BINNING",
+      "stage_status": "NOT_RUN",
+      "publication_ready": false,
+      "failed_checks": [],
+      "reason": "3S/pt2: No candidate binning met the configured slope-study requirements; no spectrum or slope was extracted.",
+      "proton_selection": {
+        "mode": "required",
+        "contract": "jul26-reco-topology-v1",
+        "label": "Proton tagged",
+        "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+        "applies_to": "reconstructed selection only",
+        "truth_denominator": "unchanged; untagged generated events retained",
+        "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+        "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+      },
+      "source_files": [
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/effective_config.json",
+          "sha256": "4661548687d8cc6791d1d85e8c5218d7af857fc2c65ffd2ebe39969a5e660883"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S/pt2/result.json",
+          "sha256": "4e7d45b2bf50a27b2449532ebf7bd4936ddf94eb29eaa35c7788e7d0a37835f0"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/validation_status.csv",
+          "sha256": "7b521b4361b8354b8d31a5d9d24335433e59aaa15d806df591d9b738bc217e09"
+        },
+        {
+          "path": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/differential_results.csv",
+          "sha256": "23f227ee237d7928012eafbe0010123e19a46f333dc4a87b160caa54b9cb5837"
+        }
+      ]
+    }
+  },
+  "pT2_display_range_GeV2": [
+    0.0,
+    1.0
+  ],
+  "pT2_display_policy": "Only complete bins within the requested fit interval are shown; all source bins remain in the points CSV.",
+  "slope_references": [
+    {
+      "experiment": "ZEUS",
+      "state": "1S",
+      "observable": "abs_t",
+      "slope": 4.3,
+      "stat_low": 1.3,
+      "stat_high": 2.0,
+      "syst_low": 0.6,
+      "syst_high": 0.5,
+      "x_min": 0.0,
+      "x_max": 5.0,
+      "w_min": 60.0,
+      "w_max": 220.0,
+      "q2_max": 1.0,
+      "kinematics": "60 < W < 220 GeV; Q2 < 1 GeV2; |t| < 5 GeV2",
+      "source": "https://arxiv.org/pdf/1111.2133",
+      "doi": "10.1016/j.physletb.2012.01.009",
+      "provenance": "Sections 4 and 6-8; the reconstructed distribution is fitted in four |t| bins up to 5 GeV2."
+    },
+    {
+      "experiment": "CMS",
+      "state": "nS",
+      "observable": "pT2",
+      "slope": 6.0,
+      "stat_low": 2.1,
+      "stat_high": 2.1,
+      "syst_low": 0.3,
+      "syst_high": 0.3,
+      "x_min": 0.01,
+      "x_max": 1.0,
+      "w_min": 91.0,
+      "w_max": 826.0,
+      "q2_max": null,
+      "kinematics": "91 < W < 826 GeV; |y| < 2.2; 0.01 < pT2 < 1 GeV2; combined nS",
+      "source": "https://arxiv.org/pdf/1809.11080",
+      "doi": "10.1140/epjc/s10052-019-6774-8",
+      "provenance": "Section 7.1; slope of branching-weighted combined Upsilon(nS) pPb spectrum, not state-resolved gamma-p slope.",
+      "erratum": "https://link.springer.com/content/pdf/10.1140/epjc/s10052-022-10276-2.pdf",
+      "erratum_note": "The 2022 erratum corrects an author name only; the quoted slope is unchanged."
+    }
+  ],
+  "warnings": [
+    "State-resolved signal-only errors do not include simultaneous mass-fit correlations or continuum backgrounds.",
+    "1S/y: NOT_VALIDATED; saved diagnostic, not a validated measurement.",
+    "2S/pT2: NOT_VALIDATED; saved diagnostic, not a validated measurement.",
+    "2S/y: NOT_VALIDATED; saved diagnostic, not a validated measurement.",
+    "3S/pt2: No candidate binning met the configured slope-study requirements; no spectrum or slope was extracted.",
+    "3S/y: NOT_VALIDATED; saved diagnostic, not a validated measurement.",
+    "Different Q2 regions across states; state-to-state ratios are not matched-acceptance measurements."
+  ],
+  "validation": {
+    "1S": {
+      "pT2": {
+        "state": "1S",
+        "observable": "pt2",
+        "available": true,
+        "diagnostic_rendering_explicit": true,
+        "q2_max": 1.0,
+        "q2_cut_events": 1.0,
+        "q2_max_flux": 1.0,
+        "saved_category": "new electron ID",
+        "category": "new electron ID",
+        "category_source": "saved sample category; tuple electron-ID mode unverified",
+        "w_range": [
+          20.0,
+          100.0
+        ],
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "source_lumi": 2.5,
+        "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S/pt2/result.json",
+        "overall_status": "PASS_CONDITIONAL",
+        "stage_status": "PASS_CONDITIONAL",
+        "publication_ready": false,
+        "failed_checks": [],
+        "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+        "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+        "cross_section_scaling": {
+          "observable": "pt2",
+          "bin_edges": [
+            0.0,
+            0.05,
+            0.15,
+            0.35,
+            0.6,
+            1.0
+          ],
+          "luminosity_invfb": 2.5,
+          "branching_fraction_ee": 0.0238,
+          "conversion_from_fb_to_pb": 0.001,
+          "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+          "quantity": "dsigma_gamma_p_dpt2",
+          "quantity_label": "Flux-averaged gamma-p differential cross section",
+          "units": "pb/GeV^2",
+          "observable_units": "GeV^2",
+          "flux_integral": 0.1012186984099357,
+          "bin_flux": null,
+          "factors": [
+            3.3208731100272413,
+            1.6604365550136209,
+            0.8302182775068104,
+            0.6641746220054483,
+            0.41510913875340516
+          ],
+          "formula": "N_i / (1000 * L * B_ee * integrated_flux * Delta x_i)",
+          "photon_flux_applied": true,
+          "bin_width_applied": true,
+          "x_units": "GeV^2",
+          "ylabel": "$d\\sigma_{\\gamma p}/dp_T^2$ [pb/GeV$^2$]"
+        },
+        "displayed_quantity": "dsigma_gamma_p_dpt2",
+        "covariance": [
+          [
+            4965.651534564932,
+            -737.7012305185979,
+            61.49103788178162,
+            -12.963759923470068,
+            2.2525178786399285
+          ],
+          [
+            -737.7012305185979,
+            2527.9477022333153,
+            -231.7384527359484,
+            73.90457017356438,
+            5.686477083118067
+          ],
+          [
+            61.491037881781615,
+            -231.7384527359484,
+            710.2423924833004,
+            -99.08498973401932,
+            -5.971639912172473
+          ],
+          [
+            -12.96375992347007,
+            73.90457017356438,
+            -99.08498973401932,
+            413.9677844808412,
+            -35.113623658402396
+          ],
+          [
+            2.2525178786399285,
+            5.686477083118067,
+            -5.971639912172473,
+            -35.11362365840239,
+            117.452156497678
+          ]
+        ],
+        "covariance_metadata": {
+          "state": "1S",
+          "observable": "pt2",
+          "status": "PASS_CONDITIONAL",
+          "files": {
+            "truth_yield": "1S_pt2_truth_yield_covariance.csv",
+            "cross_section": "1S_pt2_cross_section_covariance.csv"
+          },
+          "response_mc_stage_status": "PASS_CONDITIONAL",
+          "quantity": "dsigma_gamma_p_dpt2",
+          "quantity_units": "pb/GeV^2",
+          "truth_edges": [
+            0.0,
+            0.05,
+            0.15,
+            0.35,
+            0.6,
+            1.0
+          ],
+          "conversion_factors": [
+            3.3208731100272413,
+            1.6604365550136209,
+            0.8302182775068104,
+            0.6641746220054483,
+            0.41510913875340516
+          ],
+          "alternate_quantity": null,
+          "alternate_units": null,
+          "alternate_conversion_factors": null,
+          "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+          "proton_selection": {
+            "mode": "required",
+            "contract": "jul26-reco-topology-v1",
+            "label": "Proton tagged",
+            "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+            "applies_to": "reconstructed selection only",
+            "truth_denominator": "unchanged; untagged generated events retained",
+            "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+            "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+          },
+          "proton_selection_mode": "required",
+          "overall_status": "PASS_CONDITIONAL",
+          "stage_status": "PASS_CONDITIONAL",
+          "failed_checks": [],
+          "publication_ready": false
+        },
+        "yield_luminosity_rescaled": false,
+        "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required"
+      },
+      "y": {
+        "state": "1S",
+        "observable": "y",
+        "available": true,
+        "diagnostic_rendering_explicit": true,
+        "q2_max": 1.0,
+        "q2_cut_events": 1.0,
+        "q2_max_flux": 1.0,
+        "saved_category": "new electron ID",
+        "category": "new electron ID",
+        "category_source": "saved sample category; tuple electron-ID mode unverified",
+        "w_range": [
+          20.0,
+          100.0
+        ],
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "source_lumi": 2.5,
+        "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-1only-L2p5/artifacts/reoptimization/1S/y/result.json",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "publication_ready": false,
+        "failed_checks": [
+          "inference.injected_spectrum_coverage",
+          "robustness.shape_only_closure",
+          "robustness.combined_closure"
+        ],
+        "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+        "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+        "cross_section_scaling": {
+          "observable": "y",
+          "bin_edges": [
+            -1.0,
+            0.25,
+            1.0,
+            3.0
+          ],
+          "luminosity_invfb": 2.5,
+          "branching_fraction_ee": 0.0238,
+          "conversion_from_fb_to_pb": 0.001,
+          "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+          "quantity": "dsigma_ep_dy",
+          "quantity_label": "Inclusive ep differential cross section",
+          "units": "pb",
+          "observable_units": "dimensionless",
+          "bin_flux": null,
+          "factors": [
+            0.013445378151260503,
+            0.022408963585434174,
+            0.008403361344537815
+          ],
+          "formula": "N_i / (1000 * L * B_ee * Delta y_i); no photon-flux division",
+          "photon_flux_applied": false,
+          "bin_width_applied": true,
+          "alternate_factors": [
+            0.13283492440108965,
+            0.22139154066848277,
+            0.08302182775068104
+          ],
+          "alternate_quantity": "flux_normalized_ep_rapidity",
+          "alternate_label": "(1/Phi) d sigma_ep / d y",
+          "alternate_units": "pb",
+          "alternate_flux_integral": 0.1012186984099357,
+          "alternate_interpretation": "Legacy flux-normalized ep rapidity spectrum; not a universal gamma-p rapidity distribution",
+          "x_units": "dimensionless",
+          "ylabel": "$d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]",
+          "alternate_ylabel": "$(1/\\Phi)\\,d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]"
+        },
+        "displayed_quantity": "flux_normalized_ep_rapidity",
+        "covariance": [
+          [
+            19.363347613367868,
+            -0.15016210752425668,
+            -0.29651347369006664
+          ],
+          [
+            -0.15016210752425674,
+            34.59511012132801,
+            -0.23290087210287783
+          ],
+          [
+            -0.29651347369006664,
+            -0.23290087210287783,
+            14.590683833231937
+          ]
+        ],
+        "yield_luminosity_rescaled": false,
+        "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required",
+        "source_covariance_metadata": {
+          "state": "1S",
+          "observable": "y",
+          "status": "NOT_VALIDATED",
+          "files": {
+            "truth_yield": "1S_y_truth_yield_covariance.csv",
+            "cross_section": "1S_y_cross_section_covariance.csv",
+            "alternate_cross_section": "1S_y_alternate_cross_section_covariance.csv",
+            "response_mc_truth_yield": "1S_y_response_mc_truth_yield_covariance.csv",
+            "response_mc_cross_section": "1S_y_response_mc_cross_section_covariance.csv"
+          },
+          "response_mc_stage_status": "PASS_CONDITIONAL",
+          "quantity": "dsigma_ep_dy",
+          "quantity_units": "pb",
+          "truth_edges": [
+            -1.0,
+            0.25,
+            0.5,
+            0.75,
+            1.0,
+            3.0
+          ],
+          "conversion_factors": [
+            0.013445378151260503,
+            0.06722689075630252,
+            0.06722689075630252,
+            0.06722689075630252,
+            0.008403361344537815
+          ],
+          "alternate_quantity": "flux_normalized_ep_rapidity",
+          "alternate_units": "pb",
+          "alternate_conversion_factors": [
+            0.13283492440108965,
+            0.6641746220054483,
+            0.6641746220054483,
+            0.6641746220054483,
+            0.08302182775068104
+          ],
+          "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+          "proton_selection": {
+            "mode": "required",
+            "contract": "jul26-reco-topology-v1",
+            "label": "Proton tagged",
+            "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+            "applies_to": "reconstructed selection only",
+            "truth_denominator": "unchanged; untagged generated events retained",
+            "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+            "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+          },
+          "proton_selection_mode": "required",
+          "overall_status": "NOT_VALIDATED",
+          "stage_status": "PASS_CONDITIONAL",
+          "failed_checks": [
+            "inference.injected_spectrum_coverage",
+            "robustness.shape_only_closure",
+            "robustness.combined_closure"
+          ],
+          "publication_ready": false
+        },
+        "covariance_metadata": {
+          "overall_status": "NOT_VALIDATED",
+          "publication_ready": false,
+          "truth_edges": [
+            -1.0,
+            0.25,
+            1.0,
+            3.0
+          ],
+          "conversion_factors": [
+            0.013445378151260503,
+            0.022408963585434174,
+            0.008403361344537815
+          ],
+          "interpretation": "Saved full sampling covariance propagated by H C H^T; not an interval",
+          "truth_yield_covariance": [
+            [
+              1097.3771077306678,
+              -5.106073470434882,
+              -26.88684660592811
+            ],
+            [
+              -5.106073470434882,
+              705.8179066996038,
+              -12.671201638200774
+            ],
+            [
+              -26.88684660592811,
+              -12.671201638200774,
+              2116.854782847431
+            ]
+          ],
+          "primary_cross_section_covariance": [
+            [
+              0.19838185126689564,
+              -0.0015384445642154857,
+              -0.003037847226148222
+            ],
+            [
+              -0.0015384445642154857,
+              0.3544346839031663,
+              -0.0023861218159171005
+            ],
+            [
+              -0.003037847226148222,
+              -0.0023861218159171005,
+              0.1494848374300848
+            ]
+          ]
+        },
+        "rebinning": {
+          "edge_selection": "explicit_saved_edges",
+          "kind": "Adjacent-bin aggregation of original estimator; no three-parameter refit",
+          "source_edges": [
+            -1.0,
+            0.25,
+            0.5,
+            0.75,
+            1.0,
+            3.0
+          ],
+          "display_edges": [
+            -1.0,
+            0.25,
+            1.0,
+            3.0
+          ],
+          "yield_merge_matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              1.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "cross_section_merge_matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3333333333333333,
+              0.3333333333333333,
+              0.3333333333333333,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "uncertainties": "Central quantiles of summed joint Poisson toy estimates; not sums of marginal endpoints",
+          "replay": {
+            "solver_source_sha256": "bdbd2e989594311fdb7311ea342ef6fb0bbb95a1ab71af39a18b347835699c39",
+            "seed": 20261023,
+            "rng": "default_rng(SeedSequence(seed).spawn(3)[0])",
+            "n_toys": 1000,
+            "successful_toys": 1000,
+            "failed_toys": 0,
+            "failed_fraction": 0.0,
+            "saved_summary_reproduced": true,
+            "comparison_rtol": 2e-06,
+            "comparison_atol": 2e-07,
+            "original_bin_count": 5,
+            "coverage": 0.6826894921370859,
+            "numpy_version": "2.3.5",
+            "scipy_version": "1.17.0",
+            "cache_hit": false,
+            "cache_key": "b7a9dc0a432a4639bc151375c982a857df983225d0eb9a1c1387c57282e3edff",
+            "cache_path": "/workspace/scratch/59c457e0bf3e/run-corrected/paper275/spectra/differential/rebin_cache/joint-toys-b7a9dc0a432a4639bc151375c982a857df983225d0eb9a1c1387c57282e3edff.npz",
+            "values_sha256": "a015319c65dc7d32b584a72748bc7dc6669d89f24f8955fd580b22b8931af01c",
+            "overall_status": "NOT_VALIDATED",
+            "publication_ready": false,
+            "interpretation": "Replay of original-bin fixed-response/fixed-feed Poisson sampling ensemble; no new coverage validation"
+          },
+          "validation_status_changed": false,
+          "additional_validation": "No new binning optimization, coverage or stress validation is claimed"
+        },
+        "unsupported_bins": {
+          "pT2": [],
+          "y": []
+        }
+      }
+    },
+    "2S": {
+      "pT2": {
+        "state": "2S",
+        "observable": "pt2",
+        "available": true,
+        "diagnostic_rendering_explicit": true,
+        "q2_max": 0.01,
+        "q2_cut_events": 0.01,
+        "q2_max_flux": 0.01,
+        "saved_category": "standard electron ID",
+        "category": "standard electron ID",
+        "category_source": "saved sample category; tuple electron-ID mode unverified",
+        "w_range": [
+          20.0,
+          100.0
+        ],
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "source_lumi": 2.5,
+        "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S/pt2/result.json",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "publication_ready": false,
+        "failed_checks": [
+          "inference.injected_slope_coverage"
+        ],
+        "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+        "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+        "cross_section_scaling": {
+          "observable": "pt2",
+          "bin_edges": [
+            0.0,
+            0.15,
+            0.4,
+            1.0
+          ],
+          "luminosity_invfb": 2.5,
+          "branching_fraction_ee": 0.0191,
+          "conversion_from_fb_to_pb": 0.001,
+          "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+          "quantity": "dsigma_gamma_p_dpt2",
+          "quantity_label": "Flux-averaged gamma-p differential cross section",
+          "units": "pb/GeV^2",
+          "observable_units": "GeV^2",
+          "flux_integral": 0.07446628165521689,
+          "bin_flux": null,
+          "factors": [
+            1.8748895841590778,
+            1.1249337504954466,
+            0.46872239603976945
+          ],
+          "formula": "N_i / (1000 * L * B_ee * integrated_flux * Delta x_i)",
+          "photon_flux_applied": true,
+          "bin_width_applied": true,
+          "x_units": "GeV^2",
+          "ylabel": "$d\\sigma_{\\gamma p}/dp_T^2$ [pb/GeV$^2$]"
+        },
+        "displayed_quantity": "dsigma_gamma_p_dpt2",
+        "covariance": [
+          [
+            815.0187455357872,
+            -62.56871476210579,
+            -0.14670079431398847
+          ],
+          [
+            -62.5687147621058,
+            358.4093686141676,
+            -13.975933385376685
+          ],
+          [
+            -0.14670079431398847,
+            -13.975933385376685,
+            56.301988079547336
+          ]
+        ],
+        "covariance_metadata": {
+          "state": "2S",
+          "observable": "pt2",
+          "status": "NOT_VALIDATED",
+          "files": {
+            "truth_yield": "2S_pt2_truth_yield_covariance.csv",
+            "cross_section": "2S_pt2_cross_section_covariance.csv"
+          },
+          "response_mc_stage_status": "PASS_CONDITIONAL",
+          "quantity": "dsigma_gamma_p_dpt2",
+          "quantity_units": "pb/GeV^2",
+          "truth_edges": [
+            0.0,
+            0.15,
+            0.4,
+            1.0
+          ],
+          "conversion_factors": [
+            1.8748895841590778,
+            1.1249337504954466,
+            0.46872239603976945
+          ],
+          "alternate_quantity": null,
+          "alternate_units": null,
+          "alternate_conversion_factors": null,
+          "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+          "proton_selection": {
+            "mode": "required",
+            "contract": "jul26-reco-topology-v1",
+            "label": "Proton tagged",
+            "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+            "applies_to": "reconstructed selection only",
+            "truth_denominator": "unchanged; untagged generated events retained",
+            "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+            "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+          },
+          "proton_selection_mode": "required",
+          "overall_status": "NOT_VALIDATED",
+          "stage_status": "PASS_CONDITIONAL",
+          "failed_checks": [
+            "inference.injected_slope_coverage"
+          ],
+          "publication_ready": false
+        },
+        "yield_luminosity_rescaled": false,
+        "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required"
+      },
+      "y": {
+        "state": "2S",
+        "observable": "y",
+        "available": true,
+        "diagnostic_rendering_explicit": true,
+        "q2_max": 0.01,
+        "q2_cut_events": 0.01,
+        "q2_max_flux": 0.01,
+        "saved_category": "standard electron ID",
+        "category": "standard electron ID",
+        "category_source": "saved sample category; tuple electron-ID mode unverified",
+        "w_range": [
+          20.0,
+          100.0
+        ],
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "source_lumi": 2.5,
+        "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/2S/y/result.json",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "publication_ready": false,
+        "failed_checks": [
+          "inference.injected_spectrum_coverage"
+        ],
+        "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+        "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+        "cross_section_scaling": {
+          "observable": "y",
+          "bin_edges": [
+            -1.0,
+            0.5,
+            1.0,
+            3.0
+          ],
+          "luminosity_invfb": 2.5,
+          "branching_fraction_ee": 0.0191,
+          "conversion_from_fb_to_pb": 0.001,
+          "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+          "quantity": "dsigma_ep_dy",
+          "quantity_label": "Inclusive ep differential cross section",
+          "units": "pb",
+          "observable_units": "dimensionless",
+          "bin_flux": null,
+          "factors": [
+            0.013961605584642234,
+            0.041884816753926704,
+            0.010471204188481676
+          ],
+          "formula": "N_i / (1000 * L * B_ee * Delta y_i); no photon-flux division",
+          "photon_flux_applied": false,
+          "bin_width_applied": true,
+          "alternate_factors": [
+            0.18748895841590776,
+            0.5624668752477233,
+            0.14061671881193083
+          ],
+          "alternate_quantity": "flux_normalized_ep_rapidity",
+          "alternate_label": "(1/Phi) d sigma_ep / d y",
+          "alternate_units": "pb",
+          "alternate_flux_integral": 0.07446628165521689,
+          "alternate_interpretation": "Legacy flux-normalized ep rapidity spectrum; not a universal gamma-p rapidity distribution",
+          "x_units": "dimensionless",
+          "ylabel": "$d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]",
+          "alternate_ylabel": "$(1/\\Phi)\\,d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]"
+        },
+        "displayed_quantity": "flux_normalized_ep_rapidity",
+        "covariance": [
+          [
+            10.668006521848975,
+            -0.03910218347254216,
+            0.4176047615501979
+          ],
+          [
+            -0.03910218347254216,
+            34.1300199533916,
+            -0.18876739296994235
+          ],
+          [
+            0.4176047615501979,
+            -0.18876739296994235,
+            9.252721499594152
+          ]
+        ],
+        "covariance_metadata": {
+          "state": "2S",
+          "observable": "y",
+          "status": "NOT_VALIDATED",
+          "files": {
+            "truth_yield": "2S_y_truth_yield_covariance.csv",
+            "cross_section": "2S_y_cross_section_covariance.csv",
+            "alternate_cross_section": "2S_y_alternate_cross_section_covariance.csv",
+            "response_mc_truth_yield": "2S_y_response_mc_truth_yield_covariance.csv",
+            "response_mc_cross_section": "2S_y_response_mc_cross_section_covariance.csv"
+          },
+          "response_mc_stage_status": "PASS_CONDITIONAL",
+          "quantity": "dsigma_ep_dy",
+          "quantity_units": "pb",
+          "truth_edges": [
+            -1.0,
+            0.5,
+            1.0,
+            3.0
+          ],
+          "conversion_factors": [
+            0.013961605584642234,
+            0.041884816753926704,
+            0.010471204188481676
+          ],
+          "alternate_quantity": "flux_normalized_ep_rapidity",
+          "alternate_units": "pb",
+          "alternate_conversion_factors": [
+            0.18748895841590776,
+            0.5624668752477233,
+            0.14061671881193083
+          ],
+          "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+          "proton_selection": {
+            "mode": "required",
+            "contract": "jul26-reco-topology-v1",
+            "label": "Proton tagged",
+            "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+            "applies_to": "reconstructed selection only",
+            "truth_denominator": "unchanged; untagged generated events retained",
+            "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+            "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+          },
+          "proton_selection_mode": "required",
+          "overall_status": "NOT_VALIDATED",
+          "stage_status": "PASS_CONDITIONAL",
+          "failed_checks": [
+            "inference.injected_spectrum_coverage"
+          ],
+          "publication_ready": false
+        },
+        "yield_luminosity_rescaled": false,
+        "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required",
+        "unsupported_bins": {
+          "pT2": [],
+          "y": []
+        }
+      }
+    },
+    "3S": {
+      "pT2": {
+        "state": "3S",
+        "observable": "pt2",
+        "available": false,
+        "source_lumi": 2.5,
+        "q2_max": 0.01,
+        "q2_cut_events": 0.01,
+        "q2_max_flux": 0.01,
+        "saved_category": "standard electron ID",
+        "category": "standard electron ID",
+        "category_source": "saved sample category; tuple electron-ID mode unverified",
+        "w_range": [
+          20.0,
+          100.0
+        ],
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S/pt2/result.json",
+        "overall_status": "NO_FEASIBLE_SLOPE_BINNING",
+        "stage_status": "NOT_RUN",
+        "publication_ready": false,
+        "optimization_status": "NO_FEASIBLE_SLOPE_BINNING",
+        "failed_checks": [],
+        "reason": "No candidate binning met the configured slope-study requirements; no spectrum or slope was extracted.",
+        "yield_luminosity_rescaled": false,
+        "bins": 0,
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required"
+      },
+      "y": {
+        "state": "3S",
+        "observable": "y",
+        "available": true,
+        "diagnostic_rendering_explicit": true,
+        "q2_max": 0.01,
+        "q2_cut_events": 0.01,
+        "q2_max_flux": 0.01,
+        "saved_category": "standard electron ID",
+        "category": "standard electron ID",
+        "category_source": "saved sample category; tuple electron-ID mode unverified",
+        "w_range": [
+          20.0,
+          100.0
+        ],
+        "w_min": 20.0,
+        "w_max": 100.0,
+        "source_lumi": 2.5,
+        "source": "/workspace/scratch/59c457e0bf3e/run-corrected/state-workspaces/tagged-3011/results/generated/runs/fit275-L2p5/artifacts/reoptimization/3S/y/result.json",
+        "overall_status": "NOT_VALIDATED",
+        "stage_status": "PASS_CONDITIONAL",
+        "publication_ready": false,
+        "failed_checks": [
+          "inference.injected_spectrum_coverage"
+        ],
+        "uncertainty_scope": "Signal-only fixed-response and fixed-feed-in projected statistics. Conditional profile intervals are tested with Poisson toys; sampling bands are not confidence intervals. Response MC variation reported separately. No background, mass-state extraction, luminosity, branching-ratio or flux uncertainty.",
+        "interval_interpretation": "Central toy sampling quantiles, not confidence limits",
+        "cross_section_scaling": {
+          "observable": "y",
+          "bin_edges": [
+            -1.0,
+            0.5,
+            3.0
+          ],
+          "luminosity_invfb": 2.5,
+          "branching_fraction_ee": 0.0218,
+          "conversion_from_fb_to_pb": 0.001,
+          "normalization": "inclusive Upsilon; input weights are visible dielectron yields",
+          "quantity": "dsigma_ep_dy",
+          "quantity_label": "Inclusive ep differential cross section",
+          "units": "pb",
+          "observable_units": "dimensionless",
+          "bin_flux": null,
+          "factors": [
+            0.012232415902140673,
+            0.007339449541284404
+          ],
+          "formula": "N_i / (1000 * L * B_ee * Delta y_i); no photon-flux division",
+          "photon_flux_applied": false,
+          "bin_width_applied": true,
+          "alternate_factors": [
+            0.16426784888733204,
+            0.09856070933239922
+          ],
+          "alternate_quantity": "flux_normalized_ep_rapidity",
+          "alternate_label": "(1/Phi) d sigma_ep / d y",
+          "alternate_units": "pb",
+          "alternate_flux_integral": 0.07446628165521689,
+          "alternate_interpretation": "Legacy flux-normalized ep rapidity spectrum; not a universal gamma-p rapidity distribution",
+          "x_units": "dimensionless",
+          "ylabel": "$d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]",
+          "alternate_ylabel": "$(1/\\Phi)\\,d\\sigma_{ep}/dy_{\\Upsilon}$ [pb]"
+        },
+        "displayed_quantity": "flux_normalized_ep_rapidity",
+        "covariance": [
+          [
+            6.036179379049257,
+            -0.07406289886411573
+          ],
+          [
+            -0.07406289886411573,
+            4.43086219573509
+          ]
+        ],
+        "covariance_metadata": {
+          "state": "3S",
+          "observable": "y",
+          "status": "NOT_VALIDATED",
+          "files": {
+            "truth_yield": "3S_y_truth_yield_covariance.csv",
+            "cross_section": "3S_y_cross_section_covariance.csv",
+            "alternate_cross_section": "3S_y_alternate_cross_section_covariance.csv",
+            "response_mc_truth_yield": "3S_y_response_mc_truth_yield_covariance.csv",
+            "response_mc_cross_section": "3S_y_response_mc_cross_section_covariance.csv"
+          },
+          "response_mc_stage_status": "PASS_CONDITIONAL",
+          "quantity": "dsigma_ep_dy",
+          "quantity_units": "pb",
+          "truth_edges": [
+            -1.0,
+            0.5,
+            3.0
+          ],
+          "conversion_factors": [
+            0.012232415902140673,
+            0.007339449541284404
+          ],
+          "alternate_quantity": "flux_normalized_ep_rapidity",
+          "alternate_units": "pb",
+          "alternate_conversion_factors": [
+            0.16426784888733204,
+            0.09856070933239922
+          ],
+          "interpretation": "Sampling covariance of the nonnegative truth-yield estimator; not an interval",
+          "proton_selection": {
+            "mode": "required",
+            "contract": "jul26-reco-topology-v1",
+            "label": "Proton tagged",
+            "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+            "applies_to": "reconstructed selection only",
+            "truth_denominator": "unchanged; untagged generated events retained",
+            "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+            "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+          },
+          "proton_selection_mode": "required",
+          "overall_status": "NOT_VALIDATED",
+          "stage_status": "PASS_CONDITIONAL",
+          "failed_checks": [
+            "inference.injected_spectrum_coverage"
+          ],
+          "publication_ready": false
+        },
+        "yield_luminosity_rescaled": false,
+        "bin_center_convention": "Arithmetic midpoint; value is a bin average",
+        "proton_selection": {
+          "mode": "required",
+          "contract": "jul26-reco-topology-v1",
+          "label": "Proton tagged",
+          "predicate": "reco_topology in {1,2} and finite reco_tagged_proton_p > 0",
+          "applies_to": "reconstructed selection only",
+          "truth_denominator": "unchanged; untagged generated events retained",
+          "normalization": "all generated rows; unchanged cross section, luminosity and flux",
+          "tag_definition": "producer RP/off-momentum candidate; not a truth-match or exclusivity guarantee"
+        },
+        "proton_selection_mode": "required",
+        "unsupported_bins": {
+          "y": []
+        }
+      }
+    }
+  },
+  "zero_lower_endpoint_display": "Downward triangles at the log-axis floor mark limits that extend to zero.",
+  "caption_notes": [
+    "$20<W_{\\gamma p}<100$ GeV; $Q^2_{\\max}$ [GeV$^2$]: 1S: 1; 2S: 0.01; 3S: 0.01",
+    "1S: new electron ID; 2S: standard electron ID; 3S: standard electron ID",
+    "Signal-only fixed-response and fixed-feed-in projection; response-MC variations remain separate.",
+    "Displayed bars: central toy sampling quantiles. Slope inset: saved conditional profile endpoints.",
+    "Final validation status applies to each state/observable; NOT_VALIDATED results are diagnostics.",
+    "Rapidity retains (1/Phi_total) d sigma_ep/dy, a beam/selection-dependent flux-normalized convention.",
+    "ZEUS: $\\Upsilon(1S)$, $|t|<5$ GeV$^2$, $60<W<220$ GeV, $Q^2<1$ GeV$^2$.\nCMS: $\\Upsilon(nS)$, $0.01<p_T^2<1$ GeV$^2$, $|y|<2.2$, $91<W<826$ GeV."
+  ],
+  "publication_footer_displayed": false,
+  "input_run": "/workspace/scratch/59c457e0bf3e/run-corrected/paper275/spectra",
+  "publication_ready": false,
+  "slope_source": "Saved forward-folded fine-response Poisson profiles; no notebook refit",
+  "rapidity_convention": "Saved flux_normalized_ep_rapidity companion; primary ep values retained in points CSV",
+  "yield_luminosity_rescaled": false,
+  "case_availability": [
+    {
+      "state": "1S",
+      "variable": "pT2",
+      "observable": "pt2",
+      "available": true,
+      "bins": 5,
+      "displayed_bins": 5,
+      "status": "PASS_CONDITIONAL",
+      "overall_status": "PASS_CONDITIONAL",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [],
+      "reason": ""
+    },
+    {
+      "state": "1S",
+      "variable": "y",
+      "observable": "y",
+      "available": true,
+      "bins": 3,
+      "displayed_bins": 3,
+      "status": "NOT_VALIDATED",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "reason": ""
+    },
+    {
+      "state": "2S",
+      "variable": "pT2",
+      "observable": "pt2",
+      "available": true,
+      "bins": 3,
+      "displayed_bins": 3,
+      "status": "NOT_VALIDATED",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_slope_coverage"
+      ],
+      "reason": ""
+    },
+    {
+      "state": "2S",
+      "variable": "y",
+      "observable": "y",
+      "available": true,
+      "bins": 3,
+      "displayed_bins": 3,
+      "status": "NOT_VALIDATED",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "reason": ""
+    },
+    {
+      "state": "3S",
+      "variable": "pT2",
+      "observable": "pt2",
+      "available": false,
+      "bins": 0,
+      "displayed_bins": 0,
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "overall_status": "NO_FEASIBLE_SLOPE_BINNING",
+      "stage_status": "NOT_RUN",
+      "publication_ready": false,
+      "failed_checks": [],
+      "reason": "3S/pt2: No candidate binning met the configured slope-study requirements; no spectrum or slope was extracted."
+    },
+    {
+      "state": "3S",
+      "variable": "y",
+      "observable": "y",
+      "available": true,
+      "bins": 2,
+      "displayed_bins": 2,
+      "status": "NOT_VALIDATED",
+      "overall_status": "NOT_VALIDATED",
+      "stage_status": "PASS_CONDITIONAL",
+      "publication_ready": false,
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "reason": ""
+    }
+  ],
+  "availability_file": "/workspace/scratch/59c457e0bf3e/run-corrected/paper275/spectra/differential/upsilon_es_differential_availability.csv",
+  "output_files": [
+    "/workspace/scratch/59c457e0bf3e/run-corrected/paper275/spectra/differential/upsilon_es_differential.pdf",
+    "/workspace/scratch/59c457e0bf3e/run-corrected/paper275/spectra/differential/upsilon_es_differential.png"
+  ]
+}
