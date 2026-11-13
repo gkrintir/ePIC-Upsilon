@@ -489,16 +489,30 @@ def main():
             ax.set_axis_off()
             continue
         hist = histograms[name]
-        labels = hist["labels"] or [str(i+1) for i in range(len(hist["counts"]))]
-        labels = [label.replace("#Sigma", "Sigma") for label in labels]
+        raw_labels = hist["labels"] or [str(i+1) for i in range(len(hist["counts"]))]
+        labels = [label.replace("#Sigma", "Sigma") for label in raw_labels]
+        if name == "h_CutFlow" and len(hist["counts"]) == 10:
+            labels = [
+                "1. Total processed",
+                "2. Generated Upsilon candidate found",
+                "3. Generated decay leptons in acceptance",
+                "4. Identified central e+ available",
+                "5. Identified central e+ and e- available",
+                "6. Additional e- candidate available",
+                "7. Valid assignment and mass [8, 12] GeV",
+                "8. Producer longitudinal-balance selection",
+                "9. Reconstructed W >= 0",
+                "10. RP/OMD proton candidate",
+            ]
+            ax.axhline(2.5, color="gray", linestyle="--", linewidth=1)
         ax.barh(np.arange(len(labels)), hist["counts"], color="tab:blue")
         ax.set_yticks(np.arange(len(labels)), labels, fontsize=9)
         ax.invert_yaxis()
         ax.set_xlabel("Stored raw counts")
         ax.set_title(name)
-        for i, (label, count) in enumerate(zip(labels, hist["counts"])):
+        for i, (label, count) in enumerate(zip(raw_labels, hist["counts"])):
             stored_rows.append(dict(histogram=name, bin=i+1, label=label, count=float(count)))
-    fig.suptitle(f"{args.energy_label}: stored producer cut flows\nSelections and counting units belong to the producer, not the tuple efficiency above", fontsize=12)
+    fig.suptitle(f"{args.energy_label} | stored producer counters\nEvent and electron-ID histograms retain their producer counting units", fontsize=12)
     finish(fig, output / "stored_cutflows.png")
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.7))
     for ax, name, xlabel in zip(axes, ["h_EleID_EpRatio", "h_EleID_IsoFraction"], [r"Electron candidate $E/p$", "Electron candidate isolation fraction"]):

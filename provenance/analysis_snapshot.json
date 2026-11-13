@@ -613,5 +613,19 @@
       "sha256": "760c6086d21d7178c8926ff30a9f981ca1dbbd0874be406a4585874b7623699d"
     }
   ],
-  "excluded": "Generated outputs, run markers, local.toml, binary caches, images and editor backups. Existing sources were not modified."
+  "amended_files": [
+    {
+      "path": "analysis/scripts/reporting/render_note_kinematics.py",
+      "baseline_sha256": "8bd3290f9b1ac40067e38339e2e395141d129c89bd7babd9d957e6ee9a1f0fcb",
+      "new_sha256": "2584d7afd59e5678384757f7078743cbc7189583ba0bbe3423a0c53f63063364",
+      "reason": "Correct the Figure 6 producer-counter display by separating the truth and reconstruction chains, marking undefined adjacent losses, and correcting the stage definitions. Retain raw counts and the original stored labels in the audit."
+    },
+    {
+      "path": "analysis/scripts/validation/plot_latest_sample_performance.py",
+      "baseline_sha256": "880efc66f0e39853ae8426dda0c6fa4c8727e5f8db324249c862e5e028570274",
+      "new_sha256": "bf12dbed867aed569c9fdd1481adf1cf620d1f64fc4e64f9277a5761c5554b3f",
+      "reason": "Correct h_CutFlow stage definitions and separate truth and reconstruction counters in the performance display. Retain the original stored labels and raw counts in the exported audit."
+    }
+  ],
+  "excluded": "Generated outputs, run markers, local.toml, binary caches, images and editor backups. Initial import hashes are recorded in copied_files. Reviewed source updates are recorded in amended_files."
 }

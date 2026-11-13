@@ -392,33 +392,73 @@ def stored_pages(samples, args, rows, audit):
     finish(fig,args.out_dir,"electron_identification","Electron-identification distributions",
            "Stored producer histograms | raw entries, before this task's tuple selections",handles=handles,labels=[s["label"] for s in samples])
 
-    definitions=["Total events processed", "Generated Upsilon candidate found", "Generated decay leptons in acceptance",
-                 "Reconstructed positron candidate", "Reconstructed decay-electron candidate", "Reconstructed scattered-electron candidate",
-                 "Dielectron mass window [8, 12] GeV", "Producer exclusivity selection on sum(E - pz)",
-                 "Producer photon-proton W selection", "Forward proton tagged"]
-    fig=plt.figure(figsize=(14,8.8));gs=fig.add_gridspec(2,2,width_ratios=[1.6,1],height_ratios=[3,1],hspace=.08,wspace=.20)
-    ax=fig.add_subplot(gs[0,0]);lossax=fig.add_subplot(gs[1,0],sharex=ax);textax=fig.add_subplot(gs[:,1]);textax.set_axis_off()
-    found=False
-    for i,sample in enumerate(samples):
+    definitions = [
+        "All processed events",
+        "Generated Upsilon decay found",
+        "Both generated leptons have |eta| < 3.5",
+        "At least one identified central positron",
+        "Identified central positron and electron available",
+        "Second central electron or eligible tagger available",
+        "Valid lepton assignment and mass in [8, 12] GeV",
+        "Producer |sum(E - pz) - 2 Ee| <= 0.2 Ee",
+        "Reconstructed photon-proton W >= 0",
+        "RP or OMD proton candidate",
+    ]
+    fig = plt.figure(figsize=(14, 8.8))
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.4, 1.2], height_ratios=[3, 1], hspace=.08, wspace=.20)
+    ax = fig.add_subplot(gs[0, 0])
+    lossax = fig.add_subplot(gs[1, 0], sharex=ax)
+    textax = fig.add_subplot(gs[:, 1])
+    textax.set_axis_off()
+    found = False
+    for i, sample in enumerate(samples):
         if "h_CutFlow" not in sample["stored"]:
-            audit.append({"sample":sample["label"],"missing_stored_histogram":"h_CutFlow"});continue
-        h=sample["stored"]["h_CutFlow"];v=h["values"]
-        if len(v)!=10:raise ValueError(f"{sample['path']}: expected ten cut-flow stages, found {len(v)}")
-        found=True;loss=np.zeros(10);loss[1:]=np.divide(100*(v[:-1]-v[1:]),v[:-1],out=np.full(9,np.nan),where=v[:-1]>0)
-        ax.stairs(v,np.arange(.5,11),color=COLORS[i],ls=STYLES[i]);lossax.stairs(loss,np.arange(.5,11),color=COLORS[i],ls=STYLES[i])
-        for j,value in enumerate(v):
-            definition=h["labels"][j] if h["labels"] else definitions[j]
-            rows.append({"sample":sample["label"],"histogram":"h_CutFlow","bin":j+1,"bin_low":j+.5,"bin_high":j+1.5,"count":value,
-                         "definition":definition,"loss_from_previous_percent":loss[j]})
-    ax.set_ylabel("Remaining events");ax.grid(alpha=.18);lossax.grid(alpha=.18)
-    if found:ax.set_yscale("log")
-    ax.tick_params(labelbottom=False);lossax.set_xticks(np.arange(1,11));lossax.set_xlabel("Numbered event-selection stage");lossax.set_ylabel("Lost [%]")
-    lossax.set_ylim(-2,102);ax.set_xlim(.5,10.5)
-    textax.text(0,1,"Selection stages",fontweight="bold",fontsize=14,va="top",transform=textax.transAxes)
-    for j,definition in enumerate(definitions):textax.text(0,.92-j*.086,f"{j+1}. {definition}",fontsize=10,va="top",transform=textax.transAxes,wrap=True)
-    finish(fig,args.out_dir,"event_selection_cutflow_numbered",r"$\Upsilon\to e^+e^-$ event-selection cut flow",
-           "Stored producer counts | loss relative to previous stage | stage thresholds are those used by the producer",
-           handles=handles,labels=[s["label"] for s in samples])
+            audit.append({"sample": sample["label"], "missing_stored_histogram": "h_CutFlow"})
+            continue
+        histogram = sample["stored"]["h_CutFlow"]
+        counts = np.asarray(histogram["values"], dtype=float)
+        if len(counts) != 10:
+            raise ValueError(f"{sample['path']}: expected ten producer-counter stages, found {len(counts)}")
+        found = True
+        losses = np.full(10, np.nan)
+        losses[1:] = np.divide(100 * (counts[:-1] - counts[1:]), counts[:-1],
+                               out=np.full(9, np.nan), where=counts[:-1] > 0)
+        # Reconstruction starts from all processed events, independently of truth stages 2 and 3.
+        losses[3] = np.nan
+        ax.stairs(counts[:3], np.arange(.5, 4), baseline=None, color=COLORS[i], ls=STYLES[i])
+        ax.stairs(counts[3:], np.arange(3.5, 11), baseline=None, color=COLORS[i], ls=STYLES[i])
+        lossax.stairs(losses, np.arange(.5, 11), baseline=None, color=COLORS[i], ls=STYLES[i])
+        for j, count in enumerate(counts):
+            rows.append({"sample": sample["label"], "histogram": "h_CutFlow", "bin": j + 1,
+                         "bin_low": j + .5, "bin_high": j + 1.5, "count": count,
+                         "definition": definitions[j],
+                         "loss_from_previous_percent": float(losses[j]) if np.isfinite(losses[j]) else ""})
+        audit.append({"sample": sample["label"], "histogram": "h_CutFlow",
+                      "stored_labels": histogram["labels"],
+                      "nested_stage_sequences": [[1, 2, 3], [1, 4, 5, 6, 7, 8, 9, 10]],
+                      "undefined_adjacent_loss_stages": (np.flatnonzero(~np.isfinite(losses)) + 1).tolist()})
+    ax.set_ylabel("Simulated events")
+    ax.grid(alpha=.18)
+    lossax.grid(alpha=.18)
+    if found:
+        ax.set_yscale("log")
+    ax.axvline(3.5, color="0.55", ls=":", lw=1)
+    ax.tick_params(labelbottom=False)
+    lossax.set_xticks(np.arange(1, 11))
+    lossax.set_xlabel("Producer stage")
+    lossax.set_ylabel("Step loss [%]")
+    lossax.set_ylim(-2, 102)
+    lossax.axvspan(3.5, 4.5, color="0.95", zorder=0)
+    lossax.text(4, 65, "Separate\nchain", ha="center", va="center", fontsize=10)
+    ax.set_xlim(.5, 10.5)
+    textax.text(0, 1, "Producer counter definitions", fontweight="bold", fontsize=14,
+                va="top", transform=textax.transAxes)
+    for j, definition in enumerate(definitions):
+        textax.text(0, .92 - j * .086, f"{j + 1}. {definition}", fontsize=10,
+                    va="top", transform=textax.transAxes, wrap=True)
+    finish(fig, args.out_dir, "event_selection_cutflow_numbered", r"$\Upsilon\to e^+e^-$ producer event counters",
+           "Raw MC counts | reconstruction starts from all processed events\nStep losses compare adjacent counters within the truth and reconstruction chains",
+           handles=handles, labels=[sample["label"] for sample in samples])
 
 
 def tracking_page(samples,args,rows):
@@ -531,7 +571,7 @@ def main():
                                                 if args.second_input else "Single-sample projected-state note pages use the broad reconstructed selection."),
           "selected_definition":"projected plus |sigma_epz - 2 Ee| <= 0.2 Ee and beam-specific reconstructed W range",
           "projective_definition":"Stored absolute weight_proj used for positive finite weight_proj, with target/source luminosity scaling only in projected mode. Projected data variance is r*sum(weight_proj**2/weight); no additional eXBABE cut is imposed by notebook03 t-page selection.",
-          "stored_histograms":"Raw producer counts, unaffected by this task's state/Q2/W/proton selections or weight normalization. The stored Forward proton tagged cutflow stage does not apply a tuple cut; the declared proton policy is applied separately to reconstructed tuple masks.",
+          "stored_histograms":"Raw producer counts. The truth sequence is 1-2-3 and reconstruction independently follows 1-4-5-6-7-8-9-10. Adjacent loss is undefined at stages 1 and 4 and for zero preceding counts. Stage 6 requires an additional central electron or eligible tagger candidate. Stage 9 requires reconstructed W >= 0. State/Q2/W/proton selections and weight normalization are applied separately to tuple masks.",
           "errors":("Projected weighted 1D errors: sqrt(r*sum(weight)) for ordinary yields; sqrt(r*sum(weight_proj**2/weight)) for corrected yields. Finite-MC variances are retained separately, not added."
                     if args.stat_mode == "projected" else "sqrt(sum of squared event weights), finite-Monte-Carlo errors; not projected data counting errors"),
           "count_interval":args.count_interval,"interval_coverage":args.interval_coverage,

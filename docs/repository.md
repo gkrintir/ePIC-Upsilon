@@ -38,10 +38,12 @@ git diff
 git status
 ```
 
-Commit only the intended files. The recovered analysis baseline is deliberately
-checked against `provenance/analysis_snapshot.json`; do not rewrite those hashes
-to hide a physics change. A deliberate backend update requires a separately
-reviewed provenance record and the relevant numerical validation.
+Commit only the intended files. The repository checker verifies the recovered
+analysis sources against `provenance/analysis_snapshot.json`. Keep the original
+`copied_files` hashes when making a reviewed source update. Add an `amended_files`
+record with `path`, `baseline_sha256`, `new_sha256` and a nonempty `reason`, and
+perform the relevant numerical validation. The checker compares the recorded
+baseline hash with `copied_files` and the current file with `new_sha256`.
 
 Initialize a fresh analysis workspace after a code update. Existing workspaces
 retain their source snapshots, selection contracts and results. Plotting can

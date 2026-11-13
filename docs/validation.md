@@ -38,10 +38,13 @@ Python 3.9 grammar; this syntax check is not a full Python 3.9 runtime test.
 | Efficiency extension | 29 passed | Final selections, topology consistency, truth denominators, chunking, coordinates, maps and count intervals |
 | 9×130 extension | 18 passed | Configuration/source guards, synthetic ROOT bookkeeping, support audits and unavailable inference |
 
-The repository checker confirms that all **122 files in the current imported
-analysis baseline are byte-identical** to their supplied source snapshot. It
-also checks Python syntax, clean notebook outputs, main documentation links and
-absence of detector ROOT files or embedded archives in the source tree.
+The repository checker verifies **120 imported analysis files against their
+original snapshot hashes** and **two amended plotting scripts against their
+recorded current hashes**. Each amendment records the original baseline hash,
+the current hash and the reason for the change in
+`provenance/analysis_snapshot.json`. The checker also checks Python syntax,
+clean notebook outputs, main documentation links and absence of detector ROOT
+files or embedded archives in the source tree.
 
 The mass/reconstruction, W and differential figures were rendered from the
 supplied 9×275 proton-tagged numerical exports. PDF/PNG and CSV/JSON companions
