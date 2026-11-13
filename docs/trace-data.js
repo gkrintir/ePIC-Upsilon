@@ -1,7 +1,7 @@
 /* Stages are listed in production order. Source links identify the checked
    implementation. Local paper file templates retain the historical replay layout. */
 (() => {
-  const referenceRevision = "8e5d380f3d12351e9061bc41f660528c6ae163f4";
+  const referenceRevision = "be785d6b6cd64854308fd4bf1ee59c00a088be76";
   const git = "https://github.com/gkrintir/ePIC-Upsilon/";
   const src = (label, path) => ({label, url:git+"blob/"+referenceRevision+"/"+path});
   const guide = src;
