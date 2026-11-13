@@ -247,8 +247,6 @@ def draw_slope_inset(ax, differential):
     inset.set_xticks(range(len(labels)), labels, fontsize=10.5)
     for label, state in zip(inset.get_xticklabels(), states):
         label.set_color(COLORS[state])
-    inset.text((len(states) - 1) / 2, -.20, "ePIC", transform=inset.get_xaxis_transform(),
-               fontsize=11.5, ha="center", va="top")
     inset.set_ylabel(r"$b$ [GeV$^{-2}$]", fontsize=12, labelpad=3)
     inset.set_xlim(-.55, len(labels) - .45)
     inset.set_ylim(0, max([8.6] + [fit["b_interval_high"] * 1.25
@@ -384,7 +382,7 @@ def render(results_dir, output_dir):
         "framework_commit": FRAMEWORK_COMMIT,
         "campaign": CAMPAIGN, "state_colors": COLORS, "state_markers": MARKERS,
         "reference_marker": MARKERS["1S"], "reference_color": REFERENCE_COLOR,
-        "reference_marker_fill": "same as marker color", "inset_epic_label": "shared across states",
+        "reference_marker_fill": "same as marker color", "inset_epic_label": None,
         "mass_table_font_size_pt": MASS_TABLE_FONT_SIZE,
         "mass_parameter_intervals": mass["intervals"],
         "spectrum_points": differential["points"],

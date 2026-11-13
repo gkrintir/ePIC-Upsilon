@@ -106,7 +106,7 @@ predictions and uses the saved intervals at 9×275 GeV and 2.5 fb⁻¹.
 The output directory contains `upsilon_es_figure28.pdf` and its PNG preview,
 `note_mass_panel.pdf`, `note_differential.pdf`, and `figure28_audit.json`. The note
 outputs use the same panel-drawing functions. Both paper panels carry
-`26.07.1 Campaign`, with common state colors and a shared ePIC label for the
+`26.07.1 Campaign`, with common state colors for the
 Υ(1S)/Υ(2S) slope comparison. The Υ(2S) slope retains its diagnostic status in the
 audit and the figure caption.
 
