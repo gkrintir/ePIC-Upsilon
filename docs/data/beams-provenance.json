@@ -1,0 +1,233 @@
+{
+  "updated_date": "2026-11-13",
+  "sample": "Full-sample downstream ECAL rematching for EICrecon issue 3011, full forward ECAL",
+  "analysis_framework_commit": "072c1fdc1c642a5cf21242b0363f24bcd89f84d5",
+  "note_commit": "f7cb067e82c646f2bfdf76a86706d7ec6d45382e",
+  "note_pdf_sha256": "226e66e07e0c4f9b12e61d925370c66e8bdfc8427fb6ea9f6259477e96ff7696",
+  "note_figure_manifest_sha256": "b22a367a2adcf8fd4928d1537776f0c7b4cbb48fb0bc1992ef5e02579718e229",
+  "selection": {
+    "proton_selection": "inclusive",
+    "projection_luminosity_invfb_per_beam": 10,
+    "source_luminosity_invfb": 10,
+    "truth_mass_half_window_GeV": 0.2,
+    "reconstructed_dielectron_mass_GeV": [
+      8,
+      12
+    ],
+    "longitudinal_balance_GeV": [
+      16.2,
+      19.8
+    ],
+    "reconstructed_W_GeV": {
+      "9x130": [
+        20,
+        70
+      ],
+      "9x275": [
+        20,
+        100
+      ]
+    },
+    "W_window_applies_to": "reconstructed W in these kinematic panels",
+    "yield_table_selection": "The note mass studies and integrated-yield table additionally require truth W in the beam-specific window.",
+    "count_interval": "median_garwood",
+    "interval_coverage": 0.6826894921370859,
+    "ordinary_panel_units": "expected visible dielectron events per bin",
+    "estimator_panel_units": "expected visible dielectron events per GeV squared",
+    "projective_estimator": "Positive finite weight_proj retains the producer angular weight. Empty corrected bins with unavailable count bounds have null endpoints.",
+    "normalization": "Visible dielectron cross section times luminosity divided by all generated rows, prepared before event selection."
+  },
+  "data": {
+    "path": "data/beams.json",
+    "sha256": "cc6ad06f5ef3d40ff7b8639a166967ce066c271a70741f3f07dc48c74a17c486"
+  },
+  "states": {
+    "1S": {
+      "q2_max_GeV2": 1.0,
+      "source_bins": "extra-plots/kinematics_1S/kinematic_bins.csv",
+      "source_bins_sha256": "c91de89dff6185b11cf6624ab0c153c12d7ef67efd6d69e004947c79ae20aa33",
+      "source_audit": "extra-plots/kinematics_1S/kinematic_selection_audit.json",
+      "source_audit_sha256": "fd220ce4faa82aa23d9596bf558b8b1d61ccaf8acbf6b52e99cc8505aaafbe7e",
+      "samples": {
+        "9x130": {
+          "generated_rows": 1007500,
+          "selected_rows": 304588,
+          "selected_expected_events_at_10fb": 361.83240476426795,
+          "raw_tuple_sha256": "7f1596826f2615ffe75070e9aa2d4bb68d081c03966a7c9e08b14cfd9462444e"
+        },
+        "9x275": {
+          "generated_rows": 1137600,
+          "selected_rows": 301468,
+          "selected_expected_events_at_10fb": 556.8677887482418,
+          "raw_tuple_sha256": "6ed885cde488bb5c6b04d44b38477e8a5fdc75b98f66b434159c2bf32c20b59b"
+        }
+      }
+    },
+    "2S": {
+      "q2_max_GeV2": 0.01,
+      "source_bins": "extra-plots/kinematics_2S/kinematic_bins.csv",
+      "source_bins_sha256": "592cea2a0b8e03c0d68fdc53afb252e86844ca955aff82f45e57ac22325aa9b7",
+      "source_audit": "extra-plots/kinematics_2S/kinematic_selection_audit.json",
+      "source_audit_sha256": "3a323847626c3bd741834a1ee49a645a20ee9c4e4efb69ae858579314adead06",
+      "samples": {
+        "9x130": {
+          "generated_rows": 1058300,
+          "selected_rows": 388665,
+          "selected_expected_events_at_10fb": 107.59442979306438,
+          "raw_tuple_sha256": "f345592bc323f4dcece8d84a329f47ad83c015f5246d7c2c62ce2fefce79f773"
+        },
+        "9x275": {
+          "generated_rows": 1280400,
+          "selected_rows": 401906,
+          "selected_expected_events_at_10fb": 166.77968992502343,
+          "raw_tuple_sha256": "7c59a1a57d9c27e0a4ad52f1e1d1b6496c105af37ad5ab65fa396261ee9c042f"
+        }
+      }
+    },
+    "3S": {
+      "q2_max_GeV2": 0.01,
+      "source_bins": "extra-plots/kinematics_3S/kinematic_bins.csv",
+      "source_bins_sha256": "ffc44079f123d6e62e2fb8058f1ebcbf2bb828a577d9c8596de4aac11e353134",
+      "source_audit": "extra-plots/kinematics_3S/kinematic_selection_audit.json",
+      "source_audit_sha256": "683f783c6fae44f707ec4cabdc4cf533037a5c0bd92d0b2bf539a1d31e1b7415",
+      "samples": {
+        "9x130": {
+          "generated_rows": 1041900,
+          "selected_rows": 389172,
+          "selected_expected_events_at_10fb": 87.57957466167579,
+          "raw_tuple_sha256": "ae2ff96e8803f4cbecd7ed639e857d497cae3e86afefa1a2f1db7a1aeeda1b44"
+        },
+        "9x275": {
+          "generated_rows": 1254900,
+          "selected_rows": 402786,
+          "selected_expected_events_at_10fb": 137.91785508008613,
+          "raw_tuple_sha256": "902d6741b23c81c79b4799e503e7c4cecc0aac74921a38cc46cdde7cdf7ceb51"
+        }
+      }
+    }
+  },
+  "figures": [
+    {
+      "state": "1S",
+      "group": "quarkonium",
+      "path": "plots/beams/fig10-1S-quarkonium.pdf",
+      "sha256": "42234eca771a90618042e6c179686258491bf7a88066d44188a1089ed7294259",
+      "note_asset": "figures/verified/figure10_projected_1S_9x130_9x275_inclusive_L10_upsilon_kinematics.pdf",
+      "source": "extra-plots/kinematics_1S/projected_1s_upsilon_kinematics.pdf"
+    },
+    {
+      "state": "1S",
+      "group": "decay",
+      "path": "plots/beams/fig11-1S-decay.pdf",
+      "sha256": "63bfb1051e1a9bb8a1971283567a6bd6f32cd9f0a4573dd12b22a94ec2e8a58e",
+      "note_asset": "figures/verified/figure11_projected_1S_9x130_9x275_inclusive_L10_decay_leptons.pdf",
+      "source": "extra-plots/kinematics_1S/projected_1s_decay_leptons.pdf"
+    },
+    {
+      "state": "1S",
+      "group": "scattered",
+      "path": "plots/beams/fig11-1S-scattered.pdf",
+      "sha256": "5bd138ccd9d66dfa9fff3083eec095809898ffd25418ff4bd7325d69e6cc59e5",
+      "note_asset": "figures/verified/figure11_projected_1S_9x130_9x275_inclusive_L10_scattered_electron_tracking.pdf",
+      "source": "extra-plots/kinematics_1S/projected_1s_scattered_electron_tracking.pdf"
+    },
+    {
+      "state": "1S",
+      "group": "estimators",
+      "path": "plots/beams/fig12-1S-estimators.pdf",
+      "sha256": "675c2d5063f688ac0d2469270cf73326b6936856445875a55c10190362a5ecfe",
+      "note_asset": "figures/verified/figure12_1S_9x130_9x275_L10_projective_transverse.pdf",
+      "source": "extra-plots/kinematics_1S/t_estimators_projective_transverse.pdf"
+    },
+    {
+      "state": "2S",
+      "group": "quarkonium",
+      "path": "plots/beams/fig10-2S-quarkonium.pdf",
+      "sha256": "7c7d4fb262f74c8ec162844c9c34d160da2d0c5f552b5131cf308de49f94305b",
+      "note_asset": "figures/verified/figure10_projected_2S_9x130_9x275_inclusive_L10_upsilon_kinematics.pdf",
+      "source": "extra-plots/kinematics_2S/projected_2s_upsilon_kinematics.pdf"
+    },
+    {
+      "state": "2S",
+      "group": "decay",
+      "path": "plots/beams/fig11-2S-decay.pdf",
+      "sha256": "ffd47cfa04112cd2a42b3b6ed54fe3fdad37928cb7b12efb7ec6e4be28c30cd8",
+      "note_asset": "figures/verified/figure11_projected_2S_9x130_9x275_inclusive_L10_decay_leptons.pdf",
+      "source": "extra-plots/kinematics_2S/projected_2s_decay_leptons.pdf"
+    },
+    {
+      "state": "2S",
+      "group": "scattered",
+      "path": "plots/beams/fig11-2S-scattered.pdf",
+      "sha256": "4947bdafb976193d9c88700bb0c6c5c4581b2b6be50f109e6429e4c2af4ce126",
+      "note_asset": "figures/verified/figure11_projected_2S_9x130_9x275_inclusive_L10_scattered_electron_tracking.pdf",
+      "source": "extra-plots/kinematics_2S/projected_2s_scattered_electron_tracking.pdf"
+    },
+    {
+      "state": "3S",
+      "group": "quarkonium",
+      "path": "plots/beams/fig10-3S-quarkonium.pdf",
+      "sha256": "d450087871ae38d3b35bf9f814efd0808b2f8047348352ce132adc9ec9801c79",
+      "note_asset": "figures/verified/figure10_projected_3S_9x130_9x275_inclusive_L10_upsilon_kinematics.pdf",
+      "source": "extra-plots/kinematics_3S/projected_3s_upsilon_kinematics.pdf"
+    },
+    {
+      "state": "3S",
+      "group": "decay",
+      "path": "plots/beams/fig11-3S-decay.pdf",
+      "sha256": "1eef27ffa9b9c7b839b3e6c42ca50c2846b940a8aff96c279e8d2443bde91c03",
+      "note_asset": "figures/verified/figure11_projected_3S_9x130_9x275_inclusive_L10_decay_leptons.pdf",
+      "source": "extra-plots/kinematics_3S/projected_3s_decay_leptons.pdf"
+    },
+    {
+      "state": "3S",
+      "group": "scattered",
+      "path": "plots/beams/fig11-3S-scattered.pdf",
+      "sha256": "42f18ce546a456e507be768c55bb666ce4ebe08f3012c97004a9758b635b605c",
+      "note_asset": "figures/verified/figure11_projected_3S_9x130_9x275_inclusive_L10_scattered_electron_tracking.pdf",
+      "source": "extra-plots/kinematics_3S/projected_3s_scattered_electron_tracking.pdf"
+    }
+  ],
+  "producer_counters": {
+    "figure": {
+      "path": "plots/producer-counters.pdf",
+      "sha256": "025f2b618533902357e67a4441bf60f3576d4a472845387169d17bd4f354d8c9"
+    },
+    "data": {
+      "path": "data/producer-counters.csv",
+      "sha256": "b9d79041645c2fc9ef2678c1409dd85a1fcc93a671925413f08fde97e471e946"
+    },
+    "source": "verification/rematch3011/fig6",
+    "counting_unit": "raw simulated events",
+    "nested_stage_sequences": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    ],
+    "undefined_adjacent_loss_stages": [
+      1,
+      4
+    ],
+    "note_pdf_page": 22,
+    "source_renderer": {
+      "path": "verification/rematch3011/fig6/render_producer_counters.py",
+      "sha256": "d59a774a7e9921b1047e12476aef347b193e87fec505728e2e701ae5ba31bc3e"
+    },
+    "source_table": {
+      "path": "verification/rematch3011/fig6/producer_counters.csv",
+      "sha256": "ee868b5c8d8ba10e12a1436ba8b60392deabcfc5d9ce3374fa4396fbe6e3c949"
+    }
+  }
+}

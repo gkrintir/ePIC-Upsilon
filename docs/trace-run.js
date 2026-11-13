@@ -45,12 +45,12 @@
             typeof record.spectra?.all_pass !== "boolean" || !Number.isInteger(record.cells_checked.pt_y) || record.cells_checked.pt_y < 1 ||
             !Number.isInteger(record.cells_checked.xv_w) || record.cells_checked.xv_w < 1 ||
             !Number.isInteger(record.mass_values_and_errors_checked) || record.mass_values_and_errors_checked < 1) {
-          throw new Error("Invalid paper_replay.json. Choose a completed paper replay.");
+          throw new Error("Invalid paper_replay.json. Choose a completed historical paper replay.");
         }
         next = {kind:"paper",record,fitDir:record.figure.split("/").slice(0,-1).join("/")};
       } else {
         const directory = ["artifacts/note/compare_9x130_9x275/", ""].find(prefix => files.has(prefix+"kinematic_selection_audit.json"));
-        if (directory === undefined) throw new Error("Choose a directory containing paper_replay.json, or a two-energy state run with its kinematic selection audit.");
+        if (directory === undefined) throw new Error("Choose a historical paper replay containing paper_replay.json, or a two-energy state run with its kinematic selection audit.");
         const audit = await readJSON(directory+"kinematic_selection_audit.json");
         if (audit.proton_selection?.mode !== "inclusive" || audit.stat_mode !== "projected" ||
             audit.projection_luminosity_invfb !== 10 || !["1S","2S","3S"].includes(audit.state) ||
@@ -126,23 +126,26 @@
     const isBeam=key==="beams";
     instructions.textContent=isBeam ?
       "Choose a two-energy state run or its compare_9x130_9x275 directory. Only local files are opened." :
-      "Choose the output directory containing paper_replay.json. Only local files are opened.";
-    summary.textContent=context && context.kind!=="error" ? "Inspect files from your run · folder selected" : "Inspect files from your run";
+      "Choose a historical stored-matching replay containing paper_replay.json. The replay checks the original numerical fingerprints. This importer reads that receipt and checks its table bookkeeping. The current rematched results are linked in the guide above. Files are opened on your device.";
+    const title=isBeam ? "Inspect files from your two-energy run" : "Inspect a historical paper replay";
+    summary.textContent=context && context.kind!=="error" ? title+" · folder selected" : title;
     if (!context) return;
     if (context.kind==="error") {result.append(node("p",context.message));return;}
     if ((context.kind==="beams")!==isBeam) {
-      result.append(node("p",isBeam ? "This folder is a paper replay. Select an inclusive two-energy run for this result." :
-        "This folder is a two-energy comparison. Select a paper replay for this result."));return;
+      result.append(node("p",isBeam ? "This folder is a historical paper replay. Select an inclusive two-energy run for this result." :
+        "This folder is a two-energy comparison. Select a historical paper replay for this result."));return;
     }
     if (id==="reconstruction") {
-      result.append(node("p","This folder starts at the merged tuples. The source guide links to the available CERN production records."));return;
+      result.append(node("p",context.kind==="paper" ?
+        "This historical replay starts at its original merged tuples. The guide above describes the current rematched production." :
+        "This folder starts at the merged tuples. Check its selection audit and input hashes to identify the production campaign."));return;
     }
     if (context.kind==="paper" && (id==="plot" || id==="publication")) {
       const r=context.record;
       let message;
-      if (key==="mass") message="The replay records "+r.mass_values_and_errors_checked+" mass-fit values and errors checked.";
-      else if (key==="efficiency") message="The replay records "+r.cells_checked.pt_y+" pT–rapidity cells and "+r.cells_checked.xv_w+" xᵥ–W cells checked.";
-      else message=r.spectra.all_pass===true ? "The replay reports agreement with the reference values and validation statuses. Check the per-observable status below." : "The replay does not report a successful spectral comparison.";
+      if (key==="mass") message="The historical replay records "+r.mass_values_and_errors_checked+" mass-fit values and errors checked against the stored-matching reference.";
+      else if (key==="efficiency") message="The historical replay records "+r.cells_checked.pt_y+" pT–rapidity cells and "+r.cells_checked.xv_w+" xᵥ–W cells checked against the stored-matching reference.";
+      else message=r.spectra.all_pass===true ? "The historical replay reports agreement with the stored-matching reference values and validation statuses. Check the per-observable status below." : "The historical replay reports an unsuccessful spectral comparison.";
       result.append(node("p",message));
     }
     if (context.kind==="beams" && id==="publication") result.append(node("p","Local plots are for Υ("+context.state+"). The note uses this state in Figs. 10–11; Fig. 12 uses 1S."));

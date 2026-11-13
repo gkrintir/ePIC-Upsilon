@@ -31,7 +31,7 @@ function fileAt(path) {
 
 function checkGuideAssets() {
   const html = readFileSync(resolve(docs, "index.html"), "utf8");
-  const references = html.matchAll(/(?:src|href)=["'](\.\/[^"'?#]+\.(?:js|css))([^"']*)["']/g);
+  const references = html.matchAll(/(?:src|href)=["'](\.\/[^"'?#]+\.(?:js|css))((?:\?[^"']*)?)["']/g);
   const checked = new Set();
   for (const [, path, query] of references) {
     const content = readFileSync(within(docs, path), "utf8").replaceAll("\r\n", "\n");

@@ -38,7 +38,7 @@
 
   function notePageNumber() {
     const n = Number(state.value[0]) - 1;
-    return {quarkonium: 34 + n, decay: 37 + 2 * n, scattered: 38 + 2 * n, estimators: 44}[group.value];
+    return {quarkonium: 35 + n, decay: 38 + 2 * n, scattered: 39 + 2 * n, estimators: 45}[group.value];
   }
 
   function fillSelect(select, keys, labels, selected) {
@@ -75,11 +75,11 @@
 
   function showObservable(binIndex) {
     const key = observable.value, [label, axis, unit] = meta[key];
+    const pdfUrl = currentFigure().pdf + "?v=" + currentFigure().sha256.slice(0, 12);
     series = currentFigure().observables[key];
     const available = hasBins();
     byId("workspace").hidden = !available;
     byId("source-view").hidden = available;
-    byId("import-box").hidden = available && data === catalog;
     if (available) {
       pendingBin = undefined;
       slider.max = series["130"].length;
@@ -90,14 +90,14 @@
       pendingBin = binIndex;
       index = 0;
       const preview = byId("pdf-preview");
-      if (preview.getAttribute("src") !== currentFigure().pdf) preview.src = currentFigure().pdf;
+      if (preview.getAttribute("src") !== pdfUrl) preview.src = pdfUrl;
       const figLabel = 'AN Fig. ' + figureNumber() + '  /  Υ(' + state.value + ')';
       byId("pdf-id").textContent = figLabel;
       byId("pdf-title").textContent = label;
       const panelIndex = Object.keys(currentFigure().observables).indexOf(key);
       const panelNames = isDensity() ? ["left", "right"] : ["upper left", "upper right", "lower left", "lower right"];
-      byId("pdf-caption").textContent = 'See the ' + panelNames[panelIndex] + ' panel of the original figure. ' + (isDensity() ? "Fig. 12 displays reconstructed yield densities in events/GeV²." : "The vertical axis gives expected visible events per bin.");
-      byId("pdf-open").href = currentFigure().pdf;
+      byId("pdf-caption").textContent = 'See the ' + panelNames[panelIndex] + ' panel of the rematched figure. ' + (isDensity() ? "Fig. 12 displays reconstructed yield densities in events/GeV²." : "The vertical axis gives expected visible events per bin.");
+      byId("pdf-open").href = pdfUrl;
       preview.title = figLabel + ' · ' + families[group.value][0];
     }
     byId("chart-id").textContent = 'AN Fig. ' + figureNumber() + '  /  Υ(' + state.value + ')';
@@ -107,10 +107,10 @@
       key === "reco_t_proj" ? "Angular-weighted yield density [events/GeV²]" : "Visible yield density [events/GeV²]";
     byId("y-title").textContent = yieldLabel;
     byId("unit-caption").textContent = yieldLabel;
-    byId("source").href = currentFigure().pdf;
-    byId("source").textContent = 'Original Fig. ' + figureNumber() + ' PDF ↗';
+    byId("source").href = pdfUrl;
+    byId("source").textContent = 'Rematched Fig. ' + figureNumber() + ' PDF ↗';
     byId("note-jump").textContent = 'Open analysis note · PDF page ' + notePageNumber() + ' ↗';
-    byId("selection").textContent = 'Each beam sample uses 8–12 GeV reconstructed dielectron mass and Σ(E − pz) = 18 ± 1.8 GeV. The reconstructed Wγp window is 20–70 GeV at 9 × 130 GeV and 20–100 GeV at 9 × 275 GeV. The generated Q² limit for Υ(' + state.value + ') is ' + (state.value === "1S" ? "1" : "0.01") + ' GeV².';
+    byId("selection").textContent = 'Each beam sample uses 8–12 GeV reconstructed dielectron mass and Σ(E − pz) = 18 ± 1.8 GeV. The reconstructed Wγp window is 20–70 GeV at 9 × 130 GeV and 20–100 GeV at 9 × 275 GeV. The truth mass lies within 0.2 GeV of the Υ(' + state.value + ') mass and its generated Q² limit is ' + (state.value === "1S" ? "1" : "0.01") + ' GeV². The note’s integrated-yield table and mass studies additionally apply this Wγp window to truth Wγp.';
     let context = "Each bin sums luminosity-scaled event weights for the selected decay pair and reconstructed scattered electron. Both beam samples include events with or without a recoil-proton tag.";
     if (key === "reco_t_proj") context = "The projective estimator retains events with ω < π/12 and multiplies their weights by six. The source flags unavailable count bounds in some bins. The density uses the reconstructed estimator before unfolding.";
     if (key === "reco_pT2") context = "The squared transverse momentum comes from the reconstructed decay pair. This density uses ordinary visible dielectron weights, before unfolding or a branching-fraction correction.";

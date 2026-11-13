@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Compare inclusive reconstructed Υ distributions at two EIC beam energies using the bins and count bounds behind analysis note figures 10–12.">
   <title>Beam comparison · ePIC Υ atlas</title>
-  <link href="beams.css" rel="stylesheet">
-  <script src="data/beams.js" defer></script>
-  <script src="pdf-link.js" defer></script>
-  <script src="beams-view.js" defer></script>
+  <link href="beams.css?v=8238dd774b46" rel="stylesheet">
+  <script src="data/beams.js?v=e323bdb54444" defer></script>
+  <script src="pdf-link.js?v=5d79e08e1803" defer></script>
+  <script src="beams-view.js?v=3e4e1d435070" defer></script>
 </head>
 <body>
   <a class="skip" href="#explore">Skip to comparison</a>
@@ -23,6 +23,7 @@
       <p class="eyebrow">Analysis note <span>/</span> Figures 10–12</p>
       <h1>Beam comparison</h1>
       <p>Compare reconstructed Υ → e⁺e⁻ events with a 9 GeV electron beam and two proton energies. Both samples use 10 fb⁻¹ and the inclusive selection before the recoil-proton requirement.</p>
+      <p class="small">Published figures and bins use the full-sample ECAL-rematched analysis, updated <time datetime="2026-11-13">13 November 2026</time>. <a href="data/beams-provenance.json" target="_blank" rel="noopener">Sample provenance and file hashes ↗</a></p>
     </div>
     <section id="explore" aria-label="Beam comparison explorer">
       <div class="controls">
@@ -30,15 +31,15 @@
         <label for="group">Figure<select id="group"></select></label>
         <label for="observable">Observable<select id="observable"></select></label>
       </div>
-      <div id="import-box" class="import-box" hidden>
-        <div><h2>Explore the bins from your replay</h2><p>Choose <code>beams.json</code> to inspect bin values and count bounds in this browser. The figure PDFs are available below.</p></div>
+      <div id="import-box" class="import-box">
+        <div><h2>Load a local replay</h2><p>The published rematched bins are loaded below. Choose a matching <code>beams.json</code> to inspect your replay in this browser.</p></div>
         <div><label for="bins-file">Local beam bins (.json)</label><input id="bins-file" type="file" accept=".json,application/json"><p id="import-status" role="status"></p></div>
       </div>
       <article class="panel source-view" id="source-view" hidden>
         <p class="eyebrow" id="pdf-id"></p><h2 id="pdf-title"></h2>
         <p class="small" id="pdf-caption"></p>
         <div class="source-links"><a href="./index.html#beams/plot/review">Trace this plot to the tuples ↗</a><a id="pdf-open" target="_blank" rel="noopener">Open figure PDF ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/blob/main/analysis/scripts/reporting/render_note_kinematics.py" target="_blank" rel="noopener">Rendering code ↗</a><button class="inline-link" id="note-shortcut" type="button">Open the analysis note</button></div>
-        <iframe id="pdf-preview" title="Original analysis-note figure"></iframe>
+        <iframe id="pdf-preview" title="Rematched analysis-note figure"></iframe>
       </article>
       <div class="workspace" id="workspace">
         <article class="panel plot-card">
@@ -66,8 +67,10 @@
       <div class="sources">
         <section class="source-block"><p class="eyebrow">Selection</p><h2>Reading this distribution</h2><p id="selection"></p><p id="context"></p></section>
         <section class="source-block"><p class="eyebrow">Sources</p><h2>Figure and analysis note</h2>
-          <div class="source-links"><a href="./index.html#beams/plot/review">Trace this plot to the tuples ↗</a><a id="source" target="_blank" rel="noopener">Original figure PDF ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/blob/main/analysis/scripts/reporting/render_note_kinematics.py" target="_blank" rel="noopener">Renderer ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/wiki" target="_blank" rel="noopener">AN Wiki ↗</a></div>
-          <label class="local-label" for="note-file">Choose your local analysis note PDF to open this figure in context.</label>
+          <div class="source-links"><a href="./index.html#beams/plot/review">Trace this plot to the tuples ↗</a><a id="source" target="_blank" rel="noopener">Rematched figure PDF ↗</a><a href="data/beams.json" download>Published bin tables (JSON) ↓</a><a href="https://github.com/gkrintir/ePIC-Upsilon/blob/main/analysis/scripts/reporting/render_note_kinematics.py" target="_blank" rel="noopener">Renderer ↗</a><a href="https://github.com/gkrintir/ePIC-Upsilon/wiki" target="_blank" rel="noopener">AN Wiki ↗</a></div>
+          <p class="small">Figure 6 separates the generated-event diagnostics and reconstruction counters. Its step losses follow each nested sequence.</p>
+          <div class="source-links"><a href="plots/producer-counters.pdf?v=025f2b618533" target="_blank" rel="noopener">Corrected producer counters · Fig. 6 PDF ↗</a><a href="data/producer-counters.csv" download>Producer-counter table (CSV) ↓</a></div>
+          <label class="local-label" for="note-file">Choose the rematched analysis note PDF, revision f7cb067, to open this figure on its current page.</label>
           <input id="note-file" type="file" accept="application/pdf,.pdf">
           <div class="source-links"><a id="note-jump" aria-disabled="true">Open note page</a></div>
         </section>

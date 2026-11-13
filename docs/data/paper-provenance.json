@@ -1,0 +1,1002 @@
+{
+  "schema_version": 1,
+  "dataset": "rematch3011",
+  "energy": "9x275",
+  "luminosity_invfb": 2.5,
+  "framework_commit": "072c1fdc1c642a5cf21242b0363f24bcd89f84d5",
+  "matching": "Downstream EICrecon issue 3011 ECAL rematching, full forward ECAL",
+  "proton_selection": "reco_topology in {1,2} and finite positive reco_tagged_proton_p",
+  "exporter": {
+    "path": "tools/export_rematched_atlas.py",
+    "sha256": "584f6836f58416fa7f91831710c3f1a0c28e498d995e122a53e3ec874fa7e728"
+  },
+  "archive_manifest_sha256": "a498cff716d623fb5736f4a9a16cd931114723baa536b6d65c904acd8afb251a",
+  "verified_inputs": [
+    {
+      "bytes": 223652991,
+      "url": "https://cernbox.cern.ch/remote.php/dav/public-files/dsJB4GS72EcRBOM/Upsilon1S/9x130/hiAcc/output_newID/runs/rest-01/merged_Upsilon_readable_inputs.root",
+      "etag": "\"1293953865284059136:bdbec2e7\"",
+      "sha256": "7f1596826f2615ffe75070e9aa2d4bb68d081c03966a7c9e08b14cfd9462444e",
+      "adler32": "bdbec2e7",
+      "local_path": "inputs/Upsilon1S/9x130/hiAcc/output_newID/merged_Upsilon_final.root",
+      "state": "1S",
+      "beam": "9x130",
+      "generated_rows": 1007500,
+      "eligible_truth_rows": 989682,
+      "visible_cross_section_fb": 119.685,
+      "electron_id_mode": 1,
+      "femc_mode": 0
+    },
+    {
+      "bytes": 243374603,
+      "url": "https://cernbox.cern.ch/remote.php/dav/public-files/dsJB4GS72EcRBOM/Upsilon2S/9x130/hiAcc/output/runs/rest-01/merged_Upsilon_readable_inputs.root",
+      "etag": "\"1293953881390186496:4445dceb\"",
+      "sha256": "f345592bc323f4dcece8d84a329f47ad83c015f5246d7c2c62ce2fefce79f773",
+      "adler32": "4445dceb",
+      "local_path": "inputs/Upsilon2S/9x130/hiAcc/output/merged_Upsilon_final.root",
+      "state": "2S",
+      "beam": "9x130",
+      "generated_rows": 1058300,
+      "eligible_truth_rows": 1058132,
+      "visible_cross_section_fb": 29.297,
+      "electron_id_mode": 1,
+      "femc_mode": 0
+    },
+    {
+      "bytes": 240370216,
+      "url": "https://cernbox.cern.ch/remote.php/dav/public-files/dsJB4GS72EcRBOM/Upsilon3S/9x130/hiAcc/output/runs/rest-01/merged_Upsilon_readable_inputs.root",
+      "etag": "\"1293953906354683904:5a414166\"",
+      "sha256": "ae2ff96e8803f4cbecd7ed639e857d497cae3e86afefa1a2f1db7a1aeeda1b44",
+      "adler32": "5a414166",
+      "local_path": "inputs/Upsilon3S/9x130/hiAcc/output/merged_Upsilon_final.root",
+      "state": "3S",
+      "beam": "9x130",
+      "generated_rows": 1041900,
+      "eligible_truth_rows": 1041732,
+      "visible_cross_section_fb": 23.447,
+      "electron_id_mode": 1,
+      "femc_mode": 0
+    },
+    {
+      "bytes": 247407448,
+      "url": "https://cernbox.cern.ch/remote.php/dav/public-files/dsJB4GS72EcRBOM/Upsilon1S/9x275/hiAcc/output_newID/runs/fresh-01/merged_Upsilon_readable_inputs_20261111T014452Z.root",
+      "etag": "\"1293959342709538816:5eb2b9f7\"",
+      "sha256": "6ed885cde488bb5c6b04d44b38477e8a5fdc75b98f66b434159c2bf32c20b59b",
+      "adler32": "5eb2b9f7",
+      "local_path": "inputs/Upsilon1S/9x275/hiAcc/output_newID/merged_Upsilon_final.root",
+      "state": "1S",
+      "beam": "9x275",
+      "generated_rows": 1137600,
+      "eligible_truth_rows": 1126936,
+      "visible_cross_section_fb": 210.136,
+      "electron_id_mode": 1,
+      "femc_mode": 0
+    },
+    {
+      "bytes": 286528336,
+      "url": "https://cernbox.cern.ch/remote.php/dav/public-files/dsJB4GS72EcRBOM/Upsilon2S/9x275/hiAcc/output/runs/rest-01/merged_Upsilon_readable_inputs.root",
+      "etag": "\"1293953893201346560:99bbd1db\"",
+      "sha256": "7c59a1a57d9c27e0a4ad52f1e1d1b6496c105af37ad5ab65fa396261ee9c042f",
+      "adler32": "99bbd1db",
+      "local_path": "inputs/Upsilon2S/9x275/hiAcc/output/merged_Upsilon_final.root",
+      "state": "2S",
+      "beam": "9x275",
+      "generated_rows": 1280400,
+      "eligible_truth_rows": 1280105,
+      "visible_cross_section_fb": 53.133,
+      "electron_id_mode": 1,
+      "femc_mode": 0
+    },
+    {
+      "bytes": 282087056,
+      "url": "https://cernbox.cern.ch/remote.php/dav/public-files/dsJB4GS72EcRBOM/Upsilon3S/9x275/hiAcc/output/runs/rest-01/merged_Upsilon_readable_inputs.root",
+      "etag": "\"1293953918971150336:83566467\"",
+      "sha256": "902d6741b23c81c79b4799e503e7c4cecc0aac74921a38cc46cdde7cdf7ceb51",
+      "adler32": "83566467",
+      "local_path": "inputs/Upsilon3S/9x275/hiAcc/output/merged_Upsilon_final.root",
+      "state": "3S",
+      "beam": "9x275",
+      "generated_rows": 1254900,
+      "eligible_truth_rows": 1254706,
+      "visible_cross_section_fb": 42.969,
+      "electron_id_mode": 1,
+      "femc_mode": 0
+    }
+  ],
+  "input_runs_by_state": {
+    "1S": "fit275-1only-L2p5",
+    "2S": "fit275-L2p5",
+    "3S": "fit275-L2p5"
+  },
+  "efficiency_map_check": {
+    "all_eligible_and_selected_totals": {
+      "denominator": 1126936,
+      "selected_before_proton": 301323,
+      "selected": 198265
+    },
+    "maps": {
+      "pt_y": {
+        "cells_verified": 240,
+        "in_displayed_range": {
+          "denominator": 1126897,
+          "selected_before_proton": 301314,
+          "selected": 198262
+        },
+        "outside_displayed_range": {
+          "denominator": 39,
+          "selected_before_proton": 9,
+          "selected": 3
+        }
+      },
+      "xv_w": {
+        "cells_verified": 288,
+        "in_displayed_range": {
+          "denominator": 1126936,
+          "selected_before_proton": 301323,
+          "selected": 198265
+        },
+        "outside_displayed_range": {
+          "denominator": 0,
+          "selected_before_proton": 0,
+          "selected": 0
+        }
+      }
+    }
+  },
+  "mass_validation": {
+    "method": "conditional_asymptotic_profile_likelihood",
+    "nominal_coverage": 0.6826894921370859,
+    "coverage_validated": false,
+    "publication_ready": false,
+    "interpretation": "Expected conditional statistical profile widths from projected histogram means; nominal asymptotic coverage, not an interval for observed data or validated low-count coverage.",
+    "assumptions": [
+      "Independent signal-only Poisson mass-bin counts at target luminosity",
+      "Three yields and (if enabled) common mass offset and common width scale profiled jointly",
+      "Fixed state mass differences, DSCB tails and relative widths from upstream MC calibration",
+      "No background, calibration-MC, luminosity, branching-fraction or other systematic uncertainty",
+      "Known template/DSCB shape mismatch is not covered by these statistical intervals"
+    ],
+    "resolution_correlation": "All core widths share one scale: fractional width intervals are identical and their width-scale uncertainty is fully correlated.",
+    "upstream_shape_mismatch_flags": {
+      "1S": true,
+      "2S": true,
+      "3S": true
+    }
+  },
+  "availability": [
+    {
+      "quantity": "W",
+      "state": "1S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "Adaptive-binning W diagnostic with failed injected-spectrum coverage checks.",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ]
+    },
+    {
+      "quantity": "W",
+      "state": "2S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "Adaptive-binning W diagnostic with failed injected-spectrum coverage checks. The separate fixed-bin W unfolding is withheld because a truth-populated bin has zero reconstruction efficiency.",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ]
+    },
+    {
+      "quantity": "W",
+      "state": "3S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "Adaptive-binning W diagnostic with failed injected-spectrum coverage checks. The separate fixed-bin W unfolding is withheld because a truth-populated bin has zero reconstruction efficiency.",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ]
+    },
+    {
+      "quantity": "pt2",
+      "state": "1S",
+      "available": true,
+      "status": "PASS_CONDITIONAL",
+      "reason": "",
+      "failed_checks": []
+    },
+    {
+      "quantity": "y",
+      "state": "1S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ]
+    },
+    {
+      "quantity": "pt2",
+      "state": "2S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "Diagnostic spectrum and slope. The injected-slope coverage check failed.",
+      "failed_checks": [
+        "inference.injected_slope_coverage"
+      ]
+    },
+    {
+      "quantity": "y",
+      "state": "2S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ]
+    },
+    {
+      "quantity": "pt2",
+      "state": "3S",
+      "available": false,
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "reason": "3S/pt2: No candidate binning met the configured slope-study requirements; no spectrum or slope was extracted.",
+      "failed_checks": []
+    },
+    {
+      "quantity": "y",
+      "state": "3S",
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ]
+    }
+  ],
+  "slopes": {
+    "1S": {
+      "available": true,
+      "status": "PASS_CONDITIONAL",
+      "reason": "",
+      "failed_checks": [],
+      "value": 2.4600347576089283,
+      "error_low": 0.5282983553362441,
+      "error_high": 0.5527604595888995,
+      "lower": 1.9317364022726842,
+      "upper": 3.012795217197828
+    },
+    "2S": {
+      "available": true,
+      "status": "NOT_VALIDATED",
+      "reason": "Diagnostic spectrum and slope. The injected-slope coverage check failed.",
+      "failed_checks": [
+        "inference.injected_slope_coverage"
+      ],
+      "value": 2.4673470778564948,
+      "error_low": 1.013177149011316,
+      "error_high": 1.1117497784627401,
+      "lower": 1.4541699288451788,
+      "upper": 3.579096856319235
+    },
+    "3S": {
+      "available": false,
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "reason": "3S/pt2: No candidate binning met the configured slope-study requirements; no spectrum or slope was extracted.",
+      "failed_checks": [],
+      "value": null,
+      "error_low": null,
+      "error_high": null,
+      "lower": null,
+      "upper": null
+    }
+  },
+  "fixed_bin_withheld_tasks": [
+    {
+      "state": "2S",
+      "energy": "9x130",
+      "task": "unfold_9x130_sigma_gamma_p_w",
+      "status": "INVALID_OUTPUT"
+    },
+    {
+      "state": "2S",
+      "energy": "9x130",
+      "task": "render_9x130_note_physics_w_unfolding",
+      "status": "BLOCKED_DEPENDENCY"
+    },
+    {
+      "state": "3S",
+      "energy": "9x130",
+      "task": "unfold_9x130_sigma_gamma_p_w",
+      "status": "INVALID_OUTPUT"
+    },
+    {
+      "state": "3S",
+      "energy": "9x130",
+      "task": "render_9x130_note_physics_w_unfolding",
+      "status": "BLOCKED_DEPENDENCY"
+    },
+    {
+      "state": "2S",
+      "energy": "9x275",
+      "task": "unfold_9x275_sigma_gamma_p_w",
+      "status": "INVALID_OUTPUT"
+    },
+    {
+      "state": "2S",
+      "energy": "9x275",
+      "task": "render_9x275_note_physics_w_unfolding",
+      "status": "BLOCKED_DEPENDENCY"
+    },
+    {
+      "state": "3S",
+      "energy": "9x275",
+      "task": "unfold_9x275_sigma_gamma_p_w",
+      "status": "INVALID_OUTPUT"
+    },
+    {
+      "state": "3S",
+      "energy": "9x275",
+      "task": "render_9x275_note_physics_w_unfolding",
+      "status": "BLOCKED_DEPENDENCY"
+    }
+  ],
+  "reoptimization": [
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "1S",
+      "quantity": "pt2",
+      "status": "PASS_CONDITIONAL",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "1S",
+      "quantity": "abs_t_via_pt2",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "1S",
+      "quantity": "w",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "1S",
+      "quantity": "y",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "2S",
+      "quantity": "pt2",
+      "status": "PASS_CONDITIONAL",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "2S",
+      "quantity": "abs_t_via_pt2",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "2S",
+      "quantity": "w",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "2S",
+      "quantity": "y",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "3S",
+      "quantity": "pt2",
+      "status": "PASS_CONDITIONAL",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "3S",
+      "quantity": "abs_t_via_pt2",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "3S",
+      "quantity": "w",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x130",
+      "luminosity_invfb": 10.0,
+      "state": "3S",
+      "quantity": "y",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "2S",
+      "quantity": "pt2",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_slope_coverage"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "2S",
+      "quantity": "abs_t_via_pt2",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "2S",
+      "quantity": "w",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "2S",
+      "quantity": "y",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "3S",
+      "quantity": "pt2",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "3S",
+      "quantity": "abs_t_via_pt2",
+      "status": "NO_FEASIBLE_SLOPE_BINNING",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "3S",
+      "quantity": "w",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "3S",
+      "quantity": "y",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "1S",
+      "quantity": "pt2",
+      "status": "PASS_CONDITIONAL",
+      "failed_checks": [],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "1S",
+      "quantity": "abs_t_via_pt2",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_slope_coverage",
+        "robustness.tail_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "1S",
+      "quantity": "w",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    },
+    {
+      "energy": "9x275",
+      "luminosity_invfb": 2.5,
+      "state": "1S",
+      "quantity": "y",
+      "status": "NOT_VALIDATED",
+      "failed_checks": [
+        "inference.injected_spectrum_coverage",
+        "robustness.shape_only_closure",
+        "robustness.combined_closure"
+      ],
+      "publication_ready": false
+    }
+  ],
+  "selected_old_vs_rematched": [
+    {
+      "state": "1S",
+      "beam": "9x130",
+      "category": "inclusive",
+      "n_all_old": 1006000.0,
+      "n_all_new": 1007500.0,
+      "n_eligible_old": 988197.0,
+      "n_eligible_new": 989682.0,
+      "n_selected_old": 219325.0,
+      "n_selected_new": 304076.0,
+      "eff_old": 0.2219446122584869,
+      "eff_new": 0.3072461659401707,
+      "eff_delta_percentage_points": 8.530155368168376,
+      "early_lumi_invfb": 1.0,
+      "selected_yield_early_old": 26.09335250994036,
+      "selected_yield_early_new": 36.12241792555831,
+      "selected_yield_L10_old": 260.9335250994036,
+      "selected_yield_L10_new": 361.22417925558307,
+      "yield_ratio_new_over_old": 1.3843532720372878
+    },
+    {
+      "state": "1S",
+      "beam": "9x130",
+      "category": "tagged",
+      "n_all_old": 1006000.0,
+      "n_all_new": 1007500.0,
+      "n_eligible_old": 988197.0,
+      "n_eligible_new": 989682.0,
+      "n_selected_old": 90741.0,
+      "n_selected_new": 125053.0,
+      "eff_old": 0.09182480821131819,
+      "eff_new": 0.12635674893551666,
+      "eff_delta_percentage_points": 3.453194072419846,
+      "early_lumi_invfb": 1.0,
+      "selected_yield_early_old": 10.795563205765408,
+      "selected_yield_early_new": 14.855551667493797,
+      "selected_yield_L10_old": 107.95563205765409,
+      "selected_yield_L10_new": 148.55551667493796,
+      "yield_ratio_new_over_old": 1.376079356337809
+    },
+    {
+      "state": "2S",
+      "beam": "9x130",
+      "category": "inclusive",
+      "n_all_old": 1058300.0,
+      "n_all_new": 1058300.0,
+      "n_eligible_old": 1058132.0,
+      "n_eligible_new": 1058132.0,
+      "n_selected_old": 294250.0,
+      "n_selected_new": 388665.0,
+      "eff_old": 0.27808439778779964,
+      "eff_new": 0.36731239580695035,
+      "eff_delta_percentage_points": 8.92279980191507,
+      "early_lumi_invfb": 1.0,
+      "selected_yield_early_old": 8.145745299064538,
+      "selected_yield_early_new": 10.759442979306435,
+      "selected_yield_L10_old": 81.45745299064538,
+      "selected_yield_L10_new": 107.59442979306435,
+      "yield_ratio_new_over_old": 1.3208666100254884
+    },
+    {
+      "state": "2S",
+      "beam": "9x130",
+      "category": "tagged",
+      "n_all_old": 1058300.0,
+      "n_all_new": 1058300.0,
+      "n_eligible_old": 1058132.0,
+      "n_eligible_new": 1058132.0,
+      "n_selected_old": 121750.0,
+      "n_selected_new": 158173.0,
+      "eff_old": 0.11506125889775566,
+      "eff_new": 0.14948324027626042,
+      "eff_delta_percentage_points": 3.442198137850476,
+      "early_lumi_invfb": 1.0,
+      "selected_yield_early_old": 3.3704145799867713,
+      "selected_yield_early_new": 4.378715280166304,
+      "selected_yield_L10_old": 33.70414579986771,
+      "selected_yield_L10_new": 43.78715280166304,
+      "yield_ratio_new_over_old": 1.2991622176591375
+    },
+    {
+      "state": "3S",
+      "beam": "9x130",
+      "category": "inclusive",
+      "n_all_old": 1041900.0,
+      "n_all_new": 1041900.0,
+      "n_eligible_old": 1041732.0,
+      "n_eligible_new": 1041732.0,
+      "n_selected_old": 296870.0,
+      "n_selected_new": 389172.0,
+      "eff_old": 0.28497732622209937,
+      "eff_new": 0.37358168895646865,
+      "eff_delta_percentage_points": 8.860436273436928,
+      "early_lumi_invfb": 1.0,
+      "selected_yield_early_old": 6.68078595834533,
+      "selected_yield_early_new": 8.757957466167579,
+      "selected_yield_L10_old": 66.8078595834533,
+      "selected_yield_L10_new": 87.57957466167579,
+      "yield_ratio_new_over_old": 1.3109172365008253
+    },
+    {
+      "state": "3S",
+      "beam": "9x130",
+      "category": "tagged",
+      "n_all_old": 1041900.0,
+      "n_all_new": 1041900.0,
+      "n_eligible_old": 1041732.0,
+      "n_eligible_new": 1041732.0,
+      "n_selected_old": 123072.0,
+      "n_selected_new": 158815.0,
+      "eff_old": 0.11814171015193926,
+      "eff_new": 0.15245283815799074,
+      "eff_delta_percentage_points": 3.4311128006051477,
+      "early_lumi_invfb": 1.0,
+      "selected_yield_early_old": 2.769622021307227,
+      "selected_yield_early_new": 3.5739853200883,
+      "selected_yield_L10_old": 27.696220213072273,
+      "selected_yield_L10_new": 35.739853200883,
+      "yield_ratio_new_over_old": 1.2904234919396775
+    },
+    {
+      "state": "1S",
+      "beam": "9x275",
+      "category": "inclusive",
+      "n_all_old": 1137600.0,
+      "n_all_new": 1137600.0,
+      "n_eligible_old": 1126936.0,
+      "n_eligible_new": 1126936.0,
+      "n_selected_old": 220772.0,
+      "n_selected_new": 301323.0,
+      "eff_old": 0.19590464764636145,
+      "eff_new": 0.2673825310399171,
+      "eff_delta_percentage_points": 7.147788339355565,
+      "early_lumi_invfb": 2.5,
+      "selected_yield_early_old": 101.95179542897328,
+      "selected_yield_early_new": 139.14998665611816,
+      "selected_yield_L10_old": 407.80718171589314,
+      "selected_yield_L10_new": 556.5999466244726,
+      "yield_ratio_new_over_old": 1.3648605801460332
+    },
+    {
+      "state": "1S",
+      "beam": "9x275",
+      "category": "tagged",
+      "n_all_old": 1137600.0,
+      "n_all_new": 1137600.0,
+      "n_eligible_old": 1126936.0,
+      "n_eligible_new": 1126936.0,
+      "n_selected_old": 144473.0,
+      "n_selected_new": 198265.0,
+      "eff_old": 0.12819982678696926,
+      "eff_new": 0.17593279476385526,
+      "eff_delta_percentage_points": 4.773296797688601,
+      "early_lumi_invfb": 2.5,
+      "selected_yield_early_old": 66.71716404711673,
+      "selected_yield_early_new": 91.55813563642755,
+      "selected_yield_L10_old": 266.8686561884669,
+      "selected_yield_L10_new": 366.2325425457102,
+      "yield_ratio_new_over_old": 1.3723325465657943
+    },
+    {
+      "state": "2S",
+      "beam": "9x275",
+      "category": "inclusive",
+      "n_all_old": 1275000.0,
+      "n_all_new": 1280400.0,
+      "n_eligible_old": 1274806.0,
+      "n_eligible_new": 1280105.0,
+      "n_selected_old": 307351.0,
+      "n_selected_new": 401906.0,
+      "eff_old": 0.2410962922985929,
+      "eff_new": 0.31396330769741543,
+      "eff_delta_percentage_points": 7.286701539882253,
+      "early_lumi_invfb": 2.5,
+      "selected_yield_early_old": 32.020550358823535,
+      "selected_yield_early_new": 41.69492248125586,
+      "selected_yield_L10_old": 128.08220143529414,
+      "selected_yield_L10_new": 166.77968992502343,
+      "yield_ratio_new_over_old": 1.302130101263749
+    },
+    {
+      "state": "2S",
+      "beam": "9x275",
+      "category": "tagged",
+      "n_all_old": 1275000.0,
+      "n_all_new": 1280400.0,
+      "n_eligible_old": 1274806.0,
+      "n_eligible_new": 1280105.0,
+      "n_selected_old": 201581.0,
+      "n_selected_new": 263532.0,
+      "eff_old": 0.1581268051766308,
+      "eff_new": 0.20586748743267153,
+      "eff_delta_percentage_points": 4.774068225604072,
+      "early_lumi_invfb": 2.5,
+      "selected_yield_early_old": 21.001182888235295,
+      "selected_yield_early_new": 27.339592619493907,
+      "selected_yield_L10_old": 84.00473155294118,
+      "selected_yield_L10_new": 109.35837047797563,
+      "yield_ratio_new_over_old": 1.3018120343501862
+    },
+    {
+      "state": "3S",
+      "beam": "9x275",
+      "category": "inclusive",
+      "n_all_old": 1254900.0,
+      "n_all_new": 1254900.0,
+      "n_eligible_old": 1254706.0,
+      "n_eligible_new": 1254706.0,
+      "n_selected_old": 311960.0,
+      "n_selected_new": 402786.0,
+      "eff_old": 0.2486319504330098,
+      "eff_new": 0.32102022306420785,
+      "eff_delta_percentage_points": 7.238827263119804,
+      "early_lumi_invfb": 2.5,
+      "selected_yield_early_old": 26.704536696151088,
+      "selected_yield_early_new": 34.47946377002151,
+      "selected_yield_L10_old": 106.81814678460435,
+      "selected_yield_L10_new": 137.91785508008604,
+      "yield_ratio_new_over_old": 1.2911463008077957
+    },
+    {
+      "state": "3S",
+      "beam": "9x275",
+      "category": "tagged",
+      "n_all_old": 1254900.0,
+      "n_all_new": 1254900.0,
+      "n_eligible_old": 1254706.0,
+      "n_eligible_new": 1254706.0,
+      "n_selected_old": 205638.0,
+      "n_selected_new": 265009.0,
+      "eff_old": 0.16389337422471878,
+      "eff_new": 0.21121202895339625,
+      "eff_delta_percentage_points": 4.731865472867747,
+      "early_lumi_invfb": 2.5,
+      "selected_yield_early_old": 17.60311423619412,
+      "selected_yield_early_new": 22.68541660889314,
+      "selected_yield_L10_old": 70.41245694477648,
+      "selected_yield_L10_new": 90.74166643557255,
+      "yield_ratio_new_over_old": 1.2887160933290538
+    }
+  ],
+  "source_files": [
+    {
+      "path": "README.md",
+      "sha256": "96c4a7742d20fbe993d1c0023da746537700758af1fdbd1465ef078562f5930c",
+      "bytes": 6176
+    },
+    {
+      "path": "audit/input_audit.json",
+      "sha256": "0718fe01c2eabb6f86a7592bd4f582ed941159422dfe5e003a1f26bcab87d983",
+      "bytes": 3188
+    },
+    {
+      "path": "audit/selected_old_vs_rematched.csv",
+      "sha256": "28cfde32d415b21f5ce08ed7c079c1707a63ef88cd2024ec47f88114159fcbb4",
+      "bytes": 2895
+    },
+    {
+      "path": "framework/native_reoptimization_status.csv",
+      "sha256": "83101fb6661f333d3bbd7768e382d1e934c8b7521e271ed0bc5f6eaad112cfb8",
+      "bytes": 22834
+    },
+    {
+      "path": "framework/native_task_status.csv",
+      "sha256": "f7297c8792d9c4dc5885ad251791742d699ddc1e757dea6e365648be47bf7f8b",
+      "bytes": 7471
+    },
+    {
+      "path": "paper_figures/mass_efficiency/efficiency_map_cells.csv",
+      "sha256": "aa6f6cffb6c56bf40a6b8415fb60476b7f03aa37cb59a2cff03f3fd4d3578a6d",
+      "bytes": 62997
+    },
+    {
+      "path": "paper_figures/mass_efficiency/independent_map_crosscheck.json",
+      "sha256": "0b739cad270b61861620e9038f08b26a145a336bdc08acd8085354c932f716ac",
+      "bytes": 790
+    },
+    {
+      "path": "paper_figures/mass_efficiency/mass_fit_intervals.json",
+      "sha256": "2811d9b7a5c200a91d7dff34ea20d58dde542a0179c2de8cb550b90d07cee61a",
+      "bytes": 3299
+    },
+    {
+      "path": "paper_figures/mass_efficiency/upsilon_mass_and_efficiency_w_xv.pdf",
+      "sha256": "0cbb64db8d8461263165c69de20428e187e20d206d25f4b2fcdd14f9d1872daa",
+      "bytes": 48319
+    },
+    {
+      "path": "paper_figures/mass_efficiency/upsilon_mass_and_efficiency_w_xv.png",
+      "sha256": "16501d689853592bb6adaf39bae91e21c9ee7c3e8b0216a4064bdcdfdb181efc",
+      "bytes": 321236
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_differential.pdf",
+      "sha256": "7d43d9267b6ebd49c746760f44b9c0e2fcf45daceb9ebb16e4965b7c503901c0",
+      "bytes": 35288
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_differential.png",
+      "sha256": "3a1ff32b202e653bc8e3703589feb02318a48d79bbd160b28c1ce9e8ba798d6e",
+      "bytes": 195452
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_differential_audit.json",
+      "sha256": "8d79399fe0ef0a353e25b6961cbd9b7c583a89740d23af9e1832f18887724c6e",
+      "bytes": 112893
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_differential_points.csv",
+      "sha256": "e472ae815ff55c46347a44411e9d434f7cf682c6b55d16e9556c5cb299d22573",
+      "bytes": 19438
+    },
+    {
+      "path": "paper_figures/spectra/differential/upsilon_es_slopes.csv",
+      "sha256": "d03e739bec806d4d67288e1c1124c8c63814ad801d707b06f3906d094c9a8df4",
+      "bytes": 24424
+    },
+    {
+      "path": "paper_figures/spectra/input_runs_by_state.json",
+      "sha256": "0c343ebd89f6c7f606d9841bd9b08d3610cf0ca6eb61cb57ab1336ad71b3f521",
+      "bytes": 372
+    },
+    {
+      "path": "paper_figures/spectra/w/upsilon_es_w_cross_section.pdf",
+      "sha256": "71d0d8a01ead695a5ae418dc63bf27fd6709af44ca0049983acc5086fbdb398f",
+      "bytes": 30685
+    },
+    {
+      "path": "paper_figures/spectra/w/upsilon_es_w_cross_section.png",
+      "sha256": "bdaeb1ab363c2977488c9ebc29c5a29e30adb265883bd85e9839f11be0e1ed39",
+      "bytes": 132710
+    },
+    {
+      "path": "paper_figures/spectra/w/upsilon_es_w_cross_section_audit.json",
+      "sha256": "c602e2375c24498c328d9c22923162fda584810ab2f568fab5f4e3cd3cc6d9f6",
+      "bytes": 31495
+    },
+    {
+      "path": "paper_figures/spectra/w/upsilon_es_w_cross_section_points.csv",
+      "sha256": "6504083dde4e47a38ce02706f059bfca9aea39a065f2e2ab5c507bf8bce03912",
+      "bytes": 2494
+    },
+    {
+      "path": "sources/verified_inputs.json",
+      "sha256": "ddd23a1a70d39e3bbb55dbafb07c5dd4ed2e5bca9081475402cae7c04d4504ec",
+      "bytes": 2637
+    }
+  ],
+  "exported_files": [
+    {
+      "path": "data/paper.js",
+      "bytes": 85820,
+      "sha256": "246f915a5f4cb3485e3edaff2337a1bfcb1645fad494b0dfd69f81da87b33bda"
+    },
+    {
+      "path": "data/paper.json",
+      "bytes": 85806,
+      "sha256": "6c6d037fdcea4d051feafe6b40447c53ffdb8f502953a125b52e51a4f86eef23"
+    },
+    {
+      "path": "plots/differential.pdf",
+      "bytes": 35288,
+      "sha256": "7d43d9267b6ebd49c746760f44b9c0e2fcf45daceb9ebb16e4965b7c503901c0"
+    },
+    {
+      "path": "plots/differential.webp",
+      "bytes": 102706,
+      "sha256": "f3f1c863f1ba156e58ee18d585dd4aace706961765bdfd558e8fd27f3e5e26fa"
+    },
+    {
+      "path": "plots/mass.pdf",
+      "bytes": 48319,
+      "sha256": "0cbb64db8d8461263165c69de20428e187e20d206d25f4b2fcdd14f9d1872daa"
+    },
+    {
+      "path": "plots/mass.webp",
+      "bytes": 120702,
+      "sha256": "7a2b6cc265ba17f706a6455e4eedef6b19b7ac9a2990618907c2f1138a9e7605"
+    },
+    {
+      "path": "plots/w.pdf",
+      "bytes": 30685,
+      "sha256": "71d0d8a01ead695a5ae418dc63bf27fd6709af44ca0049983acc5086fbdb398f"
+    },
+    {
+      "path": "plots/w.webp",
+      "bytes": 71274,
+      "sha256": "105f0a3231a1ef93571be510317c50d69cdcfad93fb1c2017f53422c72757158"
+    }
+  ]
+}

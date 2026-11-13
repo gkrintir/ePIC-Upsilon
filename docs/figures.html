@@ -4,8 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Explore the ePIC exclusive Υ photoproduction projections, the note pages behind each figure and their reproducible analysis outputs.">
 <title>ePIC Υ Atlas · Paper figures</title>
-<link rel="stylesheet" href="beams.css"><link rel="stylesheet" href="style.css">
-<script defer src="data/paper.js"></script><script defer src="pdf-link.js"></script><script defer src="figure-panels.js"></script><script defer src="replay-directory.js"></script><script defer src="app.js"></script>
+<link rel="stylesheet" href="beams.css?v=8238dd774b46"><link rel="stylesheet" href="style.css?v=38efd5f54713">
+<script defer src="data/paper.js?v=246f915a5f4c"></script><script defer src="pdf-link.js?v=5d79e08e1803"></script><script defer src="figure-panels.js?v=bfec8d19a497"></script><script defer src="replay-directory.js?v=508bd681499c"></script><script defer src="app.js?v=ef420d48982c"></script>
 </head>
 <body>
 <a class="skip" href="#figure-content">Skip to figure</a>
@@ -15,7 +15,8 @@
 </div></header>
 <main class="shell">
 <header class="intro"><p class="eyebrow">ePIC <span>/</span> Exclusive photoproduction</p><h1>Υ figure atlas</h1>
-<p>Explore the projected Υ → e⁺e⁻ signal at 9 × 275 GeV with 2.5 fb⁻¹ and a reconstructed recoil proton. Use the links beside a figure to read about it in the note or see how it was made.</p></header>
+<p>Explore the projected Υ → e⁺e⁻ signal at 9 × 275 GeV with 2.5 fb⁻¹ and a reconstructed recoil proton. The figures and numerical tables use the full ECAL-rematched samples from November 2026.</p>
+<p><a href="data/paper-provenance.json">Input and figure provenance</a> · <a href="data/paper.json" download>Download numerical results</a></p></header>
 <nav class="atlas-nav" aria-label="Paper figures">
 <a href="#mass" data-tab="mass"><small>Fig. 7 · Table 8</small><span>Mass fit</span></a>
 <a href="#efficiency" data-tab="efficiency"><small>Fig. 13</small><span>Efficiency maps</span></a>
@@ -24,8 +25,9 @@
 </nav>
 <section class="panel figure-content" id="figure-content" aria-labelledby="figure-title" tabindex="-1">
 <div class="figure-copy"><p class="eyebrow" id="kicker"></p><h2 id="figure-title"></h2><p id="lead"></p></div>
+<p id="reference-note" class="notes" hidden></p>
 <div class="figure-grid">
-<div class="image-wrap"><div class="filters panel-filter"><label for="plot-panel">Focus on a panel<select id="plot-panel"></select></label></div><a id="enlarge" target="_blank" rel="noopener"><img id="figure-image" alt="" decoding="async"><svg id="panel-zoom" role="img" aria-label="Selected paper panel"></svg></a><p class="image-caption"><span id="figure-caption"></span><a id="open-image" target="_blank" rel="noopener">Enlarge figure ↗</a></p></div>
+<div class="image-wrap" id="reference-artwork"><div class="filters panel-filter"><label for="plot-panel">Focus on a panel<select id="plot-panel"></select></label></div><a id="enlarge" target="_blank" rel="noopener"><img id="figure-image" alt="" decoding="async"><svg id="panel-zoom" role="img" aria-label="Selected paper panel"></svg></a><p class="image-caption"><span id="figure-caption"></span><a id="open-image" target="_blank" rel="noopener">Enlarge figure ↗</a> · <a id="source-pdf" target="_blank" rel="noopener">Figure PDF ↗</a></p></div>
 <aside class="figure-aside" aria-label="About this figure">
   <h3>In the analysis note</h3>
   <p id="note-description"></p>
@@ -35,7 +37,7 @@
     <input id="local-note" type="file" accept="application/pdf,.pdf">
     <div class="note-page-links">
       <a id="note-link" aria-disabled="true"></a>
-      <a id="table-jump" aria-disabled="true">Table 8 · Fitted values (PDF page 23)</a>
+      <a id="table-jump" aria-disabled="true">Table 8 · Fitted values (PDF page 24)</a>
     </div>
   </details>
   <p class="workflow-link"><a id="trace-link" href="./index.html#mass/plot/review">How was this figure made?</a></p>
@@ -48,7 +50,7 @@
 <section id="import-box" class="import-box" aria-labelledby="import-title" hidden>
   <div>
     <h2 id="import-title">Inspect results from your own run (optional)</h2>
-    <p>Open <code>work/paper-replay/paper.json</code> to see your fitted yields, efficiency counts and spectrum bins. You can share this file with a colleague. It opens locally in the browser.</p>
+    <p>Open an exported <code>paper.json</code> to inspect your fitted yields, efficiency counts and spectrum bins. Historical paper-replay exports are also supported. Your selected file opens locally in the browser.</p>
   </div>
   <div class="run-inputs">
     <label for="data-file">Choose <code>paper.json</code></label>

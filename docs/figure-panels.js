@@ -1,6 +1,6 @@
 /* These view boxes select the original plot artwork. No values are read from pixels. */
 (() => {
-  const dimensions = {mass: [1600,1424], w:[1477,1600], differential:[1486,1600]};
+  const dimensions = window.PAPER?.image_dimensions || {mass: [1600,1424], w:[1477,1600], differential:[1486,1600]};
   const boxes = {
     mass: {mass: ["(a) Three-state mass fit",[0,0,1,.53]]},
     efficiency: {pt_y:["(b) Transverse momentum and rapidity",[0,.514,.506,.486]],xv_w:["(c) xᵥ and W",[.50,.514,.50,.486]]},

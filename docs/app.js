@@ -9,10 +9,10 @@
   const cellFields = ["map","x_low","x_high","y_low","y_high","denominator","selected_before_proton","selected"];
   const pointFields = ["quantity","state","bin_low","bin_high","central","lower","upper","status"];
   const papers = {
-    mass: {tag:"Signal extraction · Fig. 7 (continued)", title:"Three-state dielectron mass fit", lead:"The three fitted peaks determine the expected Υ(1S), Υ(2S) and Υ(3S) yields. The fit shares a mass shift and width scale across the states.", note:"Figure 7", page:26, about:"Figure 7 shows the three fitted Υ peaks. Table 8 gives the expected yield and Gaussian core width of each peak.", image:"mass", caption:"Paper panel (a) · expected events per 0.05 GeV vs. reconstructed dielectron mass [GeV].", inspector:"Fitted yields and core widths"},
-    efficiency: {tag:"Detector corrections · Fig. 13", title:"Proton-tagged Υ(1S) efficiency", lead:"For each truth bin, the efficiency is the fraction of eligible simulated decays that pass reconstruction, selection and the recoil-proton tag.", note:"Figure 13", page:45, about:"Figure 13 shows the fraction of eligible Υ(1S) decays that pass the full selection, including the proton tag.",image:"mass",caption:"Paper panels (b,c) · Υ(1S) reconstruction and selection efficiency [%].",inspector:"Efficiency by truth bin"},
-    w: {tag:"Energy dependence · Fig. 14", title:"Cross section versus photon–proton energy", lead:"The points give bin-averaged γp cross sections for each Υ state over the photon–proton energy window. The horizontal bars span each W bin.", note:"Figure 14",page:48,about:"Figure 14 shows how the projected cross section varies with photon–proton energy for each Υ state.",image:"w",caption:"Bin-averaged σγp [pb] vs. Wγp [GeV].",inspector:"Energy-spectrum bins"},
-    differential: {tag:"Differential projections · Fig. 15",title:"Dielectron pT² and laboratory rapidity",lead:"Panel (a) fits the Υ(1S) squared transverse momentum reconstructed from the dielectron. Panel (b) uses the integrated photon flux of each state to normalize its rapidity spectrum.",note:"Figure 15",page:49,about:"Figure 15 shows the fitted Υ(1S) pT² slope in panel (a) and the rapidity spectra for the three Υ states in panel (b).",image:"differential",caption:"Panel (a) · dσγp/dpT² [pb/GeV²]. Panel (b) · flux-normalized ep yield density [pb per unit rapidity].",inspector:"Differential-spectrum bins"}
+    mass: {tag:"Signal extraction · Fig. 7 (continued)", title:"Three-state dielectron mass fit", lead:"The three fitted peaks determine the expected Υ(1S), Υ(2S) and Υ(3S) yields. The fit shares a mass shift and width scale across the states.", note:"Figure 7", page:27, about:"Figure 7 shows the three fitted Υ peaks. Table 8 gives the expected yield and Gaussian core width of each peak.", image:"mass", caption:"Paper panel (a) · expected events per 0.05 GeV vs. reconstructed dielectron mass [GeV].", inspector:"Fitted yields and core widths"},
+    efficiency: {tag:"Detector corrections · Fig. 13", title:"Proton-tagged Υ(1S) efficiency", lead:"For each truth bin, the efficiency is the fraction of eligible simulated decays that pass reconstruction, selection and the recoil-proton tag.", note:"Figure 13", page:46, about:"Figure 13 shows the fraction of eligible Υ(1S) decays that pass the full selection, including the proton tag.",image:"mass",caption:"Paper panels (b,c) · Υ(1S) reconstruction and selection efficiency [%].",inspector:"Efficiency by truth bin"},
+    w: {tag:"Energy dependence · Fig. 14", title:"Cross section versus photon–proton energy", lead:"The points give the adaptive-bin γp cross-section diagnostics for each Υ state. The horizontal bars span each displayed W bin.", note:"Figure 14",page:49,about:"Figure 14 shows the rematched adaptive-bin W projections. Their interval-coverage and closure checks are recorded with the numerical results.",image:"w",caption:"Bin-averaged σγp [pb] vs. Wγp [GeV].",inspector:"Energy-spectrum bins"},
+    differential: {tag:"Differential projections · Fig. 15",title:"Dielectron pT² and laboratory rapidity",lead:"Panel (a) shows the Υ(1S) pT² projection and the available Υ(2S) diagnostic. Panel (b) uses the integrated photon flux of each state to normalize its rapidity spectrum.",note:"Figure 15",page:50,about:"Figure 15 shows the pT² spectra and slope profiles in panel (a), with the three rapidity spectra in panel (b). Each state retains its recorded validation status.",image:"differential",caption:"Panel (a) · dσγp/dpT² [pb/GeV²]. Panel (b) · flux-normalized ep yield density [pb per unit rapidity].",inspector:"Differential-spectrum bins"}
   };
   const make = (tag, content, cls) => {
     const node = document.createElement(tag);
@@ -63,11 +63,18 @@
     $("figure-image").src=images[p.image];$("figure-image").alt=p.title+". "+p.caption;
     $("enlarge").href=images[p.image];$("enlarge").setAttribute("aria-label","Enlarge "+p.title);
     $("open-image").href=images[p.image];
+    $("source-pdf").hidden=!local.pdfs?.[p.image];
+    if(local.pdfs?.[p.image]) $("source-pdf").href=local.pdfs[p.image];
     $("note-description").textContent=p.about;
     $("note-link").textContent=p.note+" · Plot (PDF page "+p.page+")";
     if (window.ATLAS_HAS_LOCAL_NOTE===true) $("local-label").textContent="Use the bundled note below or choose a different copy.";
     $("inspector-title").textContent=p.inspector;
-    $("import-box").hidden=local.efficiency.cells.length>0 && local.spectra.length>0;
+    $("import-box").hidden=false;
+    const matchesReference = ["mass", "efficiency", "spectra"].every(key => JSON.stringify(data[key]) === JSON.stringify(local[key]));
+    $("reference-artwork").hidden=!matchesReference;
+    document.querySelector(".figure-grid").style.gridTemplateColumns=matchesReference ? "" : "1fr";
+    $("reference-note").hidden=matchesReference;
+    $("reference-note").textContent="The numerical inspector uses your selected local results. Reload this page to restore the bundled rematched figures. The note links below refer to the November 2026 reference.";
     window.notePage.refresh();
     renderResults();
   }
@@ -96,7 +103,7 @@
     }
     appendTable(["State","Fitted expected events","Gaussian core width [MeV]"],states.map(s=>["Υ("+s+")",fitText(data.mass[s].yield),fitText(data.mass[s].width)]));
     const hasErrors=data.mass["1S"].yield[1]!==null;
-    note(hasErrors?"Parentheses give the negative and positive 68.27% conditional profile-likelihood errors. The fit fixes the calibrated tails and relative widths, so the width errors share the same fitted scale.":"The table gives the rounded central values. For the conditional fit errors, open Table 8 or your run’s paper.json.");
+    note(hasErrors?"Parentheses give the negative and positive 68.27% conditional profile-likelihood errors. The fit fixes the calibrated tails and relative widths, so the width errors share the same fitted scale. These signal-only intervals require separate checks of shape mismatch, backgrounds and low-count coverage.":"The table gives the rounded central values. For the conditional fit errors, open Table 8 or your run’s paper.json.");
     reportCsv(hasErrors?"mass_fit":"mass_fit_summary",["state","yield_events","yield_err_minus","yield_err_plus","core_width_MeV","width_err_minus_MeV","width_err_plus_MeV"],states.map(s=>[s,...data.mass[s].yield,...data.mass[s].width]));
   }
   function addSelect(box,id,label,choices,value,onChange) {
@@ -204,45 +211,81 @@
     note(pt?"Both axes use true Υ kinematics. The integrated efficiency includes eligible events outside the displayed pT and rapidity range.":"xᵥ = (Q² + M₁²) / (Wγp² + Q² − mₚ²). The horizontal axis is logarithmic. This map includes the full eligible truth sample.");
   }
   function spectraView() {
-    const q=view==="w"?"W":quantity;
-    const filters=make("div",undefined,"filters");$("results").append(filters);
-    if(view==="differential")addSelect(filters,"quantity","Observable",[["pt2","Dielectron pT²"],["y","Laboratory rapidity"]],q,value=>{quantity=value;bin=0;redrawn("quantity");});
-    addSelect(filters,"state","Υ state",states.map(s=>[s,"Υ("+s+")"]),state,value=>{state=value;bin=0;redrawn("state");});
-    if(q==="pt2"&&state!=="1S"){
-      note("The expected Υ("+state+") yield was too small for a pT² binning that met the slope-fit criteria. The rapidity view contains this state’s differential projection.","status-note");
-      reportCsv("empty",[],[]);return;
+    const q = view === "w" ? "W" : quantity;
+    const filters = make("div", undefined, "filters");
+    $("results").append(filters);
+    if (view === "differential") {
+      addSelect(filters, "quantity", "Observable", [["pt2", "Dielectron pT²"], ["y", "Laboratory rapidity"]],
+        q, value => {quantity=value; bin=0; redrawn("quantity");});
     }
-    if(q==="pt2" && data.slope) {
-      const [s,minus,plus]=data.slope;
-      const stat=make("div",undefined,"stats");simpleStat(stat,s.toFixed(2)+" (−"+minus.toFixed(2)+" / +"+plus.toFixed(2)+") GeV⁻²","Υ(1S) exponential slope b · 0 < pT² < 1 GeV²");$("results").append(stat);
+    addSelect(filters, "state", "Υ state", states.map(s => [s, "Υ("+s+")"]),
+      state, value => {state=value; bin=0; redrawn("state");});
+    const rows = data.spectra.filter(row => row.quantity === q && row.state === state);
+    const availability = data.availability?.find(row => row.quantity === q && row.state === state);
+    const slope = data.spectra.find(row => row.quantity === "slope" && row.state === state);
+    const slopeStatus = data.slopes?.[state]?.status || slope?.status;
+    const isW = q === "W", isPt = q === "pt2";
+    if (isPt && !rows.length && (availability?.available === false || state !== "1S")) {
+      note(availability?.reason || "The expected Υ("+state+") yield has no feasible pT² slope binning in this run. Its rapidity projection is available in the other observable view.", "status-note");
+      reportCsv("empty", [], []);
+      return;
     }
-    const isW=q==="W", isPt=q==="pt2";
-    const rangeUnit=isW?"GeV":isPt?"GeV²":"";
-    const xLabel=isW?"Wγp [GeV]":isPt?"Dielectron pT² [GeV²]":"Lab rapidity";
-    const yLabel=isW?"σγp [pb]":isPt?"dσγp/dpT² [pb/GeV²]":"(1/Φₙ) dσep/dy [pb]";
-    const rows=data.spectra.filter(r=>r.quantity===q&&r.state===state);
-    if(rows.length) {
-      bin=Math.min(bin,rows.length-1);
-      const picker=addSelect(filters,"spectrum-bin","Inspect bin",rows.map((r,i)=>[i,fmt(r.bin_low)+" – "+fmt(r.bin_high)+(rangeUnit?" "+rangeUnit:"")]),bin,v=>select(Number(v)));
-      const caption=make("p",undefined,"keyhint");caption.setAttribute("aria-live","polite");$("results").append(caption);
-      const tbody=appendTable([xLabel,yLabel,"Lower band","Upper band"],rows.map(r=>[fmt(r.bin_low)+" – "+fmt(r.bin_high),fmt(r.central),fmt(r.lower),fmt(r.upper)]));
-      const choose=(i)=>{select(i);picker.value=i;};
-      Array.from(tbody.rows).forEach((r,i)=>{const entry=r.cells[0],button=make("button",entry.textContent,"inline-link");button.type="button";button.setAttribute("aria-label","Inspect bin "+(i+1));button.onclick=()=>choose(i);entry.replaceChildren(button);});
+    if (isPt && slope) {
+      const stat = make("div", undefined, "stats");
+      const errors = " (−"+(slope.central-slope.lower).toFixed(2)+" / +"+(slope.upper-slope.central).toFixed(2)+") GeV⁻²";
+      simpleStat(stat, slope.central.toFixed(2)+errors,
+        "Υ("+state+") exponential slope b · "+fmt(slope.bin_low)+" < pT² < "+fmt(slope.bin_high)+" GeV²");
+      $("results").append(stat);
+    }
+    const rangeUnit = isW ? "GeV" : isPt ? "GeV²" : "";
+    const xLabel = isW ? "Wγp [GeV]" : isPt ? "Dielectron pT² [GeV²]" : "Lab rapidity";
+    const yLabel = isW ? "σγp [pb]" : isPt ? "dσγp/dpT² [pb/GeV²]" : "(1/Φₙ) dσep/dy [pb]";
+    if (rows.length) {
+      bin = Math.min(bin, rows.length-1);
+      const picker = addSelect(filters, "spectrum-bin", "Inspect bin",
+        rows.map((r,i) => [i, fmt(r.bin_low)+" – "+fmt(r.bin_high)+(rangeUnit ? " "+rangeUnit : "")]),
+        bin, value => select(Number(value)));
+      const caption = make("p", undefined, "keyhint");
+      caption.setAttribute("aria-live", "polite");
+      $("results").append(caption);
+      const tbody = appendTable([xLabel, yLabel, "Lower band", "Upper band", "Status"],
+        rows.map(r => [fmt(r.bin_low)+" – "+fmt(r.bin_high), fmt(r.central), fmt(r.lower), fmt(r.upper),
+          r.status === "PASS_CONDITIONAL" ? "Conditional pass" : "Diagnostic"]));
+      Array.from(tbody.rows).forEach((row,i) => {
+        const entry = row.cells[0], button = make("button", entry.textContent, "inline-link");
+        button.type = "button";
+        button.setAttribute("aria-label", "Inspect bin "+(i+1));
+        button.onclick = () => {select(i); picker.value=i;};
+        entry.replaceChildren(button);
+      });
       function select(i) {
-        bin=i;const r=rows[i];
-        caption.textContent="Selected bin "+(i+1)+" of "+rows.length+"  ·  "+yLabel+" = "+fmt(r.central,6)+"  ·  sampling band "+fmt(r.lower,6)+" – "+fmt(r.upper,6)+".";
-        Array.from(tbody.rows).forEach((tr,j)=>tr.classList.toggle("chosen-bin",j===i));setRoute();
+        bin = i;
+        const row = rows[i];
+        caption.textContent = "Selected bin "+(i+1)+" of "+rows.length+"  ·  "+yLabel+" = "+fmt(row.central,6)+
+          "  ·  sampling band "+fmt(row.lower,6)+" – "+fmt(row.upper,6)+".";
+        Array.from(tbody.rows).forEach((tr,j) => tr.classList.toggle("chosen-bin", j===i));
+        setRoute();
       }
       select(bin);
-      const csvRows=isPt?[...rows,...data.spectra.filter(r=>r.quantity==="slope"&&r.state===state)]:rows;
-      reportCsv("spectrum_"+q+"_"+state,pointFields,csvRows.map(row=>pointFields.map(key=>row[key])));
+      const csvRows = isPt ? [...rows, ...data.spectra.filter(r => r.quantity === "slope" && r.state === state)] : rows;
+      reportCsv("spectrum_"+q+"_"+state, pointFields, csvRows.map(row => pointFields.map(key => row[key])));
     } else {
       note("Open your run’s paper.json below to inspect individual bins and download their full-precision values.");
-      if(isPt && data.slope)reportCsv("slope_1S_summary",["state","slope_GeV_minus2","err_minus","err_plus"],[["1S",...data.slope]]);
-      else reportCsv("empty",[],[]);
+      reportCsv("empty", [], []);
     }
-    note(isPt?"Conditional validation passed for the 1S dielectron pT² slope in the fixed-response, signal-only tests. The slope errors are profile limits. The point bars are toy sampling bands.":"The "+(isW?"W":"rapidity")+" projections failed the injected-spectrum coverage test for all three states. Vertical bars describe conditional toy sampling bands in the fixed-response, signal-only model.","status-note");
-    if(q==="y")note("The flux Φₙ is integrated across the full W range for each state. Positive laboratory rapidity follows the proton beam.");
+    if (availability?.reason) {
+      const interpretation = isPt
+        ? "Slope errors are profile limits. The point bars are conditional toy sampling bands."
+        : "Vertical bars describe conditional toy sampling bands in the fixed-response, signal-only model.";
+      note(availability.reason+" "+interpretation, "status-note");
+    } else if (isPt) {
+      note(slopeStatus === "PASS_CONDITIONAL"
+        ? "The Υ("+state+") pT² slope passed conditional validation in the fixed-response, signal-only tests. Its errors are profile limits. The point bars are toy sampling bands."
+        : "The Υ("+state+") pT² result has diagnostic status. Its slope interval failed the injected-slope coverage check. The point bars are conditional toy sampling bands.", "status-note");
+    } else {
+      note("The "+(isW ? "adaptive-bin W" : "rapidity")+" projections have diagnostic status following the injected-spectrum coverage checks. Vertical bars describe conditional toy sampling bands in the fixed-response, signal-only model.", "status-note");
+    }
+    if (q === "y") note("The flux Φₙ is integrated across the full W range for each state. Positive laboratory rapidity follows the proton beam.");
   }
   function syncPanel() {
     const key = {mass:"mass",efficiency:map,w:state,differential:quantity}[view];
@@ -305,15 +348,51 @@
     for(const r of raw.spectra){
       if(!record(r)||!states.includes(r.state)||!["pt2","W","y","slope"].includes(r.quantity)||
         ![r.bin_low,r.bin_high,r.central,r.lower,r.upper].every(n)||r.bin_low>=r.bin_high||r.lower<0||r.upper<r.lower||r.central<0||
-        ((r.quantity==="pt2"||r.quantity==="slope")&&r.state!=="1S")||
-        r.status!==((r.quantity==="W"||r.quantity==="y")?"NOT_VALIDATED":"PASS_CONDITIONAL"))fail();
+        !["NOT_VALIDATED","PASS_CONDITIONAL"].includes(r.status))fail();
       const key=[r.quantity,r.state,r.bin_low,r.bin_high].join("|");if(seen.has(key))fail();seen.add(key);
     }
-    for(const s of states)for(const q of (s==="1S"?["W","y","pt2","slope"]:["W","y"])){
-      const rows=raw.spectra.filter(r=>r.state===s&&r.quantity===q);
-      if(!rows.length||rows.some((r,i)=>i>0&&r.bin_low!==rows[i-1].bin_high))fail();
+    for(const s of states) {
+      for(const q of ["W","y"]) {
+        const rows=raw.spectra.filter(r=>r.state===s&&r.quantity===q);
+        if(!rows.length||rows.some((r,i)=>i>0&&r.bin_low!==rows[i-1].bin_high))fail();
+      }
+      const points=raw.spectra.filter(r=>r.state===s&&r.quantity==="pt2");
+      const slopes=raw.spectra.filter(r=>r.state===s&&r.quantity==="slope");
+      if(s==="1S"||points.length||slopes.length) {
+        if(!points.length||slopes.length!==1||points.some((r,i)=>i>0&&r.bin_low!==points[i-1].bin_high))fail();
+      }
     }
-    return {mass,efficiency:{eligible:e.eligible,pretag:e.pretag,tagged:e.tagged,cells:e.cells},spectra:raw.spectra,slope:raw.slope};
+    const result={mass,efficiency:{eligible:e.eligible,pretag:e.pretag,tagged:e.tagged,cells:e.cells},spectra:raw.spectra,slope:raw.slope};
+    if(raw.schema_version!==undefined) {
+      if(raw.schema_version!==2||!Array.isArray(raw.availability)||raw.availability.length!==9||!record(raw.slopes))fail();
+      const statuses=["PASS_CONDITIONAL","NOT_VALIDATED","NO_FEASIBLE_SLOPE_BINNING"];
+      const validStatus=item=>record(item)&&typeof item.available==="boolean"&&statuses.includes(item.status)&&
+        typeof item.reason==="string"&&Array.isArray(item.failed_checks)&&item.failed_checks.every(check=>typeof check==="string");
+      const availableKeys=new Set();
+      for(const item of raw.availability) {
+        if(!validStatus(item)||!states.includes(item.state)||!["W","y","pt2"].includes(item.quantity))fail();
+        const key=item.state+"|"+item.quantity;
+        if(availableKeys.has(key))fail();
+        availableKeys.add(key);
+        const rows=raw.spectra.filter(r=>r.state===item.state&&r.quantity===item.quantity);
+        if(item.available!==Boolean(rows.length)||rows.some(row=>row.status!==item.status))fail();
+        if(!item.available&&item.status!=="NO_FEASIBLE_SLOPE_BINNING")fail();
+      }
+      const slopeFields=["value","error_low","error_high","lower","upper"];
+      for(const state of states) {
+        const item=raw.slopes[state];
+        if(!validStatus(item))fail();
+        const row=raw.spectra.find(point=>point.state===state&&point.quantity==="slope");
+        if(item.available!==Boolean(row))fail();
+        if(item.available) {
+          if(!slopeFields.every(key=>n(item[key])&&item[key]>=0)||item.lower>item.upper||row.status!==item.status)fail();
+        } else if(item.status!=="NO_FEASIBLE_SLOPE_BINNING"||slopeFields.some(key=>item[key]!==null))fail();
+      }
+      result.schema_version=2;
+      result.availability=raw.availability;
+      result.slopes=raw.slopes;
+    }
+    return result;
   }
 
   let req=0;
@@ -359,7 +438,7 @@
     pick: $("local-note"),
     link: $("note-link"),
     page: () => papers[view].page,
-    extraLinks: [{link: $("table-jump"), page: () => view === "mass" ? 23 : null}]
+    extraLinks: [{link: $("table-jump"), page: () => view === "mass" ? 24 : null}]
   });
   window.addEventListener("hashchange",restoreRoute);
   restoreRoute();
